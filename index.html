@@ -24,7 +24,8 @@
       <div class="dashboard-head">
         <div>
           <p class="eyebrow">Live Status</p>
-          <h2>現在狀態一眼看懂</h2>
+          <h2>目前狀態、卡點與用量</h2>
+          <p class="dashboard-subtitle">橫向濃縮顯示，手機打開就能先看完整重點。</p>
         </div>
         <span class="state-pill" id="statePill">讀取中</span>
       </div>
@@ -54,7 +55,13 @@
 
       <div class="dashboard-footer">
         <div class="mini-list" id="deliverableList"></div>
-        <button type="button" id="refreshStatus">重新整理狀態</button>
+        <div class="refresh-panel">
+          <button type="button" id="refreshStatus" aria-describedby="refreshFeedback">
+            <span class="refresh-icon" aria-hidden="true">↻</span>
+            <span class="refresh-label">重新整理狀態</span>
+          </button>
+          <span class="refresh-feedback" id="refreshFeedback">每 30 秒自動讀取公開快照。</span>
+        </div>
       </div>
     </section>
 
@@ -153,6 +160,6 @@
     <span>資料來源：本機技能索引、記憶索引、Codex 心跳、Telegram 請求狀態與 token 統計快照。</span>
   </footer>
 
-  <script src="app.js?v=20260702-1958"></script>
+  <script src="app.js?v=20260702-2018"></script>
 </body>
 </html>

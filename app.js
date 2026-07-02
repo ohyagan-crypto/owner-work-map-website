@@ -40,7 +40,7 @@ const completedItems = [
     title: "即時狀態儀表盤",
     status: "完成",
     summary: "最上方可直接看到運作中、正常待命、疑似斷線或卡點，並顯示今天 token 消耗。",
-    points: ["讀取心跳與請求狀態", "讀取本機 token 統計", "頁面每 30 秒自動刷新資料"],
+    points: ["手機版改成橫向濃縮資訊", "重新整理狀態有載入與結果提示", "頁面每 30 秒自動刷新資料"],
     actions: [{ label: "回到最上方", url: "#status-dashboard" }]
   }
 ];
@@ -101,6 +101,7 @@ const skillRows = [
 ];
 
 const timeline = [
+  ["2026-07-02 20:18", "美化即時儀表盤，手機版改成橫向濃縮顯示，並修正重新整理狀態按鈕的可見回饋。"],
   ["2026-07-02 19:58", "新增最上方即時狀態儀表盤，顯示運作中、卡點、斷線與今日 token。"],
   ["2026-07-02 19:58", "把截圖中的 Roadmap 項目收斂到已完成區：公開部署、複製包、技能分流、SOP 圖書館。"],
   ["2026-07-02 19:12", "完成無私密完整複製包，檔案已存入本機安全備份資料夾。"],
@@ -124,6 +125,23 @@ const fallbackRuntimeStatus = {
 };
 
 const $ = (selector) => document.querySelector(selector);
+let lastSnapshotUpdatedAt = "";
+
+function setRefreshFeedback(message, state = "idle") {
+  const feedback = $("#refreshFeedback");
+  if (!feedback) return;
+  feedback.textContent = message;
+  feedback.dataset.state = state;
+}
+
+function setRefreshButtonLoading(isLoading) {
+  const button = $("#refreshStatus");
+  if (!button) return;
+  button.disabled = isLoading;
+  button.classList.toggle("is-refreshing", isLoading);
+  const label = button.querySelector(".refresh-label");
+  if (label) label.textContent = isLoading ? "重新讀取中" : "重新整理狀態";
+}
 
 function formatNumber(value) {
   if (value === null || value === undefined || value === "") return "未取得";
@@ -212,6 +230,7 @@ function renderRuntimeStatus(data) {
   const status = { ...fallbackRuntimeStatus, ...data };
   const token = { ...fallbackRuntimeStatus.token, ...(status.token || {}) };
   const statePill = $("#statePill");
+  const deliverables = status.deliverables || [];
 
   statePill.dataset.state = status.statusKey || "watch";
   statePill.textContent = status.statusLabel || "資料待同步";
@@ -225,16 +244,45 @@ function renderRuntimeStatus(data) {
   $("#nextAction").textContent = status.nextAction || "維持同步。";
   $("#updatedAt").textContent = formatDateTime(status.updatedAt);
   $("#refreshNote").textContent = `每 ${status.refreshSeconds || 30} 秒重新讀取一次狀態資料。`;
-  $("#deliverableList").innerHTML = (status.deliverables || []).map((item) => `<span>${item}</span>`).join("");
+  $("#deliverableList").innerHTML = deliverables.length
+    ? deliverables.map((item) => `<span>${item}</span>`).join("")
+    : "<span>目前沒有新的交付物</span>";
 }
 
-async function loadRuntimeStatus() {
+async function loadRuntimeStatus(options = {}) {
+  const isManual = Boolean(options.manual);
+  const previousUpdatedAt = lastSnapshotUpdatedAt;
+  if (isManual) {
+    setRefreshButtonLoading(true);
+    setRefreshFeedback("正在重新讀取公開狀態快照...", "idle");
+  }
+
   try {
     const response = await fetch(`runtime-status.json?ts=${Date.now()}`, { cache: "no-store" });
     if (!response.ok) throw new Error("missing");
-    renderRuntimeStatus(await response.json());
+    const data = await response.json();
+    renderRuntimeStatus(data);
+    const updatedAt = data.updatedAt || "";
+
+    if (isManual) {
+      const formatted = formatDateTime(updatedAt);
+      const state = previousUpdatedAt && previousUpdatedAt === updatedAt ? "stale" : "success";
+      const message = state === "stale"
+        ? `已重新讀取，公開快照仍是 ${formatted}。`
+        : `已更新到 ${formatted}。`;
+      setRefreshFeedback(message, state);
+    } else if (!previousUpdatedAt) {
+      setRefreshFeedback(`目前快照：${formatDateTime(updatedAt)}。`, "idle");
+    }
+
+    lastSnapshotUpdatedAt = updatedAt;
   } catch {
     renderRuntimeStatus(fallbackRuntimeStatus);
+    if (isManual) {
+      setRefreshFeedback("讀取失敗，已顯示備用狀態。", "error");
+    }
+  } finally {
+    if (isManual) setRefreshButtonLoading(false);
   }
 }
 
@@ -245,7 +293,7 @@ function init() {
   renderSkills();
   renderTimeline();
   loadRuntimeStatus();
-  $("#refreshStatus").addEventListener("click", loadRuntimeStatus);
+  $("#refreshStatus").addEventListener("click", () => loadRuntimeStatus({ manual: true }));
   window.setInterval(loadRuntimeStatus, 30000);
 }
 
