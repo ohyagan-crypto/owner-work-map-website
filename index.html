@@ -10,190 +10,149 @@
 <body>
   <header class="topbar">
     <div>
-      <p class="eyebrow">Codex / OpenClaw / Telegram 工作地圖</p>
+      <p class="eyebrow">Codex / OpenClaw / Telegram</p>
       <h1>主人工作總控台</h1>
     </div>
     <div class="topbar-meta">
-      <span>整理日 2026-07-02</span>
-      <span>公開快照</span>
+      <span>更新日 2026-07-02</span>
+      <span>公開總覽</span>
     </div>
   </header>
 
   <main>
+    <section class="status-dashboard" id="status-dashboard" aria-live="polite">
+      <div class="dashboard-head">
+        <div>
+          <p class="eyebrow">Live Status</p>
+          <h2>現在狀態一眼看懂</h2>
+        </div>
+        <span class="state-pill" id="statePill">讀取中</span>
+      </div>
+
+      <div class="dashboard-grid">
+        <article class="status-card primary-status">
+          <span>目前狀態</span>
+          <strong id="statusLabel">讀取中</strong>
+          <p id="statusHeadline">正在讀取本機同步資料。</p>
+        </article>
+        <article class="status-card">
+          <span>今日 token</span>
+          <strong id="todayTokens">--</strong>
+          <p id="tokenSource">等待統計來源。</p>
+        </article>
+        <article class="status-card">
+          <span>目前卡點</span>
+          <strong id="blockerText">讀取中</strong>
+          <p id="nextAction">等待同步資料。</p>
+        </article>
+        <article class="status-card">
+          <span>最新更新</span>
+          <strong id="updatedAt">--</strong>
+          <p id="refreshNote">頁面會自動重新讀取狀態資料。</p>
+        </article>
+      </div>
+
+      <div class="dashboard-footer">
+        <div class="mini-list" id="deliverableList"></div>
+        <button type="button" id="refreshStatus">重新整理狀態</button>
+      </div>
+    </section>
+
     <section class="overview" id="overview">
       <div class="overview-copy">
-        <h2>把做過的事、做到一半的事、未來規劃、待辦與技能包集中管理</h2>
+        <p class="eyebrow">Owner Map</p>
+        <h2>把已完成、打包、技能分流、SOP 與狀態監控集中在同一頁</h2>
         <p>
-          這個網站根據本機技能、記憶與最近任務整理，目的不是展示，而是讓主人快速判斷現在能做什麼、哪裡還要補、哪些技能可以交給其他 Codex 或 OpenClaw 學。
+          這版已把截圖裡的 Roadmap 項目往前收斂成可查看的完成區塊，並把「運作中、斷線、卡點、今日 token」放到最上方。公開頁面適合手機快速檢查，本機資料仍保留在安全路徑，不放帳號密碼、token、cookie 或瀏覽器登入資料。
         </p>
         <div class="quick-actions" aria-label="主要區塊">
           <a href="#completed">已完成</a>
-          <a href="#in-progress">做到一半</a>
-          <a href="#roadmap">未來規劃</a>
-          <a href="#todos">待辦</a>
-          <a href="#live-progress">進度同步</a>
-          <a href="#skills">技能包</a>
+          <a href="#sop-library">SOP 圖書館</a>
+          <a href="#skills">技能分流</a>
+          <a href="#timeline">更新紀錄</a>
+          <a href="#safety">安全邊界</a>
         </div>
       </div>
       <div class="stat-grid" id="statGrid"></div>
     </section>
 
-    <section id="live-progress" class="content-section live-section">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">Live Sync</p>
-          <h2>我跟主人的作業進度同步</h2>
-        </div>
-        <span class="status watch" id="syncUpdated">尚未更新</span>
-      </div>
-      <div class="live-layout">
-        <form class="progress-form" id="progressForm">
-          <label>
-            <span>目前任務</span>
-            <input id="progressTask" type="text" placeholder="例如：更新工作地圖網站">
-          </label>
-          <label>
-            <span>目前狀態</span>
-            <select id="progressStatus">
-              <option value="處理中">處理中</option>
-              <option value="已完成">已完成</option>
-              <option value="等待主人確認">等待主人確認</option>
-              <option value="卡住">卡住</option>
-            </select>
-          </label>
-          <label>
-            <span>完成百分比</span>
-            <input id="progressPercent" type="range" min="0" max="100" step="5">
-          </label>
-          <label>
-            <span>下一步 / 卡點</span>
-            <textarea id="progressNext" rows="4" placeholder="寫清楚下一步、交付物、網址、路徑或真實卡點"></textarea>
-          </label>
-          <div class="progress-actions">
-            <button type="submit">更新進度</button>
-            <button type="button" id="copyProgress">複製摘要</button>
-            <button type="button" id="exportProgress">匯出紀錄</button>
-          </div>
-        </form>
-        <div class="progress-panel" aria-live="polite">
-          <div class="progress-meter">
-            <div id="progressBar"></div>
-          </div>
-          <div class="progress-readout">
-            <b id="progressPercentText">0%</b>
-            <span id="progressStatusText">處理中</span>
-          </div>
-          <h3 id="progressTaskText">尚未設定任務</h3>
-          <p id="progressNextText">更新後會顯示最新作業進度。</p>
-          <div class="history-list" id="progressHistory"></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="map-section" aria-labelledby="mapTitle">
-      <div class="section-heading">
-        <p class="eyebrow">System Map</p>
-        <h2 id="mapTitle">目前工作系統藍圖</h2>
-      </div>
-      <div class="map-layout">
-        <canvas id="systemMap" width="1040" height="520" aria-label="工作系統關係圖"></canvas>
-        <div class="map-notes">
-          <h3>讀法</h3>
-          <p>中心是 Telegram 任務入口，往外連到技能、記憶、網站、圖片、影片、NotebookLM、部署與交接流程。</p>
-          <ul id="mapLegend"></ul>
-        </div>
-      </div>
-    </section>
-
-    <section class="toolbar" aria-label="搜尋與篩選">
-      <label class="search-box">
-        <span>搜尋</span>
-        <input id="searchInput" type="search" placeholder="輸入技能、任務、平台或關鍵字">
-      </label>
-      <div class="filter-tabs" id="filterTabs"></div>
-    </section>
-
     <section id="completed" class="content-section">
       <div class="section-heading">
-        <p class="eyebrow">Done</p>
-        <h2>已完成／已建立的工作</h2>
+        <div>
+          <p class="eyebrow">Completed</p>
+          <h2>這次已完成起來的項目</h2>
+        </div>
+        <span class="status done">已收斂</span>
       </div>
       <div class="item-grid" id="completedGrid"></div>
     </section>
 
-    <section id="in-progress" class="content-section">
+    <section id="sop-library" class="content-section">
       <div class="section-heading">
-        <p class="eyebrow">Open Loops</p>
-        <h2>做到一半／需要追蹤</h2>
+        <div>
+          <p class="eyebrow">SOP Library</p>
+          <h2>任務型 SOP 圖書館</h2>
+        </div>
+        <span class="status done">可點選</span>
       </div>
-      <div class="item-grid" id="inProgressGrid"></div>
-    </section>
-
-    <section id="roadmap" class="content-section">
-      <div class="section-heading">
-        <p class="eyebrow">Roadmap</p>
-        <h2>未來可以往哪邊規劃</h2>
-      </div>
-      <div class="roadmap-list" id="roadmapList"></div>
-    </section>
-
-    <section id="todos" class="content-section">
-      <div class="section-heading">
-        <p class="eyebrow">Next</p>
-        <h2>待辦清單</h2>
-      </div>
-      <div class="todo-board" id="todoBoard"></div>
-    </section>
-
-    <section id="memories" class="content-section">
-      <div class="section-heading">
-        <p class="eyebrow">Memory</p>
-        <h2>記憶主題整理</h2>
-      </div>
-      <div class="memory-grid" id="memoryGrid"></div>
-    </section>
-
-    <section class="content-section source-section">
-      <div class="section-heading">
-        <p class="eyebrow">Sources</p>
-        <h2>本次整理依據</h2>
-      </div>
-      <ul class="source-list">
-        <li>Codex 技能索引與網站部署規則</li>
-        <li>已安裝技能包摘要</li>
-        <li>已整理記憶主題摘要</li>
-        <li>最近任務與交付紀錄整理</li>
-        <li>無私密資訊的工作流程摘要</li>
-      </ul>
+      <div class="sop-grid" id="sopGrid"></div>
     </section>
 
     <section id="skills" class="content-section">
       <div class="section-heading">
-        <p class="eyebrow">Skills</p>
-        <h2>目前技能包與功能</h2>
+        <div>
+          <p class="eyebrow">Skills</p>
+          <h2>技能主力版與歷史版分流</h2>
+        </div>
+        <span class="status done">主力優先</span>
       </div>
       <div class="skill-summary" id="skillSummary"></div>
       <div class="table-shell">
         <table>
           <thead>
             <tr>
-              <th>技能包</th>
               <th>分類</th>
-              <th>功能</th>
-              <th>狀態</th>
-              <th>更新</th>
+              <th>主力技能</th>
+              <th>用途</th>
+              <th>分流規則</th>
             </tr>
           </thead>
           <tbody id="skillTable"></tbody>
         </table>
       </div>
     </section>
+
+    <section id="timeline" class="content-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Log</p>
+          <h2>更新紀錄</h2>
+        </div>
+        <span class="status watch">持續同步</span>
+      </div>
+      <div class="timeline" id="timelineList"></div>
+    </section>
+
+    <section id="safety" class="content-section source-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Safety</p>
+          <h2>安全邊界</h2>
+        </div>
+      </div>
+      <ul class="source-list">
+        <li>公開頁面只放整理後的任務狀態、技能分類、SOP 與可分享連結。</li>
+        <li>不放帳號密碼、API key、Telegram token、cookie、瀏覽器 profile、credential store、原始 log 或可見秘密截圖。</li>
+        <li>今日 token 顯示為本機可驗證統計；實際費用仍以後台帳單為準。</li>
+        <li>Telegram 來源任務若有檔案交付，仍必須回傳同一個來源對話；本網站只做總覽。</li>
+      </ul>
+    </section>
   </main>
 
   <footer>
-    <span>本網站不包含帳密、token、cookie、瀏覽器 profile 或原始私密紀錄。</span>
+    <span>資料來源：本機技能索引、記憶索引、Codex 心跳、Telegram 請求狀態與 token 統計快照。</span>
   </footer>
 
-  <script src="app.js?v=20260702-1743"></script>
+  <script src="app.js?v=20260702-1958"></script>
 </body>
 </html>

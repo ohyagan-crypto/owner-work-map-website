@@ -2,19 +2,25 @@
 
 建立日期：2026-07-02
 
-這是一個靜態網站，用來整理：
+這是一個公開工作總覽網站，用來集中查看：
 
-- 已完成／已建立的工作
-- 做到一半與需要追蹤的工作
-- 未來規劃方向
-- 待辦清單
-- 目前技能包與功能
-- 記憶主題整理
+- 目前 Codex / Telegram 運作狀態
+- 今日可驗證 token 使用量
+- 已完成的 Roadmap 項目
+- 任務型 SOP 圖書館
+- 技能主力版與歷史版分流
+- 安全邊界與交付規則
 
-## 使用方式
+## 更新狀態資料
 
-直接開啟 `index.html` 即可。
+從網站資料夾執行：
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\update-runtime-status.ps1
+```
+
+會從本機心跳、Telegram 請求狀態與 token 統計產生 `runtime-status.json`。
 
 ## 安全說明
 
-網站只包含整理後的工作摘要，不包含帳密、token、cookie、瀏覽器 profile、原始聊天紀錄或偵錯紀錄。
+網站只放整理後的總覽資料，不包含帳號密碼、API key、Telegram token、cookie、瀏覽器 profile、credential store、原始 log 或偵錯紀錄。
