@@ -153,6 +153,29 @@ if ($heartbeatAge -gt 120) {
     $headline = "超過 2 分鐘沒有讀到新心跳。"
     $blocker = "心跳過舊"
     $defaultNext = "需要檢查 Telegram bot 或 Codex 執行程序。"
+} elseif ($request -and ($request.status -in @("ready_to_send", "sending"))) {
+    $requestAge = if ($request.updated_at) {
+        [Math]::Max(0, [int]([DateTimeOffset]$now).ToUnixTimeSeconds() - [int64]$request.updated_at)
+    } else {
+        0
+    }
+    $statusKey = "ready"
+    if ($request.status -eq "sending") {
+        $statusLabel = "答案正在送出"
+        $headline = "答案已產出，正在送回 Telegram。"
+        $blocker = "等待 Telegram 送出確認"
+        $defaultNext = "若超過 10 秒仍未完成，會顯示為待回覆卡點。"
+    } elseif ($requestAge -gt 10) {
+        $statusLabel = "答案已產出待回覆"
+        $headline = "答案已產出，但 Telegram 回覆尚未確認完成。"
+        $blocker = "答案待送出"
+        $defaultNext = "檢查 Telegram 回覆送出狀態。"
+    } else {
+        $statusLabel = "答案已產出"
+        $headline = "答案已產出，正在準備回覆 Telegram。"
+        $blocker = "沒有卡點"
+        $defaultNext = "即將送出 Telegram 回覆。"
+    }
 } elseif ($request -and ($request.status -in @("queued", "running"))) {
     $requestAge = if ($request.updated_at) {
         [Math]::Max(0, [int]([DateTimeOffset]$now).ToUnixTimeSeconds() - [int64]$request.updated_at)
