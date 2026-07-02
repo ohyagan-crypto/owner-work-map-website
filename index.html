@@ -32,9 +32,62 @@
           <a href="#roadmap">未來規劃</a>
           <a href="#todos">待辦</a>
           <a href="#skills">技能包</a>
+          <a href="#live-progress">進度同步</a>
         </div>
       </div>
       <div class="stat-grid" id="statGrid"></div>
+    </section>
+
+    <section id="live-progress" class="content-section live-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Live Sync</p>
+          <h2>我跟主人的作業進度同步</h2>
+        </div>
+        <span class="status watch" id="syncUpdated">尚未更新</span>
+      </div>
+      <div class="live-layout">
+        <form class="progress-form" id="progressForm">
+          <label>
+            <span>目前任務</span>
+            <input id="progressTask" type="text" placeholder="例如：更新工作地圖網站">
+          </label>
+          <label>
+            <span>目前狀態</span>
+            <select id="progressStatus">
+              <option value="處理中">處理中</option>
+              <option value="已完成">已完成</option>
+              <option value="等待主人確認">等待主人確認</option>
+              <option value="卡住">卡住</option>
+            </select>
+          </label>
+          <label>
+            <span>完成百分比</span>
+            <input id="progressPercent" type="range" min="0" max="100" step="5">
+          </label>
+          <label>
+            <span>下一步 / 卡點</span>
+            <textarea id="progressNext" rows="4" placeholder="寫清楚下一步、交付物、網址、路徑或真實卡點"></textarea>
+          </label>
+          <div class="progress-actions">
+            <button type="submit">更新進度</button>
+            <button type="button" id="copyProgress">複製摘要</button>
+            <button type="button" id="exportProgress">匯出紀錄</button>
+          </div>
+        </form>
+        <div class="progress-panel" aria-live="polite">
+          <div class="progress-meter">
+            <div id="progressBar"></div>
+          </div>
+          <div class="progress-readout">
+            <b id="progressPercentText">0%</b>
+            <span id="progressStatusText">處理中</span>
+          </div>
+          <h3 id="progressTaskText">尚未設定任務</h3>
+          <p id="progressNextText">更新後會顯示最新作業進度。</p>
+          <div class="history-list" id="progressHistory"></div>
+        </div>
+      </div>
     </section>
 
     <section class="map-section" aria-labelledby="mapTitle">

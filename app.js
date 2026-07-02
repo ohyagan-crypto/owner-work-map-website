@@ -501,6 +501,119 @@ function renderAll() {
   });
 }
 
+const progressStoreKey = "ownerWorkProgress:v1";
+
+function defaultProgress() {
+  return {
+    task: "更新工作地圖網站：加入即時作業進度同步",
+    status: "處理中",
+    percent: 80,
+    next: "已新增進度同步面板，正在完成部署與公開頁面確認。",
+    updatedAt: new Date().toISOString(),
+    history: []
+  };
+}
+
+function loadProgress() {
+  try {
+    const saved = localStorage.getItem(progressStoreKey);
+    return saved ? { ...defaultProgress(), ...JSON.parse(saved) } : defaultProgress();
+  } catch {
+    return defaultProgress();
+  }
+}
+
+function saveProgress(progress) {
+  localStorage.setItem(progressStoreKey, JSON.stringify(progress));
+}
+
+function formatDateTime(value) {
+  return new Intl.DateTimeFormat("zh-Hant", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit"
+  }).format(new Date(value));
+}
+
+function progressSummary(progress) {
+  return [
+    `目前任務：${progress.task}`,
+    `狀態：${progress.status}`,
+    `完成度：${progress.percent}%`,
+    `下一步 / 卡點：${progress.next}`,
+    `更新時間：${formatDateTime(progress.updatedAt)}`
+  ].join("\n");
+}
+
+function renderProgress(progress) {
+  $("#progressTask").value = progress.task;
+  $("#progressStatus").value = progress.status;
+  $("#progressPercent").value = progress.percent;
+  $("#progressNext").value = progress.next;
+  $("#progressBar").style.width = `${progress.percent}%`;
+  $("#progressPercentText").textContent = `${progress.percent}%`;
+  $("#progressStatusText").textContent = progress.status;
+  $("#progressTaskText").textContent = progress.task;
+  $("#progressNextText").textContent = progress.next;
+  $("#syncUpdated").textContent = `更新：${formatDateTime(progress.updatedAt)}`;
+
+  $("#progressHistory").innerHTML = (progress.history || []).slice(0, 5).map((item) => `
+    <div class="history-item">
+      <b>${item.status} · ${item.percent}%</b>
+      <span>${formatDateTime(item.updatedAt)}</span>
+      <p>${item.task}</p>
+    </div>
+  `).join("");
+}
+
+function downloadProgress(progress) {
+  const blob = new Blob([JSON.stringify(progress, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `owner-work-progress-${new Date().toISOString().slice(0, 10)}.json`;
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
+function initProgressSync() {
+  let progress = loadProgress();
+  renderProgress(progress);
+
+  $("#progressForm").addEventListener("submit", (event) => {
+    event.preventDefault();
+    const previous = {
+      task: progress.task,
+      status: progress.status,
+      percent: progress.percent,
+      updatedAt: progress.updatedAt
+    };
+    progress = {
+      task: $("#progressTask").value.trim() || "未命名任務",
+      status: $("#progressStatus").value,
+      percent: Number($("#progressPercent").value),
+      next: $("#progressNext").value.trim() || "尚未填寫下一步。",
+      updatedAt: new Date().toISOString(),
+      history: [previous, ...(progress.history || [])].slice(0, 20)
+    };
+    saveProgress(progress);
+    renderProgress(progress);
+  });
+
+  $("#copyProgress").addEventListener("click", async () => {
+    await navigator.clipboard.writeText(progressSummary(progress));
+    $("#copyProgress").textContent = "已複製";
+    window.setTimeout(() => {
+      $("#copyProgress").textContent = "複製摘要";
+    }, 1200);
+  });
+
+  $("#exportProgress").addEventListener("click", () => downloadProgress(progress));
+}
+
 $("#searchInput").addEventListener("input", renderAll);
 renderFilters();
 renderAll();
+initProgressSync();
