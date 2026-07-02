@@ -340,6 +340,57 @@ canvas {
   gap: 6px;
 }
 
+.card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.card-action,
+.prompt-copy button {
+  min-height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 12px;
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.card-action:first-child {
+  border-color: rgba(19, 138, 99, 0.36);
+  background: rgba(19, 138, 99, 0.08);
+  color: var(--green);
+}
+
+.prompt-copy {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: start;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+  background: #f8faf9;
+}
+
+.prompt-copy span {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--green);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.prompt-copy p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
 .status.done {
   color: var(--green);
   border-color: rgba(19, 138, 99, 0.28);
@@ -654,5 +705,9 @@ footer {
 
   .toolbar {
     position: static;
+  }
+
+  .prompt-copy {
+    grid-template-columns: 1fr;
   }
 }

@@ -92,7 +92,23 @@ const completedWork = [
   }
 ];
 
+const progressTrackingUrl = "https://ohyagan-crypto.github.io/owner-work-map-website/#live-progress";
+const ownerProgressPrompt = "請即時同步我跟你的作業進度：處理任務時要把目前任務、完成百分比、下一步或卡點、交付網址/本機路徑更新到公開工作地圖，完成後回覆公開網址；Telegram 回覆要先講結論，再補原因、具體做法與必要注意事項，不要只說收到或處理中。";
+const telegramProgressShareUrl = `https://t.me/share/url?url=${encodeURIComponent(progressTrackingUrl)}&text=${encodeURIComponent(ownerProgressPrompt)}`;
+
 const inProgress = [
+  {
+    title: "即時同步我跟你的作業進度",
+    category: "telegram",
+    status: "watch",
+    summary: "這個追蹤點用來固定提醒：網站與 Telegram 要同步顯示目前任務、完成度、下一步、交付網址或真實卡點。",
+    points: ["點「打開 Telegram」可帶著預寫文字回到 Telegram", "每次更新 progress.json 與公開頁面後再回報", "避免只回收到、處理中或沒有答案的等待訊息"],
+    prompt: ownerProgressPrompt,
+    actions: [
+      { label: "打開 Telegram", url: telegramProgressShareUrl, external: true },
+      { label: "同步面板", url: "#live-progress" }
+    ]
+  },
   {
     title: "完整複製 Codex / OpenClaw 的無私密交接包",
     category: "handoff",
@@ -290,6 +306,15 @@ let activeFilter = "all";
 
 const $ = (selector) => document.querySelector(selector);
 
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
 function normalize(text) {
   return String(text).toLowerCase();
 }
@@ -318,12 +343,13 @@ function renderStats() {
 
 function renderCards(target, items) {
   const query = $("#searchInput").value.trim();
+  const container = $(target);
   const filtered = items.filter((item) => {
     const filterOk = activeFilter === "all" || item.category === activeFilter;
     return filterOk && matchesSearch(item, query);
   });
 
-  $(target).innerHTML = filtered.map((item) => `
+  container.innerHTML = filtered.map((item) => `
     <article class="card" data-category="${item.category}">
       <div class="card-top">
         <h3>${item.title}</h3>
@@ -331,9 +357,39 @@ function renderCards(target, items) {
       </div>
       <p>${item.summary}</p>
       <ul>${item.points.map((point) => `<li>${point}</li>`).join("")}</ul>
+      ${item.actions ? `
+        <div class="card-actions">
+          ${item.actions.map((action) => `
+            <a class="card-action" href="${action.url}" ${action.external ? 'target="_blank" rel="noopener"' : ""}>${action.label}</a>
+          `).join("")}
+        </div>
+      ` : ""}
+      ${item.prompt ? `
+        <div class="prompt-copy">
+          <div>
+            <span>給 Codex 的文字</span>
+            <p>${escapeHtml(item.prompt)}</p>
+          </div>
+          <button type="button" class="copy-card-prompt" data-prompt="${escapeHtml(item.prompt)}">複製</button>
+        </div>
+      ` : ""}
       <div class="tag-row"><span class="tag">${categoryLabels[item.category] || item.category}</span></div>
     </article>
   `).join("") || `<p class="empty">沒有符合搜尋條件的項目。</p>`;
+
+  container.querySelectorAll(".copy-card-prompt").forEach((button) => {
+    button.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(button.dataset.prompt || "");
+        button.textContent = "已複製";
+      } catch {
+        button.textContent = "請手動複製";
+      }
+      window.setTimeout(() => {
+        button.textContent = "複製";
+      }, 1400);
+    });
+  });
 }
 
 function renderRoadmap() {
