@@ -113,8 +113,13 @@ main {
 }
 
 .status-dashboard {
-  padding: 22px;
-  border-color: rgba(19, 138, 99, 0.3);
+  position: relative;
+  overflow: hidden;
+  padding: 18px;
+  border-color: rgba(31, 111, 235, 0.24);
+  background:
+    linear-gradient(135deg, rgba(31, 111, 235, 0.1), rgba(19, 138, 99, 0.08) 42%, rgba(255, 255, 255, 0.98) 72%),
+    var(--panel);
 }
 
 .dashboard-head,
@@ -130,6 +135,17 @@ main {
 .section-heading h2 {
   font-size: clamp(22px, 3vw, 32px);
   line-height: 1.2;
+}
+
+.dashboard-head {
+  position: relative;
+  z-index: 1;
+  align-items: center;
+  padding: 4px 4px 2px;
+}
+
+.dashboard-head h2 {
+  font-size: clamp(24px, 3vw, 36px);
 }
 
 .state-pill[data-state="running"],
@@ -157,8 +173,10 @@ main {
 
 .dashboard-grid {
   display: grid;
-  grid-template-columns: 1.15fr 0.9fr 0.95fr 0.95fr;
-  gap: 12px;
+  grid-template-columns: 1.35fr 1fr 1.05fr 1fr;
+  gap: 10px;
+  position: relative;
+  z-index: 1;
 }
 
 .status-card,
@@ -172,29 +190,40 @@ main {
 }
 
 .status-card {
-  min-height: 150px;
+  min-height: 116px;
   display: grid;
   align-content: space-between;
-  gap: 12px;
-  padding: 16px;
+  gap: 8px;
+  padding: 14px 15px;
+  box-shadow: 0 10px 22px rgba(32, 36, 38, 0.06);
 }
 
 .status-card span {
   color: var(--muted);
   font-weight: 800;
+  font-size: 13px;
 }
 
 .status-card strong {
-  font-size: clamp(26px, 4vw, 42px);
+  overflow-wrap: anywhere;
+  font-size: clamp(22px, 2.8vw, 34px);
   line-height: 1.05;
 }
 
 .status-card p {
   color: var(--muted);
+  font-size: 14px;
 }
 
 .primary-status {
-  background: linear-gradient(180deg, #ffffff 0%, #f2fbf6 100%);
+  color: #fff;
+  border-color: rgba(19, 138, 99, 0.3);
+  background: linear-gradient(135deg, #12694f 0%, #1f6feb 100%);
+}
+
+.primary-status span,
+.primary-status p {
+  color: rgba(255, 255, 255, 0.84);
 }
 
 .dashboard-footer {
@@ -202,7 +231,13 @@ main {
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 12px;
   align-items: center;
-  margin-top: 14px;
+  position: relative;
+  z-index: 1;
+  margin-top: 12px;
+  padding: 10px;
+  border: 1px solid rgba(216, 223, 216, 0.86);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.7);
 }
 
 .mini-list {
@@ -219,7 +254,7 @@ main {
   border-radius: 8px;
   padding: 6px 10px;
   color: var(--muted);
-  background: #f8faf8;
+  background: rgba(248, 250, 248, 0.9);
   font-size: 13px;
   font-weight: 750;
 }
@@ -240,6 +275,9 @@ button,
 
 #refreshStatus {
   white-space: nowrap;
+  border-color: rgba(31, 111, 235, 0.28);
+  background: rgba(31, 111, 235, 0.08);
+  color: var(--blue);
 }
 
 .overview {
@@ -456,9 +494,12 @@ footer {
 }
 
 @media (max-width: 1060px) {
-  .dashboard-grid,
   .overview {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .item-grid,
