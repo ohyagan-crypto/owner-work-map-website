@@ -527,6 +527,16 @@ function saveProgress(progress) {
   localStorage.setItem(progressStoreKey, JSON.stringify(progress));
 }
 
+async function fetchSharedProgress() {
+  try {
+    const response = await fetch(`progress.json?ts=${Date.now()}`, { cache: "no-store" });
+    if (!response.ok) return null;
+    return await response.json();
+  } catch {
+    return null;
+  }
+}
+
 function formatDateTime(value) {
   return new Intl.DateTimeFormat("zh-Hant", {
     year: "numeric",
@@ -578,9 +588,14 @@ function downloadProgress(progress) {
   URL.revokeObjectURL(url);
 }
 
-function initProgressSync() {
+async function initProgressSync() {
   let progress = loadProgress();
   renderProgress(progress);
+  const shared = await fetchSharedProgress();
+  if (shared) {
+    progress = { ...progress, ...shared };
+    renderProgress(progress);
+  }
 
   $("#progressForm").addEventListener("submit", (event) => {
     event.preventDefault();
@@ -611,6 +626,15 @@ function initProgressSync() {
   });
 
   $("#exportProgress").addEventListener("click", () => downloadProgress(progress));
+
+  window.setInterval(async () => {
+    const latest = await fetchSharedProgress();
+    if (!latest) return;
+    if (new Date(latest.updatedAt).getTime() > new Date(progress.updatedAt).getTime()) {
+      progress = { ...progress, ...latest };
+      renderProgress(progress);
+    }
+  }, 30000);
 }
 
 $("#searchInput").addEventListener("input", renderAll);
