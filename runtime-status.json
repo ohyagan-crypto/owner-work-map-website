@@ -1,21 +1,24 @@
 {
     "statusKey":  "running",
     "statusLabel":  "運作中",
-    "headline":  "總控台儀表盤更新已完成：手機版改成橫向濃縮顯示，重新整理狀態按鈕已有載入與結果提示。",
+    "headline":  "讀取照片",
     "blocker":  "沒有卡點",
-    "nextAction":  "可直接開公開網址查看最新版；若快照時間未變，代表公開狀態資料尚未產生新的同步版本。",
-    "updatedAt":  "2026-07-02T20:11:26+08:00",
-    "refreshSeconds":  30,
+    "nextAction":  "完成後更新交付結果、網址、檔案路徑或明確卡點。",
+    "updatedAt":  "2026-07-02T20:57:43+08:00",
+    "checkedAt":  "2026-07-02T20:57:43+08:00",
+    "sourceType":  "local-generator",
+    "sourceLabel":  "本機即時狀態產生器",
+    "refreshSeconds":  5,
     "token":  {
-                  "totalTokens":  39143706,
-                  "taskCount":  34,
+                  "totalTokens":  42068936,
+                  "taskCount":  35,
                   "source":  "本機 Codex 執行緒紀錄"
               },
     "heartbeat":  {
-                      "ageSeconds":  5,
+                      "ageSeconds":  12,
                       "activeRequests":  1,
-                      "model":  null,
-                      "reasoningEffort":  null
+                      "model":  "gpt-5.5",
+                      "reasoningEffort":  "xhigh"
                   },
     "deliverables":  [
                          "完整複製包：full_codex_clone_20260702_191206.zip",

@@ -1,4 +1,5 @@
 const publicUrl = "https://ohyagan-crypto.github.io/owner-work-map-website/";
+const liveStatusEndpoint = (window.OWNER_LIVE_STATUS_ENDPOINT || "").replace(/\/$/, "");
 
 const stats = [
   { label: "已安裝技能", value: "80", note: "含主力、備份、停用與舊別名" },
@@ -158,7 +159,8 @@ function formatDateTime(value) {
     month: "2-digit",
     day: "2-digit",
     hour: "2-digit",
-    minute: "2-digit"
+    minute: "2-digit",
+    second: "2-digit"
   }).format(date);
 }
 
@@ -286,6 +288,115 @@ async function loadRuntimeStatus(options = {}) {
   }
 }
 
+async function fetchStatusJson(url) {
+  const response = await fetch(url, { cache: "no-store" });
+  if (!response.ok) throw new Error("status fetch failed");
+  return response.json();
+}
+
+async function fetchLiveRuntimeStatus() {
+  if (!liveStatusEndpoint) return null;
+  const data = await fetchStatusJson(`${liveStatusEndpoint}/api/status?ts=${Date.now()}`);
+  return {
+    ...data,
+    sourceType: data.sourceType || "live-api",
+    sourceLabel: data.sourceLabel || "本機即時狀態 API"
+  };
+}
+
+async function fetchSnapshotRuntimeStatus() {
+  const data = await fetchStatusJson(`runtime-status.json?ts=${Date.now()}`);
+  return {
+    ...data,
+    sourceType: "snapshot",
+    sourceLabel: "GitHub Pages 公開快照"
+  };
+}
+
+function runtimeSignature(status) {
+  return [
+    status.sourceType || "",
+    status.updatedAt || "",
+    status.checkedAt || "",
+    status.statusKey || "",
+    status.statusLabel || ""
+  ].join("|");
+}
+
+function renderRuntimeStatus(data) {
+  const status = { ...fallbackRuntimeStatus, ...data };
+  const token = { ...fallbackRuntimeStatus.token, ...(status.token || {}) };
+  const statePill = $("#statePill");
+  const deliverables = status.deliverables || [];
+  const sourceLabel = status.sourceLabel || (status.sourceType === "live-api" ? "本機即時狀態 API" : "GitHub Pages 公開快照");
+  const displayTime = status.checkedAt || status.updatedAt;
+
+  statePill.dataset.state = status.statusKey || "watch";
+  statePill.textContent = status.statusLabel || "資料待同步";
+  $("#statusLabel").textContent = status.statusLabel || "資料待同步";
+  $("#statusHeadline").textContent = status.headline || "目前沒有可顯示的狀態。";
+  $("#todayTokens").textContent = formatNumber(token.totalTokens);
+  $("#tokenSource").textContent = token.taskCount
+    ? `${token.source}，任務數 ${formatNumber(token.taskCount)}。`
+    : token.source || "未取得 token 統計來源。";
+  $("#blockerText").textContent = status.blocker || "沒有卡點";
+  $("#nextAction").textContent = status.nextAction || "維持同步。";
+  $("#updatedAt").textContent = formatDateTime(displayTime);
+  $("#refreshNote").textContent = `每 ${status.refreshSeconds || 5} 秒重新讀取，來源：${sourceLabel}。`;
+  $("#deliverableList").innerHTML = deliverables.length
+    ? deliverables.map((item) => `<span>${item}</span>`).join("")
+    : "<span>目前沒有新的交付物</span>";
+}
+
+async function loadRuntimeStatus(options = {}) {
+  const isManual = Boolean(options.manual);
+  const previousSignature = lastSnapshotUpdatedAt;
+  if (isManual) {
+    setRefreshButtonLoading(true);
+    setRefreshFeedback("正在讀取本機即時狀態...", "idle");
+  }
+
+  try {
+    let data = null;
+    let liveError = null;
+    try {
+      data = await fetchLiveRuntimeStatus();
+    } catch (error) {
+      liveError = error;
+    }
+
+    if (!data) {
+      data = await fetchSnapshotRuntimeStatus();
+      if (liveError) data.liveUnavailable = true;
+    }
+
+    renderRuntimeStatus(data);
+    const signature = runtimeSignature(data);
+    const formatted = formatDateTime(data.checkedAt || data.updatedAt);
+
+    if (isManual) {
+      if (data.sourceType === "live-api") {
+        setRefreshFeedback(`已即時同步到 ${formatted}。`, "success");
+      } else {
+        const state = previousSignature && previousSignature === signature ? "stale" : "success";
+        setRefreshFeedback(`即時 API 目前未連上，已改讀公開快照：${formatted}。`, state);
+      }
+    } else if (!previousSignature) {
+      const label = data.sourceType === "live-api" ? "即時同步" : "公開快照";
+      setRefreshFeedback(`目前${label}：${formatted}。`, "idle");
+    }
+
+    lastSnapshotUpdatedAt = signature;
+  } catch {
+    renderRuntimeStatus(fallbackRuntimeStatus);
+    if (isManual) {
+      setRefreshFeedback("讀取失敗，已顯示備用狀態。", "error");
+    }
+  } finally {
+    if (isManual) setRefreshButtonLoading(false);
+  }
+}
+
 function init() {
   renderStats();
   renderCompleted();
@@ -294,7 +405,7 @@ function init() {
   renderTimeline();
   loadRuntimeStatus();
   $("#refreshStatus").addEventListener("click", () => loadRuntimeStatus({ manual: true }));
-  window.setInterval(loadRuntimeStatus, 30000);
+  window.setInterval(loadRuntimeStatus, 5000);
 }
 
 init();

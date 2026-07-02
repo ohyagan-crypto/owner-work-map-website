@@ -172,6 +172,7 @@ main {
 
 .state-pill[data-state="running"],
 .state-pill[data-state="standby"],
+.state-pill[data-state="completed"],
 .status.done {
   color: var(--green);
   border-color: rgba(19, 138, 99, 0.28);
@@ -187,6 +188,7 @@ main {
 }
 
 .state-pill[data-state="watch"],
+.state-pill[data-state="ready"],
 .status.watch {
   color: var(--amber);
   border-color: rgba(169, 111, 0, 0.3);

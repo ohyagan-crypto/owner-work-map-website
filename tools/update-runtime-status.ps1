@@ -144,10 +144,10 @@ if ($heartbeat -and $heartbeat.timestamp) {
     $heartbeatAge = 999999
 }
 
-if ($heartbeatAge -gt 600) {
+if ($heartbeatAge -gt 120) {
     $statusKey = "disconnected"
     $statusLabel = "疑似斷線"
-    $headline = "超過 10 分鐘沒有讀到新心跳。"
+    $headline = "超過 2 分鐘沒有讀到新心跳。"
     $blocker = "心跳過舊"
     $defaultNext = "需要檢查 Telegram bot 或 Codex 執行程序。"
 } elseif ($request -and ($request.status -in @("queued", "running"))) {
@@ -156,7 +156,14 @@ if ($heartbeatAge -gt 600) {
     } else {
         0
     }
-    if ($requestAge -gt 1800) {
+    $heartbeatPhase = if ($heartbeat -and $heartbeat.PSObject.Properties.Item("phase")) { [string]$heartbeat.phase } else { "" }
+    if ($heartbeatPhase -eq "codex_done" -and $requestAge -gt 10) {
+        $statusKey = "ready"
+        $statusLabel = "答案已產出待回覆"
+        $headline = "Codex 已產出答案，但 Telegram 任務狀態尚未標記完成。"
+        $blocker = "等待回覆送出確認"
+        $defaultNext = "檢查 Telegram 回覆送出與任務完成標記。"
+    } elseif ($requestAge -gt 1800) {
         $statusKey = "blocked"
         $statusLabel = "疑似卡點"
         $headline = "有任務維持執行超過 30 分鐘，需要檢查是否真的卡住。"
@@ -175,6 +182,19 @@ if ($heartbeatAge -gt 600) {
     $headline = "最近任務沒有正常完成，需要處理卡點。"
     $blocker = "最近任務異常"
     $defaultNext = "查看最近任務，修復後再回報。"
+} elseif ($request -and $request.status -eq "completed") {
+    $completedAge = if ($request.updated_at) {
+        [Math]::Max(0, [int]([DateTimeOffset]$now).ToUnixTimeSeconds() - [int64]$request.updated_at)
+    } else {
+        0
+    }
+    if ($completedAge -le 600) {
+        $statusKey = "completed"
+        $statusLabel = "已回覆完成"
+        $headline = "最近任務已產出答案並完成 Telegram 回覆。"
+        $blocker = "沒有卡點"
+        $defaultNext = "可直接查看 Telegram 回覆結果。"
+    }
 }
 
 if ($CurrentTask.Trim()) {
@@ -194,7 +214,10 @@ $payload = [ordered]@{
     blocker = $blocker
     nextAction = $NextAction.Trim()
     updatedAt = $now.ToString("yyyy-MM-ddTHH:mm:sszzz")
-    refreshSeconds = 30
+    checkedAt = $now.ToString("yyyy-MM-ddTHH:mm:sszzz")
+    sourceType = "local-generator"
+    sourceLabel = "本機即時狀態產生器"
+    refreshSeconds = 5
     token = [ordered]@{
         totalTokens = $token.totalTokens
         taskCount = $token.taskCount
