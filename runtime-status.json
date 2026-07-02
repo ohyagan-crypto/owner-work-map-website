@@ -1,18 +1,18 @@
 {
     "statusKey":  "running",
     "statusLabel":  "運作中",
-    "headline":  "本機驗證已通過，正在推送工作總控台到 GitHub Pages。",
+    "headline":  "公開部署已完成，正在回報結果給 Telegram。",
     "blocker":  "沒有卡點",
-    "nextAction":  "推送完成後回報公開網址與本機預覽網址。",
-    "updatedAt":  "2026-07-02T19:56:41+08:00",
+    "nextAction":  "可直接開公開網址查看；後續需要刷新狀態時，重新執行 tools/update-runtime-status.ps1。",
+    "updatedAt":  "2026-07-02T19:58:18+08:00",
     "refreshSeconds":  30,
     "token":  {
-                  "totalTokens":  35131919,
+                  "totalTokens":  36103779,
                   "taskCount":  32,
                   "source":  "本機 Codex 執行緒紀錄"
               },
     "heartbeat":  {
-                      "ageSeconds":  8,
+                      "ageSeconds":  4,
                       "activeRequests":  1,
                       "model":  null,
                       "reasoningEffort":  null
