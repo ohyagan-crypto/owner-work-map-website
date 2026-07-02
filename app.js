@@ -341,15 +341,45 @@ function renderStats() {
   `).join("");
 }
 
+const trackingSectionUrl = "https://ohyagan-crypto.github.io/owner-work-map-website/#in-progress";
+
+function trackingPromptFor(item) {
+  if (item.prompt) return item.prompt;
+  const points = item.points && item.points.length ? `\n重點：${item.points.join("；")}` : "";
+  return `請處理這個追蹤點：${item.title}\n目前摘要：${item.summary}${points}\n請先直接回結論，再補原因、具體做法與必要注意事項；若需要更新網站，請同步更新公開工作地圖與 progress.json，完成後回覆公開網址或明確卡點。`;
+}
+
+function trackingActionsFor(item, prompt) {
+  if (item.actions) return item.actions;
+  const relatedSections = {
+    telegram: "#live-progress",
+    website: "#roadmap",
+    handoff: "#skills",
+    maintenance: "#skills",
+    automation: "#skills",
+    image: "#skills"
+  };
+  const section = relatedSections[item.category] || "#in-progress";
+  const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(trackingSectionUrl)}&text=${encodeURIComponent(prompt)}`;
+  return [
+    { label: "打開 Telegram", url: shareUrl, external: true },
+    { label: "相關區塊", url: section }
+  ];
+}
+
 function renderCards(target, items) {
   const query = $("#searchInput").value.trim();
   const container = $(target);
+  const isTrackingList = target === "#inProgressGrid";
   const filtered = items.filter((item) => {
     const filterOk = activeFilter === "all" || item.category === activeFilter;
     return filterOk && matchesSearch(item, query);
   });
 
-  container.innerHTML = filtered.map((item) => `
+  container.innerHTML = filtered.map((item) => {
+    const cardPrompt = isTrackingList ? trackingPromptFor(item) : item.prompt;
+    const cardActions = isTrackingList ? trackingActionsFor(item, cardPrompt) : item.actions;
+    return `
     <article class="card" data-category="${item.category}">
       <div class="card-top">
         <h3>${item.title}</h3>
@@ -357,25 +387,26 @@ function renderCards(target, items) {
       </div>
       <p>${item.summary}</p>
       <ul>${item.points.map((point) => `<li>${point}</li>`).join("")}</ul>
-      ${item.actions ? `
+      ${cardActions ? `
         <div class="card-actions">
-          ${item.actions.map((action) => `
+          ${cardActions.map((action) => `
             <a class="card-action" href="${action.url}" ${action.external ? 'target="_blank" rel="noopener"' : ""}>${action.label}</a>
           `).join("")}
         </div>
       ` : ""}
-      ${item.prompt ? `
+      ${cardPrompt ? `
         <div class="prompt-copy">
           <div>
             <span>給 Codex 的文字</span>
-            <p>${escapeHtml(item.prompt)}</p>
+            <p>${escapeHtml(cardPrompt)}</p>
           </div>
-          <button type="button" class="copy-card-prompt" data-prompt="${escapeHtml(item.prompt)}">複製</button>
+          <button type="button" class="copy-card-prompt" data-prompt="${escapeHtml(cardPrompt)}">複製</button>
         </div>
       ` : ""}
       <div class="tag-row"><span class="tag">${categoryLabels[item.category] || item.category}</span></div>
     </article>
-  `).join("") || `<p class="empty">沒有符合搜尋條件的項目。</p>`;
+    `;
+  }).join("") || `<p class="empty">沒有符合搜尋條件的項目。</p>`;
 
   container.querySelectorAll(".copy-card-prompt").forEach((button) => {
     button.addEventListener("click", async () => {
