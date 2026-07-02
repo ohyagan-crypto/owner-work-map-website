@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>主人工作總控台</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">Codex / OpenClaw / Telegram 工作地圖</p>
+      <h1>主人工作總控台</h1>
+    </div>
+    <div class="topbar-meta">
+      <span>整理日 2026-07-02</span>
+      <span>公開快照</span>
+    </div>
+  </header>
+
+  <main>
+    <section class="overview" id="overview">
+      <div class="overview-copy">
+        <h2>把做過的事、做到一半的事、未來規劃、待辦與技能包集中管理</h2>
+        <p>
+          這個網站根據本機技能、記憶與最近任務整理，目的不是展示，而是讓主人快速判斷現在能做什麼、哪裡還要補、哪些技能可以交給其他 Codex 或 OpenClaw 學。
+        </p>
+        <div class="quick-actions" aria-label="主要區塊">
+          <a href="#completed">已完成</a>
+          <a href="#in-progress">做到一半</a>
+          <a href="#roadmap">未來規劃</a>
+          <a href="#todos">待辦</a>
+          <a href="#skills">技能包</a>
+        </div>
+      </div>
+      <div class="stat-grid" id="statGrid"></div>
+    </section>
+
+    <section class="map-section" aria-labelledby="mapTitle">
+      <div class="section-heading">
+        <p class="eyebrow">System Map</p>
+        <h2 id="mapTitle">目前工作系統藍圖</h2>
+      </div>
+      <div class="map-layout">
+        <canvas id="systemMap" width="1040" height="520" aria-label="工作系統關係圖"></canvas>
+        <div class="map-notes">
+          <h3>讀法</h3>
+          <p>中心是 Telegram 任務入口，往外連到技能、記憶、網站、圖片、影片、NotebookLM、部署與交接流程。</p>
+          <ul id="mapLegend"></ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="toolbar" aria-label="搜尋與篩選">
+      <label class="search-box">
+        <span>搜尋</span>
+        <input id="searchInput" type="search" placeholder="輸入技能、任務、平台或關鍵字">
+      </label>
+      <div class="filter-tabs" id="filterTabs"></div>
+    </section>
+
+    <section id="completed" class="content-section">
+      <div class="section-heading">
+        <p class="eyebrow">Done</p>
+        <h2>已完成／已建立的工作</h2>
+      </div>
+      <div class="item-grid" id="completedGrid"></div>
+    </section>
+
+    <section id="in-progress" class="content-section">
+      <div class="section-heading">
+        <p class="eyebrow">Open Loops</p>
+        <h2>做到一半／需要追蹤</h2>
+      </div>
+      <div class="item-grid" id="inProgressGrid"></div>
+    </section>
+
+    <section id="roadmap" class="content-section">
+      <div class="section-heading">
+        <p class="eyebrow">Roadmap</p>
+        <h2>未來可以往哪邊規劃</h2>
+      </div>
+      <div class="roadmap-list" id="roadmapList"></div>
+    </section>
+
+    <section id="todos" class="content-section">
+      <div class="section-heading">
+        <p class="eyebrow">Next</p>
+        <h2>待辦清單</h2>
+      </div>
+      <div class="todo-board" id="todoBoard"></div>
+    </section>
+
+    <section id="skills" class="content-section">
+      <div class="section-heading">
+        <p class="eyebrow">Skills</p>
+        <h2>目前技能包與功能</h2>
+      </div>
+      <div class="skill-summary" id="skillSummary"></div>
+      <div class="table-shell">
+        <table>
+          <thead>
+            <tr>
+              <th>技能包</th>
+              <th>分類</th>
+              <th>功能</th>
+              <th>狀態</th>
+              <th>更新</th>
+            </tr>
+          </thead>
+          <tbody id="skillTable"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="memories" class="content-section">
+      <div class="section-heading">
+        <p class="eyebrow">Memory</p>
+        <h2>記憶主題整理</h2>
+      </div>
+      <div class="memory-grid" id="memoryGrid"></div>
+    </section>
+
+    <section class="content-section source-section">
+      <div class="section-heading">
+        <p class="eyebrow">Sources</p>
+        <h2>本次整理依據</h2>
+      </div>
+      <ul class="source-list">
+        <li>Codex 技能索引與網站部署規則</li>
+        <li>已安裝技能包摘要</li>
+        <li>已整理記憶主題摘要</li>
+        <li>最近任務與交付紀錄整理</li>
+        <li>無私密資訊的工作流程摘要</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <span>本網站不包含帳密、token、cookie、瀏覽器 profile 或原始私密紀錄。</span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
