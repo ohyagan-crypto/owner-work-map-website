@@ -3,7 +3,8 @@
     [string]$BotRoot = "C:\Users\max\tg-openai-bot",
     [string]$Date = (Get-Date).ToString("yyyy-MM-dd"),
     [string]$CurrentTask = "",
-    [string]$NextAction = ""
+    [string]$NextAction = "",
+    [string]$OutputPath = ""
 )
 
 Set-StrictMode -Version Latest
@@ -17,7 +18,9 @@ $HeartbeatPath = Join-Path $BotRoot "codex_bot_heartbeat.json"
 $RequestStatusPath = Join-Path $BotRoot "telegram_request_status.json"
 $UsagePath = Join-Path $BotRoot "codex_token_usage.jsonl"
 $StateDb = "C:\Users\max\.codex\state_5.sqlite"
-$OutputPath = Join-Path $SiteRoot "runtime-status.json"
+if (-not $OutputPath.Trim()) {
+    $OutputPath = Join-Path $SiteRoot "runtime-status.json"
+}
 
 function Read-JsonFile {
     param([string]$Path)

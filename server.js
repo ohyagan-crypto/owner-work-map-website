@@ -6,7 +6,7 @@ const { execFile } = require("child_process");
 const root = __dirname;
 const port = Number(process.env.PORT || 4179);
 const statusScript = path.join(root, "tools", "update-runtime-status.ps1");
-const runtimeStatusPath = path.join(root, "runtime-status.json");
+const liveRuntimeStatusPath = path.join(process.env.TEMP || root, "owner-work-map-live-runtime-status.json");
 
 const types = {
   ".html": "text/html; charset=utf-8",
@@ -37,7 +37,9 @@ function refreshRuntimeStatus() {
         "-File",
         statusScript,
         "-SiteRoot",
-        root
+        root,
+        "-OutputPath",
+        liveRuntimeStatusPath
       ],
       {
         windowsHide: true,
@@ -58,7 +60,7 @@ function refreshRuntimeStatus() {
 async function handleStatusApi(res) {
   try {
     await refreshRuntimeStatus();
-    const status = JSON.parse(fs.readFileSync(runtimeStatusPath, "utf8"));
+    const status = JSON.parse(fs.readFileSync(liveRuntimeStatusPath, "utf8"));
     const payload = {
       ...status,
       sourceType: "live-api",
