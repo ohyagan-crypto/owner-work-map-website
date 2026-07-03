@@ -18,6 +18,10 @@
   --status-panel: rgba(255, 255, 255, 0.08);
   --status-line: rgba(255, 255, 255, 0.2);
   --status-muted: rgba(235, 255, 248, 0.74);
+  --glass: rgba(8, 28, 30, 0.68);
+  --glass-strong: rgba(8, 34, 38, 0.82);
+  --tech-border: rgba(46, 233, 255, 0.28);
+  --tech-border-soft: rgba(255, 255, 255, 0.14);
 }
 
 * {
@@ -29,16 +33,49 @@ html {
 }
 
 body {
+  position: relative;
+  min-height: 100vh;
   margin: 0;
   background:
+    linear-gradient(115deg, transparent 0 42%, rgba(46, 233, 255, 0.08) 42% 42.15%, transparent 42.15% 100%),
+    linear-gradient(245deg, transparent 0 58%, rgba(185, 255, 79, 0.07) 58% 58.15%, transparent 58.15% 100%),
     linear-gradient(rgba(46, 233, 255, 0.035) 1px, transparent 1px),
     linear-gradient(90deg, rgba(46, 233, 255, 0.03) 1px, transparent 1px),
     repeating-linear-gradient(135deg, rgba(33, 209, 139, 0.07) 0 1px, transparent 1px 20px),
     linear-gradient(135deg, #07110f 0%, #102026 48%, #131715 100%);
-  background-size: 26px 26px, 26px 26px, auto, auto;
+  background-size: auto, auto, 26px 26px, 26px 26px, auto, auto;
   color: var(--ink);
   font-family: "Microsoft JhengHei", "Noto Sans TC", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   line-height: 1.6;
+}
+
+body::before {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  content: "";
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 74px, rgba(46, 233, 255, 0.075) 74px 75px, transparent 75px 148px),
+    repeating-linear-gradient(0deg, transparent 0 52px, rgba(213, 107, 255, 0.055) 52px 53px, transparent 53px 104px),
+    linear-gradient(180deg, rgba(46, 233, 255, 0.1), transparent 28%, rgba(185, 255, 79, 0.055) 70%, transparent);
+  opacity: 0.58;
+  mask-image: linear-gradient(180deg, transparent 0%, #000 10%, #000 88%, transparent 100%);
+}
+
+body::after {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  content: "";
+  pointer-events: none;
+  background: repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 9px);
+  opacity: 0.22;
+}
+
+body > * {
+  position: relative;
+  z-index: 1;
 }
 
 a {
@@ -142,17 +179,22 @@ main {
 
 .status-dashboard {
   position: relative;
+  isolation: isolate;
   overflow: hidden;
-  padding: 20px;
+  padding: 22px;
   color: #fff;
   border-color: rgba(46, 233, 255, 0.28);
   background:
+    linear-gradient(115deg, rgba(46, 233, 255, 0.12), transparent 20%, transparent 78%, rgba(213, 107, 255, 0.12)),
     linear-gradient(rgba(46, 233, 255, 0.08) 1px, transparent 1px),
     linear-gradient(90deg, rgba(46, 233, 255, 0.06) 1px, transparent 1px),
     linear-gradient(135deg, rgba(8, 23, 22, 0.98) 0%, rgba(8, 45, 50, 0.96) 48%, rgba(23, 26, 22, 0.94) 100%),
     var(--status-bg);
-  background-size: 28px 28px, 28px 28px, auto, auto;
-  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.34), 0 0 0 1px rgba(46, 233, 255, 0.08) inset;
+  background-size: auto, 28px 28px, 28px 28px, auto, auto;
+  box-shadow:
+    0 22px 60px rgba(0, 0, 0, 0.34),
+    0 0 0 1px rgba(46, 233, 255, 0.08) inset,
+    0 0 46px rgba(46, 233, 255, 0.12) inset;
 }
 
 .status-dashboard::before,
@@ -264,20 +306,76 @@ main {
 .dashboard-live-layout {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
+  gap: 16px;
   align-items: stretch;
 }
 
+.dashboard-live-layout::before {
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: 50%;
+  width: 1px;
+  content: "";
+  background: linear-gradient(180deg, transparent, rgba(46, 233, 255, 0.58), rgba(185, 255, 79, 0.4), transparent);
+  box-shadow: 0 0 22px rgba(46, 233, 255, 0.28);
+  opacity: 0.78;
+  transform: translateX(-50%);
+}
+
 .agent-status-column {
+  --column-accent: var(--cyan);
+  --column-accent-soft: rgba(46, 233, 255, 0.16);
   min-width: 0;
   display: grid;
   align-content: start;
   gap: 12px;
-  padding: 12px;
-  border: 1px solid var(--status-line);
+  overflow: hidden;
+  padding: 14px;
+  border: 1px solid var(--tech-border-soft);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.07);
-  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.16);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.1), transparent 36%),
+    linear-gradient(135deg, var(--column-accent-soft), rgba(255, 255, 255, 0.055) 42%, rgba(255, 255, 255, 0.08));
+  box-shadow:
+    0 14px 30px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(255, 255, 255, 0.045) inset,
+    0 0 34px var(--column-accent-soft) inset;
+  backdrop-filter: blur(14px);
+}
+
+.agent-status-column > * {
+  position: relative;
+  z-index: 1;
+}
+
+.agent-status-column::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, var(--column-accent-soft), transparent 20%, transparent 78%, rgba(255, 255, 255, 0.07)),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.04) 0 1px, transparent 1px 18px);
+  opacity: 0.72;
+}
+
+.agent-status-column::after {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 42px;
+  height: 42px;
+  content: "";
+  pointer-events: none;
+  border-top: 1px solid var(--column-accent);
+  border-right: 1px solid var(--column-accent);
+  opacity: 0.74;
+}
+
+.lanxi-column {
+  --column-accent: var(--violet);
+  --column-accent-soft: rgba(213, 107, 255, 0.14);
 }
 
 .column-heading,
@@ -288,11 +386,18 @@ main {
   gap: 10px;
 }
 
+.column-heading {
+  min-height: 48px;
+  padding: 0 0 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
 .column-heading h3,
 .mini-section-title h3 {
   color: #fff;
   font-size: 24px;
   line-height: 1.1;
+  text-shadow: 0 0 20px var(--column-accent-soft);
 }
 
 .mini-section-title h3 {
@@ -352,10 +457,15 @@ main {
   align-content: space-between;
   gap: 10px;
   padding: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.18);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.055)),
+    var(--glass);
+  box-shadow:
+    0 12px 26px rgba(0, 0, 0, 0.18),
+    0 0 22px rgba(46, 233, 255, 0.08) inset;
+  backdrop-filter: blur(10px);
 }
 
 .agent-card[data-state="ok"] {
@@ -410,11 +520,13 @@ main {
   color: #fff;
   font-size: 16px;
   line-height: 1.35;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
+  word-break: normal;
 }
 
 .agent-meta {
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
+  word-break: normal;
 }
 
 .agent-state {
@@ -453,14 +565,35 @@ main {
 }
 
 .status-card {
+  position: relative;
+  overflow: hidden;
   min-height: 124px;
   display: grid;
   align-content: space-between;
   gap: 8px;
   padding: 15px;
   border-color: var(--status-line);
-  background: rgba(255, 255, 255, 0.09);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.06)),
+    var(--glass);
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.18),
+    0 0 18px rgba(46, 233, 255, 0.08) inset;
+  backdrop-filter: blur(10px);
+}
+
+.status-card::before,
+.monitor-card::before {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 22px;
+  height: 22px;
+  content: "";
+  pointer-events: none;
+  border-top: 1px solid rgba(46, 233, 255, 0.5);
+  border-left: 1px solid rgba(46, 233, 255, 0.5);
+  opacity: 0.62;
 }
 
 .status-card span {
@@ -471,7 +604,8 @@ main {
 
 .status-card strong {
   color: #fff;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
+  word-break: normal;
   font-size: 30px;
   line-height: 1.05;
 }
@@ -503,9 +637,12 @@ main {
 .monitor-panel {
   margin-top: 12px;
   padding: 12px;
-  border: 1px solid var(--status-line);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.08);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.045)),
+    rgba(3, 16, 18, 0.32);
+  box-shadow: 0 0 22px rgba(46, 233, 255, 0.08) inset;
 }
 
 .monitor-panel-head {
@@ -551,15 +688,24 @@ main {
 }
 
 .monitor-card {
+  position: relative;
+  overflow: hidden;
   min-width: 0;
   display: grid;
   gap: 8px;
   padding: 12px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
 }
 
 .status-dashboard .monitor-card {
-  border-color: rgba(255, 255, 255, 0.18);
-  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.14);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.055)),
+    rgba(7, 27, 30, 0.62);
+  box-shadow:
+    0 10px 22px rgba(0, 0, 0, 0.16),
+    0 0 18px rgba(46, 233, 255, 0.07) inset;
+  backdrop-filter: blur(10px);
 }
 
 .monitor-card[data-state="ok"] {
@@ -593,7 +739,9 @@ main {
   color: var(--ink);
   font-size: 19px;
   line-height: 1.15;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
+  word-break: normal;
+  text-wrap: balance;
 }
 
 .status-dashboard .monitor-card b {
@@ -603,7 +751,8 @@ main {
 .monitor-card p {
   color: var(--muted);
   font-size: 13px;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
+  word-break: normal;
 }
 
 .status-dashboard .monitor-card p {
@@ -611,10 +760,14 @@ main {
 }
 
 .monitor-card small {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
   color: #7b8884;
   font-size: 12px;
   font-weight: 760;
-  overflow-wrap: anywhere;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .status-dashboard .monitor-card small {
@@ -655,6 +808,8 @@ main {
   background: rgba(255, 255, 255, 0.1);
   font-size: 13px;
   font-weight: 750;
+  overflow-wrap: break-word;
+  word-break: normal;
 }
 
 button,
@@ -1103,14 +1258,15 @@ footer {
 
 .refresh-label {
   min-width: 0;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
+  word-break: normal;
 }
 
 @media (max-width: 760px) {
   .topbar,
   main,
   footer {
-    width: min(100% - 20px, 1240px);
+    width: min(100% - 16px, 1240px);
   }
 
   .topbar {
@@ -1143,7 +1299,7 @@ footer {
   .status-dashboard,
   .overview,
   .content-section {
-    padding: 16px;
+    padding: 14px;
   }
 
   .dashboard-footer,
@@ -1163,7 +1319,7 @@ footer {
   }
 
   .actor-grid,
-  .actor-monitor-grid,
+  .monitor-grid.compact.actor-monitor-grid,
   .monitor-section-column .monitor-grid.detail {
     grid-template-columns: 1fr;
   }
@@ -1178,18 +1334,23 @@ footer {
   }
 
   .status-dashboard {
-    padding: 12px;
+    padding: 10px;
   }
 
   .agent-card {
-    min-height: 176px;
+    min-height: 154px;
     padding: 10px;
     gap: 8px;
   }
 
   .agent-status-column {
-    padding: 8px;
+    padding: 9px;
     gap: 8px;
+  }
+
+  .agent-status-column::after {
+    width: 30px;
+    height: 30px;
   }
 
   .column-heading,
@@ -1202,6 +1363,11 @@ footer {
   .column-heading h3,
   .mini-section-title h3 {
     font-size: 18px;
+  }
+
+  .column-heading {
+    min-height: 42px;
+    padding-bottom: 8px;
   }
 
   .agent-name b {
@@ -1227,12 +1393,13 @@ footer {
   }
 
   .status-card {
-    min-height: 112px;
+    min-height: 104px;
     padding: 10px;
   }
 
   .status-card strong {
-    font-size: 22px;
+    font-size: 21px;
+    line-height: 1.12;
   }
 
   .status-card p,
@@ -1242,11 +1409,31 @@ footer {
 
   .monitor-panel,
   .monitor-card {
-    padding: 10px;
+    padding: 9px;
+  }
+
+  .monitor-panel {
+    margin-top: 0;
+  }
+
+  .monitor-panel-head {
+    display: grid;
+    gap: 2px;
+    margin-bottom: 8px;
+  }
+
+  .monitor-panel h3 {
+    font-size: 16px;
   }
 
   .monitor-card b {
     font-size: 16px;
+    line-height: 1.18;
+  }
+
+  .monitor-card small {
+    font-size: 11px;
+  }
   }
 
   .timeline-item {
