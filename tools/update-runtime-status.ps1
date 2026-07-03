@@ -244,20 +244,17 @@ $payload = [ordered]@{
     sourceType = "local-generator"
     sourceLabel = "本機即時狀態產生器"
     refreshSeconds = 5
-    token = [ordered]@{
-        totalTokens = $token.totalTokens
+    workload = [ordered]@{
         taskCount = $token.taskCount
-        source = $token.source
+        source = if ($token.taskCount -gt 0) { "本機任務量摘要" } else { "尚未抓到今日任務量摘要" }
     }
     heartbeat = [ordered]@{
         ageSeconds = $heartbeatAge
         activeRequests = if ($heartbeat -and $heartbeat.PSObject.Properties.Item("active_requests")) { $heartbeat.active_requests } else { $null }
-        model = if ($heartbeat -and $heartbeat.PSObject.Properties.Item("model")) { $heartbeat.model } else { $null }
-        reasoningEffort = if ($heartbeat -and $heartbeat.PSObject.Properties.Item("reasoning_effort")) { $heartbeat.reasoning_effort } else { $null }
     }
     deliverables = @(
-        "完整複製包：full_codex_clone_20260702_191206.zip",
-        "公開總控台：GitHub Pages",
+        "tgbot 儀表盤網站：GitHub Pages",
+        "公開摘要：技能與記憶統計",
         "狀態資料：runtime-status.json"
     )
 }

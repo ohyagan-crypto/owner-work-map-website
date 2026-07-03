@@ -1,28 +1,25 @@
 {
     "statusKey":  "running",
     "statusLabel":  "運作中",
-    "headline":  "徹底修復你自己一次ˉ",
+    "headline":  "新版 tgbot 儀表盤網站已完成",
     "blocker":  "沒有卡點",
-    "nextAction":  "完成後更新交付結果、網址、檔案路徑或明確卡點。",
-    "updatedAt":  "2026-07-02T21:29:33+08:00",
-    "checkedAt":  "2026-07-02T21:29:33+08:00",
+    "nextAction":  "公開網址更新後可直接查看新版儀表盤。",
+    "updatedAt":  "2026-07-03T13:52:52+08:00",
+    "checkedAt":  "2026-07-03T13:52:52+08:00",
     "sourceType":  "local-generator",
     "sourceLabel":  "本機即時狀態產生器",
     "refreshSeconds":  5,
-    "token":  {
-                  "totalTokens":  47419336,
-                  "taskCount":  38,
-                  "source":  "本機 Codex 執行緒紀錄"
-              },
+    "workload":  {
+                     "taskCount":  14,
+                     "source":  "本機任務量摘要"
+                 },
     "heartbeat":  {
-                      "ageSeconds":  7,
-                      "activeRequests":  1,
-                      "model":  "gpt-5.5",
-                      "reasoningEffort":  "low"
+                      "ageSeconds":  9,
+                      "activeRequests":  1
                   },
     "deliverables":  [
-                         "完整複製包：full_codex_clone_20260702_191206.zip",
-                         "公開總控台：GitHub Pages",
+                         "tgbot 儀表盤網站：GitHub Pages",
+                         "公開摘要：技能與記憶統計",
                          "狀態資料：runtime-status.json"
                      ]
 }
