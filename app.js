@@ -518,6 +518,7 @@ const skillCatalog = [
 ];
 
 const timeline = [
+  ["2026-07-03", "把原本上下分散的頁面整合成單一儀表盤：總控、蝦咩任務、嵐熙任務、監控、技能包與 SOP 收在同一個主面板。"],
   ["2026-07-03", "整合主控台與技能入口版面，新增嵐熙獨立任務欄位與頂端嵐熙任務快覽。"],
   ["2026-07-03", "修正前端初始化中斷，讓 runtime-status.json、技能包清單與頂端同步狀態可正常顯示。"],
   ["2026-07-03", "重新同步按鈕移到頂端控制列，點擊時加入短促音效、彩色粒子與同步完成回饋。"],
@@ -703,7 +704,9 @@ function updateLiveClock() {
 }
 
 function renderStats() {
-  $("#statGrid").innerHTML = dashboardStats.map((item) => `
+  const grid = $("#statGrid");
+  if (!grid) return;
+  grid.innerHTML = dashboardStats.map((item) => `
     <article class="stat-card">
       <b>${escapeHtml(item.value)}</b>
       <span>${escapeHtml(item.label)}</span>
@@ -713,7 +716,9 @@ function renderStats() {
 }
 
 function renderCompleted() {
-  $("#completedGrid").innerHTML = completedItems.map((item) => `
+  const grid = $("#completedGrid");
+  if (!grid) return;
+  grid.innerHTML = completedItems.map((item) => `
     <article class="card">
       <div class="card-top">
         <h3>${escapeHtml(item.title)}</h3>
@@ -726,7 +731,9 @@ function renderCompleted() {
 }
 
 function renderSop() {
-  $("#sopGrid").innerHTML = sopItems.map((item) => `
+  const grid = $("#sopGrid");
+  if (!grid) return;
+  grid.innerHTML = sopItems.map((item) => `
     <article class="sop-card">
       <h3>${escapeHtml(item.title)}</h3>
       <p>${escapeHtml(item.summary)}</p>
@@ -789,7 +796,7 @@ function renderSkills() {
   const summary = $("#skillSummary");
   const visible = filteredSkills();
   const isDefaultView = selectedSkillGroup === "全部" && !skillSearchTerm.trim();
-  const cardItems = isDefaultView ? visible.slice(0, 12) : visible;
+  const cardItems = isDefaultView ? visible.slice(0, 6) : visible;
   const totalVariants = skillCatalog.reduce((sum, item) => sum + Number(item.variants || 1), 0);
   const groups = skillGroups();
   const visibleVariants = visible.reduce((sum, item) => sum + Number(item.variants || 1), 0);
@@ -854,7 +861,7 @@ function renderSkills() {
           </div>
           <small class="skill-version-badge">${item.variants > 1 ? `${escapeHtml(item.variants)} 版` : "單版"}</small>
         </div>
-        <ul class="skill-function-list">${item.functions.map((point) => `<li>${escapeHtml(point)}</li>`).join("")}</ul>
+        <ul class="skill-function-list">${(isDefaultView ? item.functions.slice(0, 2) : item.functions).map((point) => `<li>${escapeHtml(point)}</li>`).join("")}</ul>
         <div class="skill-card-field">
           <span>使用場景</span>
           <p>${escapeHtml(item.scenario)}</p>
@@ -892,7 +899,9 @@ function renderSkills() {
 }
 
 function renderTimeline() {
-  $("#timelineList").innerHTML = timeline.map(([time, text]) => `
+  const list = $("#timelineList");
+  if (!list) return;
+  list.innerHTML = timeline.slice(0, 6).map(([time, text]) => `
     <article class="timeline-item">
       <time>${escapeHtml(time)}</time>
       <p>${escapeHtml(text)}</p>

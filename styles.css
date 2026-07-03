@@ -196,7 +196,7 @@ main {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 14px;
   padding: 22px;
   color: #fff;
   border-color: rgba(46, 233, 255, 0.28);
@@ -211,6 +211,10 @@ main {
     0 22px 60px rgba(0, 0, 0, 0.34),
     0 0 0 1px rgba(46, 233, 255, 0.08) inset,
     0 0 46px rgba(46, 233, 255, 0.12) inset;
+}
+
+.unified-dashboard {
+  min-height: calc(100vh - 170px);
 }
 
 .status-dashboard::before,
@@ -340,6 +344,109 @@ main {
   box-shadow: 0 0 22px rgba(46, 233, 255, 0.28);
   opacity: 0.78;
   transform: translateX(-50%);
+}
+
+.dashboard-unified-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
+  gap: 16px;
+  align-items: stretch;
+  min-width: 0;
+}
+
+.dashboard-control-rail,
+.mission-board,
+.dashboard-tool-panel {
+  min-width: 0;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04)),
+    rgba(3, 16, 18, 0.34);
+  box-shadow:
+    0 14px 28px rgba(0, 0, 0, 0.18),
+    0 0 28px rgba(46, 233, 255, 0.08) inset;
+  backdrop-filter: blur(12px);
+}
+
+.dashboard-control-rail {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: 12px;
+}
+
+.mission-board {
+  display: grid;
+  gap: 14px;
+  padding: 14px;
+  overflow: hidden;
+}
+
+.mission-board-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px;
+  min-width: 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(46, 233, 255, 0.14);
+}
+
+.mission-board-head h2 {
+  color: #fff;
+  font-size: 24px;
+  line-height: 1.18;
+}
+
+.mission-board .quick-actions {
+  flex: 0 0 auto;
+  justify-content: flex-end;
+}
+
+.dashboard-stat-strip {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.dashboard-stat-strip .stat-card {
+  min-height: 98px;
+  padding: 12px;
+}
+
+.dashboard-stat-strip .stat-card b {
+  font-size: 28px;
+}
+
+.dashboard-tool-panel {
+  position: relative;
+  z-index: 1;
+  padding: 16px;
+}
+
+.monitor-hub .section-heading,
+.dashboard-skill-hub .section-heading,
+.compact-tool-panel .section-heading {
+  margin-bottom: 14px;
+}
+
+.dashboard-tool-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 14px;
+  min-width: 0;
+}
+
+.compact-tool-panel {
+  overflow: hidden;
+}
+
+.compact-tool-panel .sop-grid {
+  grid-template-columns: 1fr;
 }
 
 .agent-status-column {
@@ -1140,6 +1247,40 @@ button,
   grid-template-columns: minmax(280px, 330px) minmax(0, 1fr);
   gap: 16px;
   align-items: start;
+}
+
+.dashboard-skill-hub .skill-layout {
+  grid-template-columns: minmax(250px, 300px) minmax(0, 1fr);
+}
+
+.dashboard-skill-hub .skill-card-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+}
+
+.dashboard-skill-hub .skill-filter-panel {
+  max-height: none;
+}
+
+.dashboard-skill-hub .skill-filters {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-height: 220px;
+}
+
+.dashboard-skill-hub .skill-filters button {
+  min-height: 34px;
+  padding: 7px 9px;
+}
+
+.dashboard-skill-hub .skill-card-field {
+  display: none;
+}
+
+.dashboard-skill-hub .skill-card-field:last-child {
+  display: none;
+}
+
+.dashboard-skill-hub .skill-function-list li {
+  min-height: 28px;
 }
 
 .skill-sidebar,
@@ -1968,6 +2109,19 @@ body.light-mode .theme-toggle {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .dashboard-unified-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-control-rail {
+    grid-template-columns: minmax(260px, 0.9fr) minmax(220px, 0.75fr) minmax(280px, 1fr);
+    align-items: stretch;
+  }
+
+  .dashboard-control-rail .dashboard-footer {
+    grid-column: 1 / -1;
+  }
+
   .overview {
     grid-template-columns: 1fr;
   }
@@ -1986,12 +2140,30 @@ body.light-mode .theme-toggle {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
+  .dashboard-control-rail,
+  .dashboard-tool-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mission-board-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .mission-board .quick-actions {
+    justify-content: flex-start;
+  }
+
   .ai-metrics {
     grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
   }
 
   .skill-control-bar,
   .skill-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-skill-hub .skill-layout {
     grid-template-columns: 1fr;
   }
 
@@ -2055,6 +2227,12 @@ body.light-mode .theme-toggle {
     padding: 14px;
   }
 
+  .dashboard-tool-panel,
+  .mission-board,
+  .dashboard-control-rail {
+    padding: 12px;
+  }
+
   .dashboard-footer,
   .stat-grid,
   .item-grid,
@@ -2065,6 +2243,17 @@ body.light-mode .theme-toggle {
   .skill-sidebar,
   .skill-view-meta {
     grid-template-columns: 1fr;
+  }
+
+  .dashboard-skill-hub .skill-filters {
+    display: flex;
+    max-height: none;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  .dashboard-skill-hub .skill-filters button {
+    flex: 0 0 132px;
   }
 
   .skill-summary {
@@ -2101,7 +2290,9 @@ body.light-mode .theme-toggle {
   .dashboard-grid,
   .monitor-grid.compact,
   .dashboard-live-layout,
-  .monitor-section-columns {
+  .monitor-section-columns,
+  .dashboard-tool-grid,
+  .dashboard-unified-grid {
     gap: 8px;
   }
 
@@ -2140,6 +2331,10 @@ body.light-mode .theme-toggle {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     align-items: start;
     min-width: 0;
+  }
+
+  .mission-board-head h2 {
+    font-size: 21px;
   }
 
   .agent-card {
@@ -2334,6 +2529,19 @@ body.light-mode .theme-toggle {
     gap: 7px;
   }
 
+  .mission-board {
+    padding: 8px;
+  }
+
+  .mission-board-head {
+    gap: 8px;
+    padding-bottom: 8px;
+  }
+
+  .mission-board-head h2 {
+    font-size: 18px;
+  }
+
   .dashboard-live-layout::before {
     opacity: 0.56;
   }
@@ -2342,8 +2550,30 @@ body.light-mode .theme-toggle {
     padding: 8px;
   }
 
+  .column-heading {
+    min-height: 42px;
+  }
+
+  .column-heading h3 {
+    font-size: 21px;
+  }
+
   .agent-slot .agent-card {
     min-height: 138px;
+  }
+
+  .actor-grid .status-card {
+    min-height: 116px;
+    padding: 10px;
+  }
+
+  .status-card strong,
+  .task-status-card strong {
+    font-size: clamp(18px, 5vw, 22px);
+  }
+
+  .status-card p {
+    font-size: 12px;
   }
 
   .agent-status-column .monitor-panel,
@@ -2362,6 +2592,15 @@ body.light-mode .theme-toggle {
 
   .micro-panel {
     padding: 11px;
+  }
+
+  .dashboard-tool-panel,
+  .dashboard-control-rail {
+    padding: 10px;
+  }
+
+  .timeline-item {
+    grid-template-columns: 1fr;
   }
 }
 
