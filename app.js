@@ -1,19 +1,22 @@
 const publicUrl = "https://ohyagan-crypto.github.io/owner-work-map-website/";
 const liveStatusEndpoint = (window.OWNER_LIVE_STATUS_ENDPOINT || "").replace(/\/$/, "");
+const DEFAULT_REFRESH_SECONDS = 1;
+const LIVE_TIMEOUT_MS = 2200;
+const LIVE_RETRY_COOLDOWN_MS = 5000;
 
 const stats = [
   { label: "已安裝技能", value: "80", note: "含主要技能、備份與舊版入口" },
   { label: "主力技能", value: "44", note: "日常任務優先使用" },
   { label: "記憶檔", value: "84", note: "包含規則、偏好與成功流程" },
-  { label: "狀態刷新", value: "秒級", note: "按下立即讀取本機即時狀態" }
+  { label: "狀態刷新", value: "1s", note: "自動秒級讀取，手動刷新立即同步" }
 ];
 
 const completedItems = [
   {
-    title: "即時狀態總控台",
+    title: "科技感即時總控台",
     status: "已完成",
-    summary: "上方儀表板可看到運作中、卡點、答案已產出待回覆、已回覆完成與今日 token。",
-    points: ["手動刷新會讀取當下秒級狀態", "自動每 5 秒重新讀取", "本機即時 API 優先於公開快照"],
+    summary: "上方儀表板可看到蝦咩、嵐熙、任務狀態、卡點、今日 token 與最後同步秒數。",
+    points: ["自動每 1 秒讀取狀態", "手動刷新觸發粒子與脈衝回饋", "本機即時 API 優先於公開快照"],
     actions: [{ label: "公開頁", url: publicUrl }]
   },
   {
@@ -57,9 +60,10 @@ const skillRows = [
 ];
 
 const timeline = [
+  ["2026-07-03", "儀表盤升級為科技感雷達面板，加入蝦咩與嵐熙命名狀態卡。"],
+  ["2026-07-03", "刷新頻率改成每 1 秒，手動刷新加入粒子、脈衝與即時回饋。"],
   ["2026-07-02", "修復 Telegram 答案產出後的 ready_to_send / sending / completed 狀態。"],
-  ["2026-07-02", "即時狀態 API 改成每次請求都重新產生秒級資料。"],
-  ["2026-07-02", "公開頁刷新按鈕改為優先讀本機即時 API，失敗才退回公開快照。"]
+  ["2026-07-02", "即時狀態 API 改成每次請求都重新產生秒級資料。"]
 ];
 
 const fallbackRuntimeStatus = {
@@ -72,13 +76,27 @@ const fallbackRuntimeStatus = {
   checkedAt: new Date().toISOString(),
   sourceType: "fallback",
   sourceLabel: "備用狀態",
-  refreshSeconds: 5,
+  refreshSeconds: DEFAULT_REFRESH_SECONDS,
   token: { totalTokens: null, taskCount: null, source: "尚未讀到 token 統計" },
+  heartbeat: { ageSeconds: null, activeRequests: null },
+  openclaw: { statusKey: "watch", statusLabel: "狀態待同步", processCount: null, watchdogState: "未取得" },
   deliverables: []
 };
 
 const $ = (selector) => document.querySelector(selector);
 let lastStatusSignature = "";
+let lastRenderedStatus = fallbackRuntimeStatus;
+let isStatusLoading = false;
+let liveUnavailableUntil = 0;
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
 
 function setRefreshFeedback(message, state = "idle") {
   const feedback = $("#refreshFeedback");
@@ -93,7 +111,40 @@ function setRefreshButtonLoading(isLoading) {
   button.disabled = isLoading;
   button.classList.toggle("is-refreshing", isLoading);
   const label = button.querySelector(".refresh-label");
-  if (label) label.textContent = isLoading ? "讀取中" : "重新整理狀態";
+  if (label) label.textContent = isLoading ? "同步中" : "重新整理狀態";
+}
+
+function triggerRefreshEffect() {
+  const dashboard = $("#status-dashboard");
+  const button = $("#refreshStatus");
+  const layer = $("#refreshEffectLayer");
+  if (dashboard) {
+    dashboard.classList.remove("is-sync-flash");
+    void dashboard.offsetWidth;
+    dashboard.classList.add("is-sync-flash");
+  }
+  if (button) {
+    button.classList.remove("is-bursting");
+    void button.offsetWidth;
+    button.classList.add("is-bursting");
+  }
+  if (!layer) return;
+
+  const colors = ["#2ee9ff", "#21d18b", "#b9ff4f", "#ffbc42", "#d56bff", "#ff647c"];
+  for (let index = 0; index < 28; index += 1) {
+    const spark = document.createElement("span");
+    const angle = (Math.PI * 2 * index) / 28 + Math.random() * 0.34;
+    const distance = 42 + Math.random() * 72;
+    spark.className = "spark";
+    spark.style.setProperty("--spark-x", `${42 + Math.random() * 18}%`);
+    spark.style.setProperty("--spark-y", `${24 + Math.random() * 24}%`);
+    spark.style.setProperty("--spark-dx", `${Math.cos(angle) * distance}px`);
+    spark.style.setProperty("--spark-dy", `${Math.sin(angle) * distance}px`);
+    spark.style.setProperty("--spark-size", `${4 + Math.random() * 5}px`);
+    spark.style.setProperty("--spark-color", colors[index % colors.length]);
+    layer.appendChild(spark);
+    window.setTimeout(() => spark.remove(), 850);
+  }
 }
 
 function formatNumber(value) {
@@ -104,7 +155,7 @@ function formatNumber(value) {
 }
 
 function formatDateTime(value) {
-  const date = new Date(value);
+  const date = value instanceof Date ? value : new Date(value);
   if (Number.isNaN(date.getTime())) return "未取得";
   return new Intl.DateTimeFormat("zh-Hant-TW", {
     year: "numeric",
@@ -116,12 +167,44 @@ function formatDateTime(value) {
   }).format(date);
 }
 
+function secondsSince(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return null;
+  return Math.max(0, Math.floor((Date.now() - date.getTime()) / 1000));
+}
+
+function formatAge(value) {
+  const seconds = secondsSince(value);
+  if (seconds === null) return "未取得";
+  if (seconds < 60) return `${seconds} 秒前`;
+  const minutes = Math.floor(seconds / 60);
+  const rest = seconds % 60;
+  if (minutes < 60) return `${minutes} 分 ${rest} 秒前`;
+  const hours = Math.floor(minutes / 60);
+  return `${hours} 小時前`;
+}
+
+function refreshSecondsFrom(status) {
+  const value = Number(status?.refreshSeconds);
+  if (!Number.isFinite(value)) return DEFAULT_REFRESH_SECONDS;
+  return Math.max(1, Math.min(10, Math.round(value)));
+}
+
+function updateLiveClock() {
+  const clock = $("#localClock");
+  if (clock) clock.textContent = formatDateTime(new Date());
+
+  const displayTime = lastRenderedStatus.checkedAt || lastRenderedStatus.updatedAt;
+  const liveAge = $("#liveAge");
+  if (liveAge) liveAge.textContent = formatAge(displayTime);
+}
+
 function renderStats() {
   $("#statGrid").innerHTML = stats.map((item) => `
     <article class="stat-card">
-      <b>${item.value}</b>
-      <span>${item.label}</span>
-      <small>${item.note}</small>
+      <b>${escapeHtml(item.value)}</b>
+      <span>${escapeHtml(item.label)}</span>
+      <small>${escapeHtml(item.note)}</small>
     </article>
   `).join("");
 }
@@ -130,13 +213,13 @@ function renderCompleted() {
   $("#completedGrid").innerHTML = completedItems.map((item) => `
     <article class="card">
       <div class="card-top">
-        <h3>${item.title}</h3>
-        <span class="status done">${item.status}</span>
+        <h3>${escapeHtml(item.title)}</h3>
+        <span class="status done">${escapeHtml(item.status)}</span>
       </div>
-      <p>${item.summary}</p>
-      <ul>${item.points.map((point) => `<li>${point}</li>`).join("")}</ul>
+      <p>${escapeHtml(item.summary)}</p>
+      <ul>${item.points.map((point) => `<li>${escapeHtml(point)}</li>`).join("")}</ul>
       <div class="card-actions">
-        ${(item.actions || []).map((action) => `<a class="card-action" href="${action.url}" target="_blank" rel="noopener">${action.label}</a>`).join("")}
+        ${(item.actions || []).map((action) => `<a class="card-action" href="${escapeHtml(action.url)}" target="_blank" rel="noopener">${escapeHtml(action.label)}</a>`).join("")}
       </div>
     </article>
   `).join("");
@@ -145,9 +228,9 @@ function renderCompleted() {
 function renderSop() {
   $("#sopGrid").innerHTML = sopItems.map((item) => `
     <article class="sop-card">
-      <h3>${item.title}</h3>
-      <p>${item.summary}</p>
-      <ol>${item.steps.map((step) => `<li>${step}</li>`).join("")}</ol>
+      <h3>${escapeHtml(item.title)}</h3>
+      <p>${escapeHtml(item.summary)}</p>
+      <ol>${item.steps.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}</ol>
     </article>
   `).join("");
 }
@@ -155,18 +238,18 @@ function renderSop() {
 function renderSkills() {
   $("#skillSummary").innerHTML = stats.map((item) => `
     <div class="summary-chip">
-      <b>${item.value}</b>
-      <span>${item.label}</span>
-      <small>${item.note}</small>
+      <b>${escapeHtml(item.value)}</b>
+      <span>${escapeHtml(item.label)}</span>
+      <small>${escapeHtml(item.note)}</small>
     </div>
   `).join("");
 
   $("#skillTable").innerHTML = skillRows.map((row) => `
     <tr>
-      <td>${row[0]}</td>
-      <td>${row[1]}</td>
-      <td>${row[2]}</td>
-      <td>${row[3]}</td>
+      <td>${escapeHtml(row[0])}</td>
+      <td>${escapeHtml(row[1])}</td>
+      <td>${escapeHtml(row[2])}</td>
+      <td>${escapeHtml(row[3])}</td>
     </tr>
   `).join("");
 }
@@ -174,54 +257,117 @@ function renderSkills() {
 function renderTimeline() {
   $("#timelineList").innerHTML = timeline.map(([time, text]) => `
     <article class="timeline-item">
-      <time>${time}</time>
-      <p>${text}</p>
+      <time>${escapeHtml(time)}</time>
+      <p>${escapeHtml(text)}</p>
+    </article>
+  `).join("");
+}
+
+function renderAgentStrip(status) {
+  const heartbeat = { ...fallbackRuntimeStatus.heartbeat, ...(status.heartbeat || {}) };
+  const openclaw = { ...fallbackRuntimeStatus.openclaw, ...(status.openclaw || {}) };
+  const heartbeatAge = Number.isFinite(Number(heartbeat.ageSeconds))
+    ? `${Math.max(0, Number(heartbeat.ageSeconds))} 秒前`
+    : formatAge(status.checkedAt || status.updatedAt);
+  const openclawProcessText = openclaw.processCount === null || openclaw.processCount === undefined
+    ? "進程未取得"
+    : `相關進程 ${formatNumber(openclaw.processCount)}`;
+
+  const agents = [
+    {
+      role: "TGBOT",
+      name: "蝦咩",
+      state: status.statusLabel || "資料待同步",
+      stateKey: status.statusKey || "watch",
+      meta: `心跳 ${heartbeatAge} · 執行中任務 ${formatNumber(heartbeat.activeRequests)}`
+    },
+    {
+      role: "OpenClaw",
+      name: "嵐熙",
+      state: openclaw.statusLabel || "狀態待同步",
+      stateKey: openclaw.statusKey || "watch",
+      meta: `${openclawProcessText} · 看門排程 ${openclaw.watchdogState || "未取得"}`
+    }
+  ];
+
+  const strip = $("#agentStrip");
+  if (!strip) return;
+  strip.innerHTML = agents.map((agent) => `
+    <article class="agent-card" data-state="${escapeHtml(agent.stateKey)}">
+      <div class="agent-top">
+        <div class="agent-name">
+          <span>${escapeHtml(agent.role)}</span>
+          <b>${escapeHtml(agent.name)}</b>
+        </div>
+        <span class="agent-state">${escapeHtml(agent.state)}</span>
+      </div>
+      <div class="agent-meta">${escapeHtml(agent.meta)}</div>
     </article>
   `).join("");
 }
 
 function renderRuntimeStatus(data) {
   const status = { ...fallbackRuntimeStatus, ...data };
-  const token = { ...fallbackRuntimeStatus.token, ...(status.token || {}) };
-  const deliverables = status.deliverables || [];
+  status.token = { ...fallbackRuntimeStatus.token, ...(status.token || {}) };
+  status.heartbeat = { ...fallbackRuntimeStatus.heartbeat, ...(status.heartbeat || {}) };
+  status.openclaw = { ...fallbackRuntimeStatus.openclaw, ...(status.openclaw || {}) };
+  status.refreshSeconds = refreshSecondsFrom(status);
+  const deliverables = Array.isArray(status.deliverables) ? status.deliverables : [];
   const sourceLabel = status.sourceLabel || (status.sourceType === "live-api" ? "本機即時 API" : "公開快照");
   const displayTime = status.checkedAt || status.updatedAt || new Date().toISOString();
+
+  lastRenderedStatus = status;
 
   $("#statePill").dataset.state = status.statusKey || "watch";
   $("#statePill").textContent = status.statusLabel || "資料待同步";
   $("#statusLabel").textContent = status.statusLabel || "資料待同步";
   $("#statusHeadline").textContent = status.headline || "目前沒有可顯示的狀態。";
-  $("#todayTokens").textContent = formatNumber(token.totalTokens);
-  $("#tokenSource").textContent = token.taskCount
-    ? `${token.source}，任務數 ${formatNumber(token.taskCount)}。`
-    : token.source || "未取得 token 統計來源。";
+  $("#todayTokens").textContent = formatNumber(status.token.totalTokens);
+  $("#tokenSource").textContent = status.token.taskCount
+    ? `${status.token.source}，任務數 ${formatNumber(status.token.taskCount)}。`
+    : status.token.source || "未取得 token 統計來源。";
   $("#blockerText").textContent = status.blocker || "沒有卡點";
   $("#nextAction").textContent = status.nextAction || "維持同步。";
   $("#updatedAt").textContent = formatDateTime(displayTime);
-  $("#refreshNote").textContent = `每 ${status.refreshSeconds || 5} 秒自動讀取；來源：${sourceLabel}。`;
+  $("#refreshNote").textContent = `每 ${status.refreshSeconds} 秒自動讀取；來源：${sourceLabel}。`;
   $("#deliverableList").innerHTML = deliverables.length
-    ? deliverables.map((item) => `<span>${item}</span>`).join("")
+    ? deliverables.map((item) => `<span>${escapeHtml(item)}</span>`).join("")
     : "<span>目前沒有新的交付檔案</span>";
+  renderAgentStrip(status);
+  updateLiveClock();
 }
 
-async function fetchStatusJson(url) {
-  const response = await fetch(url, { cache: "no-store" });
-  if (!response.ok) throw new Error("狀態讀取失敗");
-  return response.json();
+async function fetchStatusJson(url, timeoutMs = LIVE_TIMEOUT_MS) {
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const response = await fetch(url, { cache: "no-store", signal: controller.signal });
+    if (!response.ok) throw new Error("狀態讀取失敗");
+    return response.json();
+  } finally {
+    window.clearTimeout(timeout);
+  }
 }
 
-async function fetchLiveRuntimeStatus() {
+async function fetchLiveRuntimeStatus(options = {}) {
   if (!liveStatusEndpoint) return null;
-  const data = await fetchStatusJson(`${liveStatusEndpoint}/api/status?ts=${Date.now()}`);
-  return {
-    ...data,
-    sourceType: data.sourceType || "live-api",
-    sourceLabel: data.sourceLabel || "本機即時 API"
-  };
+  if (!options.manual && Date.now() < liveUnavailableUntil) return null;
+  try {
+    const data = await fetchStatusJson(`${liveStatusEndpoint}/api/status?ts=${Date.now()}`);
+    liveUnavailableUntil = 0;
+    return {
+      ...data,
+      sourceType: data.sourceType || "live-api",
+      sourceLabel: data.sourceLabel || "本機即時 API"
+    };
+  } catch {
+    liveUnavailableUntil = Date.now() + LIVE_RETRY_COOLDOWN_MS;
+    return null;
+  }
 }
 
 async function fetchSnapshotRuntimeStatus() {
-  const data = await fetchStatusJson(`runtime-status.json?ts=${Date.now()}`);
+  const data = await fetchStatusJson(`runtime-status.json?ts=${Date.now()}`, 1200);
   return {
     ...data,
     sourceType: "snapshot",
@@ -235,25 +381,30 @@ function runtimeSignature(status) {
     status.updatedAt || "",
     status.checkedAt || "",
     status.statusKey || "",
-    status.statusLabel || ""
+    status.statusLabel || "",
+    status.openclaw?.statusLabel || ""
   ].join("|");
 }
 
 async function loadRuntimeStatus(options = {}) {
   const isManual = Boolean(options.manual);
+  if (isStatusLoading) {
+    if (isManual) {
+      triggerRefreshEffect();
+      setRefreshFeedback("上一筆狀態正在同步，完成後會更新畫面。", "idle");
+    }
+    return;
+  }
+
+  isStatusLoading = true;
   if (isManual) {
+    triggerRefreshEffect();
     setRefreshButtonLoading(true);
-    setRefreshFeedback("正在讀取本機即時狀態...", "idle");
+    setRefreshFeedback("正在同步本機即時狀態...", "idle");
   }
 
   try {
-    let data = null;
-    try {
-      data = await fetchLiveRuntimeStatus();
-    } catch {
-      data = null;
-    }
-
+    let data = await fetchLiveRuntimeStatus({ manual: isManual });
     if (!data) {
       data = await fetchSnapshotRuntimeStatus();
       data.liveUnavailable = true;
@@ -268,7 +419,7 @@ async function loadRuntimeStatus(options = {}) {
         setRefreshFeedback(`已同步到當下狀態：${formatted}`, "success");
       } else {
         const state = lastStatusSignature && lastStatusSignature === signature ? "stale" : "success";
-        setRefreshFeedback(`本機即時 API 未連上，已改讀公開快照：${formatted}`, state);
+        setRefreshFeedback(`本機即時 API 未連上，已讀公開快照：${formatted}`, state);
       }
     } else if (!lastStatusSignature) {
       setRefreshFeedback(`目前狀態時間：${formatted}`, "idle");
@@ -281,6 +432,7 @@ async function loadRuntimeStatus(options = {}) {
       setRefreshFeedback("讀取失敗，已顯示備用狀態。", "error");
     }
   } finally {
+    isStatusLoading = false;
     if (isManual) setRefreshButtonLoading(false);
   }
 }
@@ -291,9 +443,11 @@ function init() {
   renderSop();
   renderSkills();
   renderTimeline();
+  renderRuntimeStatus(fallbackRuntimeStatus);
   loadRuntimeStatus();
   $("#refreshStatus").addEventListener("click", () => loadRuntimeStatus({ manual: true }));
-  window.setInterval(loadRuntimeStatus, 5000);
+  window.setInterval(updateLiveClock, 1000);
+  window.setInterval(() => loadRuntimeStatus(), DEFAULT_REFRESH_SECONDS * 1000);
 }
 
 init();

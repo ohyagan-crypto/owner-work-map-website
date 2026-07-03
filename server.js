@@ -7,6 +7,14 @@ const root = __dirname;
 const port = Number(process.env.PORT || 4179);
 const statusScript = path.join(root, "tools", "update-runtime-status.ps1");
 const liveRuntimeStatusPath = path.join(process.env.TEMP || root, "owner-work-map-live-runtime-status.json");
+const windowsPowerShellPath = path.join(
+  process.env.SystemRoot || "C:\\Windows",
+  "System32",
+  "WindowsPowerShell",
+  "v1.0",
+  "powershell.exe"
+);
+const powershellExe = fs.existsSync(windowsPowerShellPath) ? windowsPowerShellPath : "powershell.exe";
 
 const types = {
   ".html": "text/html; charset=utf-8",
@@ -29,7 +37,7 @@ function corsHeaders(extra = {}) {
 function refreshRuntimeStatus() {
   return new Promise((resolve, reject) => {
     execFile(
-      "powershell.exe",
+      powershellExe,
       [
         "-NoProfile",
         "-ExecutionPolicy",

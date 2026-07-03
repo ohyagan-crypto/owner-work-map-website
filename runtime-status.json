@@ -1,27 +1,32 @@
 {
     "statusKey":  "running",
     "statusLabel":  "運作中",
-    "headline":  "徹底修復你自己一次ˉ",
+    "headline":  "補充： 1.我不要安全邊界 2.技能包要詳細列出來 功能也要 使用場景 3.有監控項目也有顯示在儀表盤網站狀態",
     "blocker":  "沒有卡點",
     "nextAction":  "完成後更新交付結果、網址、檔案路徑或明確卡點。",
-    "updatedAt":  "2026-07-02T21:29:33+08:00",
-    "checkedAt":  "2026-07-02T21:29:33+08:00",
+    "updatedAt":  "2026-07-03T14:29:30+08:00",
+    "checkedAt":  "2026-07-03T14:29:30+08:00",
     "sourceType":  "local-generator",
     "sourceLabel":  "本機即時狀態產生器",
-    "refreshSeconds":  5,
+    "refreshSeconds":  1,
     "token":  {
-                  "totalTokens":  47419336,
-                  "taskCount":  38,
+                  "totalTokens":  66358894,
+                  "taskCount":  16,
                   "source":  "本機 Codex 執行緒紀錄"
               },
     "heartbeat":  {
-                      "ageSeconds":  7,
-                      "activeRequests":  1,
-                      "model":  "gpt-5.5",
-                      "reasoningEffort":  "low"
+                      "name":  "蝦咩",
+                      "ageSeconds":  3,
+                      "activeRequests":  1
                   },
+    "openclaw":  {
+                     "name":  "嵐熙",
+                     "statusKey":  "running",
+                     "statusLabel":  "正常",
+                     "processCount":  5,
+                     "watchdogState":  "Running"
+                 },
     "deliverables":  [
-                         "完整複製包：full_codex_clone_20260702_191206.zip",
                          "公開總控台：GitHub Pages",
                          "狀態資料：runtime-status.json"
                      ]

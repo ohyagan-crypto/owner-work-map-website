@@ -3,19 +3,20 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>主人工作總控台</title>
+  <title>蝦咩 × 嵐熙即時總控台</title>
   <link rel="icon" href="data:,">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header class="topbar">
     <div>
-      <p class="eyebrow">Codex / OpenClaw / Telegram</p>
-      <h1>主人工作總控台</h1>
+      <p class="eyebrow">TGBOT / OpenClaw / Live Control</p>
+      <h1>蝦咩 × 嵐熙即時總控台</h1>
     </div>
     <div class="topbar-meta">
-      <span>更新日 2026-07-02</span>
-      <span>秒級狀態</span>
+      <span>更新日 2026-07-03</span>
+      <span id="localClock">讀取秒級時間</span>
+      <span>1 秒同步</span>
     </div>
   </header>
 
@@ -24,11 +25,17 @@
       <div class="dashboard-head">
         <div>
           <p class="eyebrow">Live Status</p>
-          <h2>目前狀態、卡點、回覆與用量</h2>
-          <p class="dashboard-subtitle">按下重新整理時，會優先讀取本機即時 API；連不上才退回公開快照。</p>
+          <h2>蝦咩與嵐熙的秒級狀態雷達</h2>
+          <p class="dashboard-subtitle">每 1 秒讀取最新狀態；按下重新整理會優先同步本機即時 API，並顯示清楚的互動回饋。</p>
         </div>
         <span class="state-pill" id="statePill">讀取中</span>
       </div>
+
+      <div class="signal-ribbon" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+
+      <div class="agent-strip" id="agentStrip"></div>
 
       <div class="dashboard-grid">
         <article class="status-card primary-status">
@@ -48,8 +55,8 @@
         </article>
         <article class="status-card">
           <span>最新檢查</span>
-          <strong id="updatedAt">--</strong>
-          <p id="refreshNote">頁面會自動重新讀取狀態資料。</p>
+          <strong id="liveAge">--</strong>
+          <p><span id="updatedAt">--</span><br><span id="refreshNote">頁面會每秒重新讀取狀態資料。</span></p>
         </article>
       </div>
 
@@ -60,7 +67,8 @@
             <span class="refresh-icon" aria-hidden="true">↻</span>
             <span class="refresh-label">重新整理狀態</span>
           </button>
-          <span class="refresh-feedback" id="refreshFeedback">每 5 秒自動讀取狀態。</span>
+          <div class="effect-layer" id="refreshEffectLayer" aria-hidden="true"></div>
+          <span class="refresh-feedback" id="refreshFeedback">每 1 秒自動讀取狀態。</span>
         </div>
       </div>
     </section>
@@ -161,7 +169,7 @@
     <span>資料來源：本機技能索引、記憶索引、Codex 心跳、Telegram 任務狀態與 token 統計快照。</span>
   </footer>
 
-  <script src="live-status-config.js?v=20260702-2130"></script>
-  <script src="app.js?v=20260702-2130"></script>
+  <script src="live-status-config.js?v=20260703-1600"></script>
+  <script src="app.js?v=20260703-1600"></script>
 </body>
 </html>

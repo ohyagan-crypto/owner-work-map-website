@@ -130,10 +130,58 @@ function Test-MojibakeText {
     return $Text -match "[涓锛熼闂荤冧]"
 }
 
+function Get-OpenClawSummary {
+    $processCount = $null
+    try {
+        $rows = Get-CimInstance Win32_Process -ErrorAction Stop |
+            Where-Object { $_.ProcessId -ne $PID -and $_.CommandLine -match "openclaw|gateway --port 18789" }
+        $processCount = @($rows).Count
+    } catch {
+        $processCount = $null
+    }
+
+    $watchdogState = "未取得"
+    try {
+        $task = Get-ScheduledTask -TaskName "OpenClaw Watchdog" -ErrorAction SilentlyContinue
+        if ($task) { $watchdogState = [string]$task.State }
+    } catch {
+        $watchdogState = "未取得"
+    }
+
+    if ($null -eq $processCount) {
+        return [pscustomobject]@{
+            name = "嵐熙"
+            statusKey = "watch"
+            statusLabel = "未確認"
+            processCount = $null
+            watchdogState = $watchdogState
+        }
+    }
+
+    if ($processCount -gt 0) {
+        return [pscustomobject]@{
+            name = "嵐熙"
+            statusKey = "running"
+            statusLabel = "正常"
+            processCount = $processCount
+            watchdogState = $watchdogState
+        }
+    }
+
+    return [pscustomobject]@{
+        name = "嵐熙"
+        statusKey = "watch"
+        statusLabel = "未偵測到進程"
+        processCount = 0
+        watchdogState = $watchdogState
+    }
+}
+
 $now = Get-Date
 $heartbeat = Read-JsonFile -Path $HeartbeatPath
 $request = Get-NewestRequestRecord
 $token = Get-TokenSummary -TargetDate $Date
+$openclaw = Get-OpenClawSummary
 
 $statusKey = "standby"
 $statusLabel = "正常待命"
@@ -243,20 +291,25 @@ $payload = [ordered]@{
     checkedAt = $now.ToString("yyyy-MM-ddTHH:mm:sszzz")
     sourceType = "local-generator"
     sourceLabel = "本機即時狀態產生器"
-    refreshSeconds = 5
+    refreshSeconds = 1
     token = [ordered]@{
         totalTokens = $token.totalTokens
         taskCount = $token.taskCount
         source = $token.source
     }
     heartbeat = [ordered]@{
+        name = "蝦咩"
         ageSeconds = $heartbeatAge
         activeRequests = if ($heartbeat -and $heartbeat.PSObject.Properties.Item("active_requests")) { $heartbeat.active_requests } else { $null }
-        model = if ($heartbeat -and $heartbeat.PSObject.Properties.Item("model")) { $heartbeat.model } else { $null }
-        reasoningEffort = if ($heartbeat -and $heartbeat.PSObject.Properties.Item("reasoning_effort")) { $heartbeat.reasoning_effort } else { $null }
+    }
+    openclaw = [ordered]@{
+        name = $openclaw.name
+        statusKey = $openclaw.statusKey
+        statusLabel = $openclaw.statusLabel
+        processCount = $openclaw.processCount
+        watchdogState = $openclaw.watchdogState
     }
     deliverables = @(
-        "完整複製包：full_codex_clone_20260702_191206.zip",
         "公開總控台：GitHub Pages",
         "狀態資料：runtime-status.json"
     )

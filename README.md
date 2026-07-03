@@ -4,8 +4,9 @@
 
 這是一個公開工作總覽網站，用來集中查看：
 
-- 目前 Codex / Telegram 運作狀態
+- 目前蝦咩 TGBOT / 嵐熙 OpenClaw 運作狀態
 - 今日可驗證 token 使用量
+- 1 秒級自動刷新與手動刷新特效
 - 已完成的 Roadmap 項目
 - 任務型 SOP 圖書館
 - 技能主力版與歷史版分流
@@ -19,7 +20,7 @@
 powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\update-runtime-status.ps1
 ```
 
-會從本機心跳、Telegram 請求狀態與 token 統計產生 `runtime-status.json`。
+會從本機心跳、Telegram 請求狀態、OpenClaw 摘要與 token 統計產生 `runtime-status.json`。
 
 ## 安全說明
 
