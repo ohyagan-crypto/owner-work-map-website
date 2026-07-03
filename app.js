@@ -117,6 +117,10 @@ async function fetchJson(url) {
   return response.json();
 }
 
+function canUseLocalStatusApi() {
+  return ["localhost", "127.0.0.1"].includes(window.location.hostname);
+}
+
 async function loadRuntimeStatus(options = {}) {
   const isManual = Boolean(options.manual);
   if (isManual) {
@@ -126,11 +130,17 @@ async function loadRuntimeStatus(options = {}) {
 
   try {
     let data = null;
-    try {
-      data = await fetchJson(`api/status?ts=${Date.now()}`);
-      data.sourceType = data.sourceType || "live-api";
-      data.sourceLabel = data.sourceLabel || "本機即時狀態";
-    } catch {
+    if (canUseLocalStatusApi()) {
+      try {
+        data = await fetchJson(`api/status?ts=${Date.now()}`);
+        data.sourceType = data.sourceType || "live-api";
+        data.sourceLabel = data.sourceLabel || "本機即時狀態";
+      } catch {
+        data = null;
+      }
+    }
+
+    if (!data) {
       data = await fetchJson(`runtime-status.json?ts=${Date.now()}`);
       data.sourceType = data.sourceType || "snapshot";
       data.sourceLabel = data.sourceLabel || "GitHub Pages 公開快照";
