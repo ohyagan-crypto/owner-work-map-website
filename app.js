@@ -13,6 +13,12 @@ const dashboardStats = [
 
 const completedItems = [
   {
+    title: "手機排版與全頁科技底修正",
+    status: "已套用",
+    summary: "依截圖修正文字被壓縮、排版不齊與白色區塊問題，手機版改成可完整閱讀的狀態卡與深色科技背景。",
+    points: ["總覽卡片可換行不省略", "窄螢幕欄位改完整寬度", "全頁卡片、表格、時間軸統一深色科技底"]
+  },
+  {
     title: "蝦咩與嵐熙左右分類",
     status: "已套用",
     summary: "頂部儀表盤改為左欄只放蝦咩 TGBOT / Telegram / Codex 狀態，右欄只放嵐熙 OpenClaw / 自動化 / 快照狀態。",
