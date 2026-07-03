@@ -16,6 +16,7 @@ if (-not $SiteRoot) {
 
 $HeartbeatPath = Join-Path $BotRoot "codex_bot_heartbeat.json"
 $RequestStatusPath = Join-Path $BotRoot "telegram_request_status.json"
+$RecentUploadsPath = Join-Path $BotRoot "telegram_recent_uploads.json"
 $UsagePath = Join-Path $BotRoot "codex_token_usage.jsonl"
 $StateDb = "C:\Users\max\.codex\state_5.sqlite"
 if (-not $OutputPath.Trim()) {
@@ -130,6 +131,34 @@ function Test-MojibakeText {
     return $Text -match "[涓锛熼闂荤冧]"
 }
 
+function Normalize-TaskText {
+    param([string]$Text, [int]$Limit = 180)
+    if (-not $Text) { return "" }
+    $clean = ($Text -replace "\s+", " ").Trim()
+    if ($clean.Length -gt $Limit) {
+        return $clean.Substring(0, $Limit).Trim() + "..."
+    }
+    return $clean
+}
+
+function Get-NewestUploadCaption {
+    $data = Read-JsonFile -Path $RecentUploadsPath
+    if ($null -eq $data) { return "" }
+    $records = @()
+    foreach ($property in $data.PSObject.Properties) {
+        if ($property.Value) { $records += $property.Value }
+    }
+    if ($records.Count -eq 0) { return "" }
+
+    $latest = $records |
+        Where-Object { $_.caption -and -not (Test-MojibakeText ([string]$_.caption)) } |
+        Sort-Object { if ($_.ts) { [double]$_.ts } else { 0 } } |
+        Select-Object -Last 1
+
+    if (-not $latest) { return "" }
+    return Normalize-TaskText -Text ([string]$latest.caption)
+}
+
 function Get-OpenClawSummary {
     $processCount = $null
     try {
@@ -180,6 +209,7 @@ function Get-OpenClawSummary {
 $now = Get-Date
 $heartbeat = Read-JsonFile -Path $HeartbeatPath
 $request = Get-NewestRequestRecord
+$uploadCaption = Get-NewestUploadCaption
 $token = Get-TokenSummary -TargetDate $Date
 $openclaw = Get-OpenClawSummary
 
@@ -273,8 +303,15 @@ if ($heartbeatAge -gt 120) {
 
 if ($CurrentTask.Trim()) {
     $headline = $CurrentTask.Trim()
+} elseif (
+    $uploadCaption -and
+    $request -and
+    $request.task -and
+    ([string]$request.task).Trim() -match "^(讀取照片|讀取文件|安裝文件|安裝檔案)(\s|$)"
+) {
+    $headline = $uploadCaption
 } elseif ($request -and $request.task -and -not (Test-MojibakeText ([string]$request.task))) {
-    $headline = [string]$request.task
+    $headline = Normalize-TaskText -Text ([string]$request.task)
 }
 
 if (-not $NextAction.Trim()) {

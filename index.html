@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>蝦咩 x 嵐熙即時總控台</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="styles.css?v=20260703-1538">
+  <link rel="stylesheet" href="styles.css?v=20260703-1552">
 </head>
 <body>
   <header class="topbar">
@@ -31,52 +31,57 @@
         <span class="state-pill" id="statePill">讀取中</span>
       </div>
 
-      <div class="signal-ribbon" aria-hidden="true">
-        <span></span><span></span><span></span><span></span><span></span>
-      </div>
-
-      <div class="agent-strip" id="agentStrip"></div>
-
-      <div class="dashboard-grid">
-        <article class="status-card primary-status">
-          <span>目前狀態</span>
-          <strong id="statusLabel">讀取中</strong>
-          <p id="statusHeadline">正在讀取本機即時狀態。</p>
-        </article>
-        <article class="status-card">
-          <span>今日 token</span>
-          <strong id="todayTokens">--</strong>
-          <p id="tokenSource">等待統計來源。</p>
-        </article>
-        <article class="status-card">
-          <span>目前卡點</span>
-          <strong id="blockerText">讀取中</strong>
-          <p id="nextAction">等待同步資料。</p>
-        </article>
-        <article class="status-card">
-          <span>最新檢查</span>
-          <strong id="liveAge">--</strong>
-          <p><span id="updatedAt">--</span><br><span id="refreshNote">頁面每秒重新讀取狀態資料。</span></p>
-        </article>
-      </div>
-
-      <div class="monitor-panel">
-        <div class="monitor-panel-head">
-          <p class="eyebrow">Monitoring</p>
-          <h3>正在監控的項目</h3>
+      <div class="dashboard-live-layout">
+        <div class="dashboard-left">
+          <div class="signal-ribbon" aria-hidden="true">
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
+          <div class="agent-strip" id="agentStrip"></div>
         </div>
-        <div class="monitor-grid compact" id="monitorGrid"></div>
-      </div>
 
-      <div class="dashboard-footer">
-        <div class="mini-list" id="deliverableList"></div>
-        <div class="refresh-panel">
-          <button type="button" id="refreshStatus" aria-describedby="refreshFeedback">
-            <span class="refresh-icon" aria-hidden="true">↻</span>
-            <span class="refresh-label">重新整理狀態</span>
-          </button>
-          <div class="effect-layer" id="refreshEffectLayer" aria-hidden="true"></div>
-          <span class="refresh-feedback" id="refreshFeedback">每 1 秒自動讀取狀態。</span>
+        <div class="dashboard-right">
+          <div class="dashboard-grid">
+            <article class="status-card primary-status">
+              <span>目前狀態</span>
+              <strong id="statusLabel">讀取中</strong>
+              <p id="statusHeadline">正在讀取本機即時狀態。</p>
+            </article>
+            <article class="status-card">
+              <span>今日 token</span>
+              <strong id="todayTokens">--</strong>
+              <p id="tokenSource">等待統計來源。</p>
+            </article>
+            <article class="status-card">
+              <span>目前卡點</span>
+              <strong id="blockerText">讀取中</strong>
+              <p id="nextAction">等待同步資料。</p>
+            </article>
+            <article class="status-card">
+              <span>最新檢查</span>
+              <strong id="liveAge">--</strong>
+              <p><span id="updatedAt">--</span><br><span id="refreshNote">頁面每秒重新讀取狀態資料。</span></p>
+            </article>
+          </div>
+
+          <div class="monitor-panel">
+            <div class="monitor-panel-head">
+              <p class="eyebrow">Monitoring</p>
+              <h3>正在監控的項目</h3>
+            </div>
+            <div class="monitor-grid compact" id="monitorGrid"></div>
+          </div>
+
+          <div class="dashboard-footer">
+            <div class="mini-list" id="deliverableList"></div>
+            <div class="refresh-panel">
+              <button type="button" id="refreshStatus" aria-describedby="refreshFeedback">
+                <span class="refresh-icon" aria-hidden="true">↻</span>
+                <span class="refresh-label">重新整理狀態</span>
+              </button>
+              <div class="effect-layer" id="refreshEffectLayer" aria-hidden="true"></div>
+              <span class="refresh-feedback" id="refreshFeedback">每 1 秒自動讀取狀態。</span>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -177,7 +182,7 @@
     <span>資料來源：本機技能索引、記憶索引、Codex 心跳、Telegram 任務狀態、OpenClaw 摘要與 GitHub Pages 快照。</span>
   </footer>
 
-  <script src="live-status-config.js?v=20260703-1538"></script>
-  <script src="app.js?v=20260703-1538"></script>
+  <script src="live-status-config.js?v=20260703-1552"></script>
+  <script src="app.js?v=20260703-1552"></script>
 </body>
 </html>
