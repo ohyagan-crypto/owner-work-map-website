@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>蝦咩 x 嵐熙即時總控台</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="styles.css?v=20260703-1627">
+  <link rel="stylesheet" href="styles.css?v=20260703-1731">
 </head>
 <body>
   <header class="topbar">
@@ -31,25 +31,61 @@
         <span class="state-pill" id="statePill">讀取中</span>
       </div>
 
-      <div class="dashboard-live-layout">
-        <div class="dashboard-left">
-          <div class="signal-ribbon" aria-hidden="true">
-            <span></span><span></span><span></span><span></span><span></span>
-          </div>
-          <div class="agent-strip" id="agentStrip"></div>
-        </div>
+      <div class="signal-ribbon" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
 
-        <div class="dashboard-right">
-          <div class="dashboard-grid">
+      <div class="dashboard-live-layout">
+        <section class="agent-status-column shami-column" aria-labelledby="shamiColumnTitle">
+          <div class="column-heading">
+            <p class="eyebrow">TGBOT / 左列</p>
+            <h3 id="shamiColumnTitle">蝦咩</h3>
+          </div>
+          <div class="agent-slot" id="shamiAgent"></div>
+
+          <div class="dashboard-grid actor-grid">
             <article class="status-card primary-status">
-              <span>目前狀態</span>
+              <span>蝦咩任務狀態</span>
               <strong id="statusLabel">讀取中</strong>
               <p id="statusHeadline">正在讀取本機即時狀態。</p>
+            </article>
+            <article class="status-card">
+              <span>當前任務指令</span>
+              <strong id="currentTaskText">--</strong>
+              <p>Telegram 最新任務只放在蝦咩左列。</p>
             </article>
             <article class="status-card">
               <span>今日 token</span>
               <strong id="todayTokens">--</strong>
               <p id="tokenSource">等待統計來源。</p>
+            </article>
+          </div>
+
+          <div class="monitor-panel">
+            <div class="monitor-panel-head">
+              <p class="eyebrow">Shami Monitoring</p>
+              <h3>蝦咩監控</h3>
+            </div>
+            <div class="monitor-grid compact actor-monitor-grid" id="shamiMonitorGrid"></div>
+          </div>
+
+          <div class="dashboard-footer column-footer">
+            <div class="mini-list" id="deliverableList"></div>
+          </div>
+        </section>
+
+        <section class="agent-status-column lanxi-column" aria-labelledby="lanxiColumnTitle">
+          <div class="column-heading">
+            <p class="eyebrow">OpenClaw / 右列</p>
+            <h3 id="lanxiColumnTitle">嵐熙</h3>
+          </div>
+          <div class="agent-slot" id="lanxiAgent"></div>
+
+          <div class="dashboard-grid actor-grid">
+            <article class="status-card primary-status lanxi-primary-status">
+              <span>嵐熙自動化狀態</span>
+              <strong id="openclawStatusLabel">讀取中</strong>
+              <p id="openclawStatusDetail">正在讀取 OpenClaw 狀態。</p>
             </article>
             <article class="status-card">
               <span>目前卡點</span>
@@ -65,14 +101,13 @@
 
           <div class="monitor-panel">
             <div class="monitor-panel-head">
-              <p class="eyebrow">Monitoring</p>
-              <h3>正在監控的項目</h3>
+              <p class="eyebrow">Lanxi Monitoring</p>
+              <h3>嵐熙監控</h3>
             </div>
-            <div class="monitor-grid compact" id="monitorGrid"></div>
+            <div class="monitor-grid compact actor-monitor-grid" id="lanxiMonitorGrid"></div>
           </div>
 
-          <div class="dashboard-footer">
-            <div class="mini-list" id="deliverableList"></div>
+          <div class="dashboard-footer column-footer">
             <div class="refresh-panel">
               <button type="button" id="refreshStatus" aria-describedby="refreshFeedback">
                 <span class="refresh-icon" aria-hidden="true">↻</span>
@@ -82,7 +117,7 @@
               <span class="refresh-feedback" id="refreshFeedback">每 1 秒自動讀取狀態。</span>
             </div>
           </div>
-        </div>
+        </section>
       </div>
     </section>
 
@@ -123,7 +158,22 @@
         </div>
         <span class="status watch">秒級刷新</span>
       </div>
-      <div class="monitor-grid detail" id="monitorSectionGrid"></div>
+      <div class="monitor-section-columns">
+        <section class="monitor-section-column">
+          <div class="mini-section-title">
+            <p class="eyebrow">TGBOT / 左列</p>
+            <h3>蝦咩狀態</h3>
+          </div>
+          <div class="monitor-grid detail" id="shamiMonitorSectionGrid"></div>
+        </section>
+        <section class="monitor-section-column">
+          <div class="mini-section-title">
+            <p class="eyebrow">OpenClaw / 右列</p>
+            <h3>嵐熙狀態</h3>
+          </div>
+          <div class="monitor-grid detail" id="lanxiMonitorSectionGrid"></div>
+        </section>
+      </div>
     </section>
 
     <section id="skills" class="content-section">
@@ -182,7 +232,7 @@
     <span>資料來源：本機技能索引、記憶索引、Codex 心跳、Telegram 任務狀態、OpenClaw 摘要與 GitHub Pages 快照。</span>
   </footer>
 
-  <script src="live-status-config.js?v=20260703-1627"></script>
-  <script src="app.js?v=20260703-1627"></script>
+  <script src="live-status-config.js?v=20260703-1731"></script>
+  <script src="app.js?v=20260703-1731"></script>
 </body>
 </html>

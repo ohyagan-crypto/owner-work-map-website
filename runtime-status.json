@@ -1,18 +1,18 @@
 {
     "statusKey":  "running",
     "statusLabel":  "運作中",
-    "headline":  "這個介面左右並排顯示",
-    "currentTaskInstruction":  "這個介面左右並排顯示",
+    "headline":  "蝦咩 嵐熙 狀態要左右分類好 蝦咩都是左列 嵐熙是右列",
+    "currentTaskInstruction":  "蝦咩 嵐熙 狀態要左右分類好 蝦咩都是左列 嵐熙是右列",
     "blocker":  "沒有卡點",
-    "nextAction":  "完成後更新交付結果、網址、檔案路徑或明確卡點。",
-    "updatedAt":  "2026-07-03T16:30:48+08:00",
-    "checkedAt":  "2026-07-03T16:30:48+08:00",
+    "nextAction":  "已把狀態依人物來源分欄：蝦咩固定左列，嵐熙固定右列。",
+    "updatedAt":  "2026-07-03T17:42:08+08:00",
+    "checkedAt":  "2026-07-03T17:42:08+08:00",
     "sourceType":  "local-generator",
     "sourceLabel":  "本機即時狀態產生器",
     "refreshSeconds":  1,
     "token":  {
-                  "totalTokens":  89740518,
-                  "taskCount":  21,
+                  "totalTokens":  93408556,
+                  "taskCount":  22,
                   "source":  "本機 Codex 執行緒紀錄"
               },
     "heartbeat":  {
@@ -41,7 +41,7 @@
                          "label":  "Telegram 任務佇列",
                          "statusKey":  "running",
                          "statusLabel":  "運作中",
-                         "detail":  "這個介面左右並排顯示",
+                         "detail":  "蝦咩 嵐熙 狀態要左右分類好 蝦咩都是左列 嵐熙是右列",
                          "source":  "telegram_request_status.json"
                      },
                      {
@@ -65,7 +65,7 @@
                          "label":  "Codex token 統計",
                          "statusKey":  "running",
                          "statusLabel":  "已讀取",
-                         "detail":  "89740518 tokens，任務 21",
+                         "detail":  "93408556 tokens，任務 22",
                          "source":  "本機 Codex 執行緒紀錄"
                      },
                      {
@@ -73,7 +73,7 @@
                          "label":  "狀態產生器",
                          "statusKey":  "running",
                          "statusLabel":  "已更新",
-                         "detail":  "產生時間 2026-07-03 16:30:48",
+                         "detail":  "產生時間 2026-07-03 17:42:08",
                          "source":  "tools/update-runtime-status.ps1"
                      },
                      {

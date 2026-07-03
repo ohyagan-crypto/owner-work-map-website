@@ -251,23 +251,56 @@ main {
 
 .signal-ribbon,
 .dashboard-live-layout,
+.agent-status-column,
 .agent-strip,
 .dashboard-grid,
 .monitor-panel,
-.dashboard-footer {
+.dashboard-footer,
+.monitor-section-columns {
   position: relative;
   z-index: 1;
 }
 
 .dashboard-live-layout {
   display: grid;
-  grid-template-columns: minmax(300px, 0.92fr) minmax(0, 1.38fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
-  align-items: start;
+  align-items: stretch;
 }
 
-.dashboard-left,
-.dashboard-right {
+.agent-status-column {
+  min-width: 0;
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--status-line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.16);
+}
+
+.column-heading,
+.mini-section-title {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.column-heading h3,
+.mini-section-title h3 {
+  color: #fff;
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+.mini-section-title h3 {
+  color: var(--ink);
+  font-size: 20px;
+}
+
+.agent-slot {
   min-width: 0;
 }
 
@@ -307,6 +340,10 @@ main {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
+}
+
+.agent-slot .agent-card {
+  min-height: 166px;
 }
 
 .agent-card {
@@ -400,6 +437,10 @@ main {
   gap: 12px;
 }
 
+.actor-grid .status-card {
+  min-height: 132px;
+}
+
 .status-card,
 .stat-card,
 .card,
@@ -448,6 +489,12 @@ main {
     linear-gradient(135deg, rgba(33, 209, 139, 0.9) 0%, rgba(56, 168, 255, 0.74) 62%, rgba(213, 107, 255, 0.54) 100%);
 }
 
+.lanxi-primary-status {
+  border-color: rgba(213, 107, 255, 0.42);
+  background:
+    linear-gradient(135deg, rgba(56, 168, 255, 0.82) 0%, rgba(213, 107, 255, 0.64) 58%, rgba(255, 188, 66, 0.48) 100%);
+}
+
 .primary-status span,
 .primary-status p {
   color: rgba(255, 255, 255, 0.84);
@@ -485,6 +532,22 @@ main {
 
 .monitor-grid.detail {
   grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.monitor-section-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.monitor-section-column {
+  min-width: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.monitor-section-column .monitor-grid.detail {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .monitor-card {
@@ -551,6 +614,7 @@ main {
   color: #7b8884;
   font-size: 12px;
   font-weight: 760;
+  overflow-wrap: anywhere;
 }
 
 .status-dashboard .monitor-card small {
@@ -567,6 +631,11 @@ main {
   border: 1px solid var(--status-line);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.08);
+}
+
+.column-footer {
+  grid-template-columns: 1fr;
+  margin-top: 0;
 }
 
 .mini-list {
@@ -608,7 +677,6 @@ button,
   align-items: center;
   justify-content: center;
   gap: 8px;
-  white-space: nowrap;
   border-color: rgba(46, 233, 255, 0.42);
   background:
     linear-gradient(90deg, rgba(33, 209, 139, 0.22), rgba(46, 233, 255, 0.18), rgba(213, 107, 255, 0.2));
@@ -1029,8 +1097,13 @@ footer {
 
 @media (max-width: 900px) {
   .dashboard-live-layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+}
+
+.refresh-label {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 @media (max-width: 760px) {
@@ -1073,7 +1146,6 @@ footer {
     padding: 16px;
   }
 
-  .dashboard-live-layout,
   .dashboard-footer,
   .stat-grid,
   .item-grid,
@@ -1090,10 +1162,18 @@ footer {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .actor-grid,
+  .actor-monitor-grid,
+  .monitor-section-column .monitor-grid.detail {
+    grid-template-columns: 1fr;
+  }
+
   .signal-ribbon,
   .agent-strip,
   .dashboard-grid,
-  .monitor-grid.compact {
+  .monitor-grid.compact,
+  .dashboard-live-layout,
+  .monitor-section-columns {
     gap: 8px;
   }
 
@@ -1105,6 +1185,23 @@ footer {
     min-height: 176px;
     padding: 10px;
     gap: 8px;
+  }
+
+  .agent-status-column {
+    padding: 8px;
+    gap: 8px;
+  }
+
+  .column-heading,
+  .mini-section-title {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .column-heading h3,
+  .mini-section-title h3 {
+    font-size: 18px;
   }
 
   .agent-name b {
@@ -1131,7 +1228,7 @@ footer {
 
   .status-card {
     min-height: 112px;
-    padding: 12px;
+    padding: 10px;
   }
 
   .status-card strong {
