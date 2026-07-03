@@ -2614,3 +2614,484 @@ body.light-mode .theme-toggle {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Night visual upgrade 20260704-0030: calmer premium command center. */
+:root {
+  --night-bg: #06100f;
+  --night-ink: #f6fffb;
+  --night-muted: rgba(225, 246, 240, 0.72);
+  --night-panel: rgba(8, 24, 26, 0.82);
+  --night-panel-strong: rgba(11, 32, 34, 0.92);
+  --night-line: rgba(132, 234, 228, 0.22);
+  --night-line-strong: rgba(132, 234, 228, 0.38);
+  --night-cyan: #35d7e7;
+  --night-mint: #92f2b5;
+  --night-gold: #f0c36a;
+  --night-plum: #b989ff;
+}
+
+body {
+  background:
+    linear-gradient(120deg, rgba(53, 215, 231, 0.08), transparent 28%, rgba(146, 242, 181, 0.055) 72%, transparent),
+    linear-gradient(rgba(132, 234, 228, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(132, 234, 228, 0.035) 1px, transparent 1px),
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.026) 0 1px, transparent 1px 28px),
+    linear-gradient(145deg, #06100f 0%, #0a1c1d 48%, #101412 100%);
+  background-size: auto, 32px 32px, 32px 32px, auto, auto;
+}
+
+body::before {
+  background:
+    linear-gradient(180deg, rgba(53, 215, 231, 0.1), transparent 34%, rgba(240, 195, 106, 0.035) 82%, transparent),
+    repeating-linear-gradient(90deg, transparent 0 112px, rgba(132, 234, 228, 0.055) 112px 113px, transparent 113px 224px);
+  opacity: 0.38;
+}
+
+body::after {
+  opacity: 0.12;
+}
+
+.topbar {
+  width: min(1240px, calc(100% - 48px));
+  min-height: 88px;
+  padding: 22px 0 14px;
+}
+
+.topbar h1 {
+  font-size: clamp(34px, 3.2vw, 50px);
+  line-height: 1.02;
+  color: var(--night-ink);
+  text-shadow: 0 0 28px rgba(53, 215, 231, 0.18);
+}
+
+.topbar-meta span,
+.theme-toggle,
+.status,
+.state-pill {
+  border-color: var(--night-line);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.035)),
+    rgba(7, 24, 26, 0.76);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.16);
+}
+
+.status-dashboard {
+  gap: 16px;
+  padding: 18px;
+  border-color: rgba(53, 215, 231, 0.34);
+  background:
+    linear-gradient(135deg, rgba(53, 215, 231, 0.11), transparent 24%, transparent 72%, rgba(185, 137, 255, 0.08)),
+    linear-gradient(rgba(132, 234, 228, 0.058) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(132, 234, 228, 0.042) 1px, transparent 1px),
+    linear-gradient(155deg, rgba(6, 16, 15, 0.98), rgba(9, 31, 33, 0.96) 50%, rgba(15, 18, 16, 0.94));
+  background-size: auto, 34px 34px, 34px 34px, auto;
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.38),
+    0 0 0 1px rgba(132, 234, 228, 0.12) inset,
+    0 0 64px rgba(53, 215, 231, 0.1) inset;
+}
+
+.status-dashboard::before {
+  opacity: 0.32;
+}
+
+.status-dashboard::after {
+  opacity: 0.09;
+}
+
+.command-strip {
+  grid-template-columns:
+    minmax(152px, 0.86fr)
+    repeat(2, minmax(116px, 0.58fr))
+    minmax(156px, 0.78fr)
+    minmax(184px, 1.08fr)
+    minmax(204px, 1.16fr)
+    minmax(142px, 0.72fr);
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.command-chip,
+.energy-ring-card,
+.micro-panel,
+.dashboard-control-rail,
+.mission-board,
+.dashboard-tool-panel {
+  border-color: var(--night-line);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.082), rgba(255, 255, 255, 0.032)),
+    var(--night-panel);
+  box-shadow:
+    0 18px 42px rgba(0, 0, 0, 0.26),
+    0 0 0 1px rgba(255, 255, 255, 0.035) inset,
+    0 0 32px rgba(53, 215, 231, 0.07) inset;
+}
+
+.command-chip {
+  min-height: 88px;
+  padding: 12px;
+}
+
+.command-chip::before {
+  width: 2px;
+  background: linear-gradient(180deg, var(--night-cyan), var(--night-mint));
+}
+
+.command-chip::after {
+  opacity: 0.36;
+  animation-duration: 5.2s;
+}
+
+.command-chip span,
+.command-chip small,
+.energy-ring-card span,
+.micro-panel span {
+  color: var(--night-muted);
+}
+
+.command-chip b,
+.energy-ring-card b,
+.micro-panel b {
+  font-size: clamp(17px, 1.34vw, 21px);
+}
+
+.sync-chip {
+  border-color: rgba(146, 242, 181, 0.42);
+  background:
+    linear-gradient(135deg, rgba(146, 242, 181, 0.12), rgba(53, 215, 231, 0.08)),
+    rgba(8, 27, 24, 0.86);
+}
+
+.lanxi-chip,
+.lanxi-task-chip {
+  border-color: rgba(185, 137, 255, 0.34);
+}
+
+.skill-chip {
+  border-color: rgba(240, 195, 106, 0.34);
+}
+
+#refreshStatus {
+  border-color: rgba(132, 234, 228, 0.32);
+  background:
+    linear-gradient(135deg, rgba(53, 215, 231, 0.24), rgba(185, 137, 255, 0.16)),
+    rgba(255, 255, 255, 0.04);
+}
+
+.dashboard-unified-grid {
+  grid-template-columns: minmax(250px, 300px) minmax(0, 1fr);
+  gap: 16px;
+}
+
+.dashboard-control-rail {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.028)),
+    rgba(6, 19, 20, 0.78);
+}
+
+.energy-ring-card {
+  grid-template-columns: 86px minmax(0, 1fr);
+  min-height: 112px;
+}
+
+.energy-ring {
+  width: 76px;
+  background:
+    radial-gradient(circle at center, rgba(7, 19, 18, 0.96) 0 56%, transparent 57%),
+    conic-gradient(var(--night-mint) calc(var(--energy) * 1%), rgba(255, 255, 255, 0.13) 0);
+  box-shadow: 0 0 26px rgba(146, 242, 181, 0.18);
+}
+
+.dashboard-stat-strip .stat-card,
+.status-card,
+.agent-card,
+.monitor-card,
+.summary-chip,
+.skill-card,
+.skill-group-card {
+  border-color: rgba(132, 234, 228, 0.18);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.086), rgba(255, 255, 255, 0.034)),
+    rgba(8, 27, 29, 0.74);
+}
+
+.mission-board {
+  padding: 16px;
+  background:
+    linear-gradient(145deg, rgba(53, 215, 231, 0.08), rgba(255, 255, 255, 0.035) 40%, rgba(185, 137, 255, 0.055)),
+    rgba(8, 25, 27, 0.82);
+}
+
+.mission-board-head {
+  align-items: center;
+  border-bottom-color: rgba(132, 234, 228, 0.18);
+}
+
+.mission-board-head h2 {
+  max-width: 760px;
+  font-size: clamp(22px, 2vw, 28px);
+}
+
+.mission-board .quick-actions {
+  gap: 8px;
+}
+
+.quick-actions a {
+  min-height: 38px;
+  border: 1px solid rgba(132, 234, 228, 0.16);
+  background: rgba(2, 12, 13, 0.62);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.16);
+}
+
+.quick-actions a:hover {
+  border-color: rgba(132, 234, 228, 0.42);
+  background: rgba(53, 215, 231, 0.14);
+}
+
+.dashboard-live-layout {
+  gap: 16px;
+}
+
+.dashboard-live-layout::before {
+  background: linear-gradient(180deg, transparent, rgba(132, 234, 228, 0.48), rgba(240, 195, 106, 0.28), transparent);
+}
+
+.shami-column {
+  --column-accent: var(--night-cyan);
+  --column-accent-soft: rgba(53, 215, 231, 0.14);
+}
+
+.lanxi-column {
+  --column-accent: var(--night-plum);
+  --column-accent-soft: rgba(185, 137, 255, 0.13);
+}
+
+.agent-status-column {
+  padding: 16px;
+  border-color: rgba(132, 234, 228, 0.18);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.084), transparent 34%),
+    linear-gradient(140deg, var(--column-accent-soft), rgba(255, 255, 255, 0.038) 46%, rgba(255, 255, 255, 0.06)),
+    rgba(5, 20, 22, 0.72);
+}
+
+.column-heading {
+  border-bottom-color: rgba(132, 234, 228, 0.16);
+}
+
+.column-heading h3 {
+  font-size: clamp(23px, 2.15vw, 30px);
+}
+
+.agent-card {
+  min-height: 146px;
+}
+
+.agent-slot .agent-card {
+  min-height: 154px;
+}
+
+.primary-status {
+  border-color: rgba(53, 215, 231, 0.42);
+  background:
+    linear-gradient(135deg, rgba(53, 215, 231, 0.42), rgba(20, 76, 80, 0.72) 48%, rgba(146, 242, 181, 0.22)),
+    rgba(7, 28, 30, 0.88);
+}
+
+.lanxi-primary-status {
+  border-color: rgba(185, 137, 255, 0.42);
+  background:
+    linear-gradient(135deg, rgba(185, 137, 255, 0.42), rgba(42, 38, 72, 0.74) 52%, rgba(240, 195, 106, 0.18)),
+    rgba(12, 22, 31, 0.88);
+}
+
+.status-card strong {
+  font-size: clamp(24px, 2.3vw, 31px);
+}
+
+.task-status-card strong {
+  font-size: clamp(23px, 2vw, 29px);
+}
+
+.signal-ribbon {
+  margin: 6px 2px 10px;
+  opacity: 0.68;
+}
+
+@media (max-width: 900px) {
+  .command-strip {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .dashboard-unified-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .topbar,
+  main,
+  footer {
+    width: min(100% - 16px, 1240px);
+  }
+
+  .topbar {
+    min-height: 0;
+    gap: 12px;
+    padding: 24px 0 10px;
+  }
+
+  .topbar h1 {
+    font-size: clamp(29px, 8vw, 34px);
+  }
+
+  .topbar-meta {
+    gap: 8px;
+  }
+
+  .topbar-meta span,
+  .theme-toggle {
+    min-height: 34px;
+    padding: 4px 9px;
+  }
+
+  .status-dashboard {
+    gap: 12px;
+    padding: 10px;
+  }
+
+  .command-strip {
+    display: flex;
+    gap: 8px;
+    max-width: 100%;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    padding: 0 0 4px;
+    scrollbar-width: thin;
+  }
+
+  .command-chip,
+  .sync-chip,
+  .skill-chip,
+  .task-chip,
+  .lanxi-task-chip,
+  .updated-chip {
+    grid-column: auto;
+    flex: 0 0 178px;
+    min-height: 106px;
+    padding: 10px;
+  }
+
+  .sync-chip {
+    flex-basis: 216px;
+  }
+
+  .skill-chip {
+    flex-basis: 210px;
+  }
+
+  .task-chip,
+  .lanxi-task-chip {
+    flex-basis: 252px;
+  }
+
+  .updated-chip {
+    flex-basis: 208px;
+  }
+
+  .command-chip b {
+    font-size: 18px;
+  }
+
+  .dashboard-unified-grid {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mission-board {
+    order: -1;
+    padding: 11px;
+  }
+
+  .dashboard-control-rail {
+    order: 0;
+    padding: 11px;
+  }
+
+  .mission-board-head {
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .mission-board-head h2 {
+    font-size: 20px;
+  }
+
+  .mission-board .quick-actions {
+    width: 100%;
+  }
+
+  .quick-actions a {
+    flex: 1 1 0;
+    min-height: 36px;
+  }
+
+  .dashboard-live-layout {
+    gap: 8px;
+  }
+
+  .agent-status-column {
+    padding: 9px;
+  }
+
+  .agent-slot .agent-card {
+    min-height: 132px;
+  }
+
+  .agent-card {
+    min-height: 128px;
+  }
+
+  .actor-grid .status-card {
+    min-height: 106px;
+  }
+
+  .status-card strong,
+  .task-status-card strong {
+    font-size: clamp(18px, 5vw, 22px);
+  }
+
+  .energy-ring-card {
+    grid-template-columns: 78px minmax(0, 1fr);
+  }
+
+  .energy-ring {
+    width: 68px;
+  }
+}
+
+@media (max-width: 440px) {
+  .topbar h1 {
+    font-size: 29px;
+  }
+
+  .command-strip {
+    grid-template-columns: none;
+  }
+
+  .mission-board-head h2 {
+    font-size: 18px;
+  }
+
+  .column-heading h3 {
+    font-size: 20px;
+  }
+
+  .agent-name b {
+    font-size: 16px;
+  }
+
+  .agent-task b {
+    font-size: 12px;
+  }
+}
