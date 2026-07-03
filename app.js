@@ -1023,6 +1023,7 @@ function renderRuntimeStatus(data) {
   $("#deliverableList").innerHTML = deliverables.length
     ? deliverables.map((item) => `<span>${escapeHtml(item)}</span>`).join("")
     : "<span>目前沒有新的交付檔案</span>";
+  renderAiEnhancements(status, displayTime);
   renderAgentStrip(status);
   renderMonitoring(status);
   updateLiveClock();
@@ -1145,6 +1146,20 @@ function bindInteractions() {
     refreshButton.addEventListener("click", () => loadRuntimeStatus({ manual: true }));
   }
 
+  const themeToggle = $("#themeToggle");
+  if (themeToggle) {
+    const savedTheme = window.localStorage.getItem("ownerDashboardTheme");
+    if (savedTheme === "light") {
+      document.body.classList.add("light-mode");
+      themeToggle.setAttribute("aria-pressed", "true");
+    }
+    themeToggle.addEventListener("click", () => {
+      const isLight = document.body.classList.toggle("light-mode");
+      themeToggle.setAttribute("aria-pressed", String(isLight));
+      window.localStorage.setItem("ownerDashboardTheme", isLight ? "light" : "dark");
+    });
+  }
+
   const search = $("#skillSearch");
   if (search) {
     search.addEventListener("input", (event) => {
@@ -1152,6 +1167,29 @@ function bindInteractions() {
       renderSkills();
     });
   }
+}
+
+function setTextIfPresent(selector, value) {
+  const element = $(selector);
+  if (element) element.textContent = value;
+}
+
+function renderAiEnhancements(status, displayTime) {
+  const heartbeatAge = Number(status.heartbeat?.ageSeconds);
+  const hasFreshHeartbeat = Number.isFinite(heartbeatAge) && heartbeatAge <= 120;
+  const hasOpenclaw = Number(status.openclaw?.processCount || 0) > 0;
+  const isBlocked = statusTone(status.statusKey || "") === "blocked" || Boolean(status.blocker && !String(status.blocker).includes("沒有"));
+  const energy = Math.max(18, Math.min(98, 44 + (hasFreshHeartbeat ? 22 : 0) + (hasOpenclaw ? 18 : 0) + (!isBlocked ? 10 : -18)));
+  const energyRing = $("#energyRing");
+
+  setTextIfPresent("#chipShamiStatus", status.statusLabel || "同步中");
+  setTextIfPresent("#chipLanxiStatus", status.openclaw?.statusLabel || "同步中");
+  setTextIfPresent("#chipCurrentTask", currentTaskInstruction(status));
+  setTextIfPresent("#chipUpdatedAt", formatDateTime(displayTime));
+  setTextIfPresent("#energyValue", `${energy}%`);
+  setTextIfPresent("#energyLabel", energy >= 80 ? "高活躍運作" : energy >= 60 ? "穩定運作" : energy >= 40 ? "觀察中" : "需要確認");
+
+  if (energyRing) energyRing.style.setProperty("--energy", String(energy));
 }
 
 function init() {

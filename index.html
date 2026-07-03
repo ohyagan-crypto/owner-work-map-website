@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>蝦咩 x 嵐熙即時總控台</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="styles.css?v=20260703-175854">
+  <link rel="stylesheet" href="styles.css?v=20260703-203000">
 </head>
 <body>
   <header class="topbar">
@@ -14,6 +14,7 @@
       <h1>蝦咩 x 嵐熙即時總控台</h1>
     </div>
     <div class="topbar-meta">
+      <button type="button" class="theme-toggle" id="themeToggle" aria-pressed="false" title="切換深色與亮色模式">◐</button>
       <span>版本 2026-07-03</span>
       <span id="localClock">讀取秒級時間</span>
       <span>1 秒即時刷新</span>
@@ -22,97 +23,55 @@
 
   <main>
     <section class="status-dashboard" id="status-dashboard" aria-live="polite">
-      <div class="dashboard-head">
-        <div>
-          <p class="eyebrow">Live Status</p>
-          <h2>蝦咩與嵐熙的狀態雷達</h2>
-          <p class="dashboard-subtitle">每 1 秒同步公開快照；點擊重新整理會重新抓取狀態並觸發多巴胺科技特效。</p>
-        </div>
-        <span class="state-pill" id="statePill">讀取中</span>
+      <span class="state-pill sr-only" id="statePill">讀取中</span>
+      <div class="command-strip" aria-label="總覽狀態">
+        <div class="command-chip shami-chip"><span>蝦咩狀態</span><b id="chipShamiStatus">讀取中</b></div>
+        <div class="command-chip lanxi-chip"><span>嵐熙狀態</span><b id="chipLanxiStatus">讀取中</b></div>
+        <div class="command-chip task-chip"><span>目前任務</span><b id="chipCurrentTask">同步中</b></div>
+        <div class="command-chip"><span>最後更新</span><b id="chipUpdatedAt">--</b></div>
       </div>
 
-      <div class="signal-ribbon" aria-hidden="true">
-        <span></span><span></span><span></span><span></span><span></span>
+      <div class="ai-metrics">
+        <article class="energy-ring-card">
+          <div class="energy-ring" id="energyRing" style="--energy: 72"><span id="energyValue">72%</span></div>
+          <div><span>系統活躍度</span><b id="energyLabel">穩定運作</b><p>依任務、心跳、OpenClaw 與資料來源綜合估算。</p></div>
+        </article>
+        <article class="micro-panel"><span>資訊層級</span><b>重點優先</b><p>主要狀態放大，技術細節保留在監控明細。</p></article>
       </div>
+
+      <div class="signal-ribbon" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
 
       <div class="dashboard-live-layout">
         <section class="agent-status-column shami-column" aria-labelledby="shamiColumnTitle">
-          <div class="column-heading">
-            <p class="eyebrow">TGBOT / 左列</p>
-            <h3 id="shamiColumnTitle">蝦咩</h3>
-          </div>
+          <div class="column-heading"><p class="eyebrow">TGBOT / 左列</p><h3 id="shamiColumnTitle">蝦咩</h3></div>
           <div class="agent-slot" id="shamiAgent"></div>
-
           <div class="dashboard-grid actor-grid">
-            <article class="status-card primary-status">
-              <span>蝦咩任務狀態</span>
-              <strong id="statusLabel">讀取中</strong>
-              <p id="statusHeadline">正在讀取本機即時狀態。</p>
-            </article>
-            <article class="status-card">
-              <span>當前任務指令</span>
-              <strong id="currentTaskText">--</strong>
-              <p>Telegram 最新任務只放在蝦咩左列。</p>
-            </article>
-            <article class="status-card">
-              <span>今日 token</span>
-              <strong id="todayTokens">--</strong>
-              <p id="tokenSource">等待統計來源。</p>
-            </article>
+            <article class="status-card primary-status"><span>蝦咩任務狀態</span><strong id="statusLabel">讀取中</strong><p id="statusHeadline">正在讀取本機即時狀態。</p></article>
+            <article class="status-card"><span>當前任務指令</span><strong id="currentTaskText">--</strong><p>Telegram 最新任務固定放在蝦咩左列。</p></article>
+            <article class="status-card"><span>今日 token</span><strong id="todayTokens">--</strong><p id="tokenSource">等待統計來源。</p></article>
           </div>
-
           <div class="monitor-panel">
-            <div class="monitor-panel-head">
-              <p class="eyebrow">Shami Monitoring</p>
-              <h3>蝦咩監控</h3>
-            </div>
+            <div class="monitor-panel-head"><p class="eyebrow">Shami Monitoring</p><h3>蝦咩監控</h3></div>
             <div class="monitor-grid compact actor-monitor-grid" id="shamiMonitorGrid"></div>
           </div>
-
-          <div class="dashboard-footer column-footer">
-            <div class="mini-list" id="deliverableList"></div>
-          </div>
+          <div class="dashboard-footer column-footer"><div class="mini-list" id="deliverableList"></div></div>
         </section>
 
         <section class="agent-status-column lanxi-column" aria-labelledby="lanxiColumnTitle">
-          <div class="column-heading">
-            <p class="eyebrow">OpenClaw / 右列</p>
-            <h3 id="lanxiColumnTitle">嵐熙</h3>
-          </div>
+          <div class="column-heading"><p class="eyebrow">OpenClaw / 右列</p><h3 id="lanxiColumnTitle">嵐熙</h3></div>
           <div class="agent-slot" id="lanxiAgent"></div>
-
           <div class="dashboard-grid actor-grid">
-            <article class="status-card primary-status lanxi-primary-status">
-              <span>嵐熙自動化狀態</span>
-              <strong id="openclawStatusLabel">讀取中</strong>
-              <p id="openclawStatusDetail">正在讀取 OpenClaw 狀態。</p>
-            </article>
-            <article class="status-card">
-              <span>目前卡點</span>
-              <strong id="blockerText">讀取中</strong>
-              <p id="nextAction">等待同步資料。</p>
-            </article>
-            <article class="status-card">
-              <span>最新檢查</span>
-              <strong id="liveAge">--</strong>
-              <p><span id="updatedAt">--</span><br><span id="refreshNote">頁面每秒重新讀取狀態資料。</span></p>
-            </article>
+            <article class="status-card primary-status lanxi-primary-status"><span>嵐熙自動化狀態</span><strong id="openclawStatusLabel">讀取中</strong><p id="openclawStatusDetail">正在讀取 OpenClaw 狀態。</p></article>
+            <article class="status-card"><span>目前卡點</span><strong id="blockerText">讀取中</strong><p id="nextAction">等待同步資料。</p></article>
+            <article class="status-card"><span>最新檢查</span><strong id="liveAge">--</strong><p><span id="updatedAt">--</span><br><span id="refreshNote">頁面每秒重新讀取狀態資料。</span></p></article>
           </div>
-
           <div class="monitor-panel">
-            <div class="monitor-panel-head">
-              <p class="eyebrow">Lanxi Monitoring</p>
-              <h3>嵐熙監控</h3>
-            </div>
+            <div class="monitor-panel-head"><p class="eyebrow">Lanxi Monitoring</p><h3>嵐熙監控</h3></div>
             <div class="monitor-grid compact actor-monitor-grid" id="lanxiMonitorGrid"></div>
           </div>
-
           <div class="dashboard-footer column-footer">
             <div class="refresh-panel">
-              <button type="button" id="refreshStatus" aria-describedby="refreshFeedback">
-                <span class="refresh-icon" aria-hidden="true">↻</span>
-                <span class="refresh-label">重新整理狀態</span>
-              </button>
+              <button type="button" id="refreshStatus" aria-describedby="refreshFeedback"><span class="refresh-icon" aria-hidden="true">↻</span><span class="refresh-label">重新整理狀態</span></button>
               <div class="effect-layer" id="refreshEffectLayer" aria-hidden="true"></div>
               <span class="refresh-feedback" id="refreshFeedback">每 1 秒自動讀取狀態。</span>
             </div>
@@ -125,114 +84,58 @@
       <div class="overview-copy">
         <p class="eyebrow">Owner Map</p>
         <h2>把任務狀態、監控項目、技能入口與交付流程集中在同一頁</h2>
-        <p>
-          這個儀表盤聚焦主人要看的操作資訊：蝦咩 TGBOT 狀態、嵐熙 OpenClaw 狀態、目前任務、監控項目、技能包能力與常用 SOP。
-          刷新要快、資訊要細、入口要清楚。
-        </p>
+        <p>這個儀表板聚焦主人要看的操作資訊：蝦咩 TGBOT 狀態、嵐熙 OpenClaw 狀態、目前任務、監控項目、技能包能力與常用 SOP。</p>
         <div class="quick-actions" aria-label="主要區塊">
-          <a href="#monitoring">監控項目</a>
-          <a href="#skills">技能包</a>
-          <a href="#sop-library">SOP</a>
-          <a href="#timeline">紀錄</a>
+          <a href="#monitoring">監控項目</a><a href="#skills">技能包</a><a href="#sop-library">SOP</a><a href="#daily-timeline">今日時間軸</a>
         </div>
       </div>
       <div class="stat-grid" id="statGrid"></div>
     </section>
 
     <section id="completed" class="content-section">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">Updated</p>
-          <h2>本次儀表盤更新</h2>
-        </div>
-        <span class="status done">已套用</span>
-      </div>
+      <div class="section-heading"><div><p class="eyebrow">Updated</p><h2>本次儀表板更新</h2></div><span class="status done">已套用</span></div>
       <div class="item-grid" id="completedGrid"></div>
     </section>
 
-    <section id="monitoring" class="content-section">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">Monitoring Detail</p>
-          <h2>監控項目狀態</h2>
-        </div>
-        <span class="status watch">秒級刷新</span>
+    <section id="daily-timeline" class="content-section timeline-console">
+      <div class="section-heading"><div><p class="eyebrow">Today Flow</p><h2>今日任務時間軸</h2></div><span class="status watch">即時整理</span></div>
+      <div class="today-flow" id="todayFlow">
+        <article><time>收到</time><b>Telegram 指令</b><p>讀取最新需求與畫面狀態。</p></article>
+        <article><time>處理</time><b>本機修改</b><p>更新版面、狀態與互動功能。</p></article>
+        <article><time>驗證</time><b>手機 / 桌機檢查</b><p>確認左右欄、文字與科技視覺不溢出。</p></article>
+        <article><time>公開</time><b>GitHub Pages</b><p>推送後確認公開網址生效。</p></article>
       </div>
+    </section>
+
+    <section id="monitoring" class="content-section">
+      <div class="section-heading"><div><p class="eyebrow">Monitoring Detail</p><h2>監控項目狀態</h2></div><span class="status watch">秒級刷新</span></div>
       <div class="monitor-section-columns">
-        <section class="monitor-section-column">
-          <div class="mini-section-title">
-            <p class="eyebrow">TGBOT / 左列</p>
-            <h3>蝦咩狀態</h3>
-          </div>
-          <div class="monitor-grid detail" id="shamiMonitorSectionGrid"></div>
-        </section>
-        <section class="monitor-section-column">
-          <div class="mini-section-title">
-            <p class="eyebrow">OpenClaw / 右列</p>
-            <h3>嵐熙狀態</h3>
-          </div>
-          <div class="monitor-grid detail" id="lanxiMonitorSectionGrid"></div>
-        </section>
+        <section class="monitor-section-column"><div class="mini-section-title"><p class="eyebrow">TGBOT / 左列</p><h3>蝦咩狀態</h3></div><div class="monitor-grid detail" id="shamiMonitorSectionGrid"></div></section>
+        <section class="monitor-section-column"><div class="mini-section-title"><p class="eyebrow">OpenClaw / 右列</p><h3>嵐熙狀態</h3></div><div class="monitor-grid detail" id="lanxiMonitorSectionGrid"></div></section>
       </div>
     </section>
 
     <section id="skills" class="content-section">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">Skill Packages</p>
-          <h2>技能包清單、功能與使用場景</h2>
-        </div>
-        <span class="status done">詳細列出</span>
-      </div>
+      <div class="section-heading"><div><p class="eyebrow">Skill Packages</p><h2>技能包清單、功能與使用場景</h2></div><span class="status done">詳細列出</span></div>
       <div class="skill-summary" id="skillSummary"></div>
-      <div class="skill-toolbar">
-        <input id="skillSearch" type="search" placeholder="搜尋技能、功能、場景">
-        <div class="skill-filters" id="skillFilters"></div>
-      </div>
-      <div class="table-shell">
-        <table>
-          <thead>
-            <tr>
-              <th>技能包</th>
-              <th>分類</th>
-              <th>功能</th>
-              <th>使用場景</th>
-              <th>觸發 / 備註</th>
-            </tr>
-          </thead>
-          <tbody id="skillTable"></tbody>
-        </table>
-      </div>
+      <div class="skill-toolbar"><input id="skillSearch" type="search" placeholder="搜尋技能、功能、場景"><div class="skill-filters" id="skillFilters"></div></div>
+      <div class="table-shell"><table><thead><tr><th>技能包</th><th>分類</th><th>功能</th><th>使用場景</th><th>觸發 / 備註</th></tr></thead><tbody id="skillTable"></tbody></table></div>
     </section>
 
     <section id="sop-library" class="content-section">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">SOP Library</p>
-          <h2>任務回覆與狀態 SOP</h2>
-        </div>
-        <span class="status done">可追蹤</span>
-      </div>
+      <div class="section-heading"><div><p class="eyebrow">SOP Library</p><h2>任務回覆與狀態 SOP</h2></div><span class="status done">可追蹤</span></div>
       <div class="sop-grid" id="sopGrid"></div>
     </section>
 
     <section id="timeline" class="content-section">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">Log</p>
-          <h2>修改紀錄</h2>
-        </div>
-        <span class="status watch">持續同步</span>
-      </div>
+      <div class="section-heading"><div><p class="eyebrow">Log</p><h2>修改紀錄</h2></div><span class="status watch">持續同步</span></div>
       <div class="timeline" id="timelineList"></div>
     </section>
   </main>
 
-  <footer>
-    <span>資料來源：本機技能索引、記憶索引、Codex 心跳、Telegram 任務狀態、OpenClaw 摘要與 GitHub Pages 快照。</span>
-  </footer>
+  <footer><span>資料來源：本機技能索引、記憶索引、Codex 心跳、Telegram 任務狀態、OpenClaw 摘要與 GitHub Pages 快照。</span></footer>
 
-  <script src="live-status-config.js?v=20260703-175854"></script>
-  <script src="app.js?v=20260703-175854"></script>
+  <script src="live-status-config.js?v=20260703-203000"></script>
+  <script src="app.js?v=20260703-203000"></script>
 </body>
 </html>

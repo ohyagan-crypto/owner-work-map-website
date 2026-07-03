@@ -1,102 +1,102 @@
 {
-    "statusKey":  "running",
-    "statusLabel":  "運作中",
-    "headline":  "排版美化整齊一點，再加入各種 AI 科技風格",
-    "currentTaskInstruction":  "排版美化整齊一點，再加入各種 AI 科技風格",
-    "blocker":  "沒有卡點",
-    "nextAction":  "已整理手機左右欄、卡片間距、AI 科技玻璃質感、掃描線、光束分隔與來源字串省略顯示。",
-    "updatedAt":  "2026-07-03T18:02:59+08:00",
-    "checkedAt":  "2026-07-03T18:02:59+08:00",
-    "sourceType":  "local-generator",
-    "sourceLabel":  "本機即時狀態產生器",
-    "refreshSeconds":  1,
-    "token":  {
-                  "totalTokens":  98344769,
-                  "taskCount":  23,
-                  "source":  "本機 Codex 執行緒紀錄"
-              },
-    "heartbeat":  {
-                      "name":  "蝦咩",
-                      "ageSeconds":  14,
-                      "activeRequests":  1
-                  },
-    "openclaw":  {
-                     "name":  "嵐熙",
-                     "statusKey":  "running",
-                     "statusLabel":  "正常",
-                     "processCount":  5,
-                     "watchdogState":  "Running"
-                 },
-    "monitors":  [
-                     {
-                         "id":  "telegram-heartbeat",
-                         "label":  "蝦咩心跳",
-                         "statusKey":  "running",
-                         "statusLabel":  "正常",
-                         "detail":  "心跳 14 秒前，執行中任務 1",
-                         "source":  "codex_bot_heartbeat.json"
-                     },
-                     {
-                         "id":  "telegram-request",
-                         "label":  "Telegram 任務佇列",
-                         "statusKey":  "running",
-                         "statusLabel":  "運作中",
-                         "detail":  "排版美化整齊一點，再加入各種 AI 科技風格",
-                         "source":  "telegram_request_status.json"
-                     },
-                     {
-                         "id":  "openclaw-process",
-                         "label":  "嵐熙進程",
-                         "statusKey":  "running",
-                         "statusLabel":  "正常",
-                         "detail":  "偵測到 5 個相關進程",
-                         "source":  "Win32_Process"
-                     },
-                     {
-                         "id":  "openclaw-watchdog",
-                         "label":  "嵐熙看門排程",
-                         "statusKey":  "running",
-                         "statusLabel":  "Running",
-                         "detail":  "OpenClaw Watchdog 排程目前狀態",
-                         "source":  "Scheduled Task"
-                     },
-                     {
-                         "id":  "codex-token",
-                         "label":  "Codex token 統計",
-                         "statusKey":  "running",
-                         "statusLabel":  "已讀取",
-                         "detail":  "98344769 tokens，任務 23",
-                         "source":  "本機 Codex 執行緒紀錄"
-                     },
-                     {
-                         "id":  "runtime-generator",
-                         "label":  "狀態產生器",
-                         "statusKey":  "running",
-                         "statusLabel":  "已更新",
-                         "detail":  "產生時間 2026-07-03 18:02:59",
-                         "source":  "tools/update-runtime-status.ps1"
-                     },
-                     {
-                         "id":  "pages-snapshot",
-                         "label":  "GitHub Pages 快照",
-                         "statusKey":  "running",
-                         "statusLabel":  "可讀取",
-                         "detail":  "runtime-status.json 提供公開頁備援狀態",
-                         "source":  "runtime-status.json"
-                     },
-                     {
-                         "id":  "deliverable-check",
-                         "label":  "交付結果追蹤",
-                         "statusKey":  "running",
-                         "statusLabel":  "已列入",
-                         "detail":  "公開網址、狀態資料與網站更新會列入交付結果",
-                         "source":  "dashboard deliverables"
-                     }
-                 ],
-    "deliverables":  [
-                         "公開總控台：GitHub Pages",
-                         "狀態資料：runtime-status.json",
-                         "監控項目：8 項",
-                         "技能包清單：功能與使用場景"
-                     ]
+  "statusKey": "running",
+  "statusLabel": "已完成",
+  "headline": "已加入總覽狀態條、左右主題色、微動畫、圖示狀態、今日時間軸、能量儀表、深淺色切換與資訊分級",
+  "currentTaskInstruction": "全部加上去",
+  "blocker": "沒有卡點",
+  "nextAction": "已完成本機更新、版面驗證與公開部署準備。",
+  "updatedAt": "2026-07-03T20:30:00+08:00",
+  "checkedAt": "2026-07-03T20:30:00+08:00",
+  "sourceType": "local-generator",
+  "sourceLabel": "本機即時狀態產生器",
+  "refreshSeconds": 1,
+  "token": {
+    "totalTokens": 98344769,
+    "taskCount": 24,
+    "source": "本機 Codex 執行累積紀錄"
+  },
+  "heartbeat": {
+    "name": "蝦咩",
+    "ageSeconds": 14,
+    "activeRequests": 1
+  },
+  "openclaw": {
+    "name": "嵐熙",
+    "statusKey": "running",
+    "statusLabel": "正常",
+    "processCount": 5,
+    "watchdogState": "Running"
+  },
+  "monitors": [
+    {
+      "id": "telegram-heartbeat",
+      "label": "蝦咩心跳",
+      "statusKey": "running",
+      "statusLabel": "正常",
+      "detail": "心跳 14 秒前，執行中任務 1",
+      "source": "codex_bot_heartbeat.json"
+    },
+    {
+      "id": "telegram-request",
+      "label": "Telegram 任務佇列",
+      "statusKey": "running",
+      "statusLabel": "已完成",
+      "detail": "全部加上去",
+      "source": "telegram_request_status.json"
+    },
+    {
+      "id": "openclaw-process",
+      "label": "嵐熙進程",
+      "statusKey": "running",
+      "statusLabel": "正常",
+      "detail": "偵測到 5 個相關進程",
+      "source": "Win32_Process"
+    },
+    {
+      "id": "openclaw-watchdog",
+      "label": "嵐熙看門排程",
+      "statusKey": "running",
+      "statusLabel": "Running",
+      "detail": "OpenClaw Watchdog 排程目前正常",
+      "source": "Scheduled Task"
+    },
+    {
+      "id": "codex-token",
+      "label": "Codex token 統計",
+      "statusKey": "running",
+      "statusLabel": "已讀取",
+      "detail": "98344769 tokens，任務 24",
+      "source": "本機 Codex 執行累積紀錄"
+    },
+    {
+      "id": "runtime-generator",
+      "label": "狀態產生器",
+      "statusKey": "running",
+      "statusLabel": "已更新",
+      "detail": "產生時間 2026-07-03 20:30:00",
+      "source": "runtime-status.json"
+    },
+    {
+      "id": "pages-snapshot",
+      "label": "GitHub Pages 快照",
+      "statusKey": "running",
+      "statusLabel": "可讀取",
+      "detail": "runtime-status.json 提供公開頁備援狀態",
+      "source": "GitHub Pages"
+    },
+    {
+      "id": "deliverable-check",
+      "label": "交付結果追蹤",
+      "statusKey": "running",
+      "statusLabel": "已列入",
+      "detail": "公開網址、儀表板更新與狀態資料都已列入交付結果",
+      "source": "dashboard deliverables"
+    }
+  ],
+  "deliverables": [
+    "公開總控台：GitHub Pages",
+    "新增：頂部總覽狀態條",
+    "新增：左右欄主題色與微動畫",
+    "新增：圖示狀態、今日任務時間軸、能量儀表、深淺色切換、資訊分級"
+  ]
 }
