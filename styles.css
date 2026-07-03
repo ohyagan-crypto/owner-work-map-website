@@ -297,7 +297,7 @@ main {
 }
 
 .agent-card {
-  min-height: 96px;
+  min-height: 132px;
   display: grid;
   align-content: space-between;
   gap: 10px;
@@ -343,6 +343,28 @@ main {
   color: var(--status-muted);
   font-size: 13px;
   font-weight: 760;
+}
+
+.agent-task {
+  display: grid;
+  gap: 3px;
+}
+
+.agent-task span {
+  color: rgba(235, 255, 248, 0.62);
+  font-size: 12px;
+  font-weight: 820;
+}
+
+.agent-task b {
+  color: #fff;
+  font-size: 16px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.agent-meta {
+  overflow-wrap: anywhere;
 }
 
 .agent-state {
@@ -1013,6 +1035,10 @@ footer {
   .card-top {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .agent-state {
+    white-space: normal;
   }
 
   .dashboard-head h2,

@@ -838,6 +838,21 @@ function buildMonitorItems(status) {
   ];
 }
 
+function currentTaskInstruction(status) {
+  const telegramMonitor = Array.isArray(status.monitors)
+    ? status.monitors.find((item) => item.id === "telegram-request" || item.label === "Telegram 任務佇列")
+    : null;
+  const candidates = [
+    status.currentTaskInstruction,
+    status.currentTask,
+    status.taskInstruction,
+    status.headline,
+    telegramMonitor?.detail
+  ];
+  const value = candidates.find((item) => typeof item === "string" && item.trim());
+  return value ? value.trim() : "目前沒有可顯示的任務指令";
+}
+
 function renderMonitoring(status) {
   const monitors = buildMonitorItems(status);
   const cards = monitors.map((item) => {
@@ -869,6 +884,7 @@ function renderAgentStrip(status) {
   const openclawProcessText = openclaw.processCount === null || openclaw.processCount === undefined
     ? "進程未取得"
     : `相關進程 ${formatNumber(openclaw.processCount)}`;
+  const heartbeatMeta = `心跳 ${heartbeatAge} · 執行中任務 ${formatNumber(heartbeat.activeRequests)}`;
 
   const agents = [
     {
@@ -876,14 +892,18 @@ function renderAgentStrip(status) {
       name: heartbeat.name || "蝦咩",
       state: status.statusLabel || "資料待同步",
       stateKey: statusTone(status.statusKey || "watch"),
-      meta: `心跳 ${heartbeatAge} · 執行中任務 ${formatNumber(heartbeat.activeRequests)}`
+      metaLabel: "當前任務指令",
+      meta: currentTaskInstruction(status),
+      detail: heartbeatMeta
     },
     {
       role: "OpenClaw",
       name: openclaw.name || "嵐熙",
       state: openclaw.statusLabel || "狀態待同步",
       stateKey: statusTone(openclaw.statusKey || "watch"),
-      meta: `${openclawProcessText} · 看門排程 ${openclaw.watchdogState || "未取得"}`
+      metaLabel: "監控狀態",
+      meta: `${openclawProcessText} · 看門排程 ${openclaw.watchdogState || "未取得"}`,
+      detail: "瀏覽器、自動化進程與排程同步監控"
     }
   ];
 
@@ -898,7 +918,11 @@ function renderAgentStrip(status) {
         </div>
         <span class="agent-state">${escapeHtml(agent.state)}</span>
       </div>
-      <div class="agent-meta">${escapeHtml(agent.meta)}</div>
+      <div class="agent-task">
+        <span>${escapeHtml(agent.metaLabel)}</span>
+        <b>${escapeHtml(agent.meta)}</b>
+      </div>
+      <div class="agent-meta">${escapeHtml(agent.detail)}</div>
     </article>
   `).join("");
 }
@@ -980,6 +1004,8 @@ function runtimeSignature(status) {
     status.checkedAt || "",
     status.statusKey || "",
     status.statusLabel || "",
+    status.currentTaskInstruction || "",
+    status.headline || "",
     status.openclaw?.statusLabel || "",
     (status.monitors || []).map((item) => `${item.label}:${item.statusLabel}`).join(",")
   ].join("|");

@@ -366,6 +366,7 @@ $payload = [ordered]@{
     statusKey = $statusKey
     statusLabel = $statusLabel
     headline = $headline
+    currentTaskInstruction = $headline
     blocker = $blocker
     nextAction = $NextAction.Trim()
     updatedAt = $now.ToString("yyyy-MM-ddTHH:mm:sszzz")
