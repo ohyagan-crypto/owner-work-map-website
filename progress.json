@@ -1,0 +1,21 @@
+{
+  "task": "總控台補上最上方即時狀態儀表盤，並把 Roadmap 項目收斂成已完成區、SOP 圖書館與技能分流表。",
+  "status": "已完成",
+  "percent": 100,
+  "next": "GitHub Pages 已更新，公開網址可直接查看；後續可用 tools/update-runtime-status.ps1 重新同步儀表盤。",
+  "updatedAt": "2026-07-02T19:58:00+08:00",
+  "history": [
+    {
+      "task": "無私密完整複製包完成",
+      "status": "已完成",
+      "percent": 100,
+      "updatedAt": "2026-07-02T19:12:06+08:00"
+    },
+    {
+      "task": "公開工作地圖建立",
+      "status": "已完成",
+      "percent": 100,
+      "updatedAt": "2026-07-02T17:43:04+08:00"
+    }
+  ]
+}

@@ -1,24 +1,26 @@
-# 藍星科技 Telegram 智能助理網站
+# 主人工作總控台
 
-這是主人這隻 Telegram bot 的公開介紹頁，部署於 GitHub Pages：
+建立日期：2026-07-02
 
-https://ohyagan-crypto.github.io/owner-work-map-website/
+這是一個公開工作總覽網站，用來集中查看：
 
-## 網站內容
+- 目前 Codex / Telegram 運作狀態
+- 今日可驗證 token 使用量
+- 已完成的 Roadmap 項目
+- 任務型 SOP 圖書館
+- 技能主力版與歷史版分流
+- 安全邊界與交付規則
 
-- Telegram 任務入口定位
-- 網站、圖片、影片、NotebookLM、監控與交付能力
-- 從主人下指令到成果回傳的工作流程
-- 每小時網站健康檢查與自動修復說明
-- 安全邊界與公開資訊限制
-- 常用 Telegram 指令入口
+## 更新狀態資料
 
-## 安全原則
+從網站資料夾執行：
 
-公開頁面不包含 token、API key、cookie、密碼、瀏覽器資料、登入資訊、私人截圖、原始紀錄或工具輸出。
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\update-runtime-status.ps1
+```
 
-## 主要檔案
+會從本機心跳、Telegram 請求狀態與 token 統計產生 `runtime-status.json`。
 
-- `index.html`
-- `styles.css`
-- `app.js`
+## 安全說明
+
+網站只放整理後的總覽資料，不包含帳號密碼、API key、Telegram token、cookie、瀏覽器 profile、credential store、原始 log 或偵錯紀錄。

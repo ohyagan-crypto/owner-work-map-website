@@ -1,0 +1,28 @@
+{
+    "statusKey":  "running",
+    "statusLabel":  "運作中",
+    "headline":  "徹底修復你自己一次ˉ",
+    "blocker":  "沒有卡點",
+    "nextAction":  "完成後更新交付結果、網址、檔案路徑或明確卡點。",
+    "updatedAt":  "2026-07-02T21:29:33+08:00",
+    "checkedAt":  "2026-07-02T21:29:33+08:00",
+    "sourceType":  "local-generator",
+    "sourceLabel":  "本機即時狀態產生器",
+    "refreshSeconds":  5,
+    "token":  {
+                  "totalTokens":  47419336,
+                  "taskCount":  38,
+                  "source":  "本機 Codex 執行緒紀錄"
+              },
+    "heartbeat":  {
+                      "ageSeconds":  7,
+                      "activeRequests":  1,
+                      "model":  "gpt-5.5",
+                      "reasoningEffort":  "low"
+                  },
+    "deliverables":  [
+                         "完整複製包：full_codex_clone_20260702_191206.zip",
+                         "公開總控台：GitHub Pages",
+                         "狀態資料：runtime-status.json"
+                     ]
+}
