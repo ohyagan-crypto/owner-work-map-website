@@ -281,6 +281,87 @@ if (-not $NextAction.Trim()) {
     $NextAction = $defaultNext
 }
 
+$heartbeatMonitorKey = if ($heartbeatAge -le 120) { "running" } else { "watch" }
+$heartbeatMonitorLabel = if ($heartbeatAge -le 120) { "正常" } else { "待確認" }
+$activeRequestsText = if ($heartbeat -and $heartbeat.PSObject.Properties.Item("active_requests")) { [string]$heartbeat.active_requests } else { "未取得" }
+
+$openclawProcessCount = $openclaw.processCount
+$openclawProcessKey = if ($null -ne $openclawProcessCount -and $openclawProcessCount -gt 0) { "running" } else { "watch" }
+$openclawProcessLabel = if ($null -ne $openclawProcessCount -and $openclawProcessCount -gt 0) { "正常" } elseif ($null -eq $openclawProcessCount) { "未確認" } else { "未偵測到" }
+$openclawProcessDetail = if ($null -ne $openclawProcessCount) { "偵測到 $openclawProcessCount 個相關進程" } else { "尚未取得進程數" }
+
+$watchdogKey = if ($openclaw.watchdogState -eq "Running") { "running" } else { "watch" }
+$tokenKey = if ($null -ne $token.totalTokens) { "running" } else { "watch" }
+$tokenLabel = if ($null -ne $token.totalTokens) { "已讀取" } else { "未取得" }
+$tokenDetail = if ($null -ne $token.totalTokens) { "$($token.totalTokens) tokens，任務 $($token.taskCount)" } else { "尚未讀到精確 token 統計" }
+
+$monitors = @(
+    [ordered]@{
+        id = "telegram-heartbeat"
+        label = "蝦咩心跳"
+        statusKey = $heartbeatMonitorKey
+        statusLabel = $heartbeatMonitorLabel
+        detail = "心跳 $heartbeatAge 秒前，執行中任務 $activeRequestsText"
+        source = "codex_bot_heartbeat.json"
+    },
+    [ordered]@{
+        id = "telegram-request"
+        label = "Telegram 任務佇列"
+        statusKey = $statusKey
+        statusLabel = $statusLabel
+        detail = $headline
+        source = "telegram_request_status.json"
+    },
+    [ordered]@{
+        id = "openclaw-process"
+        label = "嵐熙進程"
+        statusKey = $openclawProcessKey
+        statusLabel = $openclawProcessLabel
+        detail = $openclawProcessDetail
+        source = "Win32_Process"
+    },
+    [ordered]@{
+        id = "openclaw-watchdog"
+        label = "嵐熙看門排程"
+        statusKey = $watchdogKey
+        statusLabel = $openclaw.watchdogState
+        detail = "OpenClaw Watchdog 排程目前狀態"
+        source = "Scheduled Task"
+    },
+    [ordered]@{
+        id = "codex-token"
+        label = "Codex token 統計"
+        statusKey = $tokenKey
+        statusLabel = $tokenLabel
+        detail = $tokenDetail
+        source = $token.source
+    },
+    [ordered]@{
+        id = "runtime-generator"
+        label = "狀態產生器"
+        statusKey = "running"
+        statusLabel = "已更新"
+        detail = "產生時間 $($now.ToString("yyyy-MM-dd HH:mm:ss"))"
+        source = "tools/update-runtime-status.ps1"
+    },
+    [ordered]@{
+        id = "pages-snapshot"
+        label = "GitHub Pages 快照"
+        statusKey = "running"
+        statusLabel = "可讀取"
+        detail = "runtime-status.json 提供公開頁備援狀態"
+        source = "runtime-status.json"
+    },
+    [ordered]@{
+        id = "deliverable-check"
+        label = "交付結果追蹤"
+        statusKey = "running"
+        statusLabel = "已列入"
+        detail = "公開網址、狀態資料與網站更新會列入交付結果"
+        source = "dashboard deliverables"
+    }
+)
+
 $payload = [ordered]@{
     statusKey = $statusKey
     statusLabel = $statusLabel
@@ -309,9 +390,12 @@ $payload = [ordered]@{
         processCount = $openclaw.processCount
         watchdogState = $openclaw.watchdogState
     }
+    monitors = $monitors
     deliverables = @(
         "公開總控台：GitHub Pages",
-        "狀態資料：runtime-status.json"
+        "狀態資料：runtime-status.json",
+        "監控項目：8 項",
+        "技能包清單：功能與使用場景"
     )
 }
 

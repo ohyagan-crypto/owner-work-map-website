@@ -1,16 +1,17 @@
-# 主人工作總控台
+# 蝦咩 x 嵐熙即時總控台
 
 建立日期：2026-07-02
+本次更新：2026-07-03
 
-這是一個公開工作總覽網站，用來集中查看：
+這是一個公開 GitHub Pages 儀表盤，用來集中查看：
 
-- 目前蝦咩 TGBOT / 嵐熙 OpenClaw 運作狀態
-- 今日可驗證 token 使用量
-- 1 秒級自動刷新與手動刷新特效
-- 已完成的 Roadmap 項目
-- 任務型 SOP 圖書館
-- 技能主力版與歷史版分流
-- 安全邊界與交付規則
+- 蝦咩 TGBOT 即時狀態
+- 嵐熙 OpenClaw 進程與看門排程
+- Telegram 任務佇列、目前卡點與下一步
+- 今日 Codex token 統計
+- 監控項目清單與明細
+- 已安裝技能包的功能、使用場景與觸發詞
+- 常用網站、Telegram、監控與技能路由 SOP
 
 ## 更新狀態資料
 
@@ -20,8 +21,12 @@
 powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\update-runtime-status.ps1
 ```
 
-會從本機心跳、Telegram 請求狀態、OpenClaw 摘要與 token 統計產生 `runtime-status.json`。
+腳本會讀取本機心跳、Telegram 任務狀態、OpenClaw 摘要與 token 統計，產生 `runtime-status.json` 供公開頁讀取。
 
-## 安全說明
+## 本機預覽
 
-網站只放整理後的總覽資料，不包含帳號密碼、API key、Telegram token、cookie、瀏覽器 profile、credential store、原始 log 或偵錯紀錄。
+```powershell
+node .\server.js
+```
+
+預設會在 `http://127.0.0.1:4179/` 提供本機預覽與 `/api/status` 即時狀態 API。

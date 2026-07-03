@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>蝦咩 × 嵐熙即時總控台</title>
+  <title>蝦咩 x 嵐熙即時總控台</title>
   <link rel="icon" href="data:,">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -11,12 +11,12 @@
   <header class="topbar">
     <div>
       <p class="eyebrow">TGBOT / OpenClaw / Live Control</p>
-      <h1>蝦咩 × 嵐熙即時總控台</h1>
+      <h1>蝦咩 x 嵐熙即時總控台</h1>
     </div>
     <div class="topbar-meta">
-      <span>更新日 2026-07-03</span>
+      <span>版本 2026-07-03</span>
       <span id="localClock">讀取秒級時間</span>
-      <span>1 秒同步</span>
+      <span>1 秒即時刷新</span>
     </div>
   </header>
 
@@ -26,7 +26,7 @@
         <div>
           <p class="eyebrow">Live Status</p>
           <h2>蝦咩與嵐熙的秒級狀態雷達</h2>
-          <p class="dashboard-subtitle">每 1 秒讀取最新狀態；按下重新整理會優先同步本機即時 API，並顯示清楚的互動回饋。</p>
+          <p class="dashboard-subtitle">每 1 秒同步公開快照；點擊重新整理會重新抓取狀態並觸發多巴胺科技特效。</p>
         </div>
         <span class="state-pill" id="statePill">讀取中</span>
       </div>
@@ -56,8 +56,16 @@
         <article class="status-card">
           <span>最新檢查</span>
           <strong id="liveAge">--</strong>
-          <p><span id="updatedAt">--</span><br><span id="refreshNote">頁面會每秒重新讀取狀態資料。</span></p>
+          <p><span id="updatedAt">--</span><br><span id="refreshNote">頁面每秒重新讀取狀態資料。</span></p>
         </article>
+      </div>
+
+      <div class="monitor-panel">
+        <div class="monitor-panel-head">
+          <p class="eyebrow">Monitoring</p>
+          <h3>正在監控的項目</h3>
+        </div>
+        <div class="monitor-grid compact" id="monitorGrid"></div>
       </div>
 
       <div class="dashboard-footer">
@@ -76,17 +84,16 @@
     <section class="overview" id="overview">
       <div class="overview-copy">
         <p class="eyebrow">Owner Map</p>
-        <h2>把任務狀態、交付規則、技能入口與修復紀錄集中在同一頁</h2>
+        <h2>把任務狀態、監控項目、技能入口與交付流程集中在同一頁</h2>
         <p>
-          這個頁面只顯示可公開查看的摘要，不放帳號密碼、API key、token、cookie、瀏覽器 profile、原始 log 或私密截圖。
-          Telegram 來源任務若有檔案交付，仍以同一個來源對話為準。
+          這個儀表盤聚焦主人要看的操作資訊：蝦咩 TGBOT 狀態、嵐熙 OpenClaw 狀態、目前任務、監控項目、技能包能力與常用 SOP。
+          刷新要快、資訊要細、入口要清楚。
         </p>
         <div class="quick-actions" aria-label="主要區塊">
-          <a href="#completed">已完成</a>
+          <a href="#monitoring">監控項目</a>
+          <a href="#skills">技能包</a>
           <a href="#sop-library">SOP</a>
-          <a href="#skills">技能</a>
           <a href="#timeline">紀錄</a>
-          <a href="#safety">安全</a>
         </div>
       </div>
       <div class="stat-grid" id="statGrid"></div>
@@ -95,12 +102,52 @@
     <section id="completed" class="content-section">
       <div class="section-heading">
         <div>
-          <p class="eyebrow">Completed</p>
-          <h2>這次修復完成項目</h2>
+          <p class="eyebrow">Updated</p>
+          <h2>本次儀表盤更新</h2>
         </div>
-        <span class="status done">已修復</span>
+        <span class="status done">已套用</span>
       </div>
       <div class="item-grid" id="completedGrid"></div>
+    </section>
+
+    <section id="monitoring" class="content-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Monitoring Detail</p>
+          <h2>監控項目狀態</h2>
+        </div>
+        <span class="status watch">秒級刷新</span>
+      </div>
+      <div class="monitor-grid detail" id="monitorSectionGrid"></div>
+    </section>
+
+    <section id="skills" class="content-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Skill Packages</p>
+          <h2>技能包清單、功能與使用場景</h2>
+        </div>
+        <span class="status done">詳細列出</span>
+      </div>
+      <div class="skill-summary" id="skillSummary"></div>
+      <div class="skill-toolbar">
+        <input id="skillSearch" type="search" placeholder="搜尋技能、功能、場景">
+        <div class="skill-filters" id="skillFilters"></div>
+      </div>
+      <div class="table-shell">
+        <table>
+          <thead>
+            <tr>
+              <th>技能包</th>
+              <th>分類</th>
+              <th>功能</th>
+              <th>使用場景</th>
+              <th>觸發 / 備註</th>
+            </tr>
+          </thead>
+          <tbody id="skillTable"></tbody>
+        </table>
+      </div>
     </section>
 
     <section id="sop-library" class="content-section">
@@ -114,62 +161,23 @@
       <div class="sop-grid" id="sopGrid"></div>
     </section>
 
-    <section id="skills" class="content-section">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">Skills</p>
-          <h2>主要技能與用途</h2>
-        </div>
-        <span class="status done">主力優先</span>
-      </div>
-      <div class="skill-summary" id="skillSummary"></div>
-      <div class="table-shell">
-        <table>
-          <thead>
-            <tr>
-              <th>分類</th>
-              <th>主力技能</th>
-              <th>用途</th>
-              <th>規則</th>
-            </tr>
-          </thead>
-          <tbody id="skillTable"></tbody>
-        </table>
-      </div>
-    </section>
-
     <section id="timeline" class="content-section">
       <div class="section-heading">
         <div>
           <p class="eyebrow">Log</p>
-          <h2>修復紀錄</h2>
+          <h2>修改紀錄</h2>
         </div>
         <span class="status watch">持續同步</span>
       </div>
       <div class="timeline" id="timelineList"></div>
     </section>
-
-    <section id="safety" class="content-section source-section">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">Safety</p>
-          <h2>安全邊界</h2>
-        </div>
-      </div>
-      <ul class="source-list">
-        <li>公開頁只放任務狀態、技能摘要、SOP 與可分享連結。</li>
-        <li>不放帳密、API key、Telegram token、cookie、瀏覽器 profile、credential store 或原始 log。</li>
-        <li>Telegram 來源任務若有檔案交付，必須回到同一個來源對話。</li>
-        <li>狀態刷新以本機即時 API 為準；連不上時會明確標示正在讀公開快照。</li>
-      </ul>
-    </section>
   </main>
 
   <footer>
-    <span>資料來源：本機技能索引、記憶索引、Codex 心跳、Telegram 任務狀態與 token 統計快照。</span>
+    <span>資料來源：本機技能索引、記憶索引、Codex 心跳、Telegram 任務狀態、OpenClaw 摘要與 GitHub Pages 快照。</span>
   </footer>
 
-  <script src="live-status-config.js?v=20260703-1600"></script>
-  <script src="app.js?v=20260703-1600"></script>
+  <script src="live-status-config.js?v=20260703-1900"></script>
+  <script src="app.js?v=20260703-1900"></script>
 </body>
 </html>

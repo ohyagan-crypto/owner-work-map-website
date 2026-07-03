@@ -1,22 +1,22 @@
 {
     "statusKey":  "running",
     "statusLabel":  "運作中",
-    "headline":  "補充： 1.我不要安全邊界 2.技能包要詳細列出來 功能也要 使用場景 3.有監控項目也有顯示在儀表盤網站狀態",
+    "headline":  "讀取照片",
     "blocker":  "沒有卡點",
     "nextAction":  "完成後更新交付結果、網址、檔案路徑或明確卡點。",
-    "updatedAt":  "2026-07-03T14:29:30+08:00",
-    "checkedAt":  "2026-07-03T14:29:30+08:00",
+    "updatedAt":  "2026-07-03T15:09:24+08:00",
+    "checkedAt":  "2026-07-03T15:09:24+08:00",
     "sourceType":  "local-generator",
     "sourceLabel":  "本機即時狀態產生器",
     "refreshSeconds":  1,
     "token":  {
-                  "totalTokens":  66358894,
-                  "taskCount":  16,
+                  "totalTokens":  70180596,
+                  "taskCount":  17,
                   "source":  "本機 Codex 執行緒紀錄"
               },
     "heartbeat":  {
                       "name":  "蝦咩",
-                      "ageSeconds":  3,
+                      "ageSeconds":  0,
                       "activeRequests":  1
                   },
     "openclaw":  {
@@ -26,8 +26,76 @@
                      "processCount":  5,
                      "watchdogState":  "Running"
                  },
+    "monitors":  [
+                     {
+                         "id":  "telegram-heartbeat",
+                         "label":  "蝦咩心跳",
+                         "statusKey":  "running",
+                         "statusLabel":  "正常",
+                         "detail":  "心跳 0 秒前，執行中任務 1",
+                         "source":  "codex_bot_heartbeat.json"
+                     },
+                     {
+                         "id":  "telegram-request",
+                         "label":  "Telegram 任務佇列",
+                         "statusKey":  "running",
+                         "statusLabel":  "運作中",
+                         "detail":  "讀取照片",
+                         "source":  "telegram_request_status.json"
+                     },
+                     {
+                         "id":  "openclaw-process",
+                         "label":  "嵐熙進程",
+                         "statusKey":  "running",
+                         "statusLabel":  "正常",
+                         "detail":  "偵測到 5 個相關進程",
+                         "source":  "Win32_Process"
+                     },
+                     {
+                         "id":  "openclaw-watchdog",
+                         "label":  "嵐熙看門排程",
+                         "statusKey":  "running",
+                         "statusLabel":  "Running",
+                         "detail":  "OpenClaw Watchdog 排程目前狀態",
+                         "source":  "Scheduled Task"
+                     },
+                     {
+                         "id":  "codex-token",
+                         "label":  "Codex token 統計",
+                         "statusKey":  "running",
+                         "statusLabel":  "已讀取",
+                         "detail":  "70180596 tokens，任務 17",
+                         "source":  "本機 Codex 執行緒紀錄"
+                     },
+                     {
+                         "id":  "runtime-generator",
+                         "label":  "狀態產生器",
+                         "statusKey":  "running",
+                         "statusLabel":  "已更新",
+                         "detail":  "產生時間 2026-07-03 15:09:24",
+                         "source":  "tools/update-runtime-status.ps1"
+                     },
+                     {
+                         "id":  "pages-snapshot",
+                         "label":  "GitHub Pages 快照",
+                         "statusKey":  "running",
+                         "statusLabel":  "可讀取",
+                         "detail":  "runtime-status.json 提供公開頁備援狀態",
+                         "source":  "runtime-status.json"
+                     },
+                     {
+                         "id":  "deliverable-check",
+                         "label":  "交付結果追蹤",
+                         "statusKey":  "running",
+                         "statusLabel":  "已列入",
+                         "detail":  "公開網址、狀態資料與網站更新會列入交付結果",
+                         "source":  "dashboard deliverables"
+                     }
+                 ],
     "deliverables":  [
                          "公開總控台：GitHub Pages",
-                         "狀態資料：runtime-status.json"
+                         "狀態資料：runtime-status.json",
+                         "監控項目：8 項",
+                         "技能包清單：功能與使用場景"
                      ]
 }
