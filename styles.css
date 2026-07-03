@@ -196,6 +196,7 @@ main {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  gap: 2px;
   padding: 22px;
   color: #fff;
   border-color: rgba(46, 233, 255, 0.28);
@@ -1232,7 +1233,7 @@ footer {
   z-index: 1;
   order: -2;
   display: grid;
-  grid-template-columns: minmax(180px, 0.9fr) 0.72fr 0.72fr minmax(150px, 0.82fr) minmax(0, 1.28fr) minmax(155px, 0.82fr);
+  grid-template-columns: minmax(190px, 0.95fr) minmax(130px, 0.72fr) minmax(130px, 0.72fr) minmax(170px, 0.86fr) minmax(220px, 1.15fr) minmax(170px, 0.82fr);
   gap: 10px;
   margin-bottom: 12px;
 }
@@ -1254,8 +1255,20 @@ footer {
   position: relative;
   overflow: hidden;
   display: grid;
-  gap: 4px;
-  padding: 12px;
+  min-height: 92px;
+  align-content: space-between;
+  gap: 8px;
+  padding: 13px;
+}
+
+.command-chip::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  content: "";
+  pointer-events: none;
+  background: linear-gradient(180deg, var(--cyan), var(--lime));
+  opacity: 0.72;
 }
 
 .command-chip::after {
@@ -1282,8 +1295,8 @@ footer {
 .micro-panel b {
   min-width: 0;
   color: #fff;
-  font-size: 18px;
-  line-height: 1.18;
+  font-size: 20px;
+  line-height: 1.16;
   overflow-wrap: anywhere;
   word-break: normal;
   white-space: normal;
@@ -1293,8 +1306,16 @@ footer {
   border-color: rgba(46, 233, 255, 0.34);
 }
 
+.shami-chip::before {
+  background: linear-gradient(180deg, var(--cyan), var(--blue));
+}
+
 .lanxi-chip {
   border-color: rgba(213, 107, 255, 0.34);
+}
+
+.lanxi-chip::before {
+  background: linear-gradient(180deg, var(--violet), var(--amber));
 }
 
 .sync-chip {
@@ -1304,12 +1325,20 @@ footer {
     rgba(4, 20, 23, 0.76);
 }
 
+.sync-chip::before {
+  background: linear-gradient(180deg, var(--lime), var(--cyan));
+}
+
 .sync-chip .refresh-panel {
   gap: 5px;
 }
 
 .skill-chip {
   border-color: rgba(255, 188, 66, 0.36);
+}
+
+.skill-chip::before {
+  background: linear-gradient(180deg, var(--amber), var(--lime));
 }
 
 .task-chip b {
@@ -1321,17 +1350,18 @@ footer {
   z-index: 1;
   order: -1;
   display: grid;
-  grid-template-columns: minmax(260px, 0.9fr) minmax(0, 1.1fr);
+  grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1.1fr);
   gap: 10px;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .energy-ring-card {
   display: grid;
-  grid-template-columns: 92px minmax(0, 1fr);
-  gap: 14px;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 16px;
   align-items: center;
-  padding: 12px;
+  min-height: 122px;
+  padding: 14px;
 }
 
 .energy-ring-card p,
@@ -1361,8 +1391,9 @@ footer {
 .micro-panel {
   display: grid;
   align-content: center;
-  gap: 5px;
-  padding: 14px;
+  gap: 7px;
+  min-height: 122px;
+  padding: 15px;
 }
 
 .agent-status-column {
@@ -1570,14 +1601,10 @@ body.light-mode .theme-toggle {
 @media (max-width: 900px) {
   .command-strip {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    overflow-x: auto;
-    padding-bottom: 4px;
   }
 
   .ai-metrics {
-    grid-template-columns: minmax(260px, 0.9fr) minmax(260px, 1.1fr);
-    overflow-x: auto;
-    padding-bottom: 4px;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
   }
 }
 
@@ -1673,6 +1700,32 @@ body.light-mode .theme-toggle {
   .status-dashboard {
     padding: 10px;
     overflow-x: hidden;
+  }
+
+  .command-strip {
+    gap: 8px;
+  }
+
+  .command-chip {
+    min-height: 86px;
+    padding: 11px;
+  }
+
+  .command-chip b,
+  .energy-ring-card b,
+  .micro-panel b {
+    font-size: 18px;
+  }
+
+  .ai-metrics {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .energy-ring-card,
+  .micro-panel {
+    min-height: 0;
   }
 
   .dashboard-live-layout {
@@ -1802,6 +1855,43 @@ body.light-mode .theme-toggle {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .sync-chip {
+    grid-column: 1 / -1;
+    min-height: 106px;
+  }
+
+  .skill-chip,
+  .task-chip,
+  .command-strip .command-chip:nth-child(6) {
+    grid-column: 1 / -1;
+    min-height: 86px;
+  }
+
+  .command-strip .command-chip:nth-child(6) {
+    min-height: 82px;
+  }
+
+  .task-chip,
+  .command-strip .command-chip:nth-child(6) {
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.085), rgba(255, 255, 255, 0.035)),
+      rgba(4, 20, 23, 0.58);
+  }
+
+  .command-chip span,
+  .command-chip small {
+    font-size: 11px;
+  }
+
+  .command-chip b {
+    font-size: clamp(16px, 4.6vw, 19px);
+  }
+
+  .task-chip b,
+  .command-strip .command-chip:nth-child(6) b {
+    font-size: clamp(15px, 4.1vw, 18px);
+  }
+
   .today-flow {
     grid-template-columns: 1fr;
   }
@@ -1830,10 +1920,15 @@ body.light-mode .theme-toggle {
 
   .energy-ring-card {
     grid-template-columns: 76px minmax(0, 1fr);
+    padding: 11px;
   }
 
   .energy-ring {
     width: 68px;
+  }
+
+  .micro-panel {
+    padding: 11px;
   }
 }
 
