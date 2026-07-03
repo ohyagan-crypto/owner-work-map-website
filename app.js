@@ -13,6 +13,12 @@ const dashboardStats = [
 
 const completedItems = [
   {
+    title: "同步、按鈕與技能包修正",
+    status: "已套用",
+    summary: "修正前端初始化中斷，頂端狀態不再停在讀取中；重新同步按鈕移到最上方，加入音效與多巴胺粒子回饋，技能包也加入首屏速覽。",
+    points: ["同步資料可正常渲染", "手機版看得到重新同步按鈕", "技能包 80 個索引與分類會顯示"]
+  },
+  {
     title: "頂端左右雙儀表盤",
     status: "已套用",
     summary: "儀表盤固定放在頁面最上方，蝦咩與嵐熙左右分開顯示；手機窄螢幕保留雙欄主狀態，細節移到下方區塊避免擠壓。"
@@ -506,6 +512,8 @@ const skillCatalog = [
 ];
 
 const timeline = [
+  ["2026-07-03", "修正前端初始化中斷，讓 runtime-status.json、技能包清單與頂端同步狀態可正常顯示。"],
+  ["2026-07-03", "重新同步按鈕移到頂端控制列，點擊時加入短促音效、彩色粒子與同步完成回饋。"],
   ["2026-07-03", "頂端儀表盤改為蝦咩左側、嵐熙右側的雙欄總覽，手機版保留左右分開且不擠壓主狀態。"],
   ["2026-07-03", "狀態總控台改成蝦咩左列、嵐熙右列，任務、token、監控、卡點與檢查依人物來源分類。"],
   ["2026-07-03", "紅圈內 Live Status 說明文字不再顯示，主介面改成左右分欄，左看蝦咩與嵐熙，右看狀態與監控。"],
@@ -541,6 +549,7 @@ let selectedSkillGroup = "全部";
 let skillSearchTerm = "";
 let isStatusLoading = false;
 let liveUnavailableUntil = 0;
+let refreshAudioContext = null;
 
 function escapeHtml(value) {
   return String(value ?? "")
@@ -615,7 +624,32 @@ function setRefreshButtonLoading(isLoading) {
   button.disabled = isLoading;
   button.classList.toggle("is-refreshing", isLoading);
   const label = button.querySelector(".refresh-label");
-  if (label) label.textContent = isLoading ? "同步中" : "重新整理狀態";
+  if (label) label.textContent = isLoading ? "同步中" : "重新同步";
+}
+
+function playRefreshSound() {
+  const AudioContextConstructor = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContextConstructor) return;
+  try {
+    refreshAudioContext = refreshAudioContext || new AudioContextConstructor();
+    if (refreshAudioContext.state === "suspended") refreshAudioContext.resume();
+    const now = refreshAudioContext.currentTime;
+    [523.25, 659.25, 783.99].forEach((frequency, index) => {
+      const oscillator = refreshAudioContext.createOscillator();
+      const gain = refreshAudioContext.createGain();
+      oscillator.type = "sine";
+      oscillator.frequency.setValueAtTime(frequency, now + index * 0.055);
+      gain.gain.setValueAtTime(0.0001, now + index * 0.055);
+      gain.gain.exponentialRampToValueAtTime(0.08, now + index * 0.055 + 0.018);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + index * 0.055 + 0.16);
+      oscillator.connect(gain);
+      gain.connect(refreshAudioContext.destination);
+      oscillator.start(now + index * 0.055);
+      oscillator.stop(now + index * 0.055 + 0.17);
+    });
+  } catch {
+    // Audio is optional; some browsers block it until the first trusted click.
+  }
 }
 
 function triggerRefreshEffect() {
@@ -678,7 +712,7 @@ function renderCompleted() {
         <span class="status done">${escapeHtml(item.status)}</span>
       </div>
       <p>${escapeHtml(item.summary)}</p>
-      <ul>${item.points.map((point) => `<li>${escapeHtml(point)}</li>`).join("")}</ul>
+      ${Array.isArray(item.points) && item.points.length ? `<ul>${item.points.map((point) => `<li>${escapeHtml(point)}</li>`).join("")}</ul>` : ""}
     </article>
   `).join("");
 }
@@ -732,20 +766,28 @@ function renderSkills() {
   const summary = $("#skillSummary");
   const visible = filteredSkills();
   const totalVariants = skillCatalog.reduce((sum, item) => sum + Number(item.variants || 1), 0);
-  summary.innerHTML = [
+  const groups = skillGroups();
+  const summaryItems = [
     { value: "80", label: "索引內技能", note: "本機目前安裝數" },
     { value: String(skillCatalog.length), label: "頁面列出項目", note: "主技能與重要歷史入口" },
     { value: String(totalVariants), label: "版本數", note: "含備份與日期版" },
     { value: String(visible.length), label: "目前篩選", note: selectedSkillGroup === "全部" ? "全部分類" : selectedSkillGroup }
-  ].map((item) => `
-    <div class="summary-chip">
-      <b>${escapeHtml(item.value)}</b>
-      <span>${escapeHtml(item.label)}</span>
-      <small>${escapeHtml(item.note)}</small>
-    </div>
-  `).join("");
+  ];
+  if (summary) {
+    summary.innerHTML = summaryItems.map((item) => `
+      <div class="summary-chip">
+        <b>${escapeHtml(item.value)}</b>
+        <span>${escapeHtml(item.label)}</span>
+        <small>${escapeHtml(item.note)}</small>
+      </div>
+    `).join("");
+  }
 
-  $("#skillTable").innerHTML = visible.map((item) => `
+  setTextIfPresent("#chipSkillStatus", `80 個技能 / ${totalVariants} 版本`);
+  setTextIfPresent("#chipSkillDetail", `${skillCatalog.length} 個主項目，${groups.length - 1} 類分類已顯示`);
+
+  const skillTable = $("#skillTable");
+  if (skillTable) skillTable.innerHTML = visible.map((item) => `
     <tr>
       <td>
         <strong>${escapeHtml(item.name)}</strong>
@@ -1097,14 +1139,16 @@ async function loadRuntimeStatus(options = {}) {
   const isManual = Boolean(options.manual);
   if (isStatusLoading) {
     if (isManual) {
+      playRefreshSound();
       triggerRefreshEffect();
-      setRefreshFeedback("上一筆狀態正在同步，完成後畫面會更新。", "idle");
+      setRefreshFeedback("正在重新同步最新狀態，完成後畫面會更新。", "idle");
     }
     return;
   }
 
   isStatusLoading = true;
   if (isManual) {
+    playRefreshSound();
     triggerRefreshEffect();
     setRefreshButtonLoading(true);
     setRefreshFeedback("正在同步最新狀態...", "idle");

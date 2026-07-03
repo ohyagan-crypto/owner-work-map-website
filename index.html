@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>蝦咩 x 嵐熙即時總控台</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="styles.css?v=20260703-220000">
+  <link rel="stylesheet" href="styles.css?v=20260703-221500">
 </head>
 <body>
   <header class="topbar">
@@ -25,8 +25,17 @@
     <section class="status-dashboard" id="status-dashboard" aria-live="polite">
       <span class="state-pill sr-only" id="statePill">讀取中</span>
       <div class="command-strip" aria-label="總覽狀態">
+        <div class="command-chip sync-chip">
+          <span>手動同步</span>
+          <div class="refresh-panel">
+            <button type="button" id="refreshStatus" aria-describedby="refreshFeedback"><span class="refresh-icon" aria-hidden="true">↻</span><span class="refresh-label">重新同步</span></button>
+            <div class="effect-layer" id="refreshEffectLayer" aria-hidden="true"></div>
+            <small class="refresh-feedback" id="refreshFeedback">每 1 秒自動同步。</small>
+          </div>
+        </div>
         <div class="command-chip shami-chip"><span>蝦咩狀態</span><b id="chipShamiStatus">讀取中</b></div>
         <div class="command-chip lanxi-chip"><span>嵐熙狀態</span><b id="chipLanxiStatus">讀取中</b></div>
+        <div class="command-chip skill-chip"><span>技能包</span><b id="chipSkillStatus">80 個已載入</b><small id="chipSkillDetail">等待清單渲染</small></div>
         <div class="command-chip task-chip"><span>目前任務</span><b id="chipCurrentTask">同步中</b></div>
         <div class="command-chip"><span>最後更新</span><b id="chipUpdatedAt">--</b></div>
       </div>
@@ -68,13 +77,6 @@
           <div class="monitor-panel">
             <div class="monitor-panel-head"><p class="eyebrow">Lanxi Monitoring</p><h3>嵐熙監控</h3></div>
             <div class="monitor-grid compact actor-monitor-grid" id="lanxiMonitorGrid"></div>
-          </div>
-          <div class="dashboard-footer column-footer">
-            <div class="refresh-panel">
-              <button type="button" id="refreshStatus" aria-describedby="refreshFeedback"><span class="refresh-icon" aria-hidden="true">↻</span><span class="refresh-label">重新整理狀態</span></button>
-              <div class="effect-layer" id="refreshEffectLayer" aria-hidden="true"></div>
-              <span class="refresh-feedback" id="refreshFeedback">每 1 秒自動讀取狀態。</span>
-            </div>
           </div>
         </section>
       </div>
@@ -135,7 +137,7 @@
 
   <footer><span>資料來源：本機技能索引、記憶索引、Codex 心跳、Telegram 任務狀態、OpenClaw 摘要與 GitHub Pages 快照。</span></footer>
 
-  <script src="live-status-config.js?v=20260703-211000"></script>
-  <script src="app.js?v=20260703-220000"></script>
+  <script src="live-status-config.js?v=20260703-221500"></script>
+  <script src="app.js?v=20260703-221500"></script>
 </body>
 </html>
