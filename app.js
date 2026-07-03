@@ -731,11 +731,26 @@ function skillGroups() {
   return ["全部", ...Array.from(new Set(skillCatalog.map((item) => item.group))).sort((a, b) => a.localeCompare(b, "zh-Hant-TW"))];
 }
 
+function skillGroupStats(items = skillCatalog) {
+  const stats = new Map();
+  items.forEach((item) => {
+    const current = stats.get(item.group) || { group: item.group, count: 0, variants: 0 };
+    current.count += 1;
+    current.variants += Number(item.variants || 1);
+    stats.set(item.group, current);
+  });
+  return Array.from(stats.values()).sort((a, b) => a.group.localeCompare(b.group, "zh-Hant-TW"));
+}
+
 function renderSkillFilters() {
   const container = $("#skillFilters");
   if (!container) return;
+  const counts = new Map(skillGroupStats(skillCatalog).map((item) => [item.group, item.count]));
   container.innerHTML = skillGroups().map((group) => `
-    <button type="button" class="${group === selectedSkillGroup ? "active" : ""}" data-group="${escapeHtml(group)}">${escapeHtml(group)}</button>
+    <button type="button" class="${group === selectedSkillGroup ? "active" : ""}" data-group="${escapeHtml(group)}">
+      <span>${escapeHtml(group)}</span>
+      <small>${group === "全部" ? skillCatalog.length : counts.get(group) || 0}</small>
+    </button>
   `).join("");
   container.querySelectorAll("button").forEach((button) => {
     button.addEventListener("click", () => {
@@ -767,6 +782,8 @@ function renderSkills() {
   const visible = filteredSkills();
   const totalVariants = skillCatalog.reduce((sum, item) => sum + Number(item.variants || 1), 0);
   const groups = skillGroups();
+  const visibleVariants = visible.reduce((sum, item) => sum + Number(item.variants || 1), 0);
+  const visibleGroupCount = new Set(visible.map((item) => item.group)).size;
   const summaryItems = [
     { value: "80", label: "索引內技能", note: "本機目前安裝數" },
     { value: String(skillCatalog.length), label: "頁面列出項目", note: "主技能與重要歷史入口" },
@@ -783,8 +800,62 @@ function renderSkills() {
     `).join("");
   }
 
+  const viewMeta = $("#skillViewMeta");
+  if (viewMeta) {
+    const activeLabel = selectedSkillGroup === "全部" ? "全部分類" : selectedSkillGroup;
+    viewMeta.innerHTML = [
+      { value: `${visible.length}`, label: "顯示項目" },
+      { value: `${visibleGroupCount || 0}`, label: "涵蓋分類" },
+      { value: `${visibleVariants}`, label: activeLabel }
+    ].map((item) => `
+      <div class="skill-view-chip">
+        <b>${escapeHtml(item.value)}</b>
+        <span>${escapeHtml(item.label)}</span>
+      </div>
+    `).join("");
+  }
+
   setTextIfPresent("#chipSkillStatus", `80 個技能 / ${totalVariants} 版本`);
   setTextIfPresent("#chipSkillDetail", `${skillCatalog.length} 個主項目，${groups.length - 1} 類分類已顯示`);
+
+  const groupOverview = $("#skillGroupOverview");
+  if (groupOverview) {
+    const overviewGroups = skillGroupStats(visible)
+      .sort((a, b) => b.count - a.count || a.group.localeCompare(b.group, "zh-Hant-TW"))
+      .slice(0, 8);
+    groupOverview.innerHTML = overviewGroups.map((item) => `
+      <article class="skill-group-card ${item.group === selectedSkillGroup ? "active" : ""}">
+        <b>${escapeHtml(item.group)}</b>
+        <span>${escapeHtml(item.count)} 項 / ${escapeHtml(item.variants)} 版</span>
+      </article>
+    `).join("");
+  }
+
+  const skillCards = $("#skillCards");
+  const skillEmpty = $("#skillEmpty");
+  if (skillCards) {
+    skillCards.innerHTML = visible.map((item) => `
+      <article class="skill-card">
+        <div class="skill-card-head">
+          <div class="skill-title">
+            <b>${escapeHtml(item.name)}</b>
+            <span>${escapeHtml(item.group)}</span>
+          </div>
+          <small class="skill-version-badge">${item.variants > 1 ? `${escapeHtml(item.variants)} 版` : "單版"}</small>
+        </div>
+        <ul class="skill-function-list">${item.functions.map((point) => `<li>${escapeHtml(point)}</li>`).join("")}</ul>
+        <div class="skill-card-field">
+          <span>使用場景</span>
+          <p>${escapeHtml(item.scenario)}</p>
+        </div>
+        <div class="skill-card-field">
+          <span>觸發 / 備註</span>
+          <p class="skill-trigger-text">${escapeHtml(item.trigger)}</p>
+        </div>
+      </article>
+    `).join("");
+  }
+  if (skillEmpty) skillEmpty.classList.toggle("is-visible", visible.length === 0);
 
   const skillTable = $("#skillTable");
   if (skillTable) skillTable.innerHTML = visible.map((item) => `

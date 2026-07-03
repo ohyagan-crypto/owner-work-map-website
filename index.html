@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>蝦咩 x 嵐熙即時總控台</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="styles.css?v=20260703-223500">
+  <link rel="stylesheet" href="styles.css?v=20260703-231500">
 </head>
 <body>
   <header class="topbar">
@@ -117,11 +117,33 @@
       </div>
     </section>
 
-    <section id="skills" class="content-section">
-      <div class="section-heading"><div><p class="eyebrow">Skill Packages</p><h2>技能包清單、功能與使用場景</h2></div><span class="status done">詳細列出</span></div>
-      <div class="skill-summary" id="skillSummary"></div>
-      <div class="skill-toolbar"><input id="skillSearch" type="search" placeholder="搜尋技能、功能、場景"><div class="skill-filters" id="skillFilters"></div></div>
-      <div class="table-shell"><table><thead><tr><th>技能包</th><th>分類</th><th>功能</th><th>使用場景</th><th>觸發 / 備註</th></tr></thead><tbody id="skillTable"></tbody></table></div>
+    <section id="skills" class="content-section skill-section">
+      <div class="section-heading"><div><p class="eyebrow">Skill Packages</p><h2>技能包總覽與使用入口</h2></div><span class="status done">已整理</span></div>
+      <div class="skill-control-bar">
+        <label class="skill-search-field" for="skillSearch">
+          <span>搜尋技能</span>
+          <input id="skillSearch" type="search" placeholder="輸入技能、功能、場景">
+        </label>
+        <div class="skill-view-meta" id="skillViewMeta"></div>
+      </div>
+      <div class="skill-layout">
+        <aside class="skill-sidebar" aria-label="技能包分類與統計">
+          <div class="skill-summary" id="skillSummary"></div>
+          <div class="skill-filter-panel">
+            <div class="mini-section-title"><p class="eyebrow">Categories</p><h3>分類</h3></div>
+            <div class="skill-filters" id="skillFilters"></div>
+          </div>
+        </aside>
+        <div class="skill-main">
+          <div class="skill-group-overview" id="skillGroupOverview"></div>
+          <div class="skill-card-grid" id="skillCards"></div>
+          <div class="skill-empty" id="skillEmpty">沒有符合的技能包</div>
+        </div>
+      </div>
+      <details class="skill-table-disclosure">
+        <summary>完整表格</summary>
+        <div class="table-shell"><table><thead><tr><th>技能包</th><th>分類</th><th>功能</th><th>使用場景</th><th>觸發 / 備註</th></tr></thead><tbody id="skillTable"></tbody></table></div>
+      </details>
     </section>
 
     <section id="sop-library" class="content-section">
@@ -137,7 +159,7 @@
 
   <footer><span>資料來源：本機技能索引、記憶索引、Codex 心跳、Telegram 任務狀態、OpenClaw 摘要與 GitHub Pages 快照。</span></footer>
 
-  <script src="live-status-config.js?v=20260703-223500"></script>
-  <script src="app.js?v=20260703-223500"></script>
+  <script src="live-status-config.js?v=20260703-231500"></script>
+  <script src="app.js?v=20260703-231500"></script>
 </body>
 </html>
