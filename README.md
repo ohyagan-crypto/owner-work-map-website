@@ -1,33 +1,26 @@
-# 主人 TGBOT 總控台
+# 主人工作總控台
 
-建立日期：2026-07-03
+建立日期：2026-07-02
 
-這是 tgbot 的公開儀表盤網站，用來集中查看：
+這是一個公開工作總覽網站，用來集中查看：
 
-- Telegram 任務目前狀態
-- 回覆與檔案交付規則
-- 已安裝技能與記憶的公開摘要
-- 維護檢查流程
-- GitHub Pages 公開部署狀態
+- 目前 Codex / Telegram 運作狀態
+- 今日可驗證 token 使用量
+- 已完成的 Roadmap 項目
+- 任務型 SOP 圖書館
+- 技能主力版與歷史版分流
+- 安全邊界與交付規則
 
-公開頁只放整理後的摘要，不放帳密、敏感憑證、登入資料、原始紀錄或內部偵錯資訊。
+## 更新狀態資料
 
-## 本機預覽
-
-```powershell
-node server.js
-```
-
-預設網址：
-
-```text
-http://127.0.0.1:4179/
-```
-
-## 更新狀態快照
+從網站資料夾執行：
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\update-runtime-status.ps1 -CurrentTask "重新製作 tgbot 儀表盤網站" -NextAction "公開部署完成後回報網址"
+powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\update-runtime-status.ps1
 ```
 
-這會產生 `runtime-status.json`，供 GitHub Pages 讀取公開狀態快照。
+會從本機心跳、Telegram 請求狀態與 token 統計產生 `runtime-status.json`。
+
+## 安全說明
+
+網站只放整理後的總覽資料，不包含帳號密碼、API key、Telegram token、cookie、瀏覽器 profile、credential store、原始 log 或偵錯紀錄。

@@ -7,7 +7,6 @@ const root = __dirname;
 const port = Number(process.env.PORT || 4179);
 const statusScript = path.join(root, "tools", "update-runtime-status.ps1");
 const liveRuntimeStatusPath = path.join(process.env.TEMP || root, "owner-work-map-live-runtime-status.json");
-const powershellPath = "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe";
 
 const types = {
   ".html": "text/html; charset=utf-8",
@@ -30,7 +29,7 @@ function corsHeaders(extra = {}) {
 function refreshRuntimeStatus() {
   return new Promise((resolve, reject) => {
     execFile(
-      powershellPath,
+      "powershell.exe",
       [
         "-NoProfile",
         "-ExecutionPolicy",
@@ -40,11 +39,7 @@ function refreshRuntimeStatus() {
         "-SiteRoot",
         root,
         "-OutputPath",
-        liveRuntimeStatusPath,
-        "-CurrentTask",
-        "新版 tgbot 儀表盤網站已完成",
-        "-NextAction",
-        "公開網址更新後可直接查看新版儀表盤。"
+        liveRuntimeStatusPath
       ],
       {
         windowsHide: true,
@@ -52,8 +47,11 @@ function refreshRuntimeStatus() {
         maxBuffer: 1024 * 1024
       },
       (error) => {
-        if (error) reject(error);
-        else resolve();
+        if (error) {
+          reject(error);
+          return;
+        }
+        resolve();
       }
     );
   });

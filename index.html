@@ -3,191 +3,165 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#eef4f1">
-  <title>主人 TGBOT 總控台</title>
+  <title>主人工作總控台</title>
   <link rel="icon" href="data:,">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header class="topbar">
-    <a class="brand" href="#top" aria-label="回到總覽">
-      <span class="brand-mark" aria-hidden="true">T</span>
-      <span>
-        <strong>主人 TGBOT 總控台</strong>
-        <small>Telegram / Codex / OpenClaw</small>
-      </span>
-    </a>
-    <nav class="nav-links" aria-label="儀表盤導覽">
-      <a href="#operations">運作</a>
-      <a href="#delivery">交付</a>
-      <a href="#capabilities">技能</a>
-      <a href="#maintenance">維護</a>
-    </nav>
+    <div>
+      <p class="eyebrow">Codex / OpenClaw / Telegram</p>
+      <h1>主人工作總控台</h1>
+    </div>
+    <div class="topbar-meta">
+      <span>更新日 2026-07-02</span>
+      <span>秒級狀態</span>
+    </div>
   </header>
 
-  <main id="top">
-    <section class="dashboard-shell" aria-labelledby="dashboard-title">
+  <main>
+    <section class="status-dashboard" id="status-dashboard" aria-live="polite">
       <div class="dashboard-head">
         <div>
-          <p class="eyebrow">Live Dashboard</p>
-          <h1 id="dashboard-title">tgbot 任務儀表盤</h1>
-          <p class="lead">集中查看目前任務、回覆交付、技能庫與維護狀態。公開頁只顯示整理後的摘要，不放帳密、敏感憑證、登入資料、原始紀錄或本機敏感路徑。</p>
+          <p class="eyebrow">Live Status</p>
+          <h2>目前狀態、卡點、回覆與用量</h2>
+          <p class="dashboard-subtitle">按下重新整理時，會優先讀取本機即時 API；連不上才退回公開快照。</p>
         </div>
-        <div class="dashboard-actions" aria-label="快速操作">
-          <button class="icon-button" type="button" id="refreshStatus" aria-describedby="refreshFeedback" title="重新整理狀態">
-            <span aria-hidden="true">↻</span>
-            <span>刷新</span>
-          </button>
-          <a class="icon-button secondary" href="#delivery" title="查看交付規則">
-            <span aria-hidden="true">✓</span>
-            <span>交付</span>
-          </a>
-        </div>
+        <span class="state-pill" id="statePill">讀取中</span>
       </div>
 
-      <div class="live-grid" id="operations">
-        <article class="live-card primary" data-state="watch" id="stateCard">
-          <span class="card-label">目前狀態</span>
+      <div class="dashboard-grid">
+        <article class="status-card primary-status">
+          <span>目前狀態</span>
           <strong id="statusLabel">讀取中</strong>
-          <p id="statusHeadline">正在整理本機快照。</p>
+          <p id="statusHeadline">正在讀取本機即時狀態。</p>
         </article>
-        <article class="live-card">
-          <span class="card-label">任務卡點</span>
-          <strong id="blockerText">檢查中</strong>
-          <p id="nextAction">等待狀態資料同步。</p>
+        <article class="status-card">
+          <span>今日 token</span>
+          <strong id="todayTokens">--</strong>
+          <p id="tokenSource">等待統計來源。</p>
         </article>
-        <article class="live-card">
-          <span class="card-label">今日用量</span>
-          <strong id="workloadLabel">--</strong>
-          <p id="workloadSource">讀取可公開的任務量摘要。</p>
+        <article class="status-card">
+          <span>目前卡點</span>
+          <strong id="blockerText">讀取中</strong>
+          <p id="nextAction">等待同步資料。</p>
         </article>
-        <article class="live-card">
-          <span class="card-label">最近更新</span>
+        <article class="status-card">
+          <span>最新檢查</span>
           <strong id="updatedAt">--</strong>
-          <p id="refreshNote">可手動刷新本頁快照。</p>
+          <p id="refreshNote">頁面會自動重新讀取狀態資料。</p>
         </article>
       </div>
 
-      <div class="status-strip">
-        <div class="strip-items" id="deliverableList"></div>
-        <p class="refresh-feedback" id="refreshFeedback">頁面會自動嘗試讀取公開快照。</p>
+      <div class="dashboard-footer">
+        <div class="mini-list" id="deliverableList"></div>
+        <div class="refresh-panel">
+          <button type="button" id="refreshStatus" aria-describedby="refreshFeedback">
+            <span class="refresh-icon" aria-hidden="true">↻</span>
+            <span class="refresh-label">重新整理狀態</span>
+          </button>
+          <span class="refresh-feedback" id="refreshFeedback">每 5 秒自動讀取狀態。</span>
+        </div>
       </div>
     </section>
 
-    <section class="overview-grid" aria-label="核心總覽">
-      <article class="summary-card">
-        <span class="summary-icon" aria-hidden="true">◷</span>
-        <strong>任務流</strong>
-        <p>收到 Telegram 任務後，先判斷類型，再執行本機檢查、製作、驗證與回覆，不把一般問題變成待命文字。</p>
-      </article>
-      <article class="summary-card">
-        <span class="summary-icon" aria-hidden="true">⇪</span>
-        <strong>交付流</strong>
-        <p>有檔案成果時，以同一個來源對話為唯一回傳目標；公開網站成果則提供穩定網址與本機備份路徑。</p>
-      </article>
-      <article class="summary-card">
-        <span class="summary-icon" aria-hidden="true">◎</span>
-        <strong>技能流</strong>
-        <p>依任務套用網站、圖片、影片、NotebookLM、Telegram 管理等技能，避免把不相關流程混進來。</p>
-      </article>
-      <article class="summary-card">
-        <span class="summary-icon" aria-hidden="true">▣</span>
-        <strong>維護流</strong>
-        <p>用心跳、最近任務、用量摘要與維護腳本判斷真實狀態，卡住時回報具體原因與下一步。</p>
-      </article>
+    <section class="overview" id="overview">
+      <div class="overview-copy">
+        <p class="eyebrow">Owner Map</p>
+        <h2>把任務狀態、交付規則、技能入口與修復紀錄集中在同一頁</h2>
+        <p>
+          這個頁面只顯示可公開查看的摘要，不放帳號密碼、API key、token、cookie、瀏覽器 profile、原始 log 或私密截圖。
+          Telegram 來源任務若有檔案交付，仍以同一個來源對話為準。
+        </p>
+        <div class="quick-actions" aria-label="主要區塊">
+          <a href="#completed">已完成</a>
+          <a href="#sop-library">SOP</a>
+          <a href="#skills">技能</a>
+          <a href="#timeline">紀錄</a>
+          <a href="#safety">安全</a>
+        </div>
+      </div>
+      <div class="stat-grid" id="statGrid"></div>
     </section>
 
-    <section class="content-panel" id="delivery">
+    <section id="completed" class="content-section">
       <div class="section-heading">
         <div>
-          <p class="eyebrow">Delivery</p>
-          <h2>Telegram 交付規則</h2>
+          <p class="eyebrow">Completed</p>
+          <h2>這次修復完成項目</h2>
         </div>
-        <span class="state-pill">同源回傳</span>
+        <span class="status done">已修復</span>
       </div>
-      <div class="delivery-board">
-        <article>
-          <h3>檔案成果</h3>
-          <p>圖片、影片、音訊、PDF、ZIP、截圖與網站包等檔案成果，完成後只回傳到本次任務來源的 Telegram 對話。</p>
-        </article>
-        <article>
-          <h3>網站成果</h3>
-          <p>網站任務先建立本機檔案、完成驗證，再部署到 GitHub Pages；若部署卡住，仍保留可開啟的本機版本。</p>
-        </article>
-        <article>
-          <h3>安全摘要</h3>
-          <p>公開頁只顯示狀態、能力與流程摘要，不公開敏感憑證、帳密、登入資料、原始紀錄或內部偵錯資訊。</p>
-        </article>
-      </div>
+      <div class="item-grid" id="completedGrid"></div>
     </section>
 
-    <section class="content-panel" id="capabilities">
+    <section id="sop-library" class="content-section">
       <div class="section-heading">
         <div>
-          <p class="eyebrow">Capabilities</p>
-          <h2>目前可調度能力</h2>
+          <p class="eyebrow">SOP Library</p>
+          <h2>任務回覆與狀態 SOP</h2>
         </div>
-        <span class="state-pill">公開摘要</span>
+        <span class="status done">可追蹤</span>
       </div>
-      <div class="metric-grid">
-        <article class="metric-card">
-          <strong>81</strong>
-          <span>技能資料夾</span>
-          <p>含網站部署、Telegram 管理、圖片、影片、簡報與知識整理。</p>
-        </article>
-        <article class="metric-card">
-          <strong>92</strong>
-          <span>記憶檔案</span>
-          <p>保存偏好、交付規則、成功流程與任務習慣。</p>
-        </article>
-        <article class="metric-card">
-          <strong>5</strong>
-          <span>主工作線</span>
-          <p>回覆、做圖、影片、網站、資料整理。</p>
-        </article>
-        <article class="metric-card">
-          <strong>24h</strong>
-          <span>可維護節奏</span>
-          <p>支援日常檢查、故障修復與公開頁更新。</p>
-        </article>
+      <div class="sop-grid" id="sopGrid"></div>
+    </section>
+
+    <section id="skills" class="content-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Skills</p>
+          <h2>主要技能與用途</h2>
+        </div>
+        <span class="status done">主力優先</span>
       </div>
-      <div class="capability-table" role="region" aria-label="技能分流表" tabindex="0">
+      <div class="skill-summary" id="skillSummary"></div>
+      <div class="table-shell">
         <table>
           <thead>
             <tr>
-              <th>任務類型</th>
-              <th>主要能力</th>
-              <th>儀表盤呈現</th>
+              <th>分類</th>
+              <th>主力技能</th>
+              <th>用途</th>
+              <th>規則</th>
             </tr>
           </thead>
-          <tbody id="capabilityRows"></tbody>
+          <tbody id="skillTable"></tbody>
         </table>
       </div>
     </section>
 
-    <section class="content-panel" id="maintenance">
+    <section id="timeline" class="content-section">
       <div class="section-heading">
         <div>
-          <p class="eyebrow">Maintenance</p>
-          <h2>維護與檢查面板</h2>
+          <p class="eyebrow">Log</p>
+          <h2>修復紀錄</h2>
         </div>
-        <span class="state-pill">可追蹤</span>
+        <span class="status watch">持續同步</span>
       </div>
-      <div class="maintenance-layout">
-        <div class="checklist" id="maintenanceChecklist"></div>
-        <aside class="note-box">
-          <h3>公開頁定位</h3>
-          <p>這個網站是給主人快速看 tgbot 工作狀態與能力範圍的門面，不是內部後台。真正的帳密、敏感憑證、瀏覽器登入資料與原始紀錄仍只留在本機安全位置。</p>
-        </aside>
+      <div class="timeline" id="timelineList"></div>
+    </section>
+
+    <section id="safety" class="content-section source-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Safety</p>
+          <h2>安全邊界</h2>
+        </div>
       </div>
+      <ul class="source-list">
+        <li>公開頁只放任務狀態、技能摘要、SOP 與可分享連結。</li>
+        <li>不放帳密、API key、Telegram token、cookie、瀏覽器 profile、credential store 或原始 log。</li>
+        <li>Telegram 來源任務若有檔案交付，必須回到同一個來源對話。</li>
+        <li>狀態刷新以本機即時 API 為準；連不上時會明確標示正在讀公開快照。</li>
+      </ul>
     </section>
   </main>
 
   <footer>
-    <span>資料來源：本機 tgbot 狀態快照、技能資料夾統計、記憶檔案統計與公開部署紀錄。</span>
-    <span>更新日：2026-07-03</span>
+    <span>資料來源：本機技能索引、記憶索引、Codex 心跳、Telegram 任務狀態與 token 統計快照。</span>
   </footer>
 
-  <script src="app.js?v=20260703-2"></script>
+  <script src="live-status-config.js?v=20260702-2130"></script>
+  <script src="app.js?v=20260702-2130"></script>
 </body>
 </html>
