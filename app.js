@@ -8,10 +8,16 @@ const dashboardStats = [
   { label: "已安裝技能", value: "80", note: "含主技能、備份版與歷史入口" },
   { label: "主技能項目", value: "53", note: "依技能名稱去重後的可查能力" },
   { label: "記憶檔", value: "88", note: "規則、偏好、成功流程與工作交接記錄" },
-  { label: "監控項目", value: "8", note: "蝦咩、嵐熙、任務、token 與快照" }
+  { label: "監控項目", value: "9", note: "蝦咩、嵐熙任務、token 與快照" }
 ];
 
 const completedItems = [
+  {
+    title: "雙頁資訊整合與嵐熙任務欄",
+    status: "已套用",
+    summary: "把主控台與技能入口整理成同一個操作頁；蝦咩與嵐熙各自有任務快覽，右欄新增嵐熙獨立任務指令。",
+    points: ["蝦咩任務與嵐熙任務分開顯示", "嵐熙可吃獨立任務欄位", "技能包改成分類摘要與精簡入口"]
+  },
   {
     title: "同步、按鈕與技能包修正",
     status: "已套用",
@@ -512,6 +518,7 @@ const skillCatalog = [
 ];
 
 const timeline = [
+  ["2026-07-03", "整合主控台與技能入口版面，新增嵐熙獨立任務欄位與頂端嵐熙任務快覽。"],
   ["2026-07-03", "修正前端初始化中斷，讓 runtime-status.json、技能包清單與頂端同步狀態可正常顯示。"],
   ["2026-07-03", "重新同步按鈕移到頂端控制列，點擊時加入短促音效、彩色粒子與同步完成回饋。"],
   ["2026-07-03", "頂端儀表盤改為蝦咩左側、嵐熙右側的雙欄總覽，手機版保留左右分開且不擠壓主狀態。"],
@@ -537,7 +544,8 @@ const fallbackRuntimeStatus = {
   refreshSeconds: DEFAULT_REFRESH_SECONDS,
   token: { totalTokens: null, taskCount: null, source: "尚未讀到 token 統計" },
   heartbeat: { name: "蝦咩", ageSeconds: null, activeRequests: null },
-  openclaw: { name: "嵐熙", statusKey: "watch", statusLabel: "狀態待同步", processCount: null, watchdogState: "未取得" },
+  lanxiTaskInstruction: "OpenClaw 自動化任務與瀏覽器流程監控待同步。",
+  openclaw: { name: "嵐熙", statusKey: "watch", statusLabel: "狀態待同步", processCount: null, watchdogState: "未取得", currentTaskInstruction: "OpenClaw 自動化任務與瀏覽器流程監控待同步。" },
   deliverables: [],
   monitors: []
 };
@@ -780,6 +788,8 @@ function filteredSkills() {
 function renderSkills() {
   const summary = $("#skillSummary");
   const visible = filteredSkills();
+  const isDefaultView = selectedSkillGroup === "全部" && !skillSearchTerm.trim();
+  const cardItems = isDefaultView ? visible.slice(0, 12) : visible;
   const totalVariants = skillCatalog.reduce((sum, item) => sum + Number(item.variants || 1), 0);
   const groups = skillGroups();
   const visibleVariants = visible.reduce((sum, item) => sum + Number(item.variants || 1), 0);
@@ -804,7 +814,7 @@ function renderSkills() {
   if (viewMeta) {
     const activeLabel = selectedSkillGroup === "全部" ? "全部分類" : selectedSkillGroup;
     viewMeta.innerHTML = [
-      { value: `${visible.length}`, label: "顯示項目" },
+      { value: `${cardItems.length}`, label: isDefaultView ? "精選入口" : "顯示項目" },
       { value: `${visibleGroupCount || 0}`, label: "涵蓋分類" },
       { value: `${visibleVariants}`, label: activeLabel }
     ].map((item) => `
@@ -834,7 +844,8 @@ function renderSkills() {
   const skillCards = $("#skillCards");
   const skillEmpty = $("#skillEmpty");
   if (skillCards) {
-    skillCards.innerHTML = visible.map((item) => `
+    const hiddenCount = Math.max(0, visible.length - cardItems.length);
+    skillCards.innerHTML = cardItems.map((item) => `
       <article class="skill-card">
         <div class="skill-card-head">
           <div class="skill-title">
@@ -853,7 +864,13 @@ function renderSkills() {
           <p class="skill-trigger-text">${escapeHtml(item.trigger)}</p>
         </div>
       </article>
-    `).join("");
+    `).join("") + (hiddenCount ? `
+      <article class="skill-more-card">
+        <span>完整清單</span>
+        <b>還有 ${escapeHtml(hiddenCount)} 個技能入口</b>
+        <p>使用搜尋或分類可切換精準視圖；下方完整表格保留全部技能包資料。</p>
+      </article>
+    ` : "");
   }
   if (skillEmpty) skillEmpty.classList.toggle("is-visible", visible.length === 0);
 
@@ -986,6 +1003,45 @@ function currentTaskInstruction(status) {
   return value ? value.trim() : "目前沒有可顯示的任務指令";
 }
 
+function lanxiTaskInstruction(status) {
+  const monitors = Array.isArray(status.monitors) ? status.monitors : [];
+  const lanxiTaskMonitor = monitors.find((item) => {
+    const id = String(item.id || "").toLowerCase();
+    const label = String(item.label || "");
+    return id.includes("lanxi-task") || id.includes("openclaw-task") || label.includes("嵐熙任務");
+  });
+  const openclawProcessMonitor = monitors.find((item) => String(item.id || "").toLowerCase().includes("openclaw-process"));
+  const watchdogMonitor = monitors.find((item) => String(item.id || "").toLowerCase().includes("openclaw-watchdog"));
+  const candidates = [
+    status.lanxiTaskInstruction,
+    status.lanxiTask,
+    status.openclaw?.currentTaskInstruction,
+    status.openclaw?.taskInstruction,
+    status.openclaw?.currentTask,
+    lanxiTaskMonitor?.detail
+  ];
+  const value = candidates.find((item) => typeof item === "string" && item.trim());
+  if (value) return value.trim();
+
+  const processText = openclawProcessMonitor?.detail || (
+    status.openclaw?.processCount === null || status.openclaw?.processCount === undefined
+      ? "進程未取得"
+      : `相關進程 ${formatNumber(status.openclaw.processCount)}`
+  );
+  const watchdogText = watchdogMonitor?.statusLabel || status.openclaw?.watchdogState || "未取得";
+  return `OpenClaw 自動化任務：${status.openclaw?.statusLabel || "狀態待同步"}；${processText}；看門排程 ${watchdogText}。`;
+}
+
+function lanxiTaskSource(status) {
+  const monitors = Array.isArray(status.monitors) ? status.monitors : [];
+  const taskMonitor = monitors.find((item) => {
+    const id = String(item.id || "").toLowerCase();
+    const label = String(item.label || "");
+    return id.includes("lanxi-task") || id.includes("openclaw-task") || label.includes("嵐熙任務");
+  });
+  return taskMonitor?.source || "OpenClaw 自動化任務獨立欄位";
+}
+
 function monitorOwner(item) {
   const id = String(item.id || "").toLowerCase();
   const label = String(item.label || "");
@@ -1079,9 +1135,9 @@ function renderAgentStrip(status) {
       name: openclaw.name || "嵐熙",
       state: openclaw.statusLabel || "狀態待同步",
       stateKey: statusTone(openclaw.statusKey || "watch"),
-      metaLabel: "監控狀態",
-      meta: `${openclawProcessText} · 看門排程 ${openclaw.watchdogState || "未取得"}`,
-      detail: "瀏覽器、自動化進程與排程同步監控"
+      metaLabel: "目前任務指令",
+      meta: lanxiTaskInstruction(status),
+      detail: `${openclawProcessText} · 看門排程 ${openclaw.watchdogState || "未取得"}`
     }
   ];
 
@@ -1141,6 +1197,8 @@ function renderRuntimeStatus(data) {
     : status.token.source || "未取得 token 統計來源。";
   $("#openclawStatusLabel").textContent = status.openclaw.statusLabel || "狀態待同步";
   $("#openclawStatusDetail").textContent = `${openclawProcessText}，看門排程 ${status.openclaw.watchdogState || "未取得"}。`;
+  $("#lanxiTaskText").textContent = lanxiTaskInstruction(status);
+  $("#lanxiTaskSource").textContent = lanxiTaskSource(status);
   $("#blockerText").textContent = status.blocker || "沒有卡點";
   $("#nextAction").textContent = status.nextAction || "維持同步。";
   $("#updatedAt").textContent = formatDateTime(displayTime);
@@ -1312,6 +1370,7 @@ function renderAiEnhancements(status, displayTime) {
   setTextIfPresent("#chipShamiStatus", status.statusLabel || "同步中");
   setTextIfPresent("#chipLanxiStatus", status.openclaw?.statusLabel || "同步中");
   setTextIfPresent("#chipCurrentTask", currentTaskInstruction(status));
+  setTextIfPresent("#chipLanxiTask", lanxiTaskInstruction(status));
   setTextIfPresent("#chipUpdatedAt", formatDateTime(displayTime));
   setTextIfPresent("#energyValue", `${energy}%`);
   setTextIfPresent("#energyLabel", energy >= 80 ? "高活躍運作" : energy >= 60 ? "穩定運作" : energy >= 40 ? "觀察中" : "需要確認");

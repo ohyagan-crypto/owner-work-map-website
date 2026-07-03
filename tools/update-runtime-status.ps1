@@ -3,6 +3,7 @@
     [string]$BotRoot = "C:\Users\max\tg-openai-bot",
     [string]$Date = (Get-Date).ToString("yyyy-MM-dd"),
     [string]$CurrentTask = "",
+    [string]$LanxiTask = "",
     [string]$NextAction = "",
     [string]$OutputPath = ""
 )
@@ -162,8 +163,9 @@ function Get-NewestUploadCaption {
 function Get-OpenClawSummary {
     $processCount = $null
     try {
-        $rows = Get-CimInstance Win32_Process -ErrorAction Stop |
-            Where-Object { $_.ProcessId -ne $PID -and $_.CommandLine -match "openclaw|gateway --port 18789" }
+        $query = "SELECT ProcessId,CommandLine FROM Win32_Process WHERE CommandLine LIKE '%openclaw%' OR CommandLine LIKE '%gateway --port 18789%'"
+        $rows = Get-CimInstance -Query $query -ErrorAction Stop |
+            Where-Object { $_.ProcessId -ne $PID }
         $processCount = @($rows).Count
     } catch {
         $processCount = $null
@@ -212,6 +214,15 @@ $request = Get-NewestRequestRecord
 $uploadCaption = Get-NewestUploadCaption
 $token = Get-TokenSummary -TargetDate $Date
 $openclaw = Get-OpenClawSummary
+$lanxiTaskInstruction = if ($LanxiTask.Trim()) {
+    $LanxiTask.Trim()
+} elseif ($null -ne $openclaw.processCount -and $openclaw.processCount -gt 0) {
+    "OpenClaw 自動化任務：瀏覽器流程、排程與本機進程監控正常；看門排程 $($openclaw.watchdogState)。"
+} elseif ($null -eq $openclaw.processCount) {
+    "OpenClaw 自動化任務：進程數尚未取得，保留排程與瀏覽器流程監控。"
+} else {
+    "OpenClaw 自動化任務：目前未偵測到相關進程，需要檢查嵐熙自動化服務。"
+}
 
 $statusKey = "standby"
 $statusLabel = "正常待命"
@@ -350,6 +361,14 @@ $monitors = @(
         source = "telegram_request_status.json"
     },
     [ordered]@{
+        id = "openclaw-task"
+        label = "嵐熙任務"
+        statusKey = $openclaw.statusKey
+        statusLabel = $openclaw.statusLabel
+        detail = $lanxiTaskInstruction
+        source = "OpenClaw task summary"
+    },
+    [ordered]@{
         id = "openclaw-process"
         label = "嵐熙進程"
         statusKey = $openclawProcessKey
@@ -404,6 +423,7 @@ $payload = [ordered]@{
     statusLabel = $statusLabel
     headline = $headline
     currentTaskInstruction = $headline
+    lanxiTaskInstruction = $lanxiTaskInstruction
     blocker = $blocker
     nextAction = $NextAction.Trim()
     updatedAt = $now.ToString("yyyy-MM-ddTHH:mm:sszzz")
@@ -427,12 +447,14 @@ $payload = [ordered]@{
         statusLabel = $openclaw.statusLabel
         processCount = $openclaw.processCount
         watchdogState = $openclaw.watchdogState
+        currentTaskInstruction = $lanxiTaskInstruction
     }
     monitors = $monitors
     deliverables = @(
         "公開總控台：GitHub Pages",
         "狀態資料：runtime-status.json",
-        "監控項目：8 項",
+        "監控項目：9 項",
+        "嵐熙任務：獨立欄位",
         "技能包清單：功能與使用場景"
     )
 }

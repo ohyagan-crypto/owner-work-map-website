@@ -1,23 +1,24 @@
 {
     "statusKey":  "running",
     "statusLabel":  "運作中",
-    "headline":  "已修正同步、重新同步按鈕音效特效、技能包顯示",
-    "currentTaskInstruction":  "已修正同步、重新同步按鈕音效特效、技能包顯示",
+    "headline":  "整合主控台與技能入口版面，新增嵐熙獨立任務欄位",
+    "currentTaskInstruction":  "整合主控台與技能入口版面，新增嵐熙獨立任務欄位",
+    "lanxiTaskInstruction":  "嵐熙獨立任務：OpenClaw 自動化、瀏覽器流程與排程監控整合到右欄顯示。",
     "blocker":  "沒有卡點",
-    "nextAction":  "本機驗證通過，準備推送 GitHub Pages 公開頁。",
-    "updatedAt":  "2026-07-03T22:14:49+08:00",
-    "checkedAt":  "2026-07-03T22:14:49+08:00",
+    "nextAction":  "完成後更新交付結果、網址、檔案路徑或明確卡點。",
+    "updatedAt":  "2026-07-03T23:28:05+08:00",
+    "checkedAt":  "2026-07-03T23:28:05+08:00",
     "sourceType":  "local-generator",
     "sourceLabel":  "本機即時狀態產生器",
     "refreshSeconds":  1,
     "token":  {
-                  "totalTokens":  118585995,
-                  "taskCount":  29,
+                  "totalTokens":  131335509,
+                  "taskCount":  33,
                   "source":  "本機 Codex 執行緒紀錄"
               },
     "heartbeat":  {
                       "name":  "蝦咩",
-                      "ageSeconds":  14,
+                      "ageSeconds":  13,
                       "activeRequests":  1
                   },
     "openclaw":  {
@@ -25,7 +26,8 @@
                      "statusKey":  "running",
                      "statusLabel":  "正常",
                      "processCount":  6,
-                     "watchdogState":  "Running"
+                     "watchdogState":  "Running",
+                     "currentTaskInstruction":  "嵐熙獨立任務：OpenClaw 自動化、瀏覽器流程與排程監控整合到右欄顯示。"
                  },
     "monitors":  [
                      {
@@ -33,7 +35,7 @@
                          "label":  "蝦咩心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 14 秒前，執行中任務 1",
+                         "detail":  "心跳 13 秒前，執行中任務 1",
                          "source":  "codex_bot_heartbeat.json"
                      },
                      {
@@ -41,8 +43,16 @@
                          "label":  "Telegram 任務佇列",
                          "statusKey":  "running",
                          "statusLabel":  "運作中",
-                         "detail":  "已修正同步、重新同步按鈕音效特效、技能包顯示",
+                         "detail":  "整合主控台與技能入口版面，新增嵐熙獨立任務欄位",
                          "source":  "telegram_request_status.json"
+                     },
+                     {
+                         "id":  "openclaw-task",
+                         "label":  "嵐熙任務",
+                         "statusKey":  "running",
+                         "statusLabel":  "正常",
+                         "detail":  "嵐熙獨立任務：OpenClaw 自動化、瀏覽器流程與排程監控整合到右欄顯示。",
+                         "source":  "OpenClaw task summary"
                      },
                      {
                          "id":  "openclaw-process",
@@ -65,7 +75,7 @@
                          "label":  "Codex token 統計",
                          "statusKey":  "running",
                          "statusLabel":  "已讀取",
-                         "detail":  "118585995 tokens，任務 29",
+                         "detail":  "131335509 tokens，任務 33",
                          "source":  "本機 Codex 執行緒紀錄"
                      },
                      {
@@ -73,7 +83,7 @@
                          "label":  "狀態產生器",
                          "statusKey":  "running",
                          "statusLabel":  "已更新",
-                         "detail":  "產生時間 2026-07-03 22:14:49",
+                         "detail":  "產生時間 2026-07-03 23:28:05",
                          "source":  "tools/update-runtime-status.ps1"
                      },
                      {
@@ -96,7 +106,8 @@
     "deliverables":  [
                          "公開總控台：GitHub Pages",
                          "狀態資料：runtime-status.json",
-                         "監控項目：8 項",
+                         "監控項目：9 項",
+                         "嵐熙任務：獨立欄位",
                          "技能包清單：功能與使用場景"
                      ]
 }

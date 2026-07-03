@@ -573,6 +573,20 @@ main {
   min-height: 132px;
 }
 
+.task-status-card {
+  grid-column: 1 / -1;
+  min-height: 136px;
+  border-color: rgba(46, 233, 255, 0.3);
+}
+
+.lanxi-task-card {
+  border-color: rgba(213, 107, 255, 0.34);
+}
+
+.task-status-card strong {
+  font-size: 24px;
+}
+
 .status-card,
 .stat-card,
 .card,
@@ -1123,8 +1137,8 @@ button,
 
 .skill-layout {
   display: grid;
-  grid-template-columns: minmax(250px, 300px) minmax(0, 1fr);
-  gap: 14px;
+  grid-template-columns: minmax(280px, 330px) minmax(0, 1fr);
+  gap: 16px;
   align-items: start;
 }
 
@@ -1175,7 +1189,7 @@ button,
 .skill-filter-panel {
   display: grid;
   gap: 10px;
-  max-height: 560px;
+  max-height: 520px;
   padding: 12px;
   border: 1px solid rgba(46, 233, 255, 0.18);
   border-radius: 8px;
@@ -1191,7 +1205,7 @@ button,
 .skill-filters {
   display: grid;
   gap: 7px;
-  max-height: 466px;
+  max-height: 426px;
   overflow-y: auto;
   padding-right: 4px;
   scrollbar-color: rgba(46, 233, 255, 0.38) rgba(5, 22, 25, 0.4);
@@ -1240,12 +1254,12 @@ button,
 
 .skill-main {
   display: grid;
-  gap: 12px;
+  gap: 14px;
 }
 
 .skill-group-overview {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(138px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 8px;
 }
 
@@ -1282,15 +1296,16 @@ button,
 
 .skill-card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 270px), 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 12px;
 }
 
 .skill-card {
   display: grid;
-  gap: 12px;
-  min-height: 286px;
-  padding: 14px;
+  gap: 10px;
+  min-height: 0;
+  align-content: start;
+  padding: 13px;
   border: 1px solid rgba(46, 233, 255, 0.18);
   border-radius: 8px;
   background:
@@ -1349,7 +1364,7 @@ button,
 }
 
 .skill-function-list li {
-  min-height: 34px;
+  min-height: 30px;
   display: flex;
   align-items: center;
   border-left: 3px solid rgba(46, 233, 255, 0.48);
@@ -1363,6 +1378,8 @@ button,
 .skill-card-field {
   display: grid;
   gap: 4px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(46, 233, 255, 0.12);
 }
 
 .skill-card-field p {
@@ -1389,6 +1406,37 @@ button,
 
 .skill-empty.is-visible {
   display: block;
+}
+
+.skill-more-card {
+  display: grid;
+  align-content: center;
+  gap: 8px;
+  min-height: 178px;
+  padding: 16px;
+  border: 1px dashed rgba(185, 255, 79, 0.36);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(185, 255, 79, 0.1), rgba(46, 233, 255, 0.06)),
+    rgba(5, 22, 25, 0.7);
+}
+
+.skill-more-card span {
+  color: rgba(235, 255, 248, 0.66);
+  font-size: 12px;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.skill-more-card b {
+  color: #fff;
+  font-size: 21px;
+  line-height: 1.2;
+}
+
+.skill-more-card p {
+  color: var(--muted);
+  font-size: 13px;
 }
 
 .skill-table-disclosure {
@@ -1539,7 +1587,12 @@ footer {
   z-index: 1;
   order: -2;
   display: grid;
-  grid-template-columns: minmax(190px, 0.95fr) minmax(130px, 0.72fr) minmax(130px, 0.72fr) minmax(170px, 0.86fr) minmax(220px, 1.15fr) minmax(170px, 0.82fr);
+  grid-template-columns:
+    minmax(180px, 0.9fr)
+    repeat(2, minmax(120px, 0.62fr))
+    minmax(160px, 0.78fr)
+    repeat(2, minmax(180px, 1fr))
+    minmax(150px, 0.72fr);
   gap: 10px;
   margin-bottom: 12px;
 }
@@ -1649,6 +1702,26 @@ footer {
 
 .task-chip b {
   white-space: normal;
+}
+
+.shami-task-chip {
+  border-color: rgba(46, 233, 255, 0.34);
+}
+
+.shami-task-chip::before {
+  background: linear-gradient(180deg, var(--cyan), var(--lime));
+}
+
+.lanxi-task-chip {
+  border-color: rgba(213, 107, 255, 0.38);
+}
+
+.lanxi-task-chip::before {
+  background: linear-gradient(180deg, var(--violet), var(--amber));
+}
+
+.updated-chip {
+  border-color: rgba(46, 233, 255, 0.26);
 }
 
 .ai-metrics {
@@ -1900,7 +1973,7 @@ body.light-mode .theme-toggle {
   }
 
   .skill-layout {
-    grid-template-columns: minmax(220px, 260px) minmax(0, 1fr);
+    grid-template-columns: minmax(240px, 300px) minmax(0, 1fr);
   }
 
   .today-flow {
@@ -1910,7 +1983,7 @@ body.light-mode .theme-toggle {
 
 @media (max-width: 900px) {
   .command-strip {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
   .ai-metrics {
@@ -2136,6 +2209,10 @@ body.light-mode .theme-toggle {
     line-height: 1.18;
   }
 
+  .task-status-card strong {
+    font-size: 17px;
+  }
+
   .status-card p,
   .monitor-card p {
     font-size: 11px;
@@ -2200,17 +2277,18 @@ body.light-mode .theme-toggle {
 
   .skill-chip,
   .task-chip,
-  .command-strip .command-chip:nth-child(6) {
+  .lanxi-task-chip,
+  .updated-chip {
     grid-column: 1 / -1;
     min-height: 86px;
   }
 
-  .command-strip .command-chip:nth-child(6) {
+  .updated-chip {
     min-height: 82px;
   }
 
   .task-chip,
-  .command-strip .command-chip:nth-child(6) {
+  .updated-chip {
     background:
       linear-gradient(180deg, rgba(255, 255, 255, 0.085), rgba(255, 255, 255, 0.035)),
       rgba(4, 20, 23, 0.58);
@@ -2226,7 +2304,7 @@ body.light-mode .theme-toggle {
   }
 
   .task-chip b,
-  .command-strip .command-chip:nth-child(6) b {
+  .updated-chip b {
     font-size: clamp(15px, 4.1vw, 18px);
   }
 

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>蝦咩 x 嵐熙即時總控台</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="styles.css?v=20260703-231500">
+  <link rel="stylesheet" href="styles.css?v=20260703-225900">
 </head>
 <body>
   <header class="topbar">
@@ -36,8 +36,9 @@
         <div class="command-chip shami-chip"><span>蝦咩狀態</span><b id="chipShamiStatus">讀取中</b></div>
         <div class="command-chip lanxi-chip"><span>嵐熙狀態</span><b id="chipLanxiStatus">讀取中</b></div>
         <div class="command-chip skill-chip"><span>技能包</span><b id="chipSkillStatus">80 個已載入</b><small id="chipSkillDetail">等待清單渲染</small></div>
-        <div class="command-chip task-chip"><span>目前任務</span><b id="chipCurrentTask">同步中</b></div>
-        <div class="command-chip"><span>最後更新</span><b id="chipUpdatedAt">--</b></div>
+        <div class="command-chip task-chip shami-task-chip"><span>蝦咩任務</span><b id="chipCurrentTask">同步中</b></div>
+        <div class="command-chip task-chip lanxi-task-chip"><span>嵐熙任務</span><b id="chipLanxiTask">同步中</b></div>
+        <div class="command-chip updated-chip"><span>最後更新</span><b id="chipUpdatedAt">--</b></div>
       </div>
 
       <div class="ai-metrics">
@@ -56,7 +57,7 @@
           <div class="agent-slot" id="shamiAgent"></div>
           <div class="dashboard-grid actor-grid">
             <article class="status-card primary-status"><span>蝦咩任務狀態</span><strong id="statusLabel">讀取中</strong><p id="statusHeadline">正在讀取本機即時狀態。</p></article>
-            <article class="status-card"><span>當前任務指令</span><strong id="currentTaskText">--</strong><p>Telegram 最新任務固定放在蝦咩左列。</p></article>
+            <article class="status-card task-status-card"><span>蝦咩任務指令</span><strong id="currentTaskText">--</strong><p>Telegram 最新任務固定放在蝦咩左列。</p></article>
             <article class="status-card"><span>今日 token</span><strong id="todayTokens">--</strong><p id="tokenSource">等待統計來源。</p></article>
           </div>
           <div class="monitor-panel">
@@ -71,6 +72,7 @@
           <div class="agent-slot" id="lanxiAgent"></div>
           <div class="dashboard-grid actor-grid">
             <article class="status-card primary-status lanxi-primary-status"><span>嵐熙自動化狀態</span><strong id="openclawStatusLabel">讀取中</strong><p id="openclawStatusDetail">正在讀取 OpenClaw 狀態。</p></article>
+            <article class="status-card task-status-card lanxi-task-card"><span>嵐熙任務指令</span><strong id="lanxiTaskText">--</strong><p id="lanxiTaskSource">OpenClaw 自動化任務會獨立顯示在這一欄。</p></article>
             <article class="status-card"><span>目前卡點</span><strong id="blockerText">讀取中</strong><p id="nextAction">等待同步資料。</p></article>
             <article class="status-card"><span>最新檢查</span><strong id="liveAge">--</strong><p><span id="updatedAt">--</span><br><span id="refreshNote">頁面每秒重新讀取狀態資料。</span></p></article>
           </div>
@@ -85,8 +87,8 @@
     <section class="overview" id="overview">
       <div class="overview-copy">
         <p class="eyebrow">Owner Map</p>
-        <h2>把任務狀態、監控項目、技能入口與交付流程集中在同一頁</h2>
-        <p>這個儀表板聚焦主人要看的操作資訊：蝦咩 TGBOT 狀態、嵐熙 OpenClaw 狀態、目前任務、監控項目、技能包能力與常用 SOP。</p>
+        <h2>把蝦咩任務、嵐熙任務、監控項目與技能入口整合在同一頁</h2>
+        <p>這個儀表板聚焦主人要看的操作資訊：蝦咩 TGBOT 任務、嵐熙 OpenClaw 任務、目前卡點、監控項目、技能包能力與常用 SOP。</p>
         <div class="quick-actions" aria-label="主要區塊">
           <a href="#monitoring">監控項目</a><a href="#skills">技能包</a><a href="#sop-library">SOP</a><a href="#daily-timeline">今日時間軸</a>
         </div>
@@ -118,7 +120,7 @@
     </section>
 
     <section id="skills" class="content-section skill-section">
-      <div class="section-heading"><div><p class="eyebrow">Skill Packages</p><h2>技能包總覽與使用入口</h2></div><span class="status done">已整理</span></div>
+      <div class="section-heading"><div><p class="eyebrow">Skill Packages</p><h2>技能包分類總覽與精簡入口</h2></div><span class="status done">已整理</span></div>
       <div class="skill-control-bar">
         <label class="skill-search-field" for="skillSearch">
           <span>搜尋技能</span>
@@ -159,7 +161,7 @@
 
   <footer><span>資料來源：本機技能索引、記憶索引、Codex 心跳、Telegram 任務狀態、OpenClaw 摘要與 GitHub Pages 快照。</span></footer>
 
-  <script src="live-status-config.js?v=20260703-231500"></script>
-  <script src="app.js?v=20260703-231500"></script>
+  <script src="live-status-config.js?v=20260703-225900"></script>
+  <script src="app.js?v=20260703-225900"></script>
 </body>
 </html>
