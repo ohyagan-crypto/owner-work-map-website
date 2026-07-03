@@ -10,9 +10,8 @@ https://ohyagan-crypto.github.io/owner-work-map-website/
 - 網站、圖片、影片、NotebookLM、監控與交付能力
 - 從主人下指令到成果回傳的工作流程
 - 每小時網站健康檢查與自動修復說明
+- 安全邊界與公開資訊限制
 - 常用 Telegram 指令入口
-
-安全邊界與公開資訊限制保留在本說明文件與內部規則中，不在公開主頁顯示。
 
 ## 安全原則
 
