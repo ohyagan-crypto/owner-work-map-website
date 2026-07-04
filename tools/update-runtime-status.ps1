@@ -393,6 +393,20 @@ function Get-OpenClawSummary {
 $now = Get-Date
 $heartbeat = Read-JsonFile -Path $HeartbeatPath
 $request = Get-NewestRequestRecord
+$existingStatus = Read-JsonFile -Path $OutputPath
+$siteRuntimeStatusPath = Join-Path $SiteRoot "runtime-status.json"
+$siteRuntimeStatus = if ($siteRuntimeStatusPath -ne $OutputPath) { Read-JsonFile -Path $siteRuntimeStatusPath } else { $null }
+if (
+    $siteRuntimeStatus -and
+    $siteRuntimeStatus.currentTaskInstruction -and
+    (
+        -not $existingStatus -or
+        -not $existingStatus.currentTaskInstruction -or
+        ([string]$existingStatus.currentTaskInstruction).Trim() -ne ([string]$siteRuntimeStatus.currentTaskInstruction).Trim()
+    )
+) {
+    $existingStatus = $siteRuntimeStatus
+}
 $uploadCaption = Get-NewestUploadCaption
 $conversationInstruction = Get-LatestConversationInstruction
 $token = Get-TokenSummary -TargetDate $Date
@@ -496,6 +510,17 @@ if ($heartbeatAge -gt 120) {
 if ($CurrentTask.Trim()) {
     $headline = $CurrentTask.Trim()
     $currentInstructionSource = "手動指定目前任務"
+} elseif (
+    $existingStatus -and
+    $existingStatus.currentTaskInstruction -and
+    $request -and
+    $request.task -and
+    ([string]$request.task).Trim() -match "^(讀取照片|讀取文件|安裝文件|安裝檔案)(\s|$)" -and
+    $conversationInstruction -and
+    ([string]$existingStatus.currentTaskInstruction).Trim() -ne $conversationInstruction
+) {
+    $headline = Normalize-TaskText -Text ([string]$existingStatus.currentTaskInstruction)
+    $currentInstructionSource = "runtime-status.json 最新指令保留"
 } elseif ($conversationInstruction) {
     $headline = $conversationInstruction
     $currentInstructionSource = "telegram_conversation_history.json"

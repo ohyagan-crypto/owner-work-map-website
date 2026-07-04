@@ -6,19 +6,19 @@
     "lanxiTaskInstruction":  "嵐熙的狀態都沒有同步；我給他指令沒有顯示在儀表盤",
     "blocker":  "沒有卡點",
     "nextAction":  "完成後更新交付結果、網址、檔案路徑或明確卡點。",
-    "updatedAt":  "2026-07-04T18:22:34+08:00",
-    "checkedAt":  "2026-07-04T18:22:34+08:00",
+    "updatedAt":  "2026-07-04T18:24:23+08:00",
+    "checkedAt":  "2026-07-04T18:24:23+08:00",
     "sourceType":  "local-generator",
     "sourceLabel":  "本機即時狀態產生器",
     "refreshSeconds":  1,
     "token":  {
-                  "totalTokens":  128654487,
+                  "totalTokens":  129289057,
                   "taskCount":  29,
                   "source":  "本機 Codex 執行緒紀錄"
               },
     "heartbeat":  {
                       "name":  "蝦咩",
-                      "ageSeconds":  12,
+                      "ageSeconds":  1,
                       "activeRequests":  1
                   },
     "openclaw":  {
@@ -28,7 +28,7 @@
                      "processCount":  5,
                      "watchdogState":  "Running",
                      "currentTaskInstruction":  "嵐熙的狀態都沒有同步；我給他指令沒有顯示在儀表盤",
-                     "currentTaskSource":  "手動指定目前任務 + OpenClaw 狀態"
+                     "currentTaskSource":  "runtime-status.json 最新指令保留 + OpenClaw 狀態"
                  },
     "monitors":  [
                      {
@@ -36,7 +36,7 @@
                          "label":  "蝦咩心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 12 秒前，執行中任務 1",
+                         "detail":  "心跳 1 秒前，執行中任務 1",
                          "source":  "codex_bot_heartbeat.json"
                      },
                      {
@@ -53,7 +53,7 @@
                          "statusKey":  "running",
                          "statusLabel":  "同步目前指令",
                          "detail":  "嵐熙的狀態都沒有同步；我給他指令沒有顯示在儀表盤",
-                         "source":  "手動指定目前任務 + OpenClaw 狀態"
+                         "source":  "runtime-status.json 最新指令保留 + OpenClaw 狀態"
                      },
                      {
                          "id":  "openclaw-process",
@@ -76,7 +76,7 @@
                          "label":  "Codex token 統計",
                          "statusKey":  "running",
                          "statusLabel":  "已讀取",
-                         "detail":  "128654487 tokens，任務 29",
+                         "detail":  "129289057 tokens，任務 29",
                          "source":  "本機 Codex 執行緒紀錄"
                      },
                      {
@@ -84,7 +84,7 @@
                          "label":  "狀態產生器",
                          "statusKey":  "running",
                          "statusLabel":  "已更新",
-                         "detail":  "產生時間 2026-07-04 18:22:34",
+                         "detail":  "產生時間 2026-07-04 18:24:23",
                          "source":  "tools/update-runtime-status.ps1"
                      },
                      {
