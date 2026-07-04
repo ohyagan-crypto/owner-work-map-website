@@ -308,6 +308,7 @@ main {
 }
 
 .signal-ribbon,
+.active-task-banner,
 .agent-view-switch,
 .dashboard-live-layout,
 .agent-status-column,
@@ -318,6 +319,156 @@ main {
 .monitor-section-columns {
   position: relative;
   z-index: 1;
+}
+
+.active-task-banner {
+  --active-accent: var(--cyan);
+  --active-accent-soft: rgba(46, 233, 255, 0.14);
+  order: -4;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.42fr);
+  gap: 12px;
+  align-items: stretch;
+  margin-bottom: 12px;
+  padding: 14px;
+  border: 1px solid rgba(46, 233, 255, 0.34);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, var(--active-accent-soft), rgba(255, 255, 255, 0.06) 46%, rgba(213, 107, 255, 0.1)),
+    rgba(4, 20, 23, 0.78);
+  box-shadow:
+    0 14px 30px rgba(0, 0, 0, 0.22),
+    0 0 26px rgba(46, 233, 255, 0.1) inset;
+  backdrop-filter: blur(14px);
+}
+
+body[data-agent-view="lanxi"] .active-task-banner {
+  --active-accent: var(--violet);
+  --active-accent-soft: rgba(213, 107, 255, 0.14);
+  border-color: rgba(213, 107, 255, 0.38);
+}
+
+.active-task-banner[data-state="ok"] {
+  border-color: rgba(33, 209, 139, 0.46);
+}
+
+.active-task-banner[data-state="blocked"] {
+  border-color: rgba(255, 100, 124, 0.52);
+}
+
+.active-task-copy {
+  min-width: 0;
+  display: grid;
+  align-content: center;
+  gap: 8px;
+}
+
+.active-task-copy span,
+.action-feedback {
+  color: var(--status-muted);
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.active-task-copy strong {
+  color: #fff;
+  font-size: 25px;
+  line-height: 1.22;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.active-task-copy p {
+  color: var(--status-muted);
+  font-size: 13px;
+}
+
+.task-control-panel {
+  min-width: 0;
+  display: grid;
+  gap: 8px;
+  align-content: center;
+}
+
+.task-control-buttons {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.control-button {
+  min-width: 0;
+  min-height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-color: rgba(46, 233, 255, 0.36);
+  background:
+    linear-gradient(135deg, rgba(33, 209, 139, 0.2), rgba(46, 233, 255, 0.16)),
+    rgba(5, 22, 25, 0.76);
+  box-shadow: 0 0 0 rgba(46, 233, 255, 0);
+  transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+.control-button span {
+  flex: 0 0 auto;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.control-button b {
+  min-width: 0;
+  color: #fff;
+  font-size: 15px;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.control-button:hover,
+.control-button:focus-visible {
+  outline: none;
+  transform: translateY(-1px);
+  border-color: rgba(46, 233, 255, 0.58);
+  box-shadow: 0 0 22px rgba(46, 233, 255, 0.18);
+}
+
+.control-button:disabled {
+  cursor: wait;
+  opacity: 0.72;
+  transform: none;
+}
+
+.control-button.is-running span {
+  animation: spin-refresh 0.82s linear infinite;
+}
+
+.stop-button {
+  border-color: rgba(255, 100, 124, 0.44);
+  background:
+    linear-gradient(135deg, rgba(255, 100, 124, 0.2), rgba(255, 188, 66, 0.13)),
+    rgba(5, 22, 25, 0.76);
+}
+
+.stop-button:hover,
+.stop-button:focus-visible {
+  border-color: rgba(255, 100, 124, 0.64);
+  box-shadow: 0 0 22px rgba(255, 100, 124, 0.18);
+}
+
+.action-feedback {
+  min-height: 20px;
+  overflow-wrap: anywhere;
+}
+
+.action-feedback[data-state="success"] {
+  color: var(--lime);
+}
+
+.action-feedback[data-state="blocked"] {
+  color: var(--red);
 }
 
 .dashboard-live-layout {
@@ -2087,6 +2238,10 @@ body.light-mode .theme-toggle {
     grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
   }
 
+  .active-task-banner {
+    grid-template-columns: 1fr;
+  }
+
   .skill-control-bar,
   .skill-layout {
     grid-template-columns: 1fr;
@@ -2205,6 +2360,24 @@ body.light-mode .theme-toggle {
   .status-dashboard {
     padding: 10px;
     overflow-x: hidden;
+  }
+
+  .active-task-banner {
+    padding: 11px;
+  }
+
+  .active-task-copy strong {
+    font-size: 18px;
+  }
+
+  .active-task-copy p,
+  .action-feedback {
+    font-size: 11px;
+  }
+
+  .control-button {
+    min-height: 52px;
+    padding: 8px 9px;
   }
 
   .command-strip {

@@ -1,19 +1,19 @@
 {
     "statusKey":  "running",
     "statusLabel":  "運作中",
-    "headline":  "補充： 這邊做切換開關 點蝦咩就只出現蝦咩資訊 點嵐熙出現嵐熙資料",
-    "currentTaskInstruction":  "補充： 這邊做切換開關 點蝦咩就只出現蝦咩資訊 點嵐熙出現嵐熙資料",
+    "headline":  "這個欄位放到最上面 再多一個卡點救援的功能鍵，就不要強制停止要能確實救到他讓他繼續作業 再多一個強制停止鈕ˉ",
+    "currentTaskInstruction":  "這個欄位放到最上面 再多一個卡點救援的功能鍵，就不要強制停止要能確實救到他讓他繼續作業 再多一個強制停止鈕ˉ",
     "lanxiTaskInstruction":  "目前沒有執行中的 OpenClaw 任務；最近任務：每日早上9點今日運勢（失敗，最後更新 07/04 09:00）。",
     "blocker":  "沒有卡點",
     "nextAction":  "完成後更新交付結果、網址、檔案路徑或明確卡點。",
-    "updatedAt":  "2026-07-04T14:57:45+08:00",
-    "checkedAt":  "2026-07-04T14:57:45+08:00",
+    "updatedAt":  "2026-07-04T15:35:14+08:00",
+    "checkedAt":  "2026-07-04T15:35:14+08:00",
     "sourceType":  "local-generator",
     "sourceLabel":  "本機即時狀態產生器",
     "refreshSeconds":  1,
     "token":  {
-                  "totalTokens":  86656838,
-                  "taskCount":  20,
+                  "totalTokens":  95023368,
+                  "taskCount":  24,
                   "source":  "本機 Codex 執行緒紀錄"
               },
     "heartbeat":  {
@@ -25,7 +25,7 @@
                      "name":  "嵐熙",
                      "statusKey":  "running",
                      "statusLabel":  "正常",
-                     "processCount":  6,
+                     "processCount":  5,
                      "watchdogState":  "Running",
                      "currentTaskInstruction":  "目前沒有執行中的 OpenClaw 任務；最近任務：每日早上9點今日運勢（失敗，最後更新 07/04 09:00）。",
                      "currentTaskSource":  "OpenClaw task_runs.sqlite"
@@ -44,7 +44,7 @@
                          "label":  "Telegram 任務佇列",
                          "statusKey":  "running",
                          "statusLabel":  "運作中",
-                         "detail":  "補充： 這邊做切換開關 點蝦咩就只出現蝦咩資訊 點嵐熙出現嵐熙資料",
+                         "detail":  "這個欄位放到最上面 再多一個卡點救援的功能鍵，就不要強制停止要能確實救到他讓他繼續作業 再多一個強制停止鈕ˉ",
                          "source":  "telegram_request_status.json"
                      },
                      {
@@ -60,7 +60,7 @@
                          "label":  "嵐熙進程",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "偵測到 6 個相關進程",
+                         "detail":  "偵測到 5 個相關進程",
                          "source":  "Win32_Process"
                      },
                      {
@@ -76,7 +76,7 @@
                          "label":  "Codex token 統計",
                          "statusKey":  "running",
                          "statusLabel":  "已讀取",
-                         "detail":  "86656838 tokens，任務 20",
+                         "detail":  "95023368 tokens，任務 24",
                          "source":  "本機 Codex 執行緒紀錄"
                      },
                      {
@@ -84,7 +84,7 @@
                          "label":  "狀態產生器",
                          "statusKey":  "running",
                          "statusLabel":  "已更新",
-                         "detail":  "產生時間 2026-07-04 14:57:45",
+                         "detail":  "產生時間 2026-07-04 15:35:14",
                          "source":  "tools/update-runtime-status.ps1"
                      },
                      {
@@ -109,6 +109,7 @@
                          "狀態資料：runtime-status.json",
                          "監控項目：9 項",
                          "嵐熙任務：獨立欄位",
+                         "功能鍵：卡點救援 / 強制停止",
                          "技能包清單：功能與使用場景"
                      ]
 }

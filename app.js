@@ -4,6 +4,20 @@ const DEFAULT_REFRESH_SECONDS = 1;
 const LIVE_TIMEOUT_MS = 2200;
 const LIVE_RETRY_COOLDOWN_MS = 5000;
 const AGENT_VIEW_STORAGE_KEY = "ownerDashboardAgentView";
+const DASHBOARD_ACTIONS = {
+  rescue: {
+    loading: "救援中",
+    idle: "卡點救援",
+    success: "已送出卡點救援，會保留目前作業並嘗試續作。",
+    failure: "卡點救援沒有完成，請確認本機即時服務仍在運作。"
+  },
+  "force-stop": {
+    loading: "停止中",
+    idle: "強制停止",
+    success: "已送出強制停止。",
+    failure: "強制停止沒有完成，請確認本機即時服務仍在運作。"
+  }
+};
 
 const dashboardStats = [
   { label: "已安裝技能", value: "80", note: "含主技能、備份版與歷史入口" },
@@ -13,6 +27,12 @@ const dashboardStats = [
 ];
 
 const completedItems = [
+  {
+    title: "頂部任務指令與功能鍵",
+    status: "已套用",
+    summary: "目前任務指令移到儀表板最上方，會跟著蝦咩／嵐熙切換；新增卡點救援與強制停止兩個功能鍵。",
+    points: ["任務指令最上方顯示", "卡點救援保留作業並嘗試續作", "強制停止獨立成按鈕"]
+  },
   {
     title: "雙頁資訊整合與嵐熙任務欄",
     status: "已套用",
@@ -560,6 +580,7 @@ let selectedAgentView = "shami";
 let isStatusLoading = false;
 let liveUnavailableUntil = 0;
 let refreshAudioContext = null;
+let actionInFlight = "";
 
 function escapeHtml(value) {
   return String(value ?? "")
@@ -635,6 +656,89 @@ function setRefreshButtonLoading(isLoading) {
   button.classList.toggle("is-refreshing", isLoading);
   const label = button.querySelector(".refresh-label");
   if (label) label.textContent = isLoading ? "同步中" : "重新同步";
+}
+
+function setActionFeedback(message, state = "idle") {
+  const feedback = $("#actionFeedback");
+  if (!feedback) return;
+  feedback.textContent = message;
+  feedback.dataset.state = state;
+}
+
+function setActionButtonsLoading(action, isLoading) {
+  actionInFlight = isLoading ? action : "";
+  document.querySelectorAll("[data-dashboard-action]").forEach((button) => {
+    const isTarget = button.dataset.dashboardAction === action;
+    const config = DASHBOARD_ACTIONS[button.dataset.dashboardAction] || {};
+    button.disabled = isLoading;
+    button.classList.toggle("is-running", isLoading && isTarget);
+    const label = button.querySelector("b");
+    if (label) label.textContent = isLoading && isTarget ? config.loading : config.idle;
+  });
+}
+
+function activeTaskContent(status = lastRenderedStatus) {
+  if (selectedAgentView === "lanxi") {
+    return {
+      scope: "嵐熙任務指令",
+      text: lanxiTaskInstruction(status),
+      detail: lanxiTaskSource(status),
+      state: statusTone(status.openclaw?.statusKey || "watch")
+    };
+  }
+
+  return {
+    scope: "蝦咩任務指令",
+    text: currentTaskInstruction(status),
+    detail: "Telegram 最新任務固定放在最上方。",
+    state: statusTone(status.statusKey || "watch")
+  };
+}
+
+function renderActiveTaskPanel(status = lastRenderedStatus) {
+  const banner = $(".active-task-banner");
+  if (!banner) return;
+  const content = activeTaskContent(status);
+  banner.dataset.state = content.state;
+  setTextIfPresent("#activeTaskScope", content.scope);
+  setTextIfPresent("#activeTaskText", content.text);
+  setTextIfPresent("#activeTaskDetail", content.detail);
+}
+
+async function runDashboardAction(action) {
+  const config = DASHBOARD_ACTIONS[action];
+  if (!config || actionInFlight) return;
+  if (!liveStatusEndpoint) {
+    setActionFeedback("需要啟動本機即時服務後才能使用功能鍵。", "blocked");
+    return;
+  }
+
+  playRefreshSound();
+  triggerRefreshEffect();
+  setActionButtonsLoading(action, true);
+  setActionFeedback(action === "rescue" ? "正在嘗試救援卡點並保留目前作業..." : "正在送出強制停止...", "idle");
+
+  try {
+    const response = await fetch(`${liveStatusEndpoint}/api/action/${action}`, {
+      method: "POST",
+      cache: "no-store"
+    });
+    let payload = {};
+    try {
+      payload = await response.json();
+    } catch {
+      payload = {};
+    }
+    if (!response.ok || payload.ok === false) {
+      throw new Error(payload.message || config.failure);
+    }
+    setActionFeedback(payload.message || config.success, "success");
+    await loadRuntimeStatus({ manual: true });
+  } catch {
+    setActionFeedback(config.failure, "blocked");
+  } finally {
+    setActionButtonsLoading(action, false);
+  }
 }
 
 function playRefreshSound() {
@@ -1192,15 +1296,15 @@ function renderRuntimeStatus(data) {
   $("#statePill").textContent = status.statusLabel || "資料待同步";
   $("#statusLabel").textContent = status.statusLabel || "資料待同步";
   $("#statusHeadline").textContent = status.headline || "目前沒有可顯示的狀態。";
-  $("#currentTaskText").textContent = currentTaskInstruction(status);
+  setTextIfPresent("#currentTaskText", currentTaskInstruction(status));
   $("#todayTokens").textContent = formatNumber(status.token.totalTokens);
   $("#tokenSource").textContent = status.token.taskCount
     ? `${status.token.source}，任務數 ${formatNumber(status.token.taskCount)}。`
     : status.token.source || "未取得 token 統計來源。";
   $("#openclawStatusLabel").textContent = status.openclaw.statusLabel || "狀態待同步";
   $("#openclawStatusDetail").textContent = `${openclawProcessText}，看門排程 ${status.openclaw.watchdogState || "未取得"}。`;
-  $("#lanxiTaskText").textContent = lanxiTaskInstruction(status);
-  $("#lanxiTaskSource").textContent = lanxiTaskSource(status);
+  setTextIfPresent("#lanxiTaskText", lanxiTaskInstruction(status));
+  setTextIfPresent("#lanxiTaskSource", lanxiTaskSource(status));
   $("#blockerText").textContent = status.blocker || "沒有卡點";
   $("#nextAction").textContent = status.nextAction || "維持同步。";
   $("#updatedAt").textContent = formatDateTime(displayTime);
@@ -1209,6 +1313,7 @@ function renderRuntimeStatus(data) {
     ? deliverables.map((item) => `<span>${escapeHtml(item)}</span>`).join("")
     : "<span>目前沒有新的交付檔案</span>";
   renderAiEnhancements(status, displayTime);
+  renderActiveTaskPanel(status);
   renderAgentStrip(status);
   renderMonitoring(status);
   updateLiveClock();
@@ -1338,6 +1443,10 @@ function bindInteractions() {
     refreshButton.addEventListener("click", () => loadRuntimeStatus({ manual: true }));
   }
 
+  document.querySelectorAll("[data-dashboard-action]").forEach((button) => {
+    button.addEventListener("click", () => runDashboardAction(button.dataset.dashboardAction));
+  });
+
   const themeToggle = $("#themeToggle");
   if (themeToggle) {
     const savedTheme = window.localStorage.getItem("ownerDashboardTheme");
@@ -1377,6 +1486,7 @@ function setAgentView(view, options = {}) {
     button.tabIndex = isActive ? 0 : -1;
   });
 
+  renderActiveTaskPanel(lastRenderedStatus);
   if (options.persist === false) return;
   try {
     window.localStorage.setItem(AGENT_VIEW_STORAGE_KEY, nextView);
