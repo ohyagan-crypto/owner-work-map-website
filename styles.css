@@ -3422,3 +3422,538 @@ body::before {
     flex-basis: 246px;
   }
 }
+
+/* Continuous visual upgrade 20260704-0930: stronger first-screen hierarchy and cleaner skill operations. */
+:root {
+  --upgrade-panel: rgba(8, 24, 27, 0.9);
+  --upgrade-panel-soft: rgba(8, 24, 27, 0.72);
+  --upgrade-ink: #f7fffb;
+  --upgrade-muted: rgba(231, 247, 241, 0.72);
+  --upgrade-line: rgba(175, 235, 226, 0.22);
+  --upgrade-cyan: #64ddea;
+  --upgrade-green: #b7f3b8;
+  --upgrade-gold: #f0cc7a;
+  --upgrade-pink: #ff9eb4;
+  --upgrade-lavender: #c5b4ff;
+}
+
+body {
+  color: var(--upgrade-ink);
+  background:
+    radial-gradient(ellipse at 18% 0%, rgba(100, 221, 234, 0.13), transparent 36%),
+    radial-gradient(ellipse at 78% 12%, rgba(240, 204, 122, 0.09), transparent 34%),
+    linear-gradient(rgba(175, 235, 226, 0.036) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(175, 235, 226, 0.028) 1px, transparent 1px),
+    linear-gradient(145deg, #04090b 0%, #07171a 46%, #101210 100%);
+  background-size: auto, auto, 36px 36px, 36px 36px, auto;
+}
+
+body::before {
+  background:
+    linear-gradient(180deg, rgba(100, 221, 234, 0.1), transparent 40%, rgba(255, 158, 180, 0.045) 78%, transparent),
+    repeating-linear-gradient(90deg, transparent 0 168px, rgba(175, 235, 226, 0.05) 168px 169px, transparent 169px 336px);
+  opacity: 0.32;
+}
+
+.topbar {
+  width: min(1320px, calc(100% - 48px));
+  min-height: 78px;
+}
+
+.topbar h1 {
+  font-size: clamp(36px, 3.55vw, 56px);
+  text-wrap: balance;
+}
+
+.topbar-meta span,
+.theme-toggle {
+  min-height: 34px;
+  color: var(--upgrade-muted);
+  border-color: var(--upgrade-line);
+  background: rgba(5, 18, 20, 0.78);
+}
+
+.status-dashboard {
+  width: min(1320px, 100%);
+  gap: 18px;
+  padding: 20px;
+  border-color: rgba(100, 221, 234, 0.36);
+  background:
+    linear-gradient(132deg, rgba(100, 221, 234, 0.12), transparent 26%, transparent 70%, rgba(255, 158, 180, 0.08)),
+    linear-gradient(rgba(175, 235, 226, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(175, 235, 226, 0.04) 1px, transparent 1px),
+    rgba(4, 14, 16, 0.98);
+  background-size: auto, 36px 36px, 36px 36px, auto;
+  box-shadow:
+    0 34px 88px rgba(0, 0, 0, 0.42),
+    0 0 0 1px rgba(175, 235, 226, 0.1) inset,
+    0 0 76px rgba(100, 221, 234, 0.09) inset;
+}
+
+.command-strip {
+  grid-template-columns:
+    minmax(170px, 0.78fr)
+    repeat(2, minmax(126px, 0.54fr))
+    minmax(170px, 0.7fr)
+    minmax(244px, 1.22fr)
+    minmax(256px, 1.28fr)
+    minmax(156px, 0.66fr);
+  gap: 12px;
+}
+
+.command-chip {
+  min-height: 88px;
+  padding: 13px;
+  border-color: var(--upgrade-line);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.092), rgba(255, 255, 255, 0.03)),
+    var(--upgrade-panel);
+}
+
+.command-chip::before {
+  background: linear-gradient(180deg, var(--upgrade-gold), var(--upgrade-cyan), var(--upgrade-green));
+}
+
+.dashboard-unified-grid {
+  grid-template-columns: minmax(268px, 318px) minmax(0, 1fr);
+  gap: 18px;
+}
+
+.dashboard-control-rail,
+.mission-board,
+.dashboard-tool-panel {
+  border-color: var(--upgrade-line);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.086), rgba(255, 255, 255, 0.028)),
+    var(--upgrade-panel-soft);
+}
+
+.mission-board {
+  padding: 18px;
+}
+
+.mission-board-head {
+  padding-bottom: 14px;
+}
+
+.mission-board-head h2 {
+  max-width: 860px;
+  font-size: clamp(24px, 2.2vw, 31px);
+  text-wrap: balance;
+}
+
+.dashboard-live-layout {
+  gap: 18px;
+}
+
+.agent-status-column {
+  padding: 18px;
+}
+
+.agent-card,
+.status-card,
+.monitor-card,
+.stat-card,
+.skill-card,
+.skill-group-card,
+.summary-chip,
+.sop-card {
+  border-color: rgba(175, 235, 226, 0.2);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.032)),
+    rgba(6, 22, 25, 0.8);
+}
+
+.primary-status {
+  background:
+    linear-gradient(135deg, rgba(100, 221, 234, 0.4), rgba(12, 66, 72, 0.76) 52%, rgba(183, 243, 184, 0.2)),
+    rgba(4, 22, 25, 0.92);
+}
+
+.lanxi-primary-status {
+  background:
+    linear-gradient(135deg, rgba(197, 180, 255, 0.38), rgba(43, 38, 76, 0.76) 54%, rgba(255, 158, 180, 0.17)),
+    rgba(11, 19, 31, 0.92);
+}
+
+.skill-control-bar {
+  align-items: stretch;
+  gap: 12px;
+}
+
+.skill-search-field {
+  min-height: 58px;
+  border-color: rgba(240, 204, 122, 0.26);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.084), rgba(255, 255, 255, 0.028)),
+    rgba(5, 19, 21, 0.82);
+}
+
+.skill-search-field input {
+  min-height: 34px;
+}
+
+.skill-layout {
+  grid-template-columns: minmax(240px, 0.62fr) minmax(0, 1.38fr);
+  gap: 14px;
+}
+
+.skill-sidebar {
+  gap: 12px;
+}
+
+.skill-group-overview {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.skill-card-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.skill-card {
+  min-height: 154px;
+}
+
+.skill-card-head {
+  gap: 10px;
+}
+
+.skill-card b,
+.skill-card p,
+.skill-card-field p,
+.monitor-card b,
+.monitor-card p {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 1180px) {
+  .skill-card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .skill-group-overview {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .dashboard-unified-grid,
+  .skill-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .command-strip {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .topbar,
+  main,
+  footer {
+    width: min(100% - 14px, 1320px);
+  }
+
+  .status-dashboard {
+    padding: 9px;
+  }
+
+  .command-strip {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 5px;
+  }
+
+  .command-chip,
+  .sync-chip,
+  .skill-chip,
+  .task-chip,
+  .lanxi-task-chip,
+  .updated-chip {
+    flex: 0 0 190px;
+    min-height: 104px;
+  }
+
+  .task-chip,
+  .lanxi-task-chip {
+    flex-basis: 258px;
+  }
+
+  .mission-board {
+    order: -1;
+    padding: 10px;
+  }
+
+  .dashboard-live-layout {
+    gap: 8px;
+  }
+
+  .agent-status-column {
+    padding: 8px;
+  }
+
+  .skill-card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .skill-control-bar {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Continuous visual upgrade 20260704-0955: fit first-row status, improve mobile readability, and sharpen the skills cockpit. */
+:root {
+  --round2-panel: rgba(6, 21, 24, 0.88);
+  --round2-line: rgba(150, 232, 222, 0.24);
+  --round2-line-strong: rgba(150, 232, 222, 0.42);
+  --round2-cyan: #73e8f2;
+  --round2-mint: #baf5c8;
+  --round2-gold: #f4cf7b;
+  --round2-violet: #bea8ff;
+}
+
+.status-dashboard {
+  overflow: hidden;
+}
+
+.command-strip {
+  grid-template-columns:
+    minmax(132px, 0.74fr)
+    minmax(108px, 0.54fr)
+    minmax(108px, 0.54fr)
+    minmax(136px, 0.72fr)
+    minmax(196px, 1.08fr)
+    minmax(208px, 1.1fr)
+    minmax(124px, 0.66fr);
+  align-items: stretch;
+}
+
+.command-chip {
+  min-width: 0;
+  isolation: isolate;
+}
+
+.command-chip b {
+  font-size: clamp(17px, 1.22vw, 22px);
+  line-height: 1.18;
+}
+
+.task-chip b,
+.lanxi-task-chip b,
+.updated-chip b {
+  font-size: clamp(16px, 1.08vw, 20px);
+}
+
+.updated-chip b {
+  white-space: normal;
+}
+
+.refresh-panel button {
+  width: 100%;
+  justify-content: center;
+}
+
+.dashboard-control-rail {
+  box-shadow:
+    0 18px 42px rgba(0, 0, 0, 0.24),
+    0 0 34px rgba(115, 232, 242, 0.08) inset;
+}
+
+.mission-board {
+  background:
+    linear-gradient(145deg, rgba(115, 232, 242, 0.105), rgba(255, 255, 255, 0.032) 42%, rgba(190, 168, 255, 0.07)),
+    var(--round2-panel);
+}
+
+.mission-board-head {
+  position: relative;
+}
+
+.mission-board-head::after {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 1px;
+  content: "";
+  background: linear-gradient(90deg, var(--round2-cyan), transparent 48%, var(--round2-violet));
+  opacity: 0.58;
+}
+
+.mission-board .quick-actions a {
+  display: inline-grid;
+  place-items: center;
+  min-width: 0;
+  border-color: rgba(150, 232, 222, 0.22);
+}
+
+.dashboard-live-layout {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.agent-status-column {
+  min-width: 0;
+}
+
+.dashboard-skill-hub {
+  position: relative;
+  background:
+    linear-gradient(150deg, rgba(244, 207, 123, 0.09), transparent 28%, rgba(115, 232, 242, 0.07) 70%, rgba(190, 168, 255, 0.075)),
+    rgba(5, 20, 23, 0.84);
+}
+
+.dashboard-skill-hub::before {
+  position: absolute;
+  top: 0;
+  right: 18px;
+  left: 18px;
+  height: 2px;
+  content: "";
+  background: linear-gradient(90deg, var(--round2-gold), var(--round2-cyan), var(--round2-violet));
+  opacity: 0.74;
+}
+
+.skill-search-field,
+.skill-view-chip,
+.skill-filter-panel,
+.skill-summary {
+  border-color: var(--round2-line);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.088), rgba(255, 255, 255, 0.03)),
+    rgba(5, 18, 21, 0.78);
+}
+
+.skill-search-field:focus-within {
+  border-color: rgba(244, 207, 123, 0.48);
+  box-shadow:
+    0 0 0 1px rgba(244, 207, 123, 0.12),
+    0 0 28px rgba(244, 207, 123, 0.08) inset;
+}
+
+.skill-view-meta {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.skill-filters button {
+  border-color: rgba(150, 232, 222, 0.14);
+  transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+}
+
+.skill-filters button:hover {
+  border-color: var(--round2-line-strong);
+  background:
+    linear-gradient(135deg, rgba(115, 232, 242, 0.13), rgba(255, 255, 255, 0.034)),
+    rgba(7, 25, 27, 0.86);
+  transform: translateY(-1px);
+}
+
+.skill-card {
+  position: relative;
+  overflow: hidden;
+  border-color: rgba(150, 232, 222, 0.2);
+  transition: border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+}
+
+.skill-card::after {
+  position: absolute;
+  top: 0;
+  right: 12px;
+  left: 12px;
+  height: 1px;
+  content: "";
+  background: linear-gradient(90deg, transparent, rgba(115, 232, 242, 0.56), transparent);
+  opacity: 0.62;
+}
+
+.skill-card:hover {
+  border-color: rgba(150, 232, 222, 0.42);
+  box-shadow:
+    0 18px 36px rgba(0, 0, 0, 0.24),
+    0 0 30px rgba(115, 232, 242, 0.1) inset;
+  transform: translateY(-2px);
+}
+
+@media (min-width: 901px) {
+  .dashboard-control-rail {
+    position: sticky;
+    top: 14px;
+  }
+}
+
+@media (max-width: 1180px) {
+  .command-strip {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .topbar h1 {
+    font-size: clamp(30px, 9vw, 36px);
+  }
+
+  .topbar-meta {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    width: 100%;
+  }
+
+  .topbar-meta span {
+    justify-content: center;
+  }
+
+  .command-strip {
+    scroll-snap-type: x proximity;
+  }
+
+  .command-chip,
+  .sync-chip,
+  .skill-chip,
+  .task-chip,
+  .lanxi-task-chip,
+  .updated-chip {
+    flex-basis: min(74vw, 232px);
+    scroll-snap-align: start;
+  }
+
+  .mission-board .quick-actions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  .mission-board .quick-actions a {
+    min-height: 42px;
+    padding: 8px 6px;
+  }
+
+  .dashboard-live-layout,
+  .actor-grid,
+  .monitor-section-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-live-layout::before {
+    display: none;
+  }
+
+  .primary-status,
+  .task-status-card {
+    grid-column: auto;
+  }
+
+  .agent-status-column {
+    padding: 10px;
+  }
+
+  .skill-view-meta,
+  .skill-group-overview {
+    grid-template-columns: 1fr;
+  }
+
+  .skill-card {
+    min-height: 0;
+  }
+}
