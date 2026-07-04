@@ -171,12 +171,6 @@ main {
   padding-bottom: 44px;
 }
 
-.page-top-updated {
-  width: min(1240px, calc(100% - 32px));
-  margin: 14px auto 12px;
-  color: #fff;
-}
-
 .status-dashboard,
 .overview,
 .content-section {
@@ -315,7 +309,6 @@ main {
 }
 
 .signal-ribbon,
-.top-updated-card,
 .active-task-banner,
 .agent-view-switch,
 .dashboard-live-layout,
@@ -2234,32 +2227,6 @@ footer {
   border-color: rgba(46, 233, 255, 0.26);
 }
 
-.top-updated-card {
-  order: -8;
-  min-height: 118px;
-  align-content: center;
-  gap: 12px;
-  margin-bottom: 4px;
-  padding: 22px 24px;
-  border-color: rgba(46, 233, 255, 0.36);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.055)),
-    linear-gradient(135deg, rgba(46, 233, 255, 0.13), rgba(185, 255, 79, 0.07)),
-    rgba(4, 20, 23, 0.8);
-  box-shadow:
-    0 16px 34px rgba(0, 0, 0, 0.24),
-    0 0 28px rgba(46, 233, 255, 0.12) inset;
-}
-
-.top-updated-card span {
-  font-size: 14px;
-}
-
-.top-updated-card b {
-  font-size: clamp(28px, 3.2vw, 40px);
-  line-height: 1.12;
-}
-
 .ai-metrics {
   position: relative;
   z-index: 1;
@@ -2568,7 +2535,6 @@ body.light-mode .theme-toggle {
 }
 
 @media (max-width: 760px) {
-  .page-top-updated,
   .page-agent-switch,
   .topbar,
   main,
@@ -2670,15 +2636,6 @@ body.light-mode .theme-toggle {
 
   .active-task-banner {
     padding: 11px;
-  }
-
-  .top-updated-card {
-    min-height: 108px;
-    padding: 17px 16px;
-  }
-
-  .top-updated-card b {
-    font-size: clamp(23px, 6.6vw, 32px);
   }
 
   .assistant-stage {
@@ -2916,11 +2873,6 @@ body.light-mode .theme-toggle {
 
   .updated-chip {
     min-height: 82px;
-  }
-
-  .top-updated-card {
-    min-height: 104px;
-    padding: 16px 14px;
   }
 
   .task-chip,
