@@ -151,6 +151,25 @@ function Test-MojibakeText {
     return $Text -match "[涓锛熼闂荤冧]"
 }
 
+function Repair-MojibakeText {
+    param([string]$Text)
+    if (-not $Text) { return "" }
+    if (-not (Test-MojibakeText -Text $Text)) { return $Text }
+
+    try {
+        $gbk = [System.Text.Encoding]::GetEncoding(936)
+        $utf8Strict = [System.Text.UTF8Encoding]::new($false, $true)
+        $candidate = $utf8Strict.GetString($gbk.GetBytes($Text))
+        if ($candidate -and -not (Test-MojibakeText -Text $candidate)) {
+            return $candidate
+        }
+    } catch {
+        return $Text
+    }
+
+    return $Text
+}
+
 function Normalize-TaskText {
     param([string]$Text, [int]$Limit = 180)
     if (-not $Text) { return "" }
@@ -180,6 +199,7 @@ function Clean-TelegramInstructionText {
     }
 
     $clean = $clean -replace "\[LOCAL_PATH\]", ""
+    $clean = Repair-MojibakeText -Text $clean
     $clean = Normalize-TaskText -Text $clean -Limit $Limit
     if (Test-MojibakeText -Text $clean) { return "" }
     return $clean
@@ -487,9 +507,12 @@ if ($CurrentTask.Trim()) {
 ) {
     $headline = $uploadCaption
     $currentInstructionSource = "telegram_recent_uploads.json"
-} elseif ($request -and $request.task -and -not (Test-MojibakeText ([string]$request.task))) {
-    $headline = Normalize-TaskText -Text ([string]$request.task)
-    $currentInstructionSource = "telegram_request_status.json"
+} elseif ($request -and $request.task) {
+    $requestTaskText = Repair-MojibakeText -Text ([string]$request.task)
+    if ($requestTaskText -and -not (Test-MojibakeText -Text $requestTaskText)) {
+        $headline = Normalize-TaskText -Text $requestTaskText
+        $currentInstructionSource = "telegram_request_status.json"
+    }
 }
 
 if (-not $NextAction.Trim()) {

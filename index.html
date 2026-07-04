@@ -3,15 +3,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>蝦咩 x 嵐熙即時總控台</title>
+  <title>AI 自動化作業儀表盤｜蝦咩 x 嵐熙</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="styles.css?v=20260704-165500-lanxi-sync-rescue">
+  <link rel="stylesheet" href="styles.css?v=20260704-172100-ai-assistant-style">
 </head>
 <body data-agent-view="shami">
   <header class="topbar">
     <div>
-      <p class="eyebrow">TGBOT / OpenClaw / Live Control</p>
-      <h1>蝦咩 x 嵐熙即時總控台</h1>
+      <p class="eyebrow">蝦咩 x 嵐熙 / Live Control</p>
+      <h1>AI 自動化作業儀表盤</h1>
     </div>
     <div class="topbar-meta">
       <button type="button" class="theme-toggle" id="themeToggle" aria-pressed="false" title="切換深色與霓虹模式">◐</button>
@@ -33,16 +33,36 @@
         <div class="task-control-panel" aria-label="任務功能鍵">
           <div class="task-control-buttons">
             <button type="button" class="control-button rescue-button" data-dashboard-action="rescue" title="嘗試恢復卡點並保留目前作業">
-              <span aria-hidden="true">↻</span><b>卡點救援</b>
+              <span class="control-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path d="M12 3l7 3v5c0 4.7-2.9 8.4-7 10-4.1-1.6-7-5.3-7-10V6l7-3z"></path>
+                  <path d="M8.4 12.1l2.2 2.2 5-5"></path>
+                </svg>
+              </span><b>卡點救援</b>
             </button>
             <button type="button" class="control-button stop-button" data-dashboard-action="force-stop" title="強制停止儀表板自動升級排程">
-              <span aria-hidden="true">■</span><b>強制停止</b>
+              <span class="control-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path d="M7.8 3h8.4L21 7.8v8.4L16.2 21H7.8L3 16.2V7.8L7.8 3z"></path>
+                  <path d="M8 8l8 8M16 8l-8 8"></path>
+                </svg>
+              </span><b>強制停止</b>
             </button>
           </div>
           <div class="command-chip sync-chip task-sync-chip">
             <span>手動同步</span>
             <div class="refresh-panel">
-              <button type="button" id="refreshStatus" aria-describedby="refreshFeedback"><span class="refresh-icon" aria-hidden="true">↻</span><span class="refresh-label">重新同步</span></button>
+              <button type="button" id="refreshStatus" aria-describedby="refreshFeedback">
+                <span class="refresh-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" focusable="false">
+                    <path d="M21 12a9 9 0 0 1-15.3 6.4"></path>
+                    <path d="M3 12A9 9 0 0 1 18.3 5.6"></path>
+                    <path d="M18 2v4h-4"></path>
+                    <path d="M6 22v-4h4"></path>
+                  </svg>
+                </span>
+                <span class="refresh-label">重新同步</span>
+              </button>
               <div class="effect-layer" id="refreshEffectLayer" aria-hidden="true"></div>
               <small class="refresh-feedback" id="refreshFeedback">每 1 秒自動同步。</small>
             </div>
@@ -50,6 +70,23 @@
           <small class="action-feedback" id="actionFeedback" aria-live="polite">功能鍵待命。</small>
         </div>
       </section>
+
+      <div class="assistant-stage" aria-label="蝦咩與嵐熙助手圖片">
+        <article class="assistant-portrait shami-portrait">
+          <img src="assets/shami-avatar.png" alt="蝦咩 AI 助手圖片">
+          <div><span>TGBOT</span><b>蝦咩</b></div>
+        </article>
+        <div class="assistant-core-copy">
+          <span>AI 智能助手</span>
+          <strong>自動化作業系統</strong>
+          <p>智能守護 · 永不中斷</p>
+        </div>
+        <article class="assistant-portrait lanxi-portrait">
+          <img src="assets/lanxi-avatar.png" alt="嵐熙 AI 助手圖片">
+          <div><span>OpenClaw</span><b>嵐熙</b></div>
+        </article>
+      </div>
+
       <div class="command-strip" aria-label="總覽狀態">
         <div class="command-chip shami-chip"><span>蝦咩狀態</span><b id="chipShamiStatus">讀取中</b></div>
         <div class="command-chip lanxi-chip"><span>嵐熙狀態</span><b id="chipLanxiStatus">讀取中</b></div>
@@ -71,10 +108,12 @@
 
       <div class="agent-view-switch" role="tablist" aria-label="切換顯示資訊">
         <button type="button" class="active" data-agent-view-button="shami" role="tab" aria-selected="true" aria-pressed="true">
+          <img src="assets/shami-avatar.png" alt="" aria-hidden="true">
           <span>TGBOT / 左列</span>
           <b>蝦咩</b>
         </button>
         <button type="button" data-agent-view-button="lanxi" role="tab" aria-selected="false" aria-pressed="false">
+          <img src="assets/lanxi-avatar.png" alt="" aria-hidden="true">
           <span>OpenClaw / 右列</span>
           <b>嵐熙</b>
         </button>
@@ -188,7 +227,7 @@
 
   <footer><span>資料來源：本機技能索引、記憶索引、Codex 心跳、Telegram 任務狀態、OpenClaw 摘要與 GitHub Pages 快照。</span></footer>
 
-  <script src="live-status-config.js?v=20260704-165500-lanxi-sync-rescue"></script>
-  <script src="app.js?v=20260704-165500-lanxi-sync-rescue"></script>
+  <script src="live-status-config.js?v=20260704-172100-ai-assistant-style"></script>
+  <script src="app.js?v=20260704-172100-ai-assistant-style"></script>
 </body>
 </html>

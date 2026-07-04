@@ -1,1 +1,1 @@
-window.OWNER_LIVE_STATUS_ENDPOINT = "https://com-alignment-egg-garmin.trycloudflare.com";
+window.OWNER_LIVE_STATUS_ENDPOINT = "https://accessibility-connecticut-blues-committee.trycloudflare.com";

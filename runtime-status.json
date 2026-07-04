@@ -6,19 +6,19 @@
     "lanxiTaskInstruction":  "嵐熙的狀態都沒有同步 我給他指令沒有顯示在儀表盤",
     "blocker":  "沒有卡點",
     "nextAction":  "完成後更新交付結果、網址、檔案路徑或明確卡點。",
-    "updatedAt":  "2026-07-04T16:56:44+08:00",
-    "checkedAt":  "2026-07-04T16:56:44+08:00",
+    "updatedAt":  "2026-07-04T17:36:20+08:00",
+    "checkedAt":  "2026-07-04T17:36:20+08:00",
     "sourceType":  "local-generator",
     "sourceLabel":  "本機即時狀態產生器",
     "refreshSeconds":  1,
     "token":  {
-                  "totalTokens":  109204831,
-                  "taskCount":  26,
+                  "totalTokens":  118579053,
+                  "taskCount":  27,
                   "source":  "本機 Codex 執行緒紀錄"
               },
     "heartbeat":  {
                       "name":  "蝦咩",
-                      "ageSeconds":  14,
+                      "ageSeconds":  13,
                       "activeRequests":  1
                   },
     "openclaw":  {
@@ -36,7 +36,7 @@
                          "label":  "蝦咩心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 14 秒前，執行中任務 1",
+                         "detail":  "心跳 13 秒前，執行中任務 1",
                          "source":  "codex_bot_heartbeat.json"
                      },
                      {
@@ -76,7 +76,7 @@
                          "label":  "Codex token 統計",
                          "statusKey":  "running",
                          "statusLabel":  "已讀取",
-                         "detail":  "109204831 tokens，任務 26",
+                         "detail":  "118579053 tokens，任務 27",
                          "source":  "本機 Codex 執行緒紀錄"
                      },
                      {
@@ -84,7 +84,7 @@
                          "label":  "狀態產生器",
                          "statusKey":  "running",
                          "statusLabel":  "已更新",
-                         "detail":  "產生時間 2026-07-04 16:56:44",
+                         "detail":  "產生時間 2026-07-04 17:36:20",
                          "source":  "tools/update-runtime-status.ps1"
                      },
                      {

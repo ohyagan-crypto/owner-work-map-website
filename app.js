@@ -1232,6 +1232,8 @@ function renderAgentStrip(status) {
 
   const agents = [
     {
+      kind: "shami",
+      avatar: "assets/shami-avatar.png",
       role: "TGBOT",
       name: heartbeat.name || "蝦咩",
       state: status.statusLabel || "資料待同步",
@@ -1241,6 +1243,8 @@ function renderAgentStrip(status) {
       detail: heartbeatMeta
     },
     {
+      kind: "lanxi",
+      avatar: "assets/lanxi-avatar.png",
       role: "OpenClaw",
       name: openclaw.name || "嵐熙",
       state: openclaw.statusLabel || "狀態待同步",
@@ -1252,8 +1256,9 @@ function renderAgentStrip(status) {
   ];
 
   const agentCard = (agent) => `
-    <article class="agent-card" data-state="${escapeHtml(agent.stateKey)}">
+    <article class="agent-card ${escapeHtml(agent.kind)}-agent-card" data-state="${escapeHtml(agent.stateKey)}">
       <div class="agent-top">
+        <img class="agent-card-avatar" src="${escapeHtml(agent.avatar)}" alt="${escapeHtml(agent.name)} AI 助手圖片">
         <div class="agent-name">
           <span>${escapeHtml(agent.role)}</span>
           <b>${escapeHtml(agent.name)}</b>
