@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AI 自動化作業儀表盤｜蝦咩 x 嵐熙</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="styles.css?v=20260704-194000-latest-update-top">
+  <link rel="stylesheet" href="styles.css?v=20260704-201500-lanxi-blocker-top">
 </head>
-<body data-agent-view="shami">
+<body data-agent-view="lanxi">
   <div class="command-chip updated-chip top-updated-card page-top-updated" aria-label="最後更新時間">
     <span>最後更新</span>
     <b id="chipUpdatedAt">--</b>
@@ -105,12 +105,12 @@
       <div class="signal-ribbon" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
 
       <div class="agent-view-switch" role="tablist" aria-label="切換顯示資訊">
-        <button type="button" class="active" data-agent-view-button="shami" role="tab" aria-selected="true" aria-pressed="true">
+        <button type="button" data-agent-view-button="shami" role="tab" aria-selected="false" aria-pressed="false">
           <img src="assets/shami-avatar.png" alt="" aria-hidden="true">
           <span>TGBOT / 左列</span>
           <b>蝦咩</b>
         </button>
-        <button type="button" data-agent-view-button="lanxi" role="tab" aria-selected="false" aria-pressed="false">
+        <button type="button" class="active" data-agent-view-button="lanxi" role="tab" aria-selected="true" aria-pressed="true">
           <img src="assets/lanxi-avatar.png" alt="" aria-hidden="true">
           <span>OpenClaw / 右列</span>
           <b>嵐熙</b>
@@ -137,7 +137,7 @@
           <div class="agent-slot" id="lanxiAgent"></div>
           <div class="dashboard-grid actor-grid">
             <article class="status-card primary-status lanxi-primary-status"><span>嵐熙自動化狀態</span><strong id="openclawStatusLabel">讀取中</strong><p id="openclawStatusDetail">正在讀取 OpenClaw 狀態。</p></article>
-            <article class="status-card"><span>目前卡點</span><strong id="blockerText">讀取中</strong><p id="nextAction">等待同步資料。</p></article>
+            <article class="status-card blocker-status"><span>目前卡點</span><strong id="blockerText">讀取中</strong><p id="nextAction">等待同步資料。</p></article>
             <article class="status-card"><span>最新檢查</span><strong id="liveAge">--</strong><p><span id="updatedAt">--</span><br><span id="refreshNote">頁面每秒重新讀取狀態資料。</span></p></article>
           </div>
           <div class="monitor-panel">
@@ -226,6 +226,6 @@
   <footer><span>資料來源：本機技能索引、記憶索引、Codex 心跳、Telegram 任務狀態、OpenClaw 摘要與 GitHub Pages 快照。</span></footer>
 
   <script src="live-status-config.js?v=20260704-180800-control-fix"></script>
-  <script src="app.js?v=20260704-180800-control-fix"></script>
+  <script src="app.js?v=20260704-201500-lanxi-blocker-top"></script>
 </body>
 </html>
