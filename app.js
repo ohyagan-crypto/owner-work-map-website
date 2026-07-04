@@ -524,6 +524,7 @@ const skillCatalog = [
 ];
 
 const timeline = [
+  ["2026-07-04", "整合兩個頁面的資訊層級：頂部只留合併摘要，蝦咩與嵐熙任務全文只在雙欄主卡顯示一次，監控區改為補充明細。"],
   ["2026-07-04", "第 4 次半小時自動升級：監控區掃描層。讓監控區、時間軸與狀態面板有更清楚的線性掃描層，方便追蹤最近一次修改與卡點。"],
   ["2026-07-04", "第三輪視覺升級：新增 auto-upgrade.css，讓首屏控制列、雙欄任務卡、時間軸與手機版排版更穩；同時準備每 30 分鐘接續升級的排程腳本。"],
   ["2026-07-04", "夜間第一輪視覺升級：壓低色彩噪音、強化中控列與雙欄任務焦點，手機版改成橫向狀態帶，讓首屏更像高級儀表盤。"],
@@ -1060,6 +1061,18 @@ function lanxiTaskSource(status) {
   return taskMonitor?.source || "OpenClaw 自動化任務獨立欄位";
 }
 
+function isPrimaryTaskMonitor(item) {
+  const id = String(item.id || "").toLowerCase();
+  const label = String(item.label || "");
+  return (
+    id === "telegram-request" ||
+    id.includes("openclaw-task") ||
+    id.includes("lanxi-task") ||
+    label.includes("任務佇列") ||
+    label.includes("嵐熙任務")
+  );
+}
+
 function monitorOwner(item) {
   const id = String(item.id || "").toLowerCase();
   const label = String(item.label || "");
@@ -1105,7 +1118,7 @@ function renderMonitorCards(items, emptyLabel) {
 }
 
 function renderMonitoring(status) {
-  const monitors = buildMonitorItems(status);
+  const monitors = buildMonitorItems(status).filter((item) => !isPrimaryTaskMonitor(item));
   const shamiMonitors = monitors.filter((item) => monitorOwner(item) === "shami");
   const lanxiMonitors = monitors.filter((item) => monitorOwner(item) === "lanxi");
   const shamiCards = renderMonitorCards(shamiMonitors, "蝦咩監控");
@@ -1198,6 +1211,10 @@ function renderRuntimeStatus(data) {
   const deliverables = Array.isArray(status.deliverables) ? status.deliverables : [];
   const sourceLabel = status.sourceLabel || (status.sourceType === "live-api" ? "本機即時 API" : "公開快照");
   const displayTime = status.checkedAt || status.updatedAt || new Date().toISOString();
+  const heartbeatAge = Number(status.heartbeat.ageSeconds);
+  const heartbeatText = Number.isFinite(heartbeatAge) ? `${Math.max(0, heartbeatAge)} 秒前` : formatAge(displayTime);
+  const activeRequests = Number(status.heartbeat.activeRequests);
+  const activeRequestsText = Number.isFinite(activeRequests) ? formatNumber(activeRequests) : "--";
   const openclawProcessText = status.openclaw.processCount === null || status.openclaw.processCount === undefined
     ? "進程未取得"
     : `相關進程 ${formatNumber(status.openclaw.processCount)}`;
@@ -1205,25 +1222,33 @@ function renderRuntimeStatus(data) {
   lastRenderedStatus = status;
 
   $("#statePill").dataset.state = statusTone(status.statusKey || "watch");
-  $("#statePill").textContent = status.statusLabel || "資料待同步";
-  $("#statusLabel").textContent = status.statusLabel || "資料待同步";
-  $("#statusHeadline").textContent = status.headline || "目前沒有可顯示的狀態。";
-  $("#currentTaskText").textContent = currentTaskInstruction(status);
-  $("#todayTokens").textContent = formatNumber(status.token.totalTokens);
-  $("#tokenSource").textContent = status.token.taskCount
+  setTextIfPresent("#statePill", status.statusLabel || "資料待同步");
+  setTextIfPresent("#statusLabel", status.statusLabel || "資料待同步");
+  setTextIfPresent("#statusHeadline", status.headline || "目前沒有可顯示的狀態。");
+  setTextIfPresent("#currentTaskText", currentTaskInstruction(status));
+  setTextIfPresent("#todayTokens", formatNumber(status.token.totalTokens));
+  setTextIfPresent("#tokenSource", status.token.taskCount
     ? `${status.token.source}，任務數 ${formatNumber(status.token.taskCount)}。`
-    : status.token.source || "未取得 token 統計來源。";
-  $("#openclawStatusLabel").textContent = status.openclaw.statusLabel || "狀態待同步";
-  $("#openclawStatusDetail").textContent = `${openclawProcessText}，看門排程 ${status.openclaw.watchdogState || "未取得"}。`;
-  $("#lanxiTaskText").textContent = lanxiTaskInstruction(status);
-  $("#lanxiTaskSource").textContent = lanxiTaskSource(status);
-  $("#blockerText").textContent = status.blocker || "沒有卡點";
-  $("#nextAction").textContent = status.nextAction || "維持同步。";
-  $("#updatedAt").textContent = formatDateTime(displayTime);
-  $("#refreshNote").textContent = `每 ${status.refreshSeconds} 秒自動讀取；來源：${sourceLabel}。`;
-  $("#deliverableList").innerHTML = deliverables.length
-    ? deliverables.map((item) => `<span>${escapeHtml(item)}</span>`).join("")
-    : "<span>目前沒有新的交付檔案</span>";
+    : status.token.source || "未取得 token 統計來源。");
+  setTextIfPresent("#heartbeatText", heartbeatText);
+  setTextIfPresent("#heartbeatDetail", `執行中任務 ${activeRequestsText}；來源：Codex 心跳。`);
+  setTextIfPresent("#openclawStatusLabel", status.openclaw.statusLabel || "狀態待同步");
+  setTextIfPresent("#openclawProcessLabel", openclawProcessText);
+  setTextIfPresent("#openclawStatusDetail", `自動化狀態 ${status.openclaw.statusLabel || "待同步"}。`);
+  setTextIfPresent("#watchdogLabel", status.openclaw.watchdogState || "未取得");
+  setTextIfPresent("#watchdogDetail", "OpenClaw Watchdog 排程狀態。");
+  setTextIfPresent("#lanxiTaskText", lanxiTaskInstruction(status));
+  setTextIfPresent("#lanxiTaskSource", lanxiTaskSource(status));
+  setTextIfPresent("#blockerText", status.blocker || "沒有卡點");
+  setTextIfPresent("#nextAction", status.nextAction || "維持同步。");
+  setTextIfPresent("#updatedAt", formatDateTime(displayTime));
+  setTextIfPresent("#refreshNote", `每 ${status.refreshSeconds} 秒自動讀取；來源：${sourceLabel}。`);
+  const deliverableList = $("#deliverableList");
+  if (deliverableList) {
+    deliverableList.innerHTML = deliverables.length
+      ? deliverables.map((item) => `<span>${escapeHtml(item)}</span>`).join("")
+      : "<span>目前沒有新的交付檔案</span>";
+  }
   renderAiEnhancements(status, displayTime);
   renderAgentStrip(status);
   renderMonitoring(status);
@@ -1385,6 +1410,9 @@ function renderAiEnhancements(status, displayTime) {
   const energy = Math.max(18, Math.min(98, 44 + (hasFreshHeartbeat ? 22 : 0) + (hasOpenclaw ? 18 : 0) + (!isBlocked ? 10 : -18)));
   const energyRing = $("#energyRing");
 
+  setTextIfPresent("#chipUnifiedStatus", `${status.statusLabel || "待同步"} / ${status.openclaw?.statusLabel || "待同步"}`);
+  setTextIfPresent("#chipUnifiedDetail", isBlocked ? `卡點：${status.blocker}` : "同頁總覽，任務不重複顯示");
+  setTextIfPresent("#chipCurrentFocus", isBlocked ? "需要確認卡點" : "無卡點，持續同步");
   setTextIfPresent("#chipShamiStatus", status.statusLabel || "同步中");
   setTextIfPresent("#chipLanxiStatus", status.openclaw?.statusLabel || "同步中");
   setTextIfPresent("#chipCurrentTask", currentTaskInstruction(status));

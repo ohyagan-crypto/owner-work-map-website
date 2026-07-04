@@ -3957,3 +3957,91 @@ body::before {
     min-height: 0;
   }
 }
+
+/* Integration cleanup 20260704-1335: one page, no duplicated task/status content. */
+.command-strip {
+  grid-template-columns:
+    minmax(166px, 0.8fr)
+    minmax(218px, 1fr)
+    minmax(178px, 0.82fr)
+    minmax(210px, 0.96fr)
+    minmax(158px, 0.72fr);
+}
+
+.health-chip {
+  border-color: rgba(115, 232, 242, 0.36);
+}
+
+.health-chip::before {
+  background: linear-gradient(180deg, var(--round2-cyan, #73e8f2), var(--round2-mint, #baf5c8));
+}
+
+.focus-chip {
+  border-color: rgba(190, 168, 255, 0.36);
+}
+
+.focus-chip::before {
+  background: linear-gradient(180deg, var(--round2-violet, #bea8ff), var(--round2-gold, #f4cf7b));
+}
+
+.full-row-card {
+  grid-column: 1 / -1;
+}
+
+.full-row-card strong {
+  font-size: clamp(21px, 1.65vw, 26px);
+}
+
+.agent-status-column .actor-grid {
+  align-items: stretch;
+}
+
+.monitor-hub .monitor-card p {
+  min-height: 0;
+}
+
+@media (max-width: 1180px) {
+  .command-strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .command-strip {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    overflow: visible;
+    gap: 8px;
+  }
+
+  .command-chip,
+  .sync-chip,
+  .skill-chip,
+  .updated-chip,
+  .health-chip,
+  .focus-chip {
+    min-height: 94px;
+    flex-basis: auto;
+  }
+
+  .sync-chip,
+  .focus-chip {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 440px) {
+  .command-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .command-chip,
+  .sync-chip,
+  .skill-chip,
+  .updated-chip,
+  .health-chip,
+  .focus-chip {
+    grid-column: 1 / -1;
+    min-height: 86px;
+  }
+}
