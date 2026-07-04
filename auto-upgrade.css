@@ -1,195 +1,20 @@
-/* Auto visual upgrade 20260704-122253: first-screen density, dual-lane contrast, and mobile breathing. */
+/* Auto visual upgrade 20260704-124750: run 4 - 監控區掃描層. */
 :root {
-  --auto-upgrade-panel: rgba(5, 19, 22, 0.88);
-  --auto-upgrade-panel-soft: rgba(255, 255, 255, 0.055);
-  --auto-upgrade-border: rgba(168, 239, 230, 0.34);
-  --auto-upgrade-border-strong: rgba(244, 207, 123, 0.52);
-  --auto-upgrade-teal: #73e8f2;
-  --auto-upgrade-mint: #baf5c8;
-  --auto-upgrade-gold: #f4cf7b;
-  --auto-upgrade-rose: #ff8ab3;
-}
-
-.topbar {
-  align-items: flex-start;
-  padding-top: 18px;
-}
-
-.topbar h1 {
-  text-wrap: balance;
-}
-
-.topbar-meta {
-  max-width: 520px;
+  --auto-upgrade-accent: #bea8ff;
+  --auto-upgrade-accent-2: #baf5c8;
 }
 
 .command-strip {
-  position: sticky;
-  top: 0;
-  z-index: 8;
-  padding: 8px;
-  border: 1px solid var(--auto-upgrade-border);
-  border-radius: 8px;
-  background:
-    linear-gradient(90deg, rgba(115, 232, 242, 0.12), rgba(255, 255, 255, 0.035), rgba(244, 207, 123, 0.1)),
-    rgba(5, 19, 22, 0.9);
-  box-shadow:
-    0 16px 34px rgba(0, 0, 0, 0.22),
-    0 0 0 1px rgba(255, 255, 255, 0.04) inset;
-  backdrop-filter: blur(18px);
+  border-color: color-mix(in srgb, var(--auto-upgrade-accent) 42%, rgba(255,255,255,0.18));
 }
 
-.command-chip {
-  min-height: 76px;
-  border-color: rgba(168, 239, 230, 0.22);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.086), rgba(255, 255, 255, 0.026)),
-    rgba(7, 25, 28, 0.72);
-}
-
-.command-chip span,
-.status-card span,
-.skill-card-field span {
-  color: rgba(235, 255, 248, 0.82);
-}
-
-.mission-board-head {
-  align-items: center;
-  border: 1px solid rgba(168, 239, 230, 0.18);
-  border-radius: 8px;
-  padding: 12px;
-  background:
-    linear-gradient(90deg, rgba(115, 232, 242, 0.095), transparent 58%, rgba(244, 207, 123, 0.08)),
-    rgba(255, 255, 255, 0.032);
-}
-
-.mission-board-head h2 {
-  max-width: 780px;
-  text-wrap: balance;
-}
-
-.dashboard-live-layout {
-  gap: 14px;
-  align-items: stretch;
-}
-
-.agent-status-column {
-  border-color: rgba(168, 239, 230, 0.24);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.024)),
-    var(--auto-upgrade-panel);
-}
-
-.shami-column {
-  box-shadow:
-    0 18px 44px rgba(0, 0, 0, 0.23),
-    0 -2px 0 rgba(115, 232, 242, 0.62) inset;
-}
-
-.lanxi-column {
-  box-shadow:
-    0 18px 44px rgba(0, 0, 0, 0.23),
-    0 -2px 0 rgba(244, 207, 123, 0.56) inset;
-}
-
-.column-heading {
-  min-height: 58px;
-  border-bottom: 1px solid rgba(168, 239, 230, 0.14);
-  padding-bottom: 10px;
-}
-
-.actor-grid {
-  gap: 10px;
-}
-
-.actor-grid .status-card {
-  min-height: 148px;
-}
-
-.status-card {
-  border-color: rgba(168, 239, 230, 0.2);
-  background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.082), rgba(255, 255, 255, 0.025)),
-    rgba(4, 17, 20, 0.74);
-}
-
-.status-card strong,
-.task-status-card strong {
-  overflow-wrap: anywhere;
-  text-wrap: balance;
-}
-
-.primary-status {
-  border-color: rgba(115, 232, 242, 0.42);
-}
-
-.lanxi-primary-status {
-  border-color: rgba(244, 207, 123, 0.4);
-}
-
-.dashboard-tool-panel {
-  border-color: rgba(168, 239, 230, 0.2);
-}
-
-.timeline-item {
-  display: grid;
-  grid-template-columns: minmax(92px, max-content) minmax(0, 1fr);
-  gap: 10px;
-  align-items: start;
-}
-
-.timeline-item p {
-  min-width: 0;
-  overflow-wrap: anywhere;
-}
-
-.skill-card-grid {
-  gap: 12px;
-}
-
+.agent-status-column,
+.status-card,
 .skill-card,
 .skill-more-card {
-  border-color: rgba(168, 239, 230, 0.22);
+  transition: border-color 180ms ease, box-shadow 180ms ease, background 180ms ease, transform 180ms ease;
 }
 
-@media (max-width: 900px) {
-  .command-strip {
-    position: relative;
-  }
-
-  .topbar {
-    align-items: stretch;
-  }
-}
-
-@media (max-width: 640px) {
-  .topbar-meta {
-    max-width: none;
-  }
-
-  .command-strip {
-    padding: 7px;
-  }
-
-  .command-chip,
-  .sync-chip,
-  .skill-chip,
-  .task-chip,
-  .lanxi-task-chip,
-  .updated-chip {
-    min-height: 86px;
-    flex-basis: min(76vw, 246px);
-  }
-
-  .mission-board-head {
-    align-items: stretch;
-  }
-
-  .actor-grid .status-card {
-    min-height: 0;
-  }
-
-  .timeline-item {
-    grid-template-columns: 1fr;
-  }
-}
+.dashboard-tool-panel { background: linear-gradient(160deg, rgba(190, 168, 255, 0.08), rgba(255,255,255,0.026), rgba(186,245,200,0.055)), rgba(5, 20, 23, 0.84); }
+.timeline-item { border-color: rgba(190, 168, 255, 0.24); }
+.timeline-item time { color: #bea8ff; }
