@@ -7,7 +7,7 @@ let liveStatusEndpoint = sameOriginLiveStatusEndpoint || configuredLiveStatusEnd
 const DEFAULT_REFRESH_SECONDS = 1;
 const LIVE_TIMEOUT_MS = 2200;
 const LIVE_RETRY_COOLDOWN_MS = 5000;
-const AGENT_VIEW_STORAGE_KEY = "ownerDashboardAgentView";
+const AGENT_VIEW_STORAGE_KEY = "ownerDashboardAgentViewLanxiTop20260704";
 const DASHBOARD_ACTIONS = {
   rescue: {
     loading: "救援中",
@@ -582,7 +582,7 @@ let lastRenderedStatus = fallbackRuntimeStatus;
 let lastStatusSignature = "";
 let selectedSkillGroup = "全部";
 let skillSearchTerm = "";
-let selectedAgentView = "shami";
+let selectedAgentView = "lanxi";
 let isStatusLoading = false;
 let liveUnavailableUntil = 0;
 let refreshAudioContext = null;

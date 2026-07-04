@@ -669,7 +669,7 @@ body[data-agent-view="lanxi"] .active-task-banner {
 }
 
 .dashboard-live-layout {
-  order: -9;
+  order: -12;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
@@ -744,6 +744,27 @@ body[data-agent-view="lanxi"] .active-task-banner {
 .lanxi-column {
   --column-accent: var(--violet);
   --column-accent-soft: rgba(213, 107, 255, 0.14);
+  order: -1;
+}
+
+.shami-column {
+  order: 1;
+}
+
+.lanxi-column .actor-grid {
+  order: 1;
+}
+
+.lanxi-column .agent-slot {
+  order: 2;
+}
+
+.lanxi-column .monitor-panel {
+  order: 3;
+}
+
+.blocker-status {
+  order: -2;
 }
 
 .column-heading,
@@ -843,6 +864,14 @@ body[data-agent-view="lanxi"] .active-task-banner {
   cursor: pointer;
   text-align: left;
   transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+.agent-view-switch button[data-agent-view-button="lanxi"] {
+  order: -1;
+}
+
+.agent-view-switch button[data-agent-view-button="shami"] {
+  order: 1;
 }
 
 .agent-view-switch img {
