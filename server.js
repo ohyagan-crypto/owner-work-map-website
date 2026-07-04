@@ -6,6 +6,8 @@ const { execFile } = require("child_process");
 const root = __dirname;
 const port = Number(process.env.PORT || 4179);
 const statusScript = path.join(root, "tools", "update-runtime-status.ps1");
+const rescueScript = path.join(root, "tools", "rescue-dashboard-blocker.ps1");
+const forceStopScript = path.join(root, "tools", "force-stop-dashboard-work.ps1");
 const liveRuntimeStatusPath = path.join(process.env.TEMP || root, "owner-work-map-live-runtime-status.json");
 const windowsPowerShellPath = path.join(
   process.env.SystemRoot || "C:\\Windows",
@@ -27,7 +29,7 @@ const types = {
 function corsHeaders(extra = {}) {
   return {
     "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "GET, OPTIONS",
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type",
     "Cache-Control": "no-store, max-age=0",
     ...extra
@@ -65,6 +67,35 @@ function refreshRuntimeStatus() {
   });
 }
 
+function runPowerShellScript(scriptPath) {
+  return new Promise((resolve, reject) => {
+    execFile(
+      powershellExe,
+      [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        scriptPath,
+        "-SiteRoot",
+        root
+      ],
+      {
+        windowsHide: true,
+        timeout: 20000,
+        maxBuffer: 1024 * 1024
+      },
+      (error, stdout) => {
+        if (error) {
+          reject(error);
+          return;
+        }
+        resolve(stdout.trim());
+      }
+    );
+  });
+}
+
 async function handleStatusApi(res) {
   try {
     await refreshRuntimeStatus();
@@ -83,6 +114,22 @@ async function handleStatusApi(res) {
   }
 }
 
+async function handleActionApi(res, scriptPath, successLabel) {
+  try {
+    if (!fs.existsSync(scriptPath)) throw new Error("action script missing");
+    const output = await runPowerShellScript(scriptPath);
+    res.writeHead(200, corsHeaders({ "Content-Type": "application/json; charset=utf-8" }));
+    res.end(JSON.stringify({
+      ok: true,
+      message: output || successLabel,
+      checkedAt: new Date().toISOString()
+    }));
+  } catch {
+    res.writeHead(503, corsHeaders({ "Content-Type": "application/json; charset=utf-8" }));
+    res.end(JSON.stringify({ ok: false, message: "本機操作沒有完成，請檢查即時服務或排程權限。" }));
+  }
+}
+
 const server = http.createServer((req, res) => {
   const url = new URL(req.url, `http://${req.headers.host}`);
 
@@ -94,6 +141,16 @@ const server = http.createServer((req, res) => {
 
   if (url.pathname === "/api/status") {
     handleStatusApi(res);
+    return;
+  }
+
+  if (req.method === "POST" && url.pathname === "/api/action/rescue") {
+    handleActionApi(res, rescueScript, "已送出卡點解救，正在嘗試恢復續作。");
+    return;
+  }
+
+  if (req.method === "POST" && url.pathname === "/api/action/force-stop") {
+    handleActionApi(res, forceStopScript, "已送出強制停止。");
     return;
   }
 

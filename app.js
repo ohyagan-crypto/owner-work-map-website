@@ -1013,12 +1013,12 @@ function lanxiTaskInstruction(status) {
   const openclawProcessMonitor = monitors.find((item) => String(item.id || "").toLowerCase().includes("openclaw-process"));
   const watchdogMonitor = monitors.find((item) => String(item.id || "").toLowerCase().includes("openclaw-watchdog"));
   const candidates = [
+    lanxiTaskMonitor?.detail,
     status.lanxiTaskInstruction,
     status.lanxiTask,
     status.openclaw?.currentTaskInstruction,
     status.openclaw?.taskInstruction,
-    status.openclaw?.currentTask,
-    lanxiTaskMonitor?.detail
+    status.openclaw?.currentTask
   ];
   const value = candidates.find((item) => typeof item === "string" && item.trim());
   if (value) return value.trim();
@@ -1039,7 +1039,7 @@ function lanxiTaskSource(status) {
     const label = String(item.label || "");
     return id.includes("lanxi-task") || id.includes("openclaw-task") || label.includes("嵐熙任務");
   });
-  return taskMonitor?.source || "OpenClaw 自動化任務獨立欄位";
+  return taskMonitor?.source || status.openclaw?.currentTaskSource || "OpenClaw 自動化任務獨立欄位";
 }
 
 function monitorOwner(item) {
@@ -1258,9 +1258,12 @@ function runtimeSignature(status) {
     status.statusKey || "",
     status.statusLabel || "",
     status.currentTaskInstruction || "",
+    status.lanxiTaskInstruction || "",
     status.headline || "",
     status.openclaw?.statusLabel || "",
-    (status.monitors || []).map((item) => `${item.label}:${item.statusLabel}`).join(",")
+    status.openclaw?.currentTaskInstruction || "",
+    status.openclaw?.currentTaskSource || "",
+    (status.monitors || []).map((item) => `${item.id || item.label}:${item.statusLabel}:${item.detail}:${item.source}`).join(",")
   ].join("|");
 }
 

@@ -1,24 +1,24 @@
 {
     "statusKey":  "running",
     "statusLabel":  "運作中",
-    "headline":  "補做 08:58 視覺升級：強化主控層次、雙欄辨識與手機可讀性",
-    "currentTaskInstruction":  "補做 08:58 視覺升級：強化主控層次、雙欄辨識與手機可讀性",
-    "lanxiTaskInstruction":  "嵐熙獨立任務：OpenClaw 自動化、瀏覽器流程與排程監控整合到右欄顯示。",
+    "headline":  "補充： 這邊做切換開關 點蝦咩就只出現蝦咩資訊 點嵐熙出現嵐熙資料",
+    "currentTaskInstruction":  "補充： 這邊做切換開關 點蝦咩就只出現蝦咩資訊 點嵐熙出現嵐熙資料",
+    "lanxiTaskInstruction":  "目前沒有執行中的 OpenClaw 任務；最近任務：每日早上9點今日運勢（失敗，最後更新 07/04 09:00）。",
     "blocker":  "沒有卡點",
-    "nextAction":  "已保留原始備份與第一輪備份，公開頁更新後可依版本回退。",
-    "updatedAt":  "2026-07-04T08:58:00+08:00",
-    "checkedAt":  "2026-07-04T08:58:00+08:00",
+    "nextAction":  "完成後更新交付結果、網址、檔案路徑或明確卡點。",
+    "updatedAt":  "2026-07-04T14:57:45+08:00",
+    "checkedAt":  "2026-07-04T14:57:45+08:00",
     "sourceType":  "local-generator",
     "sourceLabel":  "本機即時狀態產生器",
     "refreshSeconds":  1,
     "token":  {
-                  "totalTokens":  131335509,
-                  "taskCount":  33,
+                  "totalTokens":  86656838,
+                  "taskCount":  20,
                   "source":  "本機 Codex 執行緒紀錄"
               },
     "heartbeat":  {
                       "name":  "蝦咩",
-                      "ageSeconds":  13,
+                      "ageSeconds":  5,
                       "activeRequests":  1
                   },
     "openclaw":  {
@@ -27,7 +27,8 @@
                      "statusLabel":  "正常",
                      "processCount":  6,
                      "watchdogState":  "Running",
-                     "currentTaskInstruction":  "嵐熙獨立任務：OpenClaw 自動化、瀏覽器流程與排程監控整合到右欄顯示。"
+                     "currentTaskInstruction":  "目前沒有執行中的 OpenClaw 任務；最近任務：每日早上9點今日運勢（失敗，最後更新 07/04 09:00）。",
+                     "currentTaskSource":  "OpenClaw task_runs.sqlite"
                  },
     "monitors":  [
                      {
@@ -35,7 +36,7 @@
                          "label":  "蝦咩心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 13 秒前，執行中任務 1",
+                         "detail":  "心跳 5 秒前，執行中任務 1",
                          "source":  "codex_bot_heartbeat.json"
                      },
                      {
@@ -43,16 +44,16 @@
                          "label":  "Telegram 任務佇列",
                          "statusKey":  "running",
                          "statusLabel":  "運作中",
-                         "detail":  "補做 08:58 視覺升級：強化主控層次、雙欄辨識與手機可讀性",
+                         "detail":  "補充： 這邊做切換開關 點蝦咩就只出現蝦咩資訊 點嵐熙出現嵐熙資料",
                          "source":  "telegram_request_status.json"
                      },
                      {
                          "id":  "openclaw-task",
                          "label":  "嵐熙任務",
-                         "statusKey":  "running",
-                         "statusLabel":  "正常",
-                         "detail":  "嵐熙獨立任務：OpenClaw 自動化、瀏覽器流程與排程監控整合到右欄顯示。",
-                         "source":  "OpenClaw task summary"
+                         "statusKey":  "watch",
+                         "statusLabel":  "最近失敗",
+                         "detail":  "目前沒有執行中的 OpenClaw 任務；最近任務：每日早上9點今日運勢（失敗，最後更新 07/04 09:00）。",
+                         "source":  "OpenClaw task_runs.sqlite"
                      },
                      {
                          "id":  "openclaw-process",
@@ -75,7 +76,7 @@
                          "label":  "Codex token 統計",
                          "statusKey":  "running",
                          "statusLabel":  "已讀取",
-                         "detail":  "131335509 tokens，任務 33",
+                         "detail":  "86656838 tokens，任務 20",
                          "source":  "本機 Codex 執行緒紀錄"
                      },
                      {
@@ -83,7 +84,7 @@
                          "label":  "狀態產生器",
                          "statusKey":  "running",
                          "statusLabel":  "已更新",
-                         "detail":  "產生時間 2026-07-04 08:58:00",
+                         "detail":  "產生時間 2026-07-04 14:57:45",
                          "source":  "tools/update-runtime-status.ps1"
                      },
                      {
@@ -99,7 +100,7 @@
                          "label":  "交付結果追蹤",
                          "statusKey":  "running",
                          "statusLabel":  "已列入",
-                         "detail":  "公開網址、狀態資料、原始備份與第一輪備份會列入交付結果",
+                         "detail":  "公開網址、狀態資料與網站更新會列入交付結果",
                          "source":  "dashboard deliverables"
                      }
                  ],
@@ -108,7 +109,6 @@
                          "狀態資料：runtime-status.json",
                          "監控項目：9 項",
                          "嵐熙任務：獨立欄位",
-                         "技能包清單：功能與使用場景",
-                         "回退備份：原始版本與第一輪版本"
+                         "技能包清單：功能與使用場景"
                      ]
 }

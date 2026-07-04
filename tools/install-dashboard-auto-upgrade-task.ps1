@@ -1,6 +1,7 @@
-﻿param(
+param(
   [string]$TaskName = "OwnerWorkMapDashboardAutoUpgrade30m",
-  [datetime]$StartAt = (Get-Date -Hour 23 -Minute 30 -Second 0),
+  [datetime]$StartAt = (Get-Date).Date.AddDays(1),
+  [datetime]$WindowDate = (Get-Date).Date.AddDays(1),
   [int]$IntervalMinutes = 30
 )
 
@@ -15,18 +16,29 @@ if (-not (Test-Path -LiteralPath $scriptPath)) {
 }
 
 if ($StartAt -le (Get-Date)) {
-  $StartAt = $StartAt.AddDays(1)
+  $StartAt = (Get-Date).Date.AddDays(1)
 }
+
+$WindowDate = $StartAt.Date
 
 $action = New-ScheduledTaskAction `
   -Execute $powerShellPath `
-  -Argument ("-NoProfile -ExecutionPolicy Bypass -File `"{0}`" -RepoRoot `"{1}`"" -f $scriptPath, $repoRoot) `
+  -Argument ("-NoProfile -ExecutionPolicy Bypass -File `"{0}`" -RepoRoot `"{1}`" -WindowDate `"{2}`"" -f $scriptPath, $repoRoot, $WindowDate.ToString("yyyy-MM-dd")) `
   -WorkingDirectory $repoRoot
 
 $trigger = New-ScheduledTaskTrigger `
   -Once `
-  -At $StartAt `
-  -RepetitionInterval (New-TimeSpan -Minutes $IntervalMinutes)
+  -At $StartAt
+
+$trigger.Repetition = New-CimInstance `
+  -Namespace root/Microsoft/Windows/TaskScheduler `
+  -ClassName MSFT_TaskRepetitionPattern `
+  -ClientOnly `
+  -Property @{
+    Interval = ("PT{0}M" -f $IntervalMinutes)
+    Duration = "PT9H30M"
+    StopAtDurationEnd = $true
+  }
 
 $settings = New-ScheduledTaskSettingsSet `
   -AllowStartIfOnBatteries `
@@ -49,4 +61,4 @@ Register-ScheduledTask `
   -Force | Out-Null
 
 Get-ScheduledTask -TaskName $TaskName | Out-Null
-Write-Output ("installed {0}; start {1}; interval {2} minutes" -f $TaskName, $StartAt.ToString("yyyy-MM-dd HH:mm:ss"), $IntervalMinutes)
+Write-Output ("installed {0}; one-time start {1}; interval {2} minutes; window {3} 00:00-09:00" -f $TaskName, $StartAt.ToString("yyyy-MM-dd HH:mm:ss"), $IntervalMinutes, $WindowDate.ToString("yyyy-MM-dd"))

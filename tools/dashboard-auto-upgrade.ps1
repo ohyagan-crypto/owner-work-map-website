@@ -1,5 +1,6 @@
 ﻿param(
-  [string]$RepoRoot = (Split-Path -Parent $PSScriptRoot)
+  [string]$RepoRoot = (Split-Path -Parent $PSScriptRoot),
+  [datetime]$WindowDate = (Get-Date).Date
 )
 
 $ErrorActionPreference = "Stop"
@@ -29,6 +30,17 @@ function Invoke-Git {
   }
 }
 
+function Test-WithinUpgradeWindow {
+  param(
+    [Parameter(Mandatory = $true)][datetime]$Timestamp,
+    [Parameter(Mandatory = $true)][datetime]$AllowedDate
+  )
+
+  $windowStart = $AllowedDate.Date
+  $windowEnd = $windowStart.AddHours(9)
+  return $Timestamp -ge $windowStart -and $Timestamp -le $windowEnd
+}
+
 $RepoRoot = (Resolve-Path -LiteralPath $RepoRoot).Path
 $indexPath = Join-Path $RepoRoot "index.html"
 $appPath = Join-Path $RepoRoot "app.js"
@@ -42,6 +54,13 @@ $env:GIT_TERMINAL_PROMPT = "0"
 $env:GCM_INTERACTIVE = "Never"
 
 $now = Get-Date
+$windowStart = $WindowDate.Date
+$windowEnd = $windowStart.AddHours(9)
+if (-not (Test-WithinUpgradeWindow -Timestamp $now -AllowedDate $WindowDate)) {
+  Write-Output ("skipped outside upgrade window {0}~{1}" -f $windowStart.ToString("yyyy-MM-dd 00:00"), $windowEnd.ToString("yyyy-MM-dd HH:mm"))
+  exit 0
+}
+
 $stamp = $now.ToString("yyyyMMdd-HHmmss")
 $displayTime = $now.ToString("yyyy-MM-dd HH:mm")
 $dateText = $now.ToString("yyyy-MM-dd")

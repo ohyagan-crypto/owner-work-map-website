@@ -10,6 +10,9 @@
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
+$utf8NoBom = [System.Text.UTF8Encoding]::new($false)
+[Console]::OutputEncoding = $utf8NoBom
+$OutputEncoding = $utf8NoBom
 
 if (-not $SiteRoot) {
     $SiteRoot = Split-Path -Parent $PSScriptRoot
@@ -20,6 +23,7 @@ $RequestStatusPath = Join-Path $BotRoot "telegram_request_status.json"
 $RecentUploadsPath = Join-Path $BotRoot "telegram_recent_uploads.json"
 $UsagePath = Join-Path $BotRoot "codex_token_usage.jsonl"
 $StateDb = "C:\Users\max\.codex\state_5.sqlite"
+$OpenClawRunsDb = "C:\Users\max\.openclaw\tasks\runs.sqlite"
 if (-not $OutputPath.Trim()) {
     $OutputPath = Join-Path $SiteRoot "runtime-status.json"
 }
@@ -55,6 +59,20 @@ function Invoke-SqliteSingleLine {
         return ($result | Select-Object -First 1)
     } catch {
         return $null
+    }
+}
+
+function Invoke-SqliteJsonRows {
+    param([string]$SqliteExe, [string]$DbPath, [string]$Sql)
+    if (-not $SqliteExe -or -not (Test-Path -LiteralPath $DbPath)) { return @() }
+    try {
+        $raw = & $SqliteExe -readonly -json $DbPath $Sql 2>$null
+        if ($LASTEXITCODE -ne 0) { return @() }
+        $text = ($raw -join [Environment]::NewLine).Trim()
+        if (-not $text) { return @() }
+        return @($text | ConvertFrom-Json)
+    } catch {
+        return @()
     }
 }
 
@@ -142,6 +160,104 @@ function Normalize-TaskText {
     return $clean
 }
 
+function Format-OpenClawTaskStatus {
+    param([string]$Status)
+    switch ($Status) {
+        "queued" { return "排隊中" }
+        "running" { return "執行中" }
+        "started" { return "執行中" }
+        "in_progress" { return "執行中" }
+        "succeeded" { return "已完成" }
+        "failed" { return "失敗" }
+        "cancelled" { return "已取消" }
+        "canceled" { return "已取消" }
+        default {
+            if ($Status) { return $Status }
+            return "未取得"
+        }
+    }
+}
+
+function Get-LocalTimeTextFromUnixMs {
+    param($Milliseconds)
+    try {
+        if ($null -eq $Milliseconds) { return "" }
+        $ms = [int64]$Milliseconds
+        if ($ms -le 0) { return "" }
+        return ([DateTimeOffset]::FromUnixTimeMilliseconds($ms).ToLocalTime()).ToString("MM/dd HH:mm")
+    } catch {
+        return ""
+    }
+}
+
+function Get-OpenClawTaskSummary {
+    $sqliteExe = Resolve-SqliteExe
+    if (-not $sqliteExe -or -not (Test-Path -LiteralPath $OpenClawRunsDb)) {
+        return [pscustomobject]@{
+            detail = ""
+            source = "OpenClaw task database"
+            statusKey = "watch"
+            statusLabel = "未同步"
+        }
+    }
+
+    $activeSql = @"
+select label, task, status, coalesce(progress_summary, terminal_summary, '') as summary, coalesce(last_event_at, started_at, created_at) as event_ms
+from task_runs
+where status not in ('succeeded','failed','cancelled','canceled')
+order by coalesce(last_event_at, started_at, created_at) desc
+limit 1;
+"@
+    $latestSql = @"
+select label, task, status, coalesce(progress_summary, terminal_summary, '') as summary, coalesce(last_event_at, started_at, created_at) as event_ms
+from task_runs
+order by coalesce(last_event_at, started_at, created_at) desc
+limit 1;
+"@
+
+    $active = Invoke-SqliteJsonRows -SqliteExe $sqliteExe -DbPath $OpenClawRunsDb -Sql $activeSql | Select-Object -First 1
+    $isActive = $null -ne $active
+    $row = if ($isActive) { $active } else { Invoke-SqliteJsonRows -SqliteExe $sqliteExe -DbPath $OpenClawRunsDb -Sql $latestSql | Select-Object -First 1 }
+    if ($null -eq $row) {
+        return [pscustomobject]@{
+            detail = "目前沒有可同步的 OpenClaw 任務紀錄。"
+            source = "OpenClaw task database"
+            statusKey = "watch"
+            statusLabel = "無任務紀錄"
+        }
+    }
+
+    $title = ""
+    foreach ($candidate in @($row.label, $row.task, $row.summary)) {
+        if ($candidate -and -not (Test-MojibakeText ([string]$candidate))) {
+            $title = Normalize-TaskText -Text ([string]$candidate) -Limit 90
+            break
+        }
+    }
+    if (-not $title) { $title = "未命名任務" }
+
+    $statusText = Format-OpenClawTaskStatus -Status ([string]$row.status)
+    $timeText = Get-LocalTimeTextFromUnixMs -Milliseconds $row.event_ms
+    $suffix = if ($timeText) { "，最後更新 $timeText" } else { "" }
+
+    if ($isActive) {
+        return [pscustomobject]@{
+            detail = "嵐熙目前任務：$title（$statusText$suffix）。"
+            source = "OpenClaw task_runs.sqlite"
+            statusKey = "running"
+            statusLabel = $statusText
+        }
+    }
+
+    $latestStatusKey = if ($row.status -eq "failed") { "watch" } else { "running" }
+    return [pscustomobject]@{
+        detail = "目前沒有執行中的 OpenClaw 任務；最近任務：$title（$statusText$suffix）。"
+        source = "OpenClaw task_runs.sqlite"
+        statusKey = $latestStatusKey
+        statusLabel = "最近$statusText"
+    }
+}
+
 function Get-NewestUploadCaption {
     $data = Read-JsonFile -Path $RecentUploadsPath
     if ($null -eq $data) { return "" }
@@ -214,8 +330,11 @@ $request = Get-NewestRequestRecord
 $uploadCaption = Get-NewestUploadCaption
 $token = Get-TokenSummary -TargetDate $Date
 $openclaw = Get-OpenClawSummary
+$openclawTask = Get-OpenClawTaskSummary
 $lanxiTaskInstruction = if ($LanxiTask.Trim()) {
     $LanxiTask.Trim()
+} elseif ($openclawTask.detail) {
+    $openclawTask.detail
 } elseif ($null -ne $openclaw.processCount -and $openclaw.processCount -gt 0) {
     "OpenClaw 自動化任務：瀏覽器流程、排程與本機進程監控正常；看門排程 $($openclaw.watchdogState)。"
 } elseif ($null -eq $openclaw.processCount) {
@@ -363,10 +482,10 @@ $monitors = @(
     [ordered]@{
         id = "openclaw-task"
         label = "嵐熙任務"
-        statusKey = $openclaw.statusKey
-        statusLabel = $openclaw.statusLabel
+        statusKey = $openclawTask.statusKey
+        statusLabel = $openclawTask.statusLabel
         detail = $lanxiTaskInstruction
-        source = "OpenClaw task summary"
+        source = $openclawTask.source
     },
     [ordered]@{
         id = "openclaw-process"
@@ -448,6 +567,7 @@ $payload = [ordered]@{
         processCount = $openclaw.processCount
         watchdogState = $openclaw.watchdogState
         currentTaskInstruction = $lanxiTaskInstruction
+        currentTaskSource = $openclawTask.source
     }
     monitors = $monitors
     deliverables = @(
