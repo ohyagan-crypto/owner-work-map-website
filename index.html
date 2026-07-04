@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AI 自動化作業儀表盤｜蝦咩 x 嵐熙</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="styles.css?v=20260704-172100-ai-assistant-style">
+  <link rel="stylesheet" href="styles.css?v=20260704-180800-control-fix">
 </head>
 <body data-agent-view="shami">
   <header class="topbar">
@@ -48,25 +48,20 @@
                 </svg>
               </span><b>強制停止</b>
             </button>
-          </div>
-          <div class="command-chip sync-chip task-sync-chip">
-            <span>手動同步</span>
-            <div class="refresh-panel">
-              <button type="button" id="refreshStatus" aria-describedby="refreshFeedback">
-                <span class="refresh-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" focusable="false">
-                    <path d="M21 12a9 9 0 0 1-15.3 6.4"></path>
-                    <path d="M3 12A9 9 0 0 1 18.3 5.6"></path>
-                    <path d="M18 2v4h-4"></path>
-                    <path d="M6 22v-4h4"></path>
-                  </svg>
-                </span>
-                <span class="refresh-label">重新同步</span>
-              </button>
+            <button type="button" id="refreshStatus" class="control-button sync-control-button" aria-describedby="refreshFeedback" title="立即同步本機即時狀態">
+              <span class="refresh-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path d="M21 12a9 9 0 0 1-15.3 6.4"></path>
+                  <path d="M3 12A9 9 0 0 1 18.3 5.6"></path>
+                  <path d="M18 2v4h-4"></path>
+                  <path d="M6 22v-4h4"></path>
+                </svg>
+              </span>
+              <b class="refresh-label">重新同步</b>
               <div class="effect-layer" id="refreshEffectLayer" aria-hidden="true"></div>
-              <small class="refresh-feedback" id="refreshFeedback">每 1 秒自動同步。</small>
-            </div>
+            </button>
           </div>
+          <small class="refresh-feedback" id="refreshFeedback">每 1 秒自動同步。</small>
           <small class="action-feedback" id="actionFeedback" aria-live="polite">功能鍵待命。</small>
         </div>
       </section>
@@ -227,7 +222,7 @@
 
   <footer><span>資料來源：本機技能索引、記憶索引、Codex 心跳、Telegram 任務狀態、OpenClaw 摘要與 GitHub Pages 快照。</span></footer>
 
-  <script src="live-status-config.js?v=20260704-172100-ai-assistant-style"></script>
-  <script src="app.js?v=20260704-172100-ai-assistant-style"></script>
+  <script src="live-status-config.js?v=20260704-180800-control-fix"></script>
+  <script src="app.js?v=20260704-180800-control-fix"></script>
 </body>
 </html>

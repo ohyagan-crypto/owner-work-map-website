@@ -506,6 +506,22 @@ body[data-agent-view="lanxi"] .active-task-banner {
   box-shadow: 0 0 22px rgba(255, 100, 124, 0.18);
 }
 
+.sync-control-button {
+  grid-column: 1 / -1;
+  border-color: rgba(185, 255, 79, 0.44);
+}
+
+.sync-control-button .refresh-icon {
+  color: #f8ffe9;
+  background: rgba(185, 255, 79, 0.16);
+  box-shadow: 0 0 18px rgba(185, 255, 79, 0.22);
+}
+
+.sync-control-button:hover,
+.sync-control-button:focus-visible {
+  border-color: rgba(185, 255, 79, 0.64);
+}
+
 .action-feedback {
   min-height: 20px;
   overflow-wrap: anywhere;

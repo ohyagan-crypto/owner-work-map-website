@@ -1,9 +1,9 @@
 const publicUrl = "https://ohyagan-crypto.github.io/owner-work-map-website/";
-const configuredLiveStatusEndpoint = (window.OWNER_LIVE_STATUS_ENDPOINT || "").replace(/\/$/, "");
+let configuredLiveStatusEndpoint = (window.OWNER_LIVE_STATUS_ENDPOINT || "").replace(/\/$/, "");
 const sameOriginLiveStatusEndpoint = ["localhost", "127.0.0.1"].includes(window.location.hostname)
   ? window.location.origin
   : "";
-const liveStatusEndpoint = sameOriginLiveStatusEndpoint || configuredLiveStatusEndpoint;
+let liveStatusEndpoint = sameOriginLiveStatusEndpoint || configuredLiveStatusEndpoint;
 const DEFAULT_REFRESH_SECONDS = 1;
 const LIVE_TIMEOUT_MS = 2200;
 const LIVE_RETRY_COOLDOWN_MS = 5000;
@@ -13,13 +13,15 @@ const DASHBOARD_ACTIONS = {
     loading: "救援中",
     idle: "卡點救援",
     success: "已送出卡點救援，會保留目前作業並嘗試續作。",
-    failure: "卡點救援沒有完成，請確認本機即時服務仍在運作。"
+    failure: "卡點救援沒有完成，請確認本機即時服務仍在運作。",
+    endpointMissing: "卡點救援需要本機即時服務，現在沒有讀到可用端點。"
   },
   "force-stop": {
     loading: "停止中",
     idle: "強制停止",
     success: "已送出強制停止。",
-    failure: "強制停止沒有完成，請確認本機即時服務仍在運作。"
+    failure: "強制停止沒有完成，請確認本機即時服務仍在運作。",
+    endpointMissing: "強制停止需要本機即時服務，現在沒有讀到可用端點。"
   }
 };
 
@@ -669,6 +671,37 @@ function setActionFeedback(message, state = "idle") {
   feedback.dataset.state = state;
 }
 
+async function refreshLiveEndpointFromConfig() {
+  if (sameOriginLiveStatusEndpoint) {
+    liveStatusEndpoint = sameOriginLiveStatusEndpoint;
+    return liveStatusEndpoint;
+  }
+
+  try {
+    const response = await fetch(`live-status-config.js?ts=${Date.now()}`, { cache: "no-store" });
+    if (!response.ok) return liveStatusEndpoint;
+    const text = await response.text();
+    const match = text.match(/OWNER_LIVE_STATUS_ENDPOINT\s*=\s*["']([^"']+)["']/);
+    if (match && match[1]) {
+      configuredLiveStatusEndpoint = match[1].replace(/\/$/, "");
+      liveStatusEndpoint = configuredLiveStatusEndpoint;
+    }
+  } catch {
+    // Keep the existing endpoint; the action will report the real blocker below.
+  }
+
+  return liveStatusEndpoint;
+}
+
+async function liveEndpointCandidates() {
+  await refreshLiveEndpointFromConfig();
+  return Array.from(new Set([
+    configuredLiveStatusEndpoint,
+    liveStatusEndpoint,
+    sameOriginLiveStatusEndpoint
+  ].filter(Boolean)));
+}
+
 function setActionButtonsLoading(action, isLoading) {
   actionInFlight = isLoading ? action : "";
   document.querySelectorAll("[data-dashboard-action]").forEach((button) => {
@@ -712,10 +745,6 @@ function renderActiveTaskPanel(status = lastRenderedStatus) {
 async function runDashboardAction(action) {
   const config = DASHBOARD_ACTIONS[action];
   if (!config || actionInFlight) return;
-  if (!liveStatusEndpoint) {
-    setActionFeedback("需要啟動本機即時服務後才能使用功能鍵。", "blocked");
-    return;
-  }
 
   playRefreshSound();
   triggerRefreshEffect();
@@ -723,23 +752,40 @@ async function runDashboardAction(action) {
   setActionFeedback(action === "rescue" ? "正在嘗試救援卡點並保留目前作業..." : "正在送出強制停止...", "idle");
 
   try {
-    const response = await fetch(`${liveStatusEndpoint}/api/action/${action}`, {
-      method: "POST",
-      cache: "no-store"
-    });
-    let payload = {};
-    try {
-      payload = await response.json();
-    } catch {
-      payload = {};
+    const endpoints = await liveEndpointCandidates();
+    if (!endpoints.length) {
+      throw new Error(config.endpointMissing);
     }
-    if (!response.ok || payload.ok === false) {
-      throw new Error(payload.message || config.failure);
+
+    let lastError = null;
+    for (const endpoint of endpoints) {
+      try {
+        await fetchStatusJson(`${endpoint}/api/status?ts=${Date.now()}`, 4500);
+        const response = await fetch(`${endpoint}/api/action/${action}`, {
+          method: "POST",
+          cache: "no-store"
+        });
+        let payload = {};
+        try {
+          payload = await response.json();
+        } catch {
+          payload = {};
+        }
+        if (!response.ok || payload.ok === false) {
+          throw new Error(payload.message || config.failure);
+        }
+        liveStatusEndpoint = endpoint;
+        setActionFeedback(payload.message || config.success, "success");
+        await loadRuntimeStatus({ manual: true });
+        return;
+      } catch (error) {
+        lastError = error;
+      }
     }
-    setActionFeedback(payload.message || config.success, "success");
-    await loadRuntimeStatus({ manual: true });
-  } catch {
-    setActionFeedback(config.failure, "blocked");
+
+    throw lastError || new Error(config.failure);
+  } catch (error) {
+    setActionFeedback(error?.message || config.failure, "blocked");
   } finally {
     setActionButtonsLoading(action, false);
   }
