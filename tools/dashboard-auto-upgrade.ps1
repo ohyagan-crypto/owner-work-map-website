@@ -1,4 +1,4 @@
-param(
+﻿param(
   [string]$RepoRoot = (Split-Path -Parent $PSScriptRoot)
 )
 
@@ -16,6 +16,17 @@ function Write-Utf8File {
 function Read-Text {
   param([Parameter(Mandatory = $true)][string]$Path)
   return [System.IO.File]::ReadAllText($Path, [System.Text.Encoding]::UTF8)
+}
+
+function Invoke-Git {
+  param(
+    [Parameter(Mandatory = $true)][string]$Description,
+    [Parameter(Mandatory = $true)][string[]]$Arguments
+  )
+  & git @Arguments
+  if ($LASTEXITCODE -ne 0) {
+    throw "$Description failed with exit code $LASTEXITCODE"
+  }
 }
 
 $RepoRoot = (Resolve-Path -LiteralPath $RepoRoot).Path
@@ -98,7 +109,7 @@ $profiles = @(
 
 $profile = $profiles[($runNumber - 1) % $profiles.Count]
 $autoCss = @"
-/* Auto visual upgrade $stamp: run $runNumber - $($profile.Name). */
+/* Auto visual upgrade ${stamp}: run $runNumber - $($profile.Name). */
 :root {
   --auto-upgrade-accent: $($profile.Accent);
   --auto-upgrade-accent-2: $($profile.Accent2);
@@ -133,7 +144,7 @@ Write-Utf8File -Path $indexPath -Content $index
 
 $app = Read-Text -Path $appPath
 $entry = '  ["' + $dateText + '", "第 ' + $runNumber + ' 次半小時自動升級：' + $profile.Name + '。' + $profile.Summary + '"],'
-$app = $app -replace 'const timeline = \[\s*', "const timeline = [`r`n$entry`r`n"
+$app = $app -replace 'const timeline = \[\s*', "const timeline = [`r`n$entry`r`n  "
 Write-Utf8File -Path $appPath -Content $app
 
 $stateOut = [ordered]@{
@@ -158,16 +169,23 @@ Write-Utf8File -Path $reportPath -Content $report
 
 Push-Location $RepoRoot
 try {
-  & git add index.html app.js auto-upgrade.css tools/dashboard-auto-upgrade-state.json
+  Invoke-Git -Description "git add" -Arguments @("add", "--", "index.html", "app.js", "auto-upgrade.css", "tools/dashboard-auto-upgrade-state.json")
   & git diff --cached --quiet
-  $hasChanges = $LASTEXITCODE -ne 0
+  $diffExitCode = $LASTEXITCODE
+  if ($diffExitCode -eq 0) {
+    $hasChanges = $false
+  } elseif ($diffExitCode -eq 1) {
+    $hasChanges = $true
+  } else {
+    throw "git diff failed with exit code $diffExitCode"
+  }
   if ($hasChanges) {
-    & git commit -m ("Auto dashboard visual upgrade {0}" -f $stamp)
+    Invoke-Git -Description "git commit" -Arguments @("commit", "-m", ("Auto dashboard visual upgrade {0}" -f $stamp))
     $pushHelper = "C:\Users\max\.openclaw\workspace\tools\git-push-with-github-token.ps1"
     if (Test-Path -LiteralPath $pushHelper) {
       & $pushHelper -RepoDir $RepoRoot -Remote origin -Branch main
     } else {
-      & git push origin main
+      Invoke-Git -Description "git push" -Arguments @("push", "origin", "main")
     }
   }
 } finally {
