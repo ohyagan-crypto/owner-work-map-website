@@ -5,9 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AI 自動化作業儀表盤｜蝦咩 x 嵐熙</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="styles.css?v=20260704-190600-agent-column-top">
+  <link rel="stylesheet" href="styles.css?v=20260704-194000-latest-update-top">
 </head>
 <body data-agent-view="shami">
+  <div class="command-chip updated-chip top-updated-card page-top-updated" aria-label="最後更新時間">
+    <span>最後更新</span>
+    <b id="chipUpdatedAt">--</b>
+  </div>
   <header class="topbar">
     <div>
       <p class="eyebrow">蝦咩 x 嵐熙 / Live Control</p>
@@ -24,10 +28,6 @@
   <main>
     <section class="status-dashboard" id="status-dashboard" aria-live="polite">
       <span class="state-pill sr-only" id="statePill">讀取中</span>
-      <div class="command-chip updated-chip top-updated-card" aria-label="最後更新時間">
-        <span>最後更新</span>
-        <b id="chipUpdatedAt">--</b>
-      </div>
       <section class="active-task-banner" aria-labelledby="activeTaskScope">
         <div class="active-task-copy">
           <span id="activeTaskScope">蝦咩任務指令</span>
