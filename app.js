@@ -1,5 +1,9 @@
 const publicUrl = "https://ohyagan-crypto.github.io/owner-work-map-website/";
-const liveStatusEndpoint = (window.OWNER_LIVE_STATUS_ENDPOINT || "").replace(/\/$/, "");
+const configuredLiveStatusEndpoint = (window.OWNER_LIVE_STATUS_ENDPOINT || "").replace(/\/$/, "");
+const sameOriginLiveStatusEndpoint = ["localhost", "127.0.0.1"].includes(window.location.hostname)
+  ? window.location.origin
+  : "";
+const liveStatusEndpoint = sameOriginLiveStatusEndpoint || configuredLiveStatusEndpoint;
 const DEFAULT_REFRESH_SECONDS = 1;
 const LIVE_TIMEOUT_MS = 2200;
 const LIVE_RETRY_COOLDOWN_MS = 5000;
@@ -1119,12 +1123,12 @@ function lanxiTaskInstruction(status) {
   const openclawProcessMonitor = monitors.find((item) => String(item.id || "").toLowerCase().includes("openclaw-process"));
   const watchdogMonitor = monitors.find((item) => String(item.id || "").toLowerCase().includes("openclaw-watchdog"));
   const candidates = [
-    lanxiTaskMonitor?.detail,
     status.lanxiTaskInstruction,
     status.lanxiTask,
     status.openclaw?.currentTaskInstruction,
     status.openclaw?.taskInstruction,
-    status.openclaw?.currentTask
+    status.openclaw?.currentTask,
+    lanxiTaskMonitor?.detail
   ];
   const value = candidates.find((item) => typeof item === "string" && item.trim());
   if (value) return value.trim();
@@ -1145,7 +1149,7 @@ function lanxiTaskSource(status) {
     const label = String(item.label || "");
     return id.includes("lanxi-task") || id.includes("openclaw-task") || label.includes("嵐熙任務");
   });
-  return taskMonitor?.source || status.openclaw?.currentTaskSource || "OpenClaw 自動化任務獨立欄位";
+  return status.openclaw?.currentTaskSource || taskMonitor?.source || "OpenClaw 自動化任務獨立欄位";
 }
 
 function monitorOwner(item) {

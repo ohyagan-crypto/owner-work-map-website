@@ -398,6 +398,17 @@ body[data-agent-view="lanxi"] .active-task-banner {
   gap: 8px;
 }
 
+.task-sync-chip {
+  min-height: 0;
+  align-content: stretch;
+  gap: 7px;
+  padding: 10px 12px;
+}
+
+.task-sync-chip .refresh-panel {
+  gap: 5px;
+}
+
 .control-button {
   min-width: 0;
   min-height: 58px;
@@ -1835,7 +1846,6 @@ footer {
   order: -2;
   display: grid;
   grid-template-columns:
-    minmax(180px, 0.9fr)
     repeat(2, minmax(120px, 0.62fr))
     minmax(160px, 0.78fr)
     repeat(2, minmax(180px, 1fr))

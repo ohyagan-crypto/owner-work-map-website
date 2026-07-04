@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>蝦咩 x 嵐熙即時總控台</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="styles.css?v=20260704-154900-priority-top">
+  <link rel="stylesheet" href="styles.css?v=20260704-164000-lanxi-sync-rescue">
 </head>
 <body data-agent-view="shami">
   <header class="topbar">
@@ -39,18 +39,18 @@
               <span aria-hidden="true">■</span><b>強制停止</b>
             </button>
           </div>
+          <div class="command-chip sync-chip task-sync-chip">
+            <span>手動同步</span>
+            <div class="refresh-panel">
+              <button type="button" id="refreshStatus" aria-describedby="refreshFeedback"><span class="refresh-icon" aria-hidden="true">↻</span><span class="refresh-label">重新同步</span></button>
+              <div class="effect-layer" id="refreshEffectLayer" aria-hidden="true"></div>
+              <small class="refresh-feedback" id="refreshFeedback">每 1 秒自動同步。</small>
+            </div>
+          </div>
           <small class="action-feedback" id="actionFeedback" aria-live="polite">功能鍵待命。</small>
         </div>
       </section>
       <div class="command-strip" aria-label="總覽狀態">
-        <div class="command-chip sync-chip">
-          <span>手動同步</span>
-          <div class="refresh-panel">
-            <button type="button" id="refreshStatus" aria-describedby="refreshFeedback"><span class="refresh-icon" aria-hidden="true">↻</span><span class="refresh-label">重新同步</span></button>
-            <div class="effect-layer" id="refreshEffectLayer" aria-hidden="true"></div>
-            <small class="refresh-feedback" id="refreshFeedback">每 1 秒自動同步。</small>
-          </div>
-        </div>
         <div class="command-chip shami-chip"><span>蝦咩狀態</span><b id="chipShamiStatus">讀取中</b></div>
         <div class="command-chip lanxi-chip"><span>嵐熙狀態</span><b id="chipLanxiStatus">讀取中</b></div>
         <div class="command-chip skill-chip"><span>技能包</span><b id="chipSkillStatus">80 個已載入</b><small id="chipSkillDetail">等待清單渲染</small></div>
@@ -188,7 +188,7 @@
 
   <footer><span>資料來源：本機技能索引、記憶索引、Codex 心跳、Telegram 任務狀態、OpenClaw 摘要與 GitHub Pages 快照。</span></footer>
 
-  <script src="live-status-config.js?v=20260704-154000-task-controls"></script>
-  <script src="app.js?v=20260704-154000-task-controls"></script>
+  <script src="live-status-config.js?v=20260704-164000-lanxi-sync-rescue"></script>
+  <script src="app.js?v=20260704-164000-lanxi-sync-rescue"></script>
 </body>
 </html>

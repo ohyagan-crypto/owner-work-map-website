@@ -21,6 +21,7 @@ if (-not $SiteRoot) {
 $HeartbeatPath = Join-Path $BotRoot "codex_bot_heartbeat.json"
 $RequestStatusPath = Join-Path $BotRoot "telegram_request_status.json"
 $RecentUploadsPath = Join-Path $BotRoot "telegram_recent_uploads.json"
+$ConversationHistoryPath = Join-Path $BotRoot "telegram_conversation_history.json"
 $UsagePath = Join-Path $BotRoot "codex_token_usage.jsonl"
 $StateDb = "C:\Users\max\.codex\state_5.sqlite"
 $OpenClawRunsDb = "C:\Users\max\.openclaw\tasks\runs.sqlite"
@@ -160,6 +161,30 @@ function Normalize-TaskText {
     return $clean
 }
 
+function Clean-TelegramInstructionText {
+    param([string]$Text, [int]$Limit = 180)
+    if (-not $Text) { return "" }
+
+    $clean = $Text -replace "`r`n", "`n"
+    $newMessageMarker = "使用者新訊息："
+    $newMessageIndex = $clean.LastIndexOf($newMessageMarker, [StringComparison]::Ordinal)
+    if ($newMessageIndex -ge 0) {
+        $clean = $clean.Substring($newMessageIndex + $newMessageMarker.Length)
+    }
+
+    foreach ($marker in @("TELEGRAM UPLOADED PHOTO:", "TELEGRAM UPLOADED DOCUMENT:", "RULE:")) {
+        $markerIndex = $clean.IndexOf($marker, [StringComparison]::Ordinal)
+        if ($markerIndex -ge 0) {
+            $clean = $clean.Substring(0, $markerIndex)
+        }
+    }
+
+    $clean = $clean -replace "\[LOCAL_PATH\]", ""
+    $clean = Normalize-TaskText -Text $clean -Limit $Limit
+    if (Test-MojibakeText -Text $clean) { return "" }
+    return $clean
+}
+
 function Format-OpenClawTaskStatus {
     param([string]$Status)
     switch ($Status) {
@@ -276,6 +301,27 @@ function Get-NewestUploadCaption {
     return Normalize-TaskText -Text ([string]$latest.caption)
 }
 
+function Get-LatestConversationInstruction {
+    $data = Read-JsonFile -Path $ConversationHistoryPath
+    if ($null -eq $data) { return "" }
+
+    $records = @()
+    foreach ($property in $data.PSObject.Properties) {
+        foreach ($item in @($property.Value)) {
+            if (-not $item -or $item.role -ne "user" -or -not $item.content) { continue }
+            $text = Clean-TelegramInstructionText -Text ([string]$item.content)
+            if (-not $text) { continue }
+            $records += [pscustomobject]@{
+                ts = if ($item.ts) { [double]$item.ts } else { 0 }
+                text = $text
+            }
+        }
+    }
+
+    if ($records.Count -eq 0) { return "" }
+    return ($records | Sort-Object ts | Select-Object -Last 1).text
+}
+
 function Get-OpenClawSummary {
     $processCount = $null
     try {
@@ -328,20 +374,16 @@ $now = Get-Date
 $heartbeat = Read-JsonFile -Path $HeartbeatPath
 $request = Get-NewestRequestRecord
 $uploadCaption = Get-NewestUploadCaption
+$conversationInstruction = Get-LatestConversationInstruction
 $token = Get-TokenSummary -TargetDate $Date
 $openclaw = Get-OpenClawSummary
 $openclawTask = Get-OpenClawTaskSummary
-$lanxiTaskInstruction = if ($LanxiTask.Trim()) {
-    $LanxiTask.Trim()
-} elseif ($openclawTask.detail) {
-    $openclawTask.detail
-} elseif ($null -ne $openclaw.processCount -and $openclaw.processCount -gt 0) {
-    "OpenClaw 自動化任務：瀏覽器流程、排程與本機進程監控正常；看門排程 $($openclaw.watchdogState)。"
-} elseif ($null -eq $openclaw.processCount) {
-    "OpenClaw 自動化任務：進程數尚未取得，保留排程與瀏覽器流程監控。"
-} else {
-    "OpenClaw 自動化任務：目前未偵測到相關進程，需要檢查嵐熙自動化服務。"
-}
+$explicitLanxiTask = $LanxiTask.Trim()
+$currentInstructionSource = ""
+$lanxiTaskInstruction = ""
+$lanxiTaskSource = ""
+$lanxiTaskStatusKey = $openclawTask.statusKey
+$lanxiTaskStatusLabel = $openclawTask.statusLabel
 
 $statusKey = "standby"
 $statusLabel = "正常待命"
@@ -433,6 +475,10 @@ if ($heartbeatAge -gt 120) {
 
 if ($CurrentTask.Trim()) {
     $headline = $CurrentTask.Trim()
+    $currentInstructionSource = "手動指定目前任務"
+} elseif ($conversationInstruction) {
+    $headline = $conversationInstruction
+    $currentInstructionSource = "telegram_conversation_history.json"
 } elseif (
     $uploadCaption -and
     $request -and
@@ -440,12 +486,38 @@ if ($CurrentTask.Trim()) {
     ([string]$request.task).Trim() -match "^(讀取照片|讀取文件|安裝文件|安裝檔案)(\s|$)"
 ) {
     $headline = $uploadCaption
+    $currentInstructionSource = "telegram_recent_uploads.json"
 } elseif ($request -and $request.task -and -not (Test-MojibakeText ([string]$request.task))) {
     $headline = Normalize-TaskText -Text ([string]$request.task)
+    $currentInstructionSource = "telegram_request_status.json"
 }
 
 if (-not $NextAction.Trim()) {
     $NextAction = $defaultNext
+}
+
+if ($explicitLanxiTask) {
+    $lanxiTaskInstruction = $explicitLanxiTask
+    $lanxiTaskSource = "手動指定嵐熙任務"
+    $lanxiTaskStatusKey = "running"
+    $lanxiTaskStatusLabel = "手動同步"
+} elseif ($currentInstructionSource) {
+    $lanxiTaskInstruction = $headline
+    $lanxiTaskSource = "$currentInstructionSource + OpenClaw 狀態"
+    $lanxiTaskStatusKey = $statusKey
+    $lanxiTaskStatusLabel = "同步目前指令"
+} elseif ($openclawTask.detail) {
+    $lanxiTaskInstruction = $openclawTask.detail
+    $lanxiTaskSource = $openclawTask.source
+} elseif ($null -ne $openclaw.processCount -and $openclaw.processCount -gt 0) {
+    $lanxiTaskInstruction = "OpenClaw 自動化任務：瀏覽器流程、排程與本機進程監控正常；看門排程 $($openclaw.watchdogState)。"
+    $lanxiTaskSource = "OpenClaw 本機狀態"
+} elseif ($null -eq $openclaw.processCount) {
+    $lanxiTaskInstruction = "OpenClaw 自動化任務：進程數尚未取得，保留排程與瀏覽器流程監控。"
+    $lanxiTaskSource = "OpenClaw 本機狀態"
+} else {
+    $lanxiTaskInstruction = "OpenClaw 自動化任務：目前未偵測到相關進程，需要檢查嵐熙自動化服務。"
+    $lanxiTaskSource = "OpenClaw 本機狀態"
 }
 
 $heartbeatMonitorKey = if ($heartbeatAge -le 120) { "running" } else { "watch" }
@@ -482,10 +554,10 @@ $monitors = @(
     [ordered]@{
         id = "openclaw-task"
         label = "嵐熙任務"
-        statusKey = $openclawTask.statusKey
-        statusLabel = $openclawTask.statusLabel
+        statusKey = $lanxiTaskStatusKey
+        statusLabel = $lanxiTaskStatusLabel
         detail = $lanxiTaskInstruction
-        source = $openclawTask.source
+        source = $lanxiTaskSource
     },
     [ordered]@{
         id = "openclaw-process"
@@ -567,7 +639,7 @@ $payload = [ordered]@{
         processCount = $openclaw.processCount
         watchdogState = $openclaw.watchdogState
         currentTaskInstruction = $lanxiTaskInstruction
-        currentTaskSource = $openclawTask.source
+        currentTaskSource = $lanxiTaskSource
     }
     monitors = $monitors
     deliverables = @(
