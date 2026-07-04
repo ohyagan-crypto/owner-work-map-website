@@ -191,14 +191,29 @@ function Clean-TelegramInstructionText {
         $clean = $clean.Substring($newMessageIndex + $newMessageMarker.Length)
     }
 
-    foreach ($marker in @("TELEGRAM UPLOADED PHOTO:", "TELEGRAM UPLOADED DOCUMENT:", "RULE:")) {
+    $uploadLine = ""
+    foreach ($marker in @("TELEGRAM UPLOADED PHOTO:", "TELEGRAM UPLOADED DOCUMENT:")) {
         $markerIndex = $clean.IndexOf($marker, [StringComparison]::Ordinal)
         if ($markerIndex -ge 0) {
-            $clean = $clean.Substring(0, $markerIndex)
+            $lineEnd = $clean.IndexOf("`n", $markerIndex)
+            if ($lineEnd -lt 0) { $lineEnd = $clean.Length }
+            $uploadLine = $clean.Substring($markerIndex, $lineEnd - $markerIndex).Trim()
+            break
         }
     }
 
-    $clean = $clean -replace "\[LOCAL_PATH\]", ""
+    $instruction = $clean
+    foreach ($marker in @("TELEGRAM UPLOADED PHOTO:", "TELEGRAM UPLOADED DOCUMENT:", "RULE:")) {
+        $markerIndex = $instruction.IndexOf($marker, [StringComparison]::Ordinal)
+        if ($markerIndex -ge 0) {
+            $instruction = $instruction.Substring(0, $markerIndex)
+        }
+    }
+
+    $parts = @()
+    if ($uploadLine) { $parts += $uploadLine }
+    if ($instruction.Trim()) { $parts += $instruction.Trim() }
+    $clean = ($parts -join " | ")
     $clean = Repair-MojibakeText -Text $clean
     $clean = Normalize-TaskText -Text $clean -Limit $Limit
     if (Test-MojibakeText -Text $clean) { return "" }
