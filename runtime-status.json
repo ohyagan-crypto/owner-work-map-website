@@ -1,34 +1,35 @@
 {
     "statusKey":  "running",
     "statusLabel":  "運作中",
-    "headline":  "嵐熙的狀態都沒有同步；我給他指令沒有顯示在儀表盤",
-    "currentTaskInstruction":  "嵐熙的狀態都沒有同步；我給他指令沒有顯示在儀表盤",
-    "lanxiTaskInstruction":  "嵐熙的狀態都沒有同步；我給他指令沒有顯示在儀表盤",
+    "headline":  "儀表盤網站更新 1.蝦咩嵐熙 切換欄位放到最上面 2.點擊卡點有反應單無法聯通到tgbot 讓他幫你解卡救援，所以功能徹底檢查 3.@codexmaster6726_bot這個是嵐熙 以後記好，嵐熙在儀表盤網站上沒有同步我給的任務內容",
+    "currentTaskInstruction":  "儀表盤網站更新 1.蝦咩嵐熙 切換欄位放到最上面 2.點擊卡點有反應單無法聯通到tgbot 讓他幫你解卡救援，所以功能徹底檢查 3.@codexmaster6726_bot這個是嵐熙 以後記好，嵐熙在儀表盤網站上沒有同步我給的任務內容",
+    "lanxiTaskInstruction":  "儀表盤網站更新 1.蝦咩嵐熙 切換欄位放到最上面 2.點擊卡點有反應單無法聯通到tgbot 讓他幫你解卡救援，所以功能徹底檢查 3.@codexmaster6726_bot這個是嵐熙 以後記好，嵐熙在儀表盤網站上沒有同步我給的任務內容",
     "blocker":  "沒有卡點",
     "nextAction":  "完成後更新交付結果、網址、檔案路徑或明確卡點。",
-    "updatedAt":  "2026-07-04T18:24:23+08:00",
-    "checkedAt":  "2026-07-04T18:24:23+08:00",
+    "updatedAt":  "2026-07-04T22:07:12+08:00",
+    "checkedAt":  "2026-07-04T22:07:12+08:00",
     "sourceType":  "local-generator",
     "sourceLabel":  "本機即時狀態產生器",
     "refreshSeconds":  1,
     "token":  {
-                  "totalTokens":  129289057,
-                  "taskCount":  29,
+                  "totalTokens":  165738973,
+                  "taskCount":  42,
                   "source":  "本機 Codex 執行緒紀錄"
               },
     "heartbeat":  {
                       "name":  "蝦咩",
-                      "ageSeconds":  1,
+                      "ageSeconds":  10,
                       "activeRequests":  1
                   },
     "openclaw":  {
                      "name":  "嵐熙",
+                     "botUsername":  "@codexmaster6726_bot",
                      "statusKey":  "running",
                      "statusLabel":  "正常",
-                     "processCount":  5,
+                     "processCount":  6,
                      "watchdogState":  "Running",
-                     "currentTaskInstruction":  "嵐熙的狀態都沒有同步；我給他指令沒有顯示在儀表盤",
-                     "currentTaskSource":  "runtime-status.json 最新指令保留 + OpenClaw 狀態"
+                     "currentTaskInstruction":  "儀表盤網站更新 1.蝦咩嵐熙 切換欄位放到最上面 2.點擊卡點有反應單無法聯通到tgbot 讓他幫你解卡救援，所以功能徹底檢查 3.@codexmaster6726_bot這個是嵐熙 以後記好，嵐熙在儀表盤網站上沒有同步我給的任務內容",
+                     "currentTaskSource":  "telegram_conversation_history.json + OpenClaw / @codexmaster6726_bot 狀態"
                  },
     "monitors":  [
                      {
@@ -36,7 +37,7 @@
                          "label":  "蝦咩心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 1 秒前，執行中任務 1",
+                         "detail":  "心跳 10 秒前，執行中任務 1",
                          "source":  "codex_bot_heartbeat.json"
                      },
                      {
@@ -44,7 +45,7 @@
                          "label":  "Telegram 任務佇列",
                          "statusKey":  "running",
                          "statusLabel":  "運作中",
-                         "detail":  "嵐熙的狀態都沒有同步；我給他指令沒有顯示在儀表盤",
+                         "detail":  "儀表盤網站更新 1.蝦咩嵐熙 切換欄位放到最上面 2.點擊卡點有反應單無法聯通到tgbot 讓他幫你解卡救援，所以功能徹底檢查 3.@codexmaster6726_bot這個是嵐熙 以後記好，嵐熙在儀表盤網站上沒有同步我給的任務內容",
                          "source":  "telegram_request_status.json"
                      },
                      {
@@ -52,15 +53,15 @@
                          "label":  "嵐熙任務",
                          "statusKey":  "running",
                          "statusLabel":  "同步目前指令",
-                         "detail":  "嵐熙的狀態都沒有同步；我給他指令沒有顯示在儀表盤",
-                         "source":  "runtime-status.json 最新指令保留 + OpenClaw 狀態"
+                         "detail":  "儀表盤網站更新 1.蝦咩嵐熙 切換欄位放到最上面 2.點擊卡點有反應單無法聯通到tgbot 讓他幫你解卡救援，所以功能徹底檢查 3.@codexmaster6726_bot這個是嵐熙 以後記好，嵐熙在儀表盤網站上沒有同步我給的任務內容",
+                         "source":  "telegram_conversation_history.json + OpenClaw / @codexmaster6726_bot 狀態"
                      },
                      {
                          "id":  "openclaw-process",
                          "label":  "嵐熙進程",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "偵測到 5 個相關進程",
+                         "detail":  "偵測到 6 個相關進程",
                          "source":  "Win32_Process"
                      },
                      {
@@ -76,7 +77,7 @@
                          "label":  "Codex token 統計",
                          "statusKey":  "running",
                          "statusLabel":  "已讀取",
-                         "detail":  "129289057 tokens，任務 29",
+                         "detail":  "165738973 tokens，任務 42",
                          "source":  "本機 Codex 執行緒紀錄"
                      },
                      {
@@ -84,7 +85,7 @@
                          "label":  "狀態產生器",
                          "statusKey":  "running",
                          "statusLabel":  "已更新",
-                         "detail":  "產生時間 2026-07-04 18:24:23",
+                         "detail":  "產生時間 2026-07-04 22:07:12",
                          "source":  "tools/update-runtime-status.ps1"
                      },
                      {
