@@ -1,13 +1,13 @@
 {
     "statusKey":  "running",
     "statusLabel":  "運作中",
-    "headline":  "整合主控台與技能入口版面，新增嵐熙獨立任務欄位",
-    "currentTaskInstruction":  "整合主控台與技能入口版面，新增嵐熙獨立任務欄位",
+    "headline":  "補做 08:58 視覺升級：強化主控層次、雙欄辨識與手機可讀性",
+    "currentTaskInstruction":  "補做 08:58 視覺升級：強化主控層次、雙欄辨識與手機可讀性",
     "lanxiTaskInstruction":  "嵐熙獨立任務：OpenClaw 自動化、瀏覽器流程與排程監控整合到右欄顯示。",
     "blocker":  "沒有卡點",
-    "nextAction":  "完成後更新交付結果、網址、檔案路徑或明確卡點。",
-    "updatedAt":  "2026-07-03T23:28:05+08:00",
-    "checkedAt":  "2026-07-03T23:28:05+08:00",
+    "nextAction":  "已保留原始備份與第一輪備份，公開頁更新後可依版本回退。",
+    "updatedAt":  "2026-07-04T08:58:00+08:00",
+    "checkedAt":  "2026-07-04T08:58:00+08:00",
     "sourceType":  "local-generator",
     "sourceLabel":  "本機即時狀態產生器",
     "refreshSeconds":  1,
@@ -43,7 +43,7 @@
                          "label":  "Telegram 任務佇列",
                          "statusKey":  "running",
                          "statusLabel":  "運作中",
-                         "detail":  "整合主控台與技能入口版面，新增嵐熙獨立任務欄位",
+                         "detail":  "補做 08:58 視覺升級：強化主控層次、雙欄辨識與手機可讀性",
                          "source":  "telegram_request_status.json"
                      },
                      {
@@ -83,7 +83,7 @@
                          "label":  "狀態產生器",
                          "statusKey":  "running",
                          "statusLabel":  "已更新",
-                         "detail":  "產生時間 2026-07-03 23:28:05",
+                         "detail":  "產生時間 2026-07-04 08:58:00",
                          "source":  "tools/update-runtime-status.ps1"
                      },
                      {
@@ -99,7 +99,7 @@
                          "label":  "交付結果追蹤",
                          "statusKey":  "running",
                          "statusLabel":  "已列入",
-                         "detail":  "公開網址、狀態資料與網站更新會列入交付結果",
+                         "detail":  "公開網址、狀態資料、原始備份與第一輪備份會列入交付結果",
                          "source":  "dashboard deliverables"
                      }
                  ],
@@ -108,6 +108,7 @@
                          "狀態資料：runtime-status.json",
                          "監控項目：9 項",
                          "嵐熙任務：獨立欄位",
-                         "技能包清單：功能與使用場景"
+                         "技能包清單：功能與使用場景",
+                         "回退備份：原始版本與第一輪版本"
                      ]
 }

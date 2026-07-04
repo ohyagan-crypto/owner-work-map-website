@@ -3095,3 +3095,330 @@ body::after {
     font-size: 12px;
   }
 }
+
+/* Morning correction visual upgrade 20260704-0858. */
+:root {
+  --morning-ink: #f8fffc;
+  --morning-soft: rgba(234, 248, 242, 0.76);
+  --morning-dim: rgba(234, 248, 242, 0.58);
+  --morning-line: rgba(184, 238, 229, 0.24);
+  --morning-line-strong: rgba(184, 238, 229, 0.44);
+  --morning-panel: rgba(8, 22, 24, 0.86);
+  --morning-panel-strong: rgba(9, 29, 31, 0.94);
+  --morning-cyan: #4bd9e6;
+  --morning-mint: #a6efbd;
+  --morning-gold: #e8c470;
+  --morning-rose: #ff91a8;
+  --morning-violet: #b7a2ff;
+}
+
+body {
+  color: var(--morning-ink);
+  background:
+    linear-gradient(112deg, rgba(75, 217, 230, 0.08), transparent 22%, rgba(232, 196, 112, 0.045) 68%, transparent),
+    linear-gradient(236deg, transparent 0 52%, rgba(183, 162, 255, 0.06) 52% 52.18%, transparent 52.18% 100%),
+    linear-gradient(rgba(184, 238, 229, 0.038) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(184, 238, 229, 0.03) 1px, transparent 1px),
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.024) 0 1px, transparent 1px 34px),
+    linear-gradient(142deg, #050b0d 0%, #0a181c 42%, #111311 100%);
+  background-size: auto, auto, 34px 34px, 34px 34px, auto, auto;
+}
+
+body::before {
+  background:
+    linear-gradient(180deg, rgba(75, 217, 230, 0.12), transparent 36%, rgba(232, 196, 112, 0.05) 78%, transparent),
+    repeating-linear-gradient(90deg, transparent 0 140px, rgba(184, 238, 229, 0.052) 140px 141px, transparent 141px 280px);
+  opacity: 0.36;
+}
+
+.topbar {
+  width: min(1280px, calc(100% - 48px));
+  min-height: 82px;
+  padding: 20px 0 12px;
+}
+
+.topbar h1 {
+  max-width: 900px;
+  font-size: clamp(34px, 3.35vw, 52px);
+  color: var(--morning-ink);
+  text-shadow: 0 0 34px rgba(75, 217, 230, 0.18);
+}
+
+.topbar .eyebrow {
+  color: var(--morning-gold);
+}
+
+.topbar-meta span,
+.theme-toggle {
+  border-color: var(--morning-line);
+  color: var(--morning-soft);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.082), rgba(255, 255, 255, 0.032)),
+    rgba(4, 15, 17, 0.8);
+}
+
+.status-dashboard {
+  padding: 18px;
+  border-color: rgba(75, 217, 230, 0.34);
+  background:
+    linear-gradient(130deg, rgba(75, 217, 230, 0.11), transparent 24%, transparent 72%, rgba(255, 145, 168, 0.08)),
+    linear-gradient(rgba(184, 238, 229, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(184, 238, 229, 0.04) 1px, transparent 1px),
+    linear-gradient(155deg, rgba(4, 13, 15, 0.99), rgba(8, 28, 32, 0.96) 52%, rgba(16, 18, 15, 0.96));
+  background-size: auto, 34px 34px, 34px 34px, auto;
+}
+
+.command-strip {
+  grid-template-columns:
+    minmax(156px, 0.78fr)
+    repeat(2, minmax(120px, 0.56fr))
+    minmax(158px, 0.72fr)
+    minmax(220px, 1.18fr)
+    minmax(236px, 1.24fr)
+    minmax(150px, 0.7fr);
+  gap: 10px;
+}
+
+.command-chip {
+  min-height: 82px;
+  border-color: var(--morning-line);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.034)),
+    rgba(6, 22, 24, 0.82);
+  box-shadow:
+    0 18px 42px rgba(0, 0, 0, 0.28),
+    0 0 0 1px rgba(255, 255, 255, 0.035) inset,
+    0 0 26px rgba(75, 217, 230, 0.065) inset;
+}
+
+.command-chip::before {
+  width: 3px;
+  background: linear-gradient(180deg, var(--morning-gold), var(--morning-cyan), var(--morning-mint));
+}
+
+.command-chip span,
+.command-chip small {
+  color: var(--morning-dim);
+}
+
+.command-chip b,
+.energy-ring-card b,
+.micro-panel b {
+  color: var(--morning-ink);
+}
+
+.shami-chip,
+.shami-task-chip {
+  border-color: rgba(75, 217, 230, 0.34);
+}
+
+.lanxi-chip,
+.lanxi-task-chip {
+  border-color: rgba(183, 162, 255, 0.36);
+}
+
+.skill-chip,
+.updated-chip {
+  border-color: rgba(232, 196, 112, 0.34);
+}
+
+.dashboard-unified-grid {
+  grid-template-columns: minmax(260px, 310px) minmax(0, 1fr);
+}
+
+.dashboard-control-rail,
+.mission-board,
+.dashboard-tool-panel {
+  border-color: var(--morning-line);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.082), rgba(255, 255, 255, 0.028)),
+    var(--morning-panel);
+}
+
+.mission-board {
+  padding: 16px;
+  background:
+    linear-gradient(145deg, rgba(75, 217, 230, 0.08), rgba(255, 255, 255, 0.034) 44%, rgba(183, 162, 255, 0.058)),
+    var(--morning-panel-strong);
+}
+
+.mission-board-head {
+  align-items: center;
+  border-bottom-color: rgba(184, 238, 229, 0.18);
+}
+
+.mission-board-head h2 {
+  max-width: 800px;
+  font-size: clamp(23px, 2.08vw, 29px);
+}
+
+.quick-actions a {
+  border-color: rgba(184, 238, 229, 0.18);
+  color: var(--morning-soft);
+  background: rgba(1, 11, 13, 0.7);
+}
+
+.quick-actions a:hover {
+  border-color: var(--morning-line-strong);
+  background: rgba(75, 217, 230, 0.14);
+}
+
+.shami-column {
+  --column-accent: var(--morning-cyan);
+  --column-accent-soft: rgba(75, 217, 230, 0.15);
+}
+
+.lanxi-column {
+  --column-accent: var(--morning-violet);
+  --column-accent-soft: rgba(183, 162, 255, 0.14);
+}
+
+.agent-status-column {
+  border-color: rgba(184, 238, 229, 0.18);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.088), transparent 34%),
+    linear-gradient(140deg, var(--column-accent-soft), rgba(255, 255, 255, 0.04) 46%, rgba(255, 255, 255, 0.062)),
+    rgba(5, 19, 22, 0.74);
+}
+
+.column-heading {
+  border-bottom-color: rgba(184, 238, 229, 0.16);
+}
+
+.primary-status {
+  border-color: rgba(75, 217, 230, 0.44);
+  background:
+    linear-gradient(135deg, rgba(75, 217, 230, 0.38), rgba(13, 65, 71, 0.74) 50%, rgba(166, 239, 189, 0.22)),
+    rgba(5, 25, 28, 0.9);
+}
+
+.lanxi-primary-status {
+  border-color: rgba(183, 162, 255, 0.44);
+  background:
+    linear-gradient(135deg, rgba(183, 162, 255, 0.38), rgba(39, 37, 73, 0.74) 52%, rgba(255, 145, 168, 0.18)),
+    rgba(12, 21, 31, 0.9);
+}
+
+.status-card,
+.stat-card,
+.agent-card,
+.monitor-card,
+.summary-chip,
+.skill-card,
+.skill-group-card,
+.sop-card {
+  border-color: rgba(184, 238, 229, 0.18);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.088), rgba(255, 255, 255, 0.032)),
+    rgba(6, 23, 26, 0.76);
+}
+
+.energy-ring {
+  background:
+    radial-gradient(circle at center, rgba(6, 17, 17, 0.96) 0 56%, transparent 57%),
+    conic-gradient(var(--morning-mint) calc(var(--energy) * 1%), rgba(255, 255, 255, 0.13) 0);
+  box-shadow: 0 0 28px rgba(166, 239, 189, 0.18);
+}
+
+.skill-card-grid {
+  gap: 10px;
+}
+
+.skill-card {
+  min-height: 142px;
+}
+
+.skill-card b,
+.monitor-card b,
+.status-card strong,
+.agent-task b {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 900px) {
+  .dashboard-unified-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .command-strip {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .topbar,
+  main,
+  footer {
+    width: min(100% - 16px, 1280px);
+  }
+
+  .topbar {
+    padding-top: 18px;
+  }
+
+  .topbar h1 {
+    font-size: clamp(28px, 7.6vw, 34px);
+  }
+
+  .status-dashboard {
+    padding: 10px;
+  }
+
+  .mission-board {
+    order: -1;
+    padding: 10px;
+  }
+
+  .mission-board-head {
+    align-items: flex-start;
+    gap: 9px;
+  }
+
+  .mission-board-head h2 {
+    font-size: clamp(18px, 5vw, 21px);
+  }
+
+  .dashboard-live-layout {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .agent-status-column {
+    padding: 8px;
+  }
+
+  .column-heading h3 {
+    font-size: 20px;
+  }
+
+  .agent-slot .agent-card,
+  .agent-card {
+    min-height: 126px;
+  }
+
+  .actor-grid .status-card {
+    min-height: 104px;
+  }
+
+  .command-strip {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  .command-chip,
+  .sync-chip,
+  .skill-chip,
+  .task-chip,
+  .lanxi-task-chip,
+  .updated-chip {
+    flex: 0 0 184px;
+    min-height: 102px;
+  }
+
+  .task-chip,
+  .lanxi-task-chip {
+    flex-basis: 246px;
+  }
+}
