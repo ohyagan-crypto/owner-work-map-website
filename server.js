@@ -16,7 +16,10 @@ const windowsPowerShellPath = path.join(
   "v1.0",
   "powershell.exe"
 );
-const powershellExe = fs.existsSync(windowsPowerShellPath) ? windowsPowerShellPath : "powershell.exe";
+const pwshPath = "C:\\Program Files\\PowerShell\\7\\pwsh.exe";
+const powershellExe = fs.existsSync(pwshPath)
+  ? pwshPath
+  : (fs.existsSync(windowsPowerShellPath) ? windowsPowerShellPath : "powershell.exe");
 
 const types = {
   ".html": "text/html; charset=utf-8",
