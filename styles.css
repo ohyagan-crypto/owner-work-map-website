@@ -2426,6 +2426,12 @@ body.light-mode .theme-toggle {
   }
 }
 
+.assistant-stage,
+.ai-metrics,
+.signal-ribbon {
+  display: none;
+}
+
 @media (max-width: 1040px) {
   .assistant-stage {
     grid-template-columns: repeat(2, minmax(0, 1fr));
