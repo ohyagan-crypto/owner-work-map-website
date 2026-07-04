@@ -3,6 +3,7 @@ const liveStatusEndpoint = (window.OWNER_LIVE_STATUS_ENDPOINT || "").replace(/\/
 const DEFAULT_REFRESH_SECONDS = 1;
 const LIVE_TIMEOUT_MS = 2200;
 const LIVE_RETRY_COOLDOWN_MS = 5000;
+const AGENT_VIEW_STORAGE_KEY = "ownerDashboardAgentView";
 
 const dashboardStats = [
   { label: "已安裝技能", value: "80", note: "含主技能、備份版與歷史入口" },
@@ -555,6 +556,7 @@ let lastRenderedStatus = fallbackRuntimeStatus;
 let lastStatusSignature = "";
 let selectedSkillGroup = "全部";
 let skillSearchTerm = "";
+let selectedAgentView = "shami";
 let isStatusLoading = false;
 let liveUnavailableUntil = 0;
 let refreshAudioContext = null;
@@ -1329,6 +1331,8 @@ function scheduleStatusRefresh() {
 }
 
 function bindInteractions() {
+  bindAgentViewSwitch();
+
   const refreshButton = $("#refreshStatus");
   if (refreshButton) {
     refreshButton.addEventListener("click", () => loadRuntimeStatus({ manual: true }));
@@ -1355,6 +1359,55 @@ function bindInteractions() {
       renderSkills();
     });
   }
+}
+
+function setAgentView(view, options = {}) {
+  const nextView = view === "lanxi" ? "lanxi" : "shami";
+  selectedAgentView = nextView;
+  document.body.dataset.agentView = nextView;
+
+  const dashboard = $("#status-dashboard");
+  if (dashboard) dashboard.dataset.agentView = nextView;
+
+  document.querySelectorAll("[data-agent-view-button]").forEach((button) => {
+    const isActive = button.dataset.agentViewButton === nextView;
+    button.classList.toggle("active", isActive);
+    button.setAttribute("aria-selected", String(isActive));
+    button.setAttribute("aria-pressed", String(isActive));
+    button.tabIndex = isActive ? 0 : -1;
+  });
+
+  if (options.persist === false) return;
+  try {
+    window.localStorage.setItem(AGENT_VIEW_STORAGE_KEY, nextView);
+  } catch {
+    // Local storage is optional; the switch still works for the current page.
+  }
+}
+
+function bindAgentViewSwitch() {
+  const buttons = Array.from(document.querySelectorAll("[data-agent-view-button]"));
+  if (!buttons.length) return;
+
+  let savedView = selectedAgentView;
+  try {
+    savedView = window.localStorage.getItem(AGENT_VIEW_STORAGE_KEY) || selectedAgentView;
+  } catch {
+    savedView = selectedAgentView;
+  }
+  setAgentView(savedView, { persist: false });
+
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => setAgentView(button.dataset.agentViewButton));
+    button.addEventListener("keydown", (event) => {
+      if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+      event.preventDefault();
+      const nextView = event.key === "ArrowLeft" || event.key === "Home" ? "shami" : "lanxi";
+      setAgentView(nextView);
+      const nextButton = buttons.find((item) => item.dataset.agentViewButton === nextView);
+      if (nextButton) nextButton.focus();
+    });
+  });
 }
 
 function setTextIfPresent(selector, value) {
