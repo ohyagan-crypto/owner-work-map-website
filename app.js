@@ -21,7 +21,7 @@ const completedItems = [
   {
     title: "雙頁資訊整合與嵐熙任務欄",
     status: "已套用",
-    summary: "把主控台與技能入口整理成同一個操作頁；蝦咩與嵐熙各自有任務快覽，右欄新增嵐熙獨立任務指令。",
+    summary: "把主控台與技能入口整理成同一個操作頁；蝦咩與嵐熙各自保留一張任務全文卡，避免上下重複。",
     points: ["蝦咩任務與嵐熙任務分開顯示", "嵐熙可吃獨立任務欄位", "技能包改成分類摘要與精簡入口"]
   },
   {
@@ -86,7 +86,7 @@ const sopItems = [
   },
   {
     title: "監控判斷",
-    summary: "狀態不是靠記憶猜測，而是從心跳、任務狀態、進程、排程與快照資料整理。",
+    summary: "狀態不是靠記憶猜測，而是從心跳、任務資料、進程、排程與快照資料整理。",
     steps: ["讀取心跳", "讀取任務佇列", "檢查嵐熙進程", "整理 token 與快照來源"]
   },
   {
@@ -953,7 +953,7 @@ function buildMonitorItems(status) {
       label: "Telegram 任務佇列",
       stateKey: status.statusKey || "watch",
       statusLabel: status.statusLabel || "待同步",
-      detail: status.headline || "等待任務狀態",
+      detail: status.headline || "等待任務摘要",
       source: "telegram_request_status"
     },
     {
@@ -1019,7 +1019,7 @@ function currentTaskInstruction(status) {
     telegramMonitor?.detail
   ];
   const value = candidates.find((item) => typeof item === "string" && item.trim());
-  return value ? value.trim() : "目前沒有可顯示的任務指令";
+  return value ? value.trim() : "目前沒有可顯示的任務內容";
 }
 
 function lanxiTaskInstruction(status) {
@@ -1157,7 +1157,7 @@ function renderAgentStrip(status) {
       name: heartbeat.name || "蝦咩",
       state: status.statusLabel || "資料待同步",
       stateKey: statusTone(status.statusKey || "watch"),
-      metaLabel: "當前任務指令",
+      metaLabel: "任務全文",
       meta: currentTaskInstruction(status),
       detail: heartbeatMeta
     },
@@ -1166,7 +1166,7 @@ function renderAgentStrip(status) {
       name: openclaw.name || "嵐熙",
       state: openclaw.statusLabel || "狀態待同步",
       stateKey: statusTone(openclaw.statusKey || "watch"),
-      metaLabel: "目前任務指令",
+      metaLabel: "任務全文",
       meta: lanxiTaskInstruction(status),
       detail: `${openclawProcessText} · 看門排程 ${openclaw.watchdogState || "未取得"}`
     }
@@ -1234,7 +1234,7 @@ function renderRuntimeStatus(data) {
   setTextIfPresent("#heartbeatDetail", `執行中任務 ${activeRequestsText}；來源：Codex 心跳。`);
   setTextIfPresent("#openclawStatusLabel", status.openclaw.statusLabel || "狀態待同步");
   setTextIfPresent("#openclawProcessLabel", openclawProcessText);
-  setTextIfPresent("#openclawStatusDetail", `自動化狀態 ${status.openclaw.statusLabel || "待同步"}。`);
+  setTextIfPresent("#openclawStatusDetail", `OpenClaw 目前 ${status.openclaw.statusLabel || "待同步"}。`);
   setTextIfPresent("#watchdogLabel", status.openclaw.watchdogState || "未取得");
   setTextIfPresent("#watchdogDetail", "OpenClaw Watchdog 排程狀態。");
   setTextIfPresent("#lanxiTaskText", lanxiTaskInstruction(status));
