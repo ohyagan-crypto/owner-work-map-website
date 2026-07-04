@@ -25,9 +25,15 @@ $ConversationHistoryPath = Join-Path $BotRoot "telegram_conversation_history.jso
 $UsagePath = Join-Path $BotRoot "codex_token_usage.jsonl"
 $StateDb = "C:\Users\max\.codex\state_5.sqlite"
 $OpenClawRunsDb = "C:\Users\max\.openclaw\tasks\runs.sqlite"
-$LanxiBotUsername = "@codexmaster6726_bot"
+$LanxiBotUsername = "OpenClaw / 右列"
 if (-not $OutputPath.Trim()) {
     $OutputPath = Join-Path $SiteRoot "runtime-status.json"
+}
+
+function Protect-PublicText {
+    param([AllowNull()][string]$Text)
+    if ($null -eq $Text) { return "" }
+    return ([string]$Text) -replace '@[A-Za-z0-9_]{5,}', '嵐熙'
 }
 
 function Read-JsonFile {
@@ -563,19 +569,23 @@ if (-not $NextAction.Trim()) {
     $NextAction = $defaultNext
 }
 
+$headline = Protect-PublicText -Text $headline
+$blocker = Protect-PublicText -Text $blocker
+$NextAction = Protect-PublicText -Text $NextAction
+
 if ($explicitLanxiTask) {
-    $lanxiTaskInstruction = $explicitLanxiTask
+    $lanxiTaskInstruction = Protect-PublicText -Text $explicitLanxiTask
     $lanxiTaskSource = "手動指定嵐熙任務 / $LanxiBotUsername"
     $lanxiTaskStatusKey = "running"
     $lanxiTaskStatusLabel = "手動同步"
 } elseif ($currentInstructionSource) {
     $lanxiTaskInstruction = $headline
-    $lanxiTaskSource = "$currentInstructionSource + OpenClaw / $LanxiBotUsername 狀態"
+    $lanxiTaskSource = "$currentInstructionSource + $LanxiBotUsername 狀態"
     $lanxiTaskStatusKey = $statusKey
     $lanxiTaskStatusLabel = "同步目前指令"
 } elseif ($openclawTask.detail) {
-    $lanxiTaskInstruction = $openclawTask.detail
-    $lanxiTaskSource = $openclawTask.source
+    $lanxiTaskInstruction = Protect-PublicText -Text $openclawTask.detail
+    $lanxiTaskSource = Protect-PublicText -Text $openclawTask.source
 } elseif ($null -ne $openclaw.processCount -and $openclaw.processCount -gt 0) {
     $lanxiTaskInstruction = "嵐熙 $LanxiBotUsername 自動化任務：瀏覽器流程、排程與本機進程監控正常；看門排程 $($openclaw.watchdogState)。"
     $lanxiTaskSource = "OpenClaw / $LanxiBotUsername 本機狀態"
@@ -586,6 +596,9 @@ if ($explicitLanxiTask) {
     $lanxiTaskInstruction = "嵐熙 $LanxiBotUsername 自動化任務：目前未偵測到相關進程，需要檢查嵐熙自動化服務。"
     $lanxiTaskSource = "OpenClaw / $LanxiBotUsername 本機狀態"
 }
+
+$lanxiTaskInstruction = Protect-PublicText -Text $lanxiTaskInstruction
+$lanxiTaskSource = Protect-PublicText -Text $lanxiTaskSource
 
 $heartbeatMonitorKey = if ($heartbeatAge -le 120) { "running" } else { "watch" }
 $heartbeatMonitorLabel = if ($heartbeatAge -le 120) { "正常" } else { "待確認" }
@@ -701,7 +714,7 @@ $payload = [ordered]@{
     }
     openclaw = [ordered]@{
         name = $openclaw.name
-        botUsername = $openclaw.botUsername
+        botUsername = $LanxiBotUsername
         statusKey = $openclaw.statusKey
         statusLabel = $openclaw.statusLabel
         processCount = $openclaw.processCount
