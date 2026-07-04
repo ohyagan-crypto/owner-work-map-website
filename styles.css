@@ -332,7 +332,7 @@ main {
 .active-task-banner {
   --active-accent: var(--cyan);
   --active-accent-soft: rgba(46, 233, 255, 0.14);
-  order: -11;
+  order: -13;
   min-width: 0;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(280px, 0.42fr);
