@@ -23,13 +23,13 @@
                   },
     "openclaw":  {
                      "name":  "嵐熙",
-                     "botUsername":  "OpenClaw / 右列",
+                     "botUsername":  "嵐熙",
                      "statusKey":  "running",
                      "statusLabel":  "正常",
                      "processCount":  5,
                      "watchdogState":  "Running",
                      "currentTaskInstruction":  "儀表盤網站更新 1.蝦咩嵐熙 切換欄位放到最上面 2.點擊卡點有反應單無法聯通到tgbot 讓他幫你解卡救援，所以功能徹底檢查 3.嵐熙這個是嵐熙 以後記好，嵐熙在儀表盤網站上沒有同步我給的任務內容",
-                     "currentTaskSource":  "runtime-status.json 最新指令保留 + OpenClaw / 右列 狀態"
+                     "currentTaskSource":  "runtime-status.json 最新指令保留 + 嵐熙狀態"
                  },
     "monitors":  [
                      {
@@ -54,7 +54,7 @@
                          "statusKey":  "running",
                          "statusLabel":  "同步目前指令",
                          "detail":  "儀表盤網站更新 1.蝦咩嵐熙 切換欄位放到最上面 2.點擊卡點有反應單無法聯通到tgbot 讓他幫你解卡救援，所以功能徹底檢查 3.嵐熙這個是嵐熙 以後記好，嵐熙在儀表盤網站上沒有同步我給的任務內容",
-                         "source":  "runtime-status.json 最新指令保留 + OpenClaw / 右列 狀態"
+                         "source":  "runtime-status.json 最新指令保留 + 嵐熙狀態"
                      },
                      {
                          "id":  "openclaw-process",

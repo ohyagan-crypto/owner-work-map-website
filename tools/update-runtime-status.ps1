@@ -25,7 +25,7 @@ $ConversationHistoryPath = Join-Path $BotRoot "telegram_conversation_history.jso
 $UsagePath = Join-Path $BotRoot "codex_token_usage.jsonl"
 $StateDb = "C:\Users\max\.codex\state_5.sqlite"
 $OpenClawRunsDb = "C:\Users\max\.openclaw\tasks\runs.sqlite"
-$LanxiBotUsername = "OpenClaw / 右列"
+$LanxiBotUsername = "嵐熙"
 if (-not $OutputPath.Trim()) {
     $OutputPath = Join-Path $SiteRoot "runtime-status.json"
 }
@@ -588,13 +588,13 @@ if ($explicitLanxiTask) {
     $lanxiTaskSource = Protect-PublicText -Text $openclawTask.source
 } elseif ($null -ne $openclaw.processCount -and $openclaw.processCount -gt 0) {
     $lanxiTaskInstruction = "嵐熙 $LanxiBotUsername 自動化任務：瀏覽器流程、排程與本機進程監控正常；看門排程 $($openclaw.watchdogState)。"
-    $lanxiTaskSource = "OpenClaw / $LanxiBotUsername 本機狀態"
+    $lanxiTaskSource = "$LanxiBotUsername 本機狀態"
 } elseif ($null -eq $openclaw.processCount) {
     $lanxiTaskInstruction = "嵐熙 $LanxiBotUsername 自動化任務：進程數尚未取得，保留排程與瀏覽器流程監控。"
-    $lanxiTaskSource = "OpenClaw / $LanxiBotUsername 本機狀態"
+    $lanxiTaskSource = "$LanxiBotUsername 本機狀態"
 } else {
     $lanxiTaskInstruction = "嵐熙 $LanxiBotUsername 自動化任務：目前未偵測到相關進程，需要檢查嵐熙自動化服務。"
-    $lanxiTaskSource = "OpenClaw / $LanxiBotUsername 本機狀態"
+    $lanxiTaskSource = "$LanxiBotUsername 本機狀態"
 }
 
 $lanxiTaskInstruction = Protect-PublicText -Text $lanxiTaskInstruction

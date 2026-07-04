@@ -8,7 +8,7 @@ const DEFAULT_REFRESH_SECONDS = 1;
 const LIVE_TIMEOUT_MS = 2200;
 const LIVE_RETRY_COOLDOWN_MS = 5000;
 const AGENT_VIEW_STORAGE_KEY = "ownerDashboardAgentViewLanxiTop20260704";
-const LANXI_BOT_USERNAME = "OpenClaw / 右列";
+const LANXI_BOT_USERNAME = "嵐熙";
 const TELEGRAM_HANDLE_PATTERN = /@[A-Za-z0-9_]{5,}/g;
 
 function publicText(value) {
@@ -71,8 +71,8 @@ const completedItems = [
   {
     title: "蝦咩與嵐熙左右分類",
     status: "已套用",
-    summary: "頂部儀表盤改為左欄只放蝦咩 TGBOT / Telegram / Codex 狀態，右欄只放嵐熙 OpenClaw / 自動化 / 快照狀態。",
-    points: ["蝦咩固定左列", "嵐熙固定右列", "任務、token、監控與卡點依人物分類"]
+    summary: "頂部儀表盤改為人物分區：蝦咩集中任務與回覆狀態，嵐熙集中自動化與快照狀態。",
+    points: ["蝦咩任務集中顯示", "嵐熙任務集中顯示", "任務、token、監控與卡點依人物分類"]
   },
   {
     title: "移除舊版說明區塊",
@@ -1313,7 +1313,6 @@ function renderAgentStrip(status) {
       <div class="agent-top">
         <img class="agent-card-avatar" src="${escapeHtml(agent.avatar)}" alt="${escapeHtml(agent.name)} AI 助手圖片">
         <div class="agent-name">
-          <span>${escapeHtml(agent.role)}</span>
           <b>${escapeHtml(agent.name)}</b>
         </div>
         <span class="agent-state">${escapeHtml(agent.state)}</span>
