@@ -25,6 +25,7 @@ $ConversationHistoryPath = Join-Path $BotRoot "telegram_conversation_history.jso
 $UsagePath = Join-Path $BotRoot "codex_token_usage.jsonl"
 $StateDb = "C:\Users\max\.codex\state_5.sqlite"
 $OpenClawRunsDb = "C:\Users\max\.openclaw\tasks\runs.sqlite"
+$LanxiBotUsername = "@codexmaster6726_bot"
 if (-not $OutputPath.Trim()) {
     $OutputPath = Join-Path $SiteRoot "runtime-status.json"
 }
@@ -379,6 +380,7 @@ function Get-OpenClawSummary {
     if ($null -eq $processCount) {
         return [pscustomobject]@{
             name = "嵐熙"
+            botUsername = $LanxiBotUsername
             statusKey = "watch"
             statusLabel = "未確認"
             processCount = $null
@@ -389,6 +391,7 @@ function Get-OpenClawSummary {
     if ($processCount -gt 0) {
         return [pscustomobject]@{
             name = "嵐熙"
+            botUsername = $LanxiBotUsername
             statusKey = "running"
             statusLabel = "正常"
             processCount = $processCount
@@ -398,6 +401,7 @@ function Get-OpenClawSummary {
 
     return [pscustomobject]@{
         name = "嵐熙"
+        botUsername = $LanxiBotUsername
         statusKey = "watch"
         statusLabel = "未偵測到進程"
         processCount = 0
@@ -561,26 +565,26 @@ if (-not $NextAction.Trim()) {
 
 if ($explicitLanxiTask) {
     $lanxiTaskInstruction = $explicitLanxiTask
-    $lanxiTaskSource = "手動指定嵐熙任務"
+    $lanxiTaskSource = "手動指定嵐熙任務 / $LanxiBotUsername"
     $lanxiTaskStatusKey = "running"
     $lanxiTaskStatusLabel = "手動同步"
 } elseif ($currentInstructionSource) {
     $lanxiTaskInstruction = $headline
-    $lanxiTaskSource = "$currentInstructionSource + OpenClaw 狀態"
+    $lanxiTaskSource = "$currentInstructionSource + OpenClaw / $LanxiBotUsername 狀態"
     $lanxiTaskStatusKey = $statusKey
     $lanxiTaskStatusLabel = "同步目前指令"
 } elseif ($openclawTask.detail) {
     $lanxiTaskInstruction = $openclawTask.detail
     $lanxiTaskSource = $openclawTask.source
 } elseif ($null -ne $openclaw.processCount -and $openclaw.processCount -gt 0) {
-    $lanxiTaskInstruction = "OpenClaw 自動化任務：瀏覽器流程、排程與本機進程監控正常；看門排程 $($openclaw.watchdogState)。"
-    $lanxiTaskSource = "OpenClaw 本機狀態"
+    $lanxiTaskInstruction = "嵐熙 $LanxiBotUsername 自動化任務：瀏覽器流程、排程與本機進程監控正常；看門排程 $($openclaw.watchdogState)。"
+    $lanxiTaskSource = "OpenClaw / $LanxiBotUsername 本機狀態"
 } elseif ($null -eq $openclaw.processCount) {
-    $lanxiTaskInstruction = "OpenClaw 自動化任務：進程數尚未取得，保留排程與瀏覽器流程監控。"
-    $lanxiTaskSource = "OpenClaw 本機狀態"
+    $lanxiTaskInstruction = "嵐熙 $LanxiBotUsername 自動化任務：進程數尚未取得，保留排程與瀏覽器流程監控。"
+    $lanxiTaskSource = "OpenClaw / $LanxiBotUsername 本機狀態"
 } else {
-    $lanxiTaskInstruction = "OpenClaw 自動化任務：目前未偵測到相關進程，需要檢查嵐熙自動化服務。"
-    $lanxiTaskSource = "OpenClaw 本機狀態"
+    $lanxiTaskInstruction = "嵐熙 $LanxiBotUsername 自動化任務：目前未偵測到相關進程，需要檢查嵐熙自動化服務。"
+    $lanxiTaskSource = "OpenClaw / $LanxiBotUsername 本機狀態"
 }
 
 $heartbeatMonitorKey = if ($heartbeatAge -le 120) { "running" } else { "watch" }
@@ -697,6 +701,7 @@ $payload = [ordered]@{
     }
     openclaw = [ordered]@{
         name = $openclaw.name
+        botUsername = $openclaw.botUsername
         statusKey = $openclaw.statusKey
         statusLabel = $openclaw.statusLabel
         processCount = $openclaw.processCount

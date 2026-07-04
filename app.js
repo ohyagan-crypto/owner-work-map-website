@@ -8,6 +8,7 @@ const DEFAULT_REFRESH_SECONDS = 1;
 const LIVE_TIMEOUT_MS = 2200;
 const LIVE_RETRY_COOLDOWN_MS = 5000;
 const AGENT_VIEW_STORAGE_KEY = "ownerDashboardAgentViewLanxiTop20260704";
+const LANXI_BOT_USERNAME = "@codexmaster6726_bot";
 const DASHBOARD_ACTIONS = {
   rescue: {
     loading: "救援中",
@@ -571,8 +572,8 @@ const fallbackRuntimeStatus = {
   refreshSeconds: DEFAULT_REFRESH_SECONDS,
   token: { totalTokens: null, taskCount: null, source: "尚未讀到 token 統計" },
   heartbeat: { name: "蝦咩", ageSeconds: null, activeRequests: null },
-  lanxiTaskInstruction: "OpenClaw 自動化任務與瀏覽器流程監控待同步。",
-  openclaw: { name: "嵐熙", statusKey: "watch", statusLabel: "狀態待同步", processCount: null, watchdogState: "未取得", currentTaskInstruction: "OpenClaw 自動化任務與瀏覽器流程監控待同步。" },
+  lanxiTaskInstruction: "嵐熙 @codexmaster6726_bot 自動化任務與瀏覽器流程監控待同步。",
+  openclaw: { name: "嵐熙", botUsername: LANXI_BOT_USERNAME, statusKey: "watch", statusLabel: "狀態待同步", processCount: null, watchdogState: "未取得", currentTaskInstruction: "嵐熙 @codexmaster6726_bot 自動化任務與瀏覽器流程監控待同步。" },
   deliverables: [],
   monitors: []
 };
@@ -776,6 +777,7 @@ async function runDashboardAction(action) {
         }
         liveStatusEndpoint = endpoint;
         setActionFeedback(payload.message || config.success, "success");
+        setActionButtonsLoading(action, false);
         await loadRuntimeStatus({ manual: true });
         return;
       } catch (error) {
@@ -1185,7 +1187,7 @@ function lanxiTaskInstruction(status) {
       : `相關進程 ${formatNumber(status.openclaw.processCount)}`
   );
   const watchdogText = watchdogMonitor?.statusLabel || status.openclaw?.watchdogState || "未取得";
-  return `OpenClaw 自動化任務：${status.openclaw?.statusLabel || "狀態待同步"}；${processText}；看門排程 ${watchdogText}。`;
+  return `嵐熙 ${status.openclaw?.botUsername || LANXI_BOT_USERNAME} 自動化任務：${status.openclaw?.statusLabel || "狀態待同步"}；${processText}；看門排程 ${watchdogText}。`;
 }
 
 function lanxiTaskSource(status) {
@@ -1195,7 +1197,7 @@ function lanxiTaskSource(status) {
     const label = String(item.label || "");
     return id.includes("lanxi-task") || id.includes("openclaw-task") || label.includes("嵐熙任務");
   });
-  return status.openclaw?.currentTaskSource || taskMonitor?.source || "OpenClaw 自動化任務獨立欄位";
+  return status.openclaw?.currentTaskSource || taskMonitor?.source || `OpenClaw / ${status.openclaw?.botUsername || LANXI_BOT_USERNAME} 任務獨立欄位`;
 }
 
 function monitorOwner(item) {
@@ -1291,7 +1293,7 @@ function renderAgentStrip(status) {
     {
       kind: "lanxi",
       avatar: "assets/lanxi-avatar.png",
-      role: "OpenClaw",
+      role: openclaw.botUsername || LANXI_BOT_USERNAME,
       name: openclaw.name || "嵐熙",
       state: openclaw.statusLabel || "狀態待同步",
       stateKey: statusTone(openclaw.statusKey || "watch"),
@@ -1357,7 +1359,7 @@ function renderRuntimeStatus(data) {
     ? `${status.token.source}，任務數 ${formatNumber(status.token.taskCount)}。`
     : status.token.source || "未取得 token 統計來源。";
   $("#openclawStatusLabel").textContent = status.openclaw.statusLabel || "狀態待同步";
-  $("#openclawStatusDetail").textContent = `${openclawProcessText}，看門排程 ${status.openclaw.watchdogState || "未取得"}。`;
+  $("#openclawStatusDetail").textContent = `${status.openclaw.botUsername || LANXI_BOT_USERNAME}；${openclawProcessText}，看門排程 ${status.openclaw.watchdogState || "未取得"}。`;
   setTextIfPresent("#lanxiTaskText", lanxiTaskInstruction(status));
   setTextIfPresent("#lanxiTaskSource", lanxiTaskSource(status));
   $("#blockerText").textContent = status.blocker || "沒有卡點";

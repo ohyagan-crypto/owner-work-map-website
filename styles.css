@@ -846,6 +846,11 @@ body[data-agent-view="lanxi"] .active-task-banner {
   backdrop-filter: blur(12px);
 }
 
+.page-agent-switch {
+  width: min(1240px, calc(100% - 32px));
+  margin: 12px auto 8px;
+}
+
 .agent-view-switch button {
   min-width: 0;
   min-height: 62px;
@@ -908,6 +913,7 @@ body[data-agent-view="lanxi"] .active-task-banner {
   font-size: 12px;
   font-weight: 850;
   color: rgba(235, 255, 248, 0.66);
+  overflow-wrap: anywhere;
 }
 
 .agent-view-switch b {
@@ -1024,6 +1030,10 @@ body[data-agent-view] .command-strip {
   color: var(--status-muted);
   font-size: 13px;
   font-weight: 760;
+}
+
+.agent-name span {
+  overflow-wrap: anywhere;
 }
 
 .agent-task {
@@ -2559,6 +2569,7 @@ body.light-mode .theme-toggle {
 
 @media (max-width: 760px) {
   .page-top-updated,
+  .page-agent-switch,
   .topbar,
   main,
   footer {
@@ -2962,6 +2973,10 @@ body.light-mode .theme-toggle {
     gap: 6px;
     margin-bottom: 9px;
     padding: 5px;
+  }
+
+  .page-agent-switch {
+    margin-top: 8px;
   }
 
   .agent-view-switch button {
