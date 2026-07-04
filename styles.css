@@ -171,6 +171,12 @@ main {
   padding-bottom: 44px;
 }
 
+.page-top-updated {
+  width: min(1240px, calc(100% - 32px));
+  margin: 14px auto 12px;
+  color: #fff;
+}
+
 .status-dashboard,
 .overview,
 .content-section {
@@ -326,7 +332,7 @@ main {
 .active-task-banner {
   --active-accent: var(--cyan);
   --active-accent-soft: rgba(46, 233, 255, 0.14);
-  order: -6;
+  order: -11;
   min-width: 0;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(280px, 0.42fr);
@@ -2523,6 +2529,7 @@ body.light-mode .theme-toggle {
 }
 
 @media (max-width: 760px) {
+  .page-top-updated,
   .topbar,
   main,
   footer {
