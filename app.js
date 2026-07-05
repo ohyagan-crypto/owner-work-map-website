@@ -1237,15 +1237,14 @@ function monitorOwner(item) {
   const id = String(item.id || "").toLowerCase();
   const label = String(item.label || "");
   const statusLabel = String(item.statusLabel || "");
-  const detail = String(item.detail || "");
+  if (id.includes("telegram") || id.includes("codex-token") || label.includes("蝦咩")) {
+    return "shami";
+  }
   if (
     id.includes("openclaw") ||
-    id.includes("runtime") ||
-    id.includes("pages") ||
     label.includes("嵐熙") ||
     label.includes("OpenClaw") ||
-    statusLabel.includes("嵐熙") ||
-    detail.includes("嵐熙")
+    statusLabel.includes("嵐熙")
   ) {
     return "lanxi";
   }

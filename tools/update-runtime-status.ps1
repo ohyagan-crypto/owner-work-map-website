@@ -440,8 +440,6 @@ function Get-DashboardTaskOverride {
     if ($data.lanxiTaskInstruction) {
         $lanxi = Clean-TelegramInstructionText -Text ([string]$data.lanxiTaskInstruction)
     }
-    if (-not $lanxi) { $lanxi = $current }
-
     return [pscustomobject]@{
         currentTaskInstruction = $current
         lanxiTaskInstruction = $lanxi
@@ -701,17 +699,12 @@ if ($explicitLanxiTask) {
     $lanxiTaskInstruction = Protect-PublicText -Text $dashboardTaskOverride.lanxiTaskInstruction
     $lanxiTaskSource = "$($dashboardTaskOverride.source) + $LanxiBotUsername 狀態"
     $lanxiTaskStatusKey = $statusKey
-    $lanxiTaskStatusLabel = "同步目前指令"
-} elseif ($currentInstructionSource) {
-    $lanxiTaskInstruction = $headline
-    $lanxiTaskSource = "$currentInstructionSource + $LanxiBotUsername 狀態"
-    $lanxiTaskStatusKey = $statusKey
-    $lanxiTaskStatusLabel = "同步目前指令"
-} elseif ($dashboardTaskOverride) {
+    $lanxiTaskStatusLabel = "同步嵐熙指令"
+} elseif ($dashboardTaskOverride -and $dashboardTaskOverride.lanxiTaskInstruction) {
     $lanxiTaskInstruction = Protect-PublicText -Text $dashboardTaskOverride.lanxiTaskInstruction
     $lanxiTaskSource = "$($dashboardTaskOverride.source) + $LanxiBotUsername 狀態"
     $lanxiTaskStatusKey = $statusKey
-    $lanxiTaskStatusLabel = "同步目前指令"
+    $lanxiTaskStatusLabel = "同步嵐熙指令"
 } elseif ($openclawTask.detail) {
     $lanxiTaskInstruction = Protect-PublicText -Text $openclawTask.detail
     $lanxiTaskSource = Protect-PublicText -Text $openclawTask.source
