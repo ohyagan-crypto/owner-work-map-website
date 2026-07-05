@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-07-05T13:17:36+08:00",
+  "updatedAt": "2026-07-05T14:10:00+08:00",
   "source": "dashboard-task-override.json",
-  "currentTaskInstruction": "儀表盤網站更新：嵐熙任務同步最新 Telegram 任務；嵐熙與蝦咩左右位置對調為嵐熙左、蝦咩右；卡點救援與強制停止要能依目前頁面角色分開處理。",
-  "lanxiTaskInstruction": "儀表盤網站更新：嵐熙固定左欄並同步最新任務；嵐熙頁面的卡點救援與強制停止只處理嵐熙 / OpenClaw，不混用蝦咩 TGBOT。"
+  "currentTaskInstruction": "儀表盤網站更新：嵐熙任務同步最新 Telegram 任務；嵐熙與蝦咩左右位置已對調為嵐熙左、蝦咩右；卡點救援與強制停止按目前頁面角色分開處理；蝦咩強停會中斷並防止已排隊任務復活。",
+  "lanxiTaskInstruction": "儀表盤網站更新：嵐熙固定左欄並同步最新任務；嵐熙頁面的卡點救援與強制停止只處理嵐熙 / OpenClaw，不混用蝦咩 TGBOT；控制按鈕會顯示目前目標。"
 }

@@ -9,6 +9,7 @@ const LIVE_TIMEOUT_MS = 2200;
 const LIVE_RETRY_COOLDOWN_MS = 5000;
 const AGENT_VIEW_STORAGE_KEY = "ownerDashboardAgentViewLanxiTop20260704";
 const LANXI_BOT_USERNAME = "嵐熙";
+const AGENT_LABELS = { lanxi: "嵐熙", shami: "蝦咩" };
 const TELEGRAM_HANDLE_PATTERN = /@[A-Za-z0-9_]{5,}/g;
 
 function publicText(value) {
@@ -677,6 +678,14 @@ function setActionFeedback(message, state = "idle") {
   feedback.dataset.state = state;
 }
 
+function currentActionTarget() {
+  return selectedAgentView === "shami" ? "shami" : "lanxi";
+}
+
+function currentActionTargetLabel() {
+  return AGENT_LABELS[currentActionTarget()];
+}
+
 async function refreshLiveEndpointFromConfig() {
   if (sameOriginLiveStatusEndpoint) {
     liveStatusEndpoint = sameOriginLiveStatusEndpoint;
@@ -708,16 +717,30 @@ async function liveEndpointCandidates() {
   ].filter(Boolean)));
 }
 
+function updateActionTargetLabels() {
+  const targetLabel = currentActionTargetLabel();
+  document.querySelectorAll("[data-dashboard-action]").forEach((button) => {
+    const config = DASHBOARD_ACTIONS[button.dataset.dashboardAction] || {};
+    const text = `${config.idle || "操作"} ${targetLabel}`;
+    const label = button.querySelector("b");
+    if (label && !button.classList.contains("is-running")) label.textContent = text;
+    button.setAttribute("aria-label", text);
+    button.title = `${text}，只處理目前切換到的${targetLabel}任務`;
+  });
+}
+
 function setActionButtonsLoading(action, isLoading) {
   actionInFlight = isLoading ? action : "";
+  const targetLabel = currentActionTargetLabel();
   document.querySelectorAll("[data-dashboard-action]").forEach((button) => {
     const isTarget = button.dataset.dashboardAction === action;
     const config = DASHBOARD_ACTIONS[button.dataset.dashboardAction] || {};
     button.disabled = isLoading;
     button.classList.toggle("is-running", isLoading && isTarget);
     const label = button.querySelector("b");
-    if (label) label.textContent = isLoading && isTarget ? config.loading : config.idle;
+    if (label) label.textContent = isLoading && isTarget ? `${config.loading}${targetLabel}` : `${config.idle} ${targetLabel}`;
   });
+  if (!isLoading) updateActionTargetLabels();
 }
 
 function activeTaskContent(status = lastRenderedStatus) {
@@ -751,8 +774,8 @@ function renderActiveTaskPanel(status = lastRenderedStatus) {
 async function runDashboardAction(action) {
   const config = DASHBOARD_ACTIONS[action];
   if (!config || actionInFlight) return;
-  const target = selectedAgentView === "shami" ? "shami" : "lanxi";
-  const targetLabel = target === "lanxi" ? "嵐熙" : "蝦咩";
+  const target = currentActionTarget();
+  const targetLabel = currentActionTargetLabel();
 
   playRefreshSound();
   triggerRefreshEffect();
@@ -1552,6 +1575,7 @@ function setAgentView(view, options = {}) {
   });
 
   renderActiveTaskPanel(lastRenderedStatus);
+  updateActionTargetLabels();
   if (options.persist === false) return;
   try {
     window.localStorage.setItem(AGENT_VIEW_STORAGE_KEY, nextView);
