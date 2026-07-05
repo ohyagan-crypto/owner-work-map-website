@@ -137,6 +137,7 @@ async function handleActionApi(res, scriptPath, successLabel, target) {
     res.writeHead(200, corsHeaders({ "Content-Type": "application/json; charset=utf-8" }));
     res.end(JSON.stringify({
       ok: true,
+      target: target,
       message: output || successLabel,
       checkedAt: new Date().toISOString()
     }));

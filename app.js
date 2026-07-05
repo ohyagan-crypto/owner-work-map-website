@@ -7,7 +7,7 @@ let liveStatusEndpoint = sameOriginLiveStatusEndpoint || configuredLiveStatusEnd
 const DEFAULT_REFRESH_SECONDS = 1;
 const LIVE_TIMEOUT_MS = 2200;
 const LIVE_RETRY_COOLDOWN_MS = 5000;
-const AGENT_VIEW_STORAGE_KEY = "ownerDashboardAgentViewTargetedControls20260705";
+const AGENT_VIEW_STORAGE_KEY = "ownerDashboardAgentViewTargetedControls20260705v2";
 const LANXI_BOT_USERNAME = "嵐熙";
 const AGENT_LABELS = { lanxi: "嵐熙", shami: "蝦咩" };
 const TELEGRAM_HANDLE_PATTERN = /@[A-Za-z0-9_]{5,}/g;
@@ -19,14 +19,14 @@ const DASHBOARD_ACTIONS = {
   rescue: {
     loading: "救援中",
     idle: "卡點救援",
-    success: "已送出卡點救援，會依目前頁面角色嘗試續作。",
+    success: "已送出卡點救援，會依目前頁面角色嘗試續作，不會混用另一位助手。",
     failure: "卡點救援沒有完成，請確認本機即時服務仍在運作。",
     endpointMissing: "卡點救援需要本機即時服務，現在沒有讀到可用端點。"
   },
   "force-stop": {
     loading: "停止中",
     idle: "強制停止",
-    success: "已送出強制停止，已依目前頁面角色分開處理。",
+    success: "已送出強制停止，嵐熙只停 OpenClaw；蝦咩會中斷 Telegram 執行中任務。",
     failure: "強制停止沒有完成，請確認本機即時服務仍在運作。",
     endpointMissing: "強制停止需要本機即時服務，現在沒有讀到可用端點。"
   }
@@ -590,7 +590,7 @@ let lastRenderedStatus = fallbackRuntimeStatus;
 let lastStatusSignature = "";
 let selectedSkillGroup = "全部";
 let skillSearchTerm = "";
-let selectedAgentView = "lanxi";
+let selectedAgentView = "shami";
 let isStatusLoading = false;
 let liveUnavailableUntil = 0;
 let refreshAudioContext = null;
@@ -712,9 +712,9 @@ async function refreshLiveEndpointFromConfig() {
 async function liveEndpointCandidates() {
   await refreshLiveEndpointFromConfig();
   return Array.from(new Set([
-    configuredLiveStatusEndpoint,
     liveStatusEndpoint,
-    sameOriginLiveStatusEndpoint
+    sameOriginLiveStatusEndpoint,
+    configuredLiveStatusEndpoint
   ].filter(Boolean)));
 }
 
@@ -726,7 +726,7 @@ function updateActionTargetLabels() {
     const label = button.querySelector("b");
     if (label && !button.classList.contains("is-running")) label.textContent = text;
     button.setAttribute("aria-label", text);
-    button.title = `${text}，只處理目前切換到的${targetLabel}任務`;
+    button.title = `${text}，只處理目前頁面切換到的${targetLabel}任務`;
   });
 }
 
@@ -1606,7 +1606,7 @@ function bindAgentViewSwitch() {
     button.addEventListener("keydown", (event) => {
       if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
       event.preventDefault();
-      const nextView = event.key === "ArrowLeft" || event.key === "Home" ? "lanxi" : "shami";
+      const nextView = event.key === "ArrowLeft" || event.key === "Home" ? "shami" : "lanxi";
       setAgentView(nextView);
       const nextButton = buttons.find((item) => item.dataset.agentViewButton === nextView);
       if (nextButton) nextButton.focus();

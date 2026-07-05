@@ -761,6 +761,7 @@ if ($dashboardControlAction) {
     $disabledTasks = Get-ObjectPropertyValue -Object $actionData -Name "disabledTasks"
     $interruptedTelegramRequests = Get-ObjectPropertyValue -Object $actionData -Name "interruptedTelegramRequests"
     $stoppedCodexWorkers = Get-ObjectPropertyValue -Object $actionData -Name "stoppedCodexWorkers"
+    $pauseUntil = Get-ObjectPropertyValue -Object $actionData -Name "pauseUntil"
     $alreadyRunning = Get-ObjectPropertyValue -Object $actionData -Name "alreadyRunning"
     if ($startedTasks) { $changedParts += "啟動排程 " + (@($startedTasks) -join "、") }
     if ($enabledTasks) { $changedParts += "恢復排程 " + (@($enabledTasks) -join "、") }
@@ -768,6 +769,7 @@ if ($dashboardControlAction) {
     if ($disabledTasks) { $changedParts += "停用排程 " + (@($disabledTasks) -join "、") }
     if ($null -ne $interruptedTelegramRequests) { $changedParts += "中斷 Telegram 任務 $interruptedTelegramRequests 筆" }
     if ($null -ne $stoppedCodexWorkers) { $changedParts += "停止 Codex 子工作 $stoppedCodexWorkers 個" }
+    if ($pauseUntil) { $changedParts += "TGBOT 暫停訊號有效至 $pauseUntil" }
     if ($changedParts.Count -eq 0 -and $alreadyRunning) { $changedParts += "可續作排程已在運作中" }
     if ($changedParts.Count -eq 0) { $changedParts += "已寫入控制訊號" }
     $controlActionMonitor = [ordered]@{

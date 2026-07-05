@@ -25,6 +25,7 @@ $disabledTasks = New-Object System.Collections.Generic.List[string]
 $taskWarnings = New-Object System.Collections.Generic.List[string]
 $interruptedRequests = 0
 $stoppedProcesses = 0
+$pauseUntil = $null
 
 function Stop-DashboardTask {
   param([string]$TaskName, [bool]$DisableAfterStop = $true)
@@ -97,9 +98,10 @@ if ($Target -eq "lanxi") {
     Stop-DashboardTask -TaskName $name -DisableAfterStop $true
   }
 } else {
+  $pauseUntil = (Get-Date).AddMinutes(15).ToString("o")
   $interruptedRequests = Set-TelegramRequestsInterrupted
   $stoppedProcesses = Stop-RunningCodexWorkers
-  foreach ($name in @("Codex Telegram Bot Watchdog Hourly", "OpenClaw_CodexBot_HourlyHealth")) {
+  foreach ($name in @("Codex Telegram Bot Watchdog Hourly", "Codex Telegram Bot Watchdog Startup", "OpenClaw_CodexBot_HourlyHealth")) {
     Stop-DashboardTask -TaskName $name -DisableAfterStop $false
   }
 }
@@ -114,7 +116,10 @@ $payload = [ordered]@{
   warnings = @($taskWarnings)
   interruptedTelegramRequests = $interruptedRequests
   stoppedCodexWorkers = $stoppedProcesses
+  paused = if ($Target -eq "shami") { $true } else { $false }
+  pauseUntil = $pauseUntil
   scope = if ($Target -eq "lanxi") { "lanxi OpenClaw automation only" } else { "shami TGBOT current work pause/interrupt" }
+  behavior = if ($Target -eq "lanxi") { "stop OpenClaw schedules without touching TGBOT" } else { "interrupt Telegram request records, stop Codex child work, and write the TGBOT force-stop signal" }
 }
 
 $json = $payload | ConvertTo-Json -Depth 5

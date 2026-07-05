@@ -557,7 +557,7 @@ body[data-agent-view="lanxi"] .active-task-banner {
   overflow: hidden;
 }
 
-.assistant-stage .lanxi-portrait {
+.assistant-stage .shami-portrait {
   order: -1;
 }
 
@@ -565,7 +565,7 @@ body[data-agent-view="lanxi"] .active-task-banner {
   order: 0;
 }
 
-.assistant-stage .shami-portrait {
+.assistant-stage .lanxi-portrait {
   order: 1;
 }
 
@@ -2478,7 +2478,6 @@ body.light-mode .theme-toggle {
   }
 }
 
-.assistant-stage,
 .ai-metrics,
 .signal-ribbon {
   display: none;
