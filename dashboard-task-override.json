@@ -1,0 +1,6 @@
+{
+  "updatedAt": "2026-07-05T11:50:00+08:00",
+  "source": "dashboard-task-override.json",
+  "currentTaskInstruction": "儀表盤網站：1. 嵐熙任務要同步最新任務 2. 嵐熙在左、蝦咩在右 3. 卡點救援要確實功能性 4. 強制停止要讓 TGBOT 暫停目前任務 5. 卡點救援和強制停止要依目前頁面角色分開作業",
+  "lanxiTaskInstruction": "儀表盤網站：嵐熙任務同步最新任務；嵐熙固定左欄、蝦咩固定右欄；嵐熙頁面的卡點救援與強制停止只處理嵐熙 / OpenClaw，不混用蝦咩 TGBOT。"
+}

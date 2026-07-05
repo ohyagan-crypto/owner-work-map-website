@@ -33,7 +33,7 @@ function corsHeaders(extra = {}) {
   return {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Headers": "Content-Type, X-Dashboard-Target",
     "Cache-Control": "no-store, max-age=0",
     ...extra
   };
@@ -70,7 +70,18 @@ function refreshRuntimeStatus() {
   });
 }
 
-function runPowerShellScript(scriptPath) {
+function normalizeTarget(value) {
+  return value === "shami" ? "shami" : "lanxi";
+}
+
+function targetFromRequest(req, url) {
+  const queryTarget = url.searchParams.get("target");
+  if (queryTarget) return normalizeTarget(queryTarget);
+  const headerTarget = req.headers["x-dashboard-target"];
+  return normalizeTarget(Array.isArray(headerTarget) ? headerTarget[0] : headerTarget);
+}
+
+function runPowerShellScript(scriptPath, target) {
   return new Promise((resolve, reject) => {
     execFile(
       powershellExe,
@@ -81,7 +92,9 @@ function runPowerShellScript(scriptPath) {
         "-File",
         scriptPath,
         "-SiteRoot",
-        root
+        root,
+        "-Target",
+        normalizeTarget(target)
       ],
       {
         windowsHide: true,
@@ -117,10 +130,10 @@ async function handleStatusApi(res) {
   }
 }
 
-async function handleActionApi(res, scriptPath, successLabel) {
+async function handleActionApi(res, scriptPath, successLabel, target) {
   try {
     if (!fs.existsSync(scriptPath)) throw new Error("action script missing");
-    const output = await runPowerShellScript(scriptPath);
+    const output = await runPowerShellScript(scriptPath, target);
     res.writeHead(200, corsHeaders({ "Content-Type": "application/json; charset=utf-8" }));
     res.end(JSON.stringify({
       ok: true,
@@ -148,12 +161,12 @@ const server = http.createServer((req, res) => {
   }
 
   if (req.method === "POST" && url.pathname === "/api/action/rescue") {
-    handleActionApi(res, rescueScript, "已送出卡點解救，正在嘗試恢復續作。");
+    handleActionApi(res, rescueScript, "已送出卡點救援，正在嘗試恢復續作。", targetFromRequest(req, url));
     return;
   }
 
   if (req.method === "POST" && url.pathname === "/api/action/force-stop") {
-    handleActionApi(res, forceStopScript, "已送出強制停止。");
+    handleActionApi(res, forceStopScript, "已送出強制停止。", targetFromRequest(req, url));
     return;
   }
 

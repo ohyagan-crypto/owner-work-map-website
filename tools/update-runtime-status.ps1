@@ -23,6 +23,7 @@ $RequestStatusPath = Join-Path $BotRoot "telegram_request_status.json"
 $RecentUploadsPath = Join-Path $BotRoot "telegram_recent_uploads.json"
 $ConversationHistoryPath = Join-Path $BotRoot "telegram_conversation_history.json"
 $UsagePath = Join-Path $BotRoot "codex_token_usage.jsonl"
+$DashboardTaskOverridePath = Join-Path $SiteRoot "dashboard-task-override.json"
 $StateDb = "C:\Users\max\.codex\state_5.sqlite"
 $OpenClawRunsDb = "C:\Users\max\.openclaw\tasks\runs.sqlite"
 $LanxiBotUsername = "嵐熙"
@@ -58,13 +59,51 @@ function Resolve-SqliteExe {
     return $null
 }
 
+function Quote-ProcessArgument {
+    param([AllowNull()][string]$Value)
+    if ($null -eq $Value) { return '""' }
+    return '"' + ([string]$Value).Replace('\', '\\').Replace('"', '\"') + '"'
+}
+
+function Invoke-ExternalTextWithTimeout {
+    param(
+        [string]$FilePath,
+        [string[]]$Arguments,
+        [int]$TimeoutMilliseconds = 5000
+    )
+    if (-not $FilePath) { return $null }
+    try {
+        $psi = [System.Diagnostics.ProcessStartInfo]::new()
+        $psi.FileName = $FilePath
+        $psi.UseShellExecute = $false
+        $psi.RedirectStandardOutput = $true
+        $psi.RedirectStandardError = $true
+        $psi.CreateNoWindow = $true
+        $psi.StandardOutputEncoding = [System.Text.UTF8Encoding]::new($false)
+        $psi.StandardErrorEncoding = [System.Text.UTF8Encoding]::new($false)
+        $psi.Arguments = (($Arguments | ForEach-Object { Quote-ProcessArgument -Value $_ }) -join " ")
+
+        $process = [System.Diagnostics.Process]::new()
+        $process.StartInfo = $psi
+        [void]$process.Start()
+        if (-not $process.WaitForExit($TimeoutMilliseconds)) {
+            try { $process.Kill() } catch {}
+            return $null
+        }
+        if ($process.ExitCode -ne 0) { return $null }
+        return $process.StandardOutput.ReadToEnd()
+    } catch {
+        return $null
+    }
+}
+
 function Invoke-SqliteSingleLine {
     param([string]$SqliteExe, [string]$DbPath, [string]$Sql)
     if (-not $SqliteExe -or -not (Test-Path -LiteralPath $DbPath)) { return $null }
     try {
-        $result = & $SqliteExe -readonly $DbPath $Sql 2>$null
-        if ($LASTEXITCODE -ne 0) { return $null }
-        return ($result | Select-Object -First 1)
+        $result = Invoke-ExternalTextWithTimeout -FilePath $SqliteExe -Arguments @("-readonly", $DbPath, $Sql)
+        if (-not $result) { return $null }
+        return (($result -split "\r?\n") | Where-Object { $_.Trim() } | Select-Object -First 1)
     } catch {
         return $null
     }
@@ -74,9 +113,7 @@ function Invoke-SqliteJsonRows {
     param([string]$SqliteExe, [string]$DbPath, [string]$Sql)
     if (-not $SqliteExe -or -not (Test-Path -LiteralPath $DbPath)) { return @() }
     try {
-        $raw = & $SqliteExe -readonly -json $DbPath $Sql 2>$null
-        if ($LASTEXITCODE -ne 0) { return @() }
-        $text = ($raw -join [Environment]::NewLine).Trim()
+        $text = (Invoke-ExternalTextWithTimeout -FilePath $SqliteExe -Arguments @("-readonly", "-json", $DbPath, $Sql)).Trim()
         if (-not $text) { return @() }
         return @($text | ConvertFrom-Json)
     } catch {
@@ -364,6 +401,35 @@ function Get-LatestConversationInstruction {
     return ($records | Sort-Object ts | Select-Object -Last 1).text
 }
 
+function Get-DashboardTaskOverride {
+    $data = Read-JsonFile -Path $DashboardTaskOverridePath
+    if ($null -eq $data -or -not $data.currentTaskInstruction) { return $null }
+
+    $updatedAt = $null
+    try {
+        if ($data.updatedAt) { $updatedAt = [DateTimeOffset]::Parse([string]$data.updatedAt) }
+    } catch {
+        $updatedAt = $null
+    }
+
+    if ($updatedAt -and (($now - $updatedAt.LocalDateTime).TotalHours -gt 24)) { return $null }
+
+    $current = Clean-TelegramInstructionText -Text ([string]$data.currentTaskInstruction)
+    if (-not $current) { return $null }
+
+    $lanxi = ""
+    if ($data.lanxiTaskInstruction) {
+        $lanxi = Clean-TelegramInstructionText -Text ([string]$data.lanxiTaskInstruction)
+    }
+    if (-not $lanxi) { $lanxi = $current }
+
+    return [pscustomobject]@{
+        currentTaskInstruction = $current
+        lanxiTaskInstruction = $lanxi
+        source = if ($data.source) { [string]$data.source } else { "dashboard-task-override.json" }
+    }
+}
+
 function Get-OpenClawSummary {
     $processCount = $null
     try {
@@ -434,6 +500,7 @@ if (
 }
 $uploadCaption = Get-NewestUploadCaption
 $conversationInstruction = Get-LatestConversationInstruction
+$dashboardTaskOverride = Get-DashboardTaskOverride
 $token = Get-TokenSummary -TargetDate $Date
 $openclaw = Get-OpenClawSummary
 $openclawTask = Get-OpenClawTaskSummary
@@ -535,6 +602,9 @@ if ($heartbeatAge -gt 120) {
 if ($CurrentTask.Trim()) {
     $headline = $CurrentTask.Trim()
     $currentInstructionSource = "手動指定目前任務"
+} elseif ($dashboardTaskOverride) {
+    $headline = $dashboardTaskOverride.currentTaskInstruction
+    $currentInstructionSource = $dashboardTaskOverride.source
 } elseif (
     $existingStatus -and
     $existingStatus.currentTaskInstruction -and
@@ -578,6 +648,11 @@ if ($explicitLanxiTask) {
     $lanxiTaskSource = "手動指定嵐熙任務 / $LanxiBotUsername"
     $lanxiTaskStatusKey = "running"
     $lanxiTaskStatusLabel = "手動同步"
+} elseif ($dashboardTaskOverride) {
+    $lanxiTaskInstruction = Protect-PublicText -Text $dashboardTaskOverride.lanxiTaskInstruction
+    $lanxiTaskSource = "$($dashboardTaskOverride.source) + $LanxiBotUsername 狀態"
+    $lanxiTaskStatusKey = $statusKey
+    $lanxiTaskStatusLabel = "同步目前指令"
 } elseif ($currentInstructionSource) {
     $lanxiTaskInstruction = $headline
     $lanxiTaskSource = "$currentInstructionSource + $LanxiBotUsername 狀態"

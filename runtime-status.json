@@ -1,35 +1,35 @@
 {
-    "statusKey":  "running",
-    "statusLabel":  "運作中",
-    "headline":  "儀表盤網站更新 1.蝦咩嵐熙 切換欄位放到最上面 2.點擊卡點有反應單無法聯通到tgbot 讓他幫你解卡救援，所以功能徹底檢查 3.嵐熙這個是嵐熙 以後記好，嵐熙在儀表盤網站上沒有同步我給的任務內容",
-    "currentTaskInstruction":  "儀表盤網站更新 1.蝦咩嵐熙 切換欄位放到最上面 2.點擊卡點有反應單無法聯通到tgbot 讓他幫你解卡救援，所以功能徹底檢查 3.嵐熙這個是嵐熙 以後記好，嵐熙在儀表盤網站上沒有同步我給的任務內容",
-    "lanxiTaskInstruction":  "儀表盤網站更新 1.蝦咩嵐熙 切換欄位放到最上面 2.點擊卡點有反應單無法聯通到tgbot 讓他幫你解卡救援，所以功能徹底檢查 3.嵐熙這個是嵐熙 以後記好，嵐熙在儀表盤網站上沒有同步我給的任務內容",
+    "statusKey":  "completed",
+    "statusLabel":  "已回覆完成",
+    "headline":  "儀表盤網站：1. 嵐熙任務要同步最新任務 2. 嵐熙在左、蝦咩在右 3. 卡點救援要確實功能性 4. 強制停止要讓 TGBOT 暫停目前任務 5. 卡點救援和強制停止要依目前頁面角色分開作業",
+    "currentTaskInstruction":  "儀表盤網站：1. 嵐熙任務要同步最新任務 2. 嵐熙在左、蝦咩在右 3. 卡點救援要確實功能性 4. 強制停止要讓 TGBOT 暫停目前任務 5. 卡點救援和強制停止要依目前頁面角色分開作業",
+    "lanxiTaskInstruction":  "儀表盤網站：嵐熙任務同步最新任務；嵐熙固定左欄、蝦咩固定右欄；嵐熙頁面的卡點救援與強制停止只處理嵐熙 / OpenClaw，不混用蝦咩 TGBOT。",
     "blocker":  "沒有卡點",
-    "nextAction":  "完成後更新交付結果、網址、檔案路徑或明確卡點。",
-    "updatedAt":  "2026-07-04T23:13:13+08:00",
-    "checkedAt":  "2026-07-04T23:13:13+08:00",
+    "nextAction":  "可直接查看 Telegram 回覆結果。",
+    "updatedAt":  "2026-07-05T12:36:15+08:00",
+    "checkedAt":  "2026-07-05T12:36:15+08:00",
     "sourceType":  "local-generator",
     "sourceLabel":  "本機即時狀態產生器",
     "refreshSeconds":  1,
     "token":  {
-                  "totalTokens":  187047639,
-                  "taskCount":  48,
+                  "totalTokens":  96915898,
+                  "taskCount":  10,
                   "source":  "本機 Codex 執行緒紀錄"
               },
     "heartbeat":  {
                       "name":  "蝦咩",
-                      "ageSeconds":  7,
-                      "activeRequests":  1
+                      "ageSeconds":  18,
+                      "activeRequests":  0
                   },
     "openclaw":  {
                      "name":  "嵐熙",
                      "botUsername":  "嵐熙",
                      "statusKey":  "running",
                      "statusLabel":  "正常",
-                     "processCount":  5,
-                     "watchdogState":  "Running",
-                     "currentTaskInstruction":  "儀表盤網站更新 1.蝦咩嵐熙 切換欄位放到最上面 2.點擊卡點有反應單無法聯通到tgbot 讓他幫你解卡救援，所以功能徹底檢查 3.嵐熙這個是嵐熙 以後記好，嵐熙在儀表盤網站上沒有同步我給的任務內容",
-                     "currentTaskSource":  "runtime-status.json 最新指令保留 + 嵐熙狀態"
+                     "processCount":  6,
+                     "watchdogState":  "Ready",
+                     "currentTaskInstruction":  "儀表盤網站：嵐熙任務同步最新任務；嵐熙固定左欄、蝦咩固定右欄；嵐熙頁面的卡點救援與強制停止只處理嵐熙 / OpenClaw，不混用蝦咩 TGBOT。",
+                     "currentTaskSource":  "dashboard-task-override.json + 嵐熙 狀態"
                  },
     "monitors":  [
                      {
@@ -37,38 +37,38 @@
                          "label":  "蝦咩心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 7 秒前，執行中任務 1",
+                         "detail":  "心跳 18 秒前，執行中任務 0",
                          "source":  "codex_bot_heartbeat.json"
                      },
                      {
                          "id":  "telegram-request",
                          "label":  "Telegram 任務佇列",
-                         "statusKey":  "running",
-                         "statusLabel":  "運作中",
-                         "detail":  "儀表盤網站更新 1.蝦咩嵐熙 切換欄位放到最上面 2.點擊卡點有反應單無法聯通到tgbot 讓他幫你解卡救援，所以功能徹底檢查 3.嵐熙這個是嵐熙 以後記好，嵐熙在儀表盤網站上沒有同步我給的任務內容",
+                         "statusKey":  "completed",
+                         "statusLabel":  "已回覆完成",
+                         "detail":  "儀表盤網站：1. 嵐熙任務要同步最新任務 2. 嵐熙在左、蝦咩在右 3. 卡點救援要確實功能性 4. 強制停止要讓 TGBOT 暫停目前任務 5. 卡點救援和強制停止要依目前頁面角色分開作業",
                          "source":  "telegram_request_status.json"
                      },
                      {
                          "id":  "openclaw-task",
                          "label":  "嵐熙任務",
-                         "statusKey":  "running",
+                         "statusKey":  "completed",
                          "statusLabel":  "同步目前指令",
-                         "detail":  "儀表盤網站更新 1.蝦咩嵐熙 切換欄位放到最上面 2.點擊卡點有反應單無法聯通到tgbot 讓他幫你解卡救援，所以功能徹底檢查 3.嵐熙這個是嵐熙 以後記好，嵐熙在儀表盤網站上沒有同步我給的任務內容",
-                         "source":  "runtime-status.json 最新指令保留 + 嵐熙狀態"
+                         "detail":  "儀表盤網站：嵐熙任務同步最新任務；嵐熙固定左欄、蝦咩固定右欄；嵐熙頁面的卡點救援與強制停止只處理嵐熙 / OpenClaw，不混用蝦咩 TGBOT。",
+                         "source":  "dashboard-task-override.json + 嵐熙 狀態"
                      },
                      {
                          "id":  "openclaw-process",
                          "label":  "嵐熙進程",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "偵測到 5 個相關進程",
+                         "detail":  "偵測到 6 個相關進程",
                          "source":  "Win32_Process"
                      },
                      {
                          "id":  "openclaw-watchdog",
                          "label":  "嵐熙看門排程",
-                         "statusKey":  "running",
-                         "statusLabel":  "Running",
+                         "statusKey":  "watch",
+                         "statusLabel":  "Ready",
                          "detail":  "OpenClaw Watchdog 排程目前狀態",
                          "source":  "Scheduled Task"
                      },
@@ -77,7 +77,7 @@
                          "label":  "Codex token 統計",
                          "statusKey":  "running",
                          "statusLabel":  "已讀取",
-                         "detail":  "187047639 tokens，任務 48",
+                         "detail":  "96915898 tokens，任務 10",
                          "source":  "本機 Codex 執行緒紀錄"
                      },
                      {
@@ -85,7 +85,7 @@
                          "label":  "狀態產生器",
                          "statusKey":  "running",
                          "statusLabel":  "已更新",
-                         "detail":  "產生時間 2026-07-04 23:13:13",
+                         "detail":  "產生時間 2026-07-05 12:36:15",
                          "source":  "tools/update-runtime-status.ps1"
                      },
                      {

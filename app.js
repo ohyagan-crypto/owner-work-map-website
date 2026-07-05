@@ -18,14 +18,14 @@ const DASHBOARD_ACTIONS = {
   rescue: {
     loading: "救援中",
     idle: "卡點救援",
-    success: "已送出卡點救援，會保留目前作業並嘗試續作。",
+    success: "已送出卡點救援，會依目前頁面角色嘗試續作。",
     failure: "卡點救援沒有完成，請確認本機即時服務仍在運作。",
     endpointMissing: "卡點救援需要本機即時服務，現在沒有讀到可用端點。"
   },
   "force-stop": {
     loading: "停止中",
     idle: "強制停止",
-    success: "已送出強制停止。",
+    success: "已送出強制停止，已依目前頁面角色分開處理。",
     failure: "強制停止沒有完成，請確認本機即時服務仍在運作。",
     endpointMissing: "強制停止需要本機即時服務，現在沒有讀到可用端點。"
   }
@@ -35,7 +35,7 @@ const dashboardStats = [
   { label: "已安裝技能", value: "80", note: "含主技能、備份版與歷史入口" },
   { label: "主技能項目", value: "53", note: "依技能名稱去重後的可查能力" },
   { label: "記憶檔", value: "88", note: "規則、偏好、成功流程與工作交接記錄" },
-  { label: "監控項目", value: "9", note: "蝦咩、嵐熙任務、token 與快照" }
+  { label: "監控項目", value: "9", note: "嵐熙、蝦咩任務、token 與快照" }
 ];
 
 const completedItems = [
@@ -71,8 +71,8 @@ const completedItems = [
   {
     title: "蝦咩與嵐熙左右分類",
     status: "已套用",
-    summary: "頂部儀表盤改為人物分區：蝦咩集中任務與回覆狀態，嵐熙集中自動化與快照狀態。",
-    points: ["蝦咩任務集中顯示", "嵐熙任務集中顯示", "任務、token、監控與卡點依人物分類"]
+    summary: "頂部儀表盤改為人物分區：嵐熙在左集中自動化與快照狀態，蝦咩在右集中任務與回覆狀態。",
+    points: ["嵐熙任務集中顯示", "蝦咩任務集中顯示", "任務、token、監控與卡點依人物分類"]
   },
   {
     title: "移除舊版說明區塊",
@@ -554,9 +554,9 @@ const timeline = [
   ["2026-07-03", "整合主控台與技能入口版面，新增嵐熙獨立任務欄位與頂端嵐熙任務快覽。"],
   ["2026-07-03", "修正前端初始化中斷，讓 runtime-status.json、技能包清單與頂端同步狀態可正常顯示。"],
   ["2026-07-03", "重新同步按鈕移到頂端控制列，點擊時加入短促音效、彩色粒子與同步完成回饋。"],
-  ["2026-07-03", "頂端儀表盤改為蝦咩左側、嵐熙右側的雙欄總覽，手機版保留左右分開且不擠壓主狀態。"],
-  ["2026-07-03", "狀態總控台改成蝦咩左列、嵐熙右列，任務、token、監控、卡點與檢查依人物來源分類。"],
-  ["2026-07-03", "紅圈內 Live Status 說明文字不再顯示，主介面改成左右分欄，左看蝦咩與嵐熙，右看狀態與監控。"],
+  ["2026-07-03", "頂端儀表盤改為嵐熙左側、蝦咩右側的雙欄總覽，手機版保留左右分開且不擠壓主狀態。"],
+  ["2026-07-03", "狀態總控台改成嵐熙左列、蝦咩右列，任務、token、監控、卡點與檢查依人物來源分類。"],
+  ["2026-07-03", "紅圈內 Live Status 說明文字不再顯示，主介面改成左右分欄，左看嵐熙，右看蝦咩與狀態監控。"],
   ["2026-07-03", "依主人補充移除舊版說明區塊，改為監控、技能包與操作資訊。"],
   ["2026-07-03", "技能包清單擴充為功能、使用場景、觸發詞與備份版本備註。"],
   ["2026-07-03", "監控項目加入頂部即時儀表盤與下方明細區。"],
@@ -751,11 +751,13 @@ function renderActiveTaskPanel(status = lastRenderedStatus) {
 async function runDashboardAction(action) {
   const config = DASHBOARD_ACTIONS[action];
   if (!config || actionInFlight) return;
+  const target = selectedAgentView === "shami" ? "shami" : "lanxi";
+  const targetLabel = target === "lanxi" ? "嵐熙" : "蝦咩";
 
   playRefreshSound();
   triggerRefreshEffect();
   setActionButtonsLoading(action, true);
-  setActionFeedback(action === "rescue" ? "正在嘗試救援卡點並保留目前作業..." : "正在送出強制停止...", "idle");
+  setActionFeedback(action === "rescue" ? `正在嘗試救援${targetLabel}卡點...` : `正在送出${targetLabel}強制停止...`, "idle");
 
   try {
     const endpoints = await liveEndpointCandidates();
@@ -766,10 +768,12 @@ async function runDashboardAction(action) {
     let lastError = null;
     for (const endpoint of endpoints) {
       try {
-        await fetchStatusJson(`${endpoint}/api/status?ts=${Date.now()}`, 4500);
-        const response = await fetch(`${endpoint}/api/action/${action}`, {
+        const response = await fetch(`${endpoint}/api/action/${action}?target=${encodeURIComponent(target)}`, {
           method: "POST",
-          cache: "no-store"
+          cache: "no-store",
+          headers: {
+            "X-Dashboard-Target": target
+          }
         });
         let payload = {};
         try {
@@ -1285,17 +1289,6 @@ function renderAgentStrip(status) {
 
   const agents = [
     {
-      kind: "shami",
-      avatar: "assets/shami-avatar.png",
-      role: "TGBOT",
-      name: heartbeat.name || "蝦咩",
-      state: status.statusLabel || "資料待同步",
-      stateKey: statusTone(status.statusKey || "watch"),
-      metaLabel: "當前任務指令",
-      meta: currentTaskInstruction(status),
-      detail: heartbeatMeta
-    },
-    {
       kind: "lanxi",
       avatar: "assets/lanxi-avatar.png",
       role: LANXI_BOT_USERNAME,
@@ -1305,6 +1298,17 @@ function renderAgentStrip(status) {
       metaLabel: "目前任務指令",
       meta: lanxiTaskInstruction(status),
       detail: publicText(`${openclawProcessText} · 看門排程 ${openclaw.watchdogState || "未取得"}`)
+    },
+    {
+      kind: "shami",
+      avatar: "assets/shami-avatar.png",
+      role: "TGBOT",
+      name: heartbeat.name || "蝦咩",
+      state: status.statusLabel || "資料待同步",
+      stateKey: statusTone(status.statusKey || "watch"),
+      metaLabel: "當前任務指令",
+      meta: currentTaskInstruction(status),
+      detail: heartbeatMeta
     }
   ];
 
@@ -1328,8 +1332,8 @@ function renderAgentStrip(status) {
   const shamiSlot = $("#shamiAgent");
   const lanxiSlot = $("#lanxiAgent");
   if (shamiSlot && lanxiSlot) {
-    shamiSlot.innerHTML = agentCard(agents[0]);
-    lanxiSlot.innerHTML = agentCard(agents[1]);
+    shamiSlot.innerHTML = agentCard(agents.find((agent) => agent.kind === "shami"));
+    lanxiSlot.innerHTML = agentCard(agents.find((agent) => agent.kind === "lanxi"));
     return;
   }
 
@@ -1573,7 +1577,7 @@ function bindAgentViewSwitch() {
     button.addEventListener("keydown", (event) => {
       if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
       event.preventDefault();
-      const nextView = event.key === "ArrowLeft" || event.key === "Home" ? "shami" : "lanxi";
+      const nextView = event.key === "ArrowLeft" || event.key === "Home" ? "lanxi" : "shami";
       setAgentView(nextView);
       const nextButton = buttons.find((item) => item.dataset.agentViewButton === nextView);
       if (nextButton) nextButton.focus();

@@ -1,6 +1,8 @@
 ﻿param(
   [string]$SiteRoot = (Split-Path -Parent $PSScriptRoot),
-  [string]$BotRoot = "C:\Users\max\tg-openai-bot"
+  [string]$BotRoot = "C:\Users\max\tg-openai-bot",
+  [ValidateSet("lanxi", "shami")]
+  [string]$Target = "lanxi"
 )
 
 Set-StrictMode -Version Latest
@@ -70,43 +72,43 @@ function Get-TelegramHeartbeatSummary {
   }
 }
 
-$candidateTasks = @(
-  "OpenClaw Watchdog",
-  "OpenClaw Gateway",
-  "Lanxin Login Check Every 2 Hours",
-  "TGBot OpenClaw Maintenance Hourly",
-  "Codex Telegram Bot Watchdog Hourly",
-  "Codex Telegram Bot Watchdog Startup",
-  "OpenClaw_CodexBot_HourlyHealth",
-  "OwnerWorkMapDashboardAutoUpgrade30m"
-)
-
-foreach ($taskName in $candidateTasks) {
-  $task = Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue
+function Start-RecoverableTask {
+  param([string]$TaskName)
+  $task = Get-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue
   if (-not $task) {
-    $unavailableTasks.Add($taskName)
-    continue
+    $unavailableTasks.Add($TaskName)
+    return
   }
 
   if ($task.State -eq "Disabled") {
-    Enable-ScheduledTask -TaskName $taskName | Out-Null
-    $enabledTasks.Add($taskName)
-    $task = Get-ScheduledTask -TaskName $taskName -ErrorAction SilentlyContinue
+    Enable-ScheduledTask -TaskName $TaskName | Out-Null
+    $enabledTasks.Add($TaskName)
+    $task = Get-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue
   }
 
   if ($task.State -eq "Ready") {
-    Start-ScheduledTask -TaskName $taskName
-    $startedTasks.Add($taskName)
+    Start-ScheduledTask -TaskName $TaskName
+    $startedTasks.Add($TaskName)
   } elseif ($task.State -eq "Running") {
-    $alreadyRunning.Add($taskName)
+    $alreadyRunning.Add($TaskName)
   }
+}
+
+$candidateTasks = if ($Target -eq "lanxi") {
+  @("OpenClaw Watchdog", "OpenClaw Gateway")
+} else {
+  @("Codex Telegram Bot Watchdog Hourly", "Codex Telegram Bot Watchdog Startup", "TGBot OpenClaw Maintenance Hourly", "OpenClaw_CodexBot_HourlyHealth")
+}
+
+foreach ($taskName in $candidateTasks) {
+  Start-RecoverableTask -TaskName $taskName
 }
 
 if (Test-Path -LiteralPath $statusScript) {
   & $statusScript -SiteRoot $SiteRoot -OutputPath $statusPath | Out-Null
 }
 
-if (Test-Path -LiteralPath $healthScript) {
+if ($Target -eq "shami" -and (Test-Path -LiteralPath $healthScript)) {
   try {
     & $healthScript | Out-Null
     $healthActions.Add("TGBOT 自動健康檢查")
@@ -119,9 +121,10 @@ $heartbeatSummary = Get-TelegramHeartbeatSummary
 
 $payload = [ordered]@{
   action = "rescue"
+  target = $Target
   createdAt = (Get-Date).ToString("o")
   siteRoot = $SiteRoot
-  behavior = "refresh status, re-enable recoverable tasks, start ready watchdog tasks, and verify TGBOT heartbeat without force-stopping current work"
+  behavior = if ($Target -eq "lanxi") { "refresh lanxi status and restart recoverable OpenClaw schedules only" } else { "refresh shami TGBOT status, run health check, and restart recoverable bot schedules only" }
   startedTasks = @($startedTasks)
   enabledTasks = @($enabledTasks)
   alreadyRunning = @($alreadyRunning)
@@ -133,7 +136,7 @@ $payload = [ordered]@{
 $json = $payload | ConvertTo-Json -Depth 5
 [System.IO.File]::WriteAllText($signalPath, $json + [Environment]::NewLine, $utf8NoBom)
 [System.IO.File]::WriteAllText($latestSignalPath, $json + [Environment]::NewLine, $utf8NoBom)
-if (Test-Path -LiteralPath $BotRoot) {
+if ($Target -eq "shami" -and (Test-Path -LiteralPath $BotRoot)) {
   [System.IO.File]::WriteAllText($botSignalPath, $json + [Environment]::NewLine, $utf8NoBom)
 }
 
@@ -144,8 +147,16 @@ $heartbeatText = if ($heartbeatSummary.ok) {
   "$($heartbeatSummary.label)。"
 }
 
-if ($changed.Count -gt 0) {
-  "已送出卡點救援：已刷新狀態，並啟動或恢復可續作排程：" + ($changed -join "、") + "。$heartbeatText 沒有強制停止目前作業。"
+if ($Target -eq "lanxi") {
+  if ($changed.Count -gt 0) {
+    "已送出嵐熙卡點救援：已刷新狀態，並啟動或恢復 " + ($changed -join "、") + "。蝦咩 TGBOT 沒有被停止。"
+  } else {
+    "已送出嵐熙卡點救援：已刷新狀態，嵐熙可續作排程目前已在待命或運作中。蝦咩 TGBOT 沒有被停止。"
+  }
 } else {
-  "已送出卡點救援：已刷新狀態，目前可續作排程已在待命或運作中。$heartbeatText 沒有強制停止目前作業。"
+  if ($changed.Count -gt 0) {
+    "已送出蝦咩卡點救援：已啟動或恢復 " + ($changed -join "、") + "。$heartbeatText 嵐熙 OpenClaw 沒有被停止。"
+  } else {
+    "已送出蝦咩卡點救援：TGBOT 可續作排程已在待命或運作中。$heartbeatText 嵐熙 OpenClaw 沒有被停止。"
+  }
 }

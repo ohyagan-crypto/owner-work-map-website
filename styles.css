@@ -557,6 +557,18 @@ body[data-agent-view="lanxi"] .active-task-banner {
   overflow: hidden;
 }
 
+.assistant-stage .lanxi-portrait {
+  order: -1;
+}
+
+.assistant-stage .assistant-core-copy {
+  order: 0;
+}
+
+.assistant-stage .shami-portrait {
+  order: 1;
+}
+
 .assistant-stage::before,
 .assistant-stage::after {
   position: absolute;
