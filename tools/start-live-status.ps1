@@ -1,5 +1,5 @@
 param(
-    [int]$Port = 4190,
+    [int]$Port = 4206,
     [string]$CloudflaredPath = ""
 )
 
@@ -25,9 +25,14 @@ function Test-PortFree {
     }
 }
 
-while (-not (Test-PortFree -CandidatePort $Port)) {
-    $Port += 1
-    if ($Port -gt 4210) { throw "No free local port found for live status server." }
+function Test-DashboardStatus {
+    param([int]$CandidatePort)
+    try {
+        $status = Invoke-RestMethod -Uri "http://127.0.0.1:$CandidatePort/api/status?ts=$([DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds())" -TimeoutSec 5
+        return $null -ne $status.statusKey
+    } catch {
+        return $false
+    }
 }
 
 $nodeOut = Join-Path $LogRoot "node.out.log"
@@ -35,16 +40,32 @@ $nodeErr = Join-Path $LogRoot "node.err.log"
 $tunnelOut = Join-Path $LogRoot "cloudflared.out.log"
 $tunnelErr = Join-Path $LogRoot "cloudflared.err.log"
 
-$env:PORT = [string]$Port
-$node = Start-Process -FilePath "node.exe" `
-    -ArgumentList @("server.js") `
-    -WorkingDirectory $SiteRoot `
-    -WindowStyle Hidden `
-    -RedirectStandardOutput $nodeOut `
-    -RedirectStandardError $nodeErr `
-    -PassThru
+$node = $null
+$nodeMode = "existing"
+if (-not (Test-DashboardStatus -CandidatePort $Port)) {
+    if (-not (Test-PortFree -CandidatePort $Port)) {
+        throw "Port $Port is occupied, but it is not serving the dashboard status API. Refusing to open another random port."
+    }
 
-Start-Sleep -Milliseconds 700
+    $env:PORT = [string]$Port
+    $node = Start-Process -FilePath "node.exe" `
+        -ArgumentList @("server.js") `
+        -WorkingDirectory $SiteRoot `
+        -WindowStyle Hidden `
+        -RedirectStandardOutput $nodeOut `
+        -RedirectStandardError $nodeErr `
+        -PassThru
+    $nodeMode = "started"
+
+    $nodeDeadline = (Get-Date).AddSeconds(15)
+    while ((Get-Date) -lt $nodeDeadline -and -not (Test-DashboardStatus -CandidatePort $Port)) {
+        Start-Sleep -Milliseconds 500
+    }
+
+    if (-not (Test-DashboardStatus -CandidatePort $Port)) {
+        throw "Dashboard status API did not become ready on port $Port."
+    }
+}
 
 if (-not $CloudflaredPath.Trim()) {
     $candidates = @(
@@ -97,7 +118,8 @@ $config = "window.OWNER_LIVE_STATUS_ENDPOINT = `"$publicUrl`";"
 $summary = [ordered]@{
     localUrl = "http://127.0.0.1:$Port/"
     liveEndpoint = $publicUrl
-    nodePid = $node.Id
+    nodePid = if ($node) { $node.Id } else { $null }
+    nodeMode = $nodeMode
     cloudflaredPid = $cloudflared.Id
     logRoot = $LogRoot
 }

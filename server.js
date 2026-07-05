@@ -4,7 +4,7 @@ const path = require("path");
 const { execFile } = require("child_process");
 
 const root = __dirname;
-const port = Number(process.env.PORT || 4179);
+const port = Number(process.env.PORT || 4206);
 const statusScript = path.join(root, "tools", "update-runtime-status.ps1");
 const rescueScript = path.join(root, "tools", "rescue-dashboard-blocker.ps1");
 const forceStopScript = path.join(root, "tools", "force-stop-dashboard-work.ps1");
