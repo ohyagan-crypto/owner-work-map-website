@@ -18,6 +18,8 @@ New-Item -ItemType Directory -Path $backupRoot -Force | Out-Null
 $signalPath = Join-Path $backupRoot "dashboard_force_stop_$stamp.json"
 $latestSignalPath = Join-Path $backupRoot "dashboard_force_stop_latest.json"
 $botPauseSignalPath = Join-Path $BotRoot "dashboard_force_stop_signal.json"
+$statusPath = Join-Path $SiteRoot "runtime-status.json"
+$statusScript = Join-Path $PSScriptRoot "update-runtime-status.ps1"
 $stoppedTasks = New-Object System.Collections.Generic.List[string]
 $disabledTasks = New-Object System.Collections.Generic.List[string]
 $taskWarnings = New-Object System.Collections.Generic.List[string]
@@ -120,6 +122,14 @@ $json = $payload | ConvertTo-Json -Depth 5
 [System.IO.File]::WriteAllText($latestSignalPath, $json + [Environment]::NewLine, $utf8NoBom)
 if ($Target -eq "shami" -and (Test-Path -LiteralPath $BotRoot)) {
   [System.IO.File]::WriteAllText($botPauseSignalPath, $json + [Environment]::NewLine, $utf8NoBom)
+}
+
+if (Test-Path -LiteralPath $statusScript) {
+  try {
+    & $statusScript -SiteRoot $SiteRoot -OutputPath $statusPath | Out-Null
+  } catch {
+    $taskWarnings.Add("狀態快照刷新未完成")
+  }
 }
 
 if ($Target -eq "lanxi") {

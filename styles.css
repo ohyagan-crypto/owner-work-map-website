@@ -927,27 +927,29 @@ body[data-agent-view="lanxi"] .active-task-banner {
   line-height: 1.05;
 }
 
-body[data-agent-view="shami"] .lanxi-column,
-body[data-agent-view="shami"] .lanxi-chip,
-body[data-agent-view="shami"] .lanxi-task-chip,
-body[data-agent-view="shami"] .lanxi-monitor-section,
-body[data-agent-view="lanxi"] .shami-column,
-body[data-agent-view="lanxi"] .shami-chip,
-body[data-agent-view="lanxi"] .shami-task-chip,
-body[data-agent-view="lanxi"] .shami-monitor-section {
-  display: none;
-}
+@media (max-width: 720px) {
+  body[data-agent-view="shami"] .lanxi-column,
+  body[data-agent-view="shami"] .lanxi-chip,
+  body[data-agent-view="shami"] .lanxi-task-chip,
+  body[data-agent-view="shami"] .lanxi-monitor-section,
+  body[data-agent-view="lanxi"] .shami-column,
+  body[data-agent-view="lanxi"] .shami-chip,
+  body[data-agent-view="lanxi"] .shami-task-chip,
+  body[data-agent-view="lanxi"] .shami-monitor-section {
+    display: none;
+  }
 
-body[data-agent-view="shami"] .dashboard-live-layout,
-body[data-agent-view="lanxi"] .dashboard-live-layout,
-body[data-agent-view="shami"] .monitor-section-columns,
-body[data-agent-view="lanxi"] .monitor-section-columns {
-  grid-template-columns: minmax(0, 1fr);
-}
+  body[data-agent-view="shami"] .dashboard-live-layout,
+  body[data-agent-view="lanxi"] .dashboard-live-layout,
+  body[data-agent-view="shami"] .monitor-section-columns,
+  body[data-agent-view="lanxi"] .monitor-section-columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
 
-body[data-agent-view="shami"] .dashboard-live-layout::before,
-body[data-agent-view="lanxi"] .dashboard-live-layout::before {
-  display: none;
+  body[data-agent-view="shami"] .dashboard-live-layout::before,
+  body[data-agent-view="lanxi"] .dashboard-live-layout::before {
+    display: none;
+  }
 }
 
 body[data-agent-view] .command-strip {

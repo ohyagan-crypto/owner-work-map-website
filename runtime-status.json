@@ -1,35 +1,35 @@
 {
-    "statusKey":  "completed",
-    "statusLabel":  "已回覆完成",
-    "headline":  "儀表盤網站：1. 嵐熙任務要同步最新任務 2. 嵐熙在左、蝦咩在右 3. 卡點救援要確實功能性 4. 強制停止要讓 TGBOT 暫停目前任務 5. 卡點救援和強制停止要依目前頁面角色分開作業",
-    "currentTaskInstruction":  "儀表盤網站：1. 嵐熙任務要同步最新任務 2. 嵐熙在左、蝦咩在右 3. 卡點救援要確實功能性 4. 強制停止要讓 TGBOT 暫停目前任務 5. 卡點救援和強制停止要依目前頁面角色分開作業",
-    "lanxiTaskInstruction":  "儀表盤網站：嵐熙任務同步最新任務；嵐熙固定左欄、蝦咩固定右欄；嵐熙頁面的卡點救援與強制停止只處理嵐熙 / OpenClaw，不混用蝦咩 TGBOT。",
+    "statusKey":  "running",
+    "statusLabel":  "運作中",
+    "headline":  "儀表盤網站 更新 1.嵐熙任務沒有同步 2.嵐熙 蝦咩位子左右對調 3.卡點救援要確實功能性 4.強制停止無效果，要讓tgbot暫停一起任務 5.卡點救援和 強制停止要能分開作業，舉例我頁面在嵐熙 就是救援嵐熙或者強停嵐熙 反之蝦咩也是",
+    "currentTaskInstruction":  "儀表盤網站 更新 1.嵐熙任務沒有同步 2.嵐熙 蝦咩位子左右對調 3.卡點救援要確實功能性 4.強制停止無效果，要讓tgbot暫停一起任務 5.卡點救援和 強制停止要能分開作業，舉例我頁面在嵐熙 就是救援嵐熙或者強停嵐熙 反之蝦咩也是",
+    "lanxiTaskInstruction":  "儀表盤網站 更新 1.嵐熙任務沒有同步 2.嵐熙 蝦咩位子左右對調 3.卡點救援要確實功能性 4.強制停止無效果，要讓tgbot暫停一起任務 5.卡點救援和 強制停止要能分開作業，舉例我頁面在嵐熙 就是救援嵐熙或者強停嵐熙 反之蝦咩也是",
     "blocker":  "沒有卡點",
-    "nextAction":  "可直接查看 Telegram 回覆結果。",
-    "updatedAt":  "2026-07-05T12:42:49+08:00",
-    "checkedAt":  "2026-07-05T12:42:49+08:00",
+    "nextAction":  "完成後更新交付結果、網址、檔案路徑或明確卡點。",
+    "updatedAt":  "2026-07-05T13:31:20+08:00",
+    "checkedAt":  "2026-07-05T13:31:20+08:00",
     "sourceType":  "local-generator",
     "sourceLabel":  "本機即時狀態產生器",
     "refreshSeconds":  1,
     "token":  {
-                  "totalTokens":  99579302,
-                  "taskCount":  10,
+                  "totalTokens":  105173046,
+                  "taskCount":  14,
                   "source":  "本機 Codex 執行緒紀錄"
               },
     "heartbeat":  {
                       "name":  "蝦咩",
-                      "ageSeconds":  6,
-                      "activeRequests":  0
+                      "ageSeconds":  8,
+                      "activeRequests":  1
                   },
     "openclaw":  {
                      "name":  "嵐熙",
                      "botUsername":  "嵐熙",
                      "statusKey":  "running",
                      "statusLabel":  "正常",
-                     "processCount":  6,
-                     "watchdogState":  "Ready",
-                     "currentTaskInstruction":  "儀表盤網站：嵐熙任務同步最新任務；嵐熙固定左欄、蝦咩固定右欄；嵐熙頁面的卡點救援與強制停止只處理嵐熙 / OpenClaw，不混用蝦咩 TGBOT。",
-                     "currentTaskSource":  "dashboard-task-override.json + 嵐熙 狀態"
+                     "processCount":  4,
+                     "watchdogState":  "Running",
+                     "currentTaskInstruction":  "儀表盤網站 更新 1.嵐熙任務沒有同步 2.嵐熙 蝦咩位子左右對調 3.卡點救援要確實功能性 4.強制停止無效果，要讓tgbot暫停一起任務 5.卡點救援和 強制停止要能分開作業，舉例我頁面在嵐熙 就是救援嵐熙或者強停嵐熙 反之蝦咩也是",
+                     "currentTaskSource":  "telegram_request_status.json + 嵐熙 狀態"
                  },
     "monitors":  [
                      {
@@ -37,38 +37,38 @@
                          "label":  "蝦咩心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 6 秒前，執行中任務 0",
+                         "detail":  "心跳 8 秒前，執行中任務 1",
                          "source":  "codex_bot_heartbeat.json"
                      },
                      {
                          "id":  "telegram-request",
                          "label":  "Telegram 任務佇列",
-                         "statusKey":  "completed",
-                         "statusLabel":  "已回覆完成",
-                         "detail":  "儀表盤網站：1. 嵐熙任務要同步最新任務 2. 嵐熙在左、蝦咩在右 3. 卡點救援要確實功能性 4. 強制停止要讓 TGBOT 暫停目前任務 5. 卡點救援和強制停止要依目前頁面角色分開作業",
+                         "statusKey":  "running",
+                         "statusLabel":  "運作中",
+                         "detail":  "儀表盤網站 更新 1.嵐熙任務沒有同步 2.嵐熙 蝦咩位子左右對調 3.卡點救援要確實功能性 4.強制停止無效果，要讓tgbot暫停一起任務 5.卡點救援和 強制停止要能分開作業，舉例我頁面在嵐熙 就是救援嵐熙或者強停嵐熙 反之蝦咩也是",
                          "source":  "telegram_request_status.json"
                      },
                      {
                          "id":  "openclaw-task",
                          "label":  "嵐熙任務",
-                         "statusKey":  "completed",
+                         "statusKey":  "running",
                          "statusLabel":  "同步目前指令",
-                         "detail":  "儀表盤網站：嵐熙任務同步最新任務；嵐熙固定左欄、蝦咩固定右欄；嵐熙頁面的卡點救援與強制停止只處理嵐熙 / OpenClaw，不混用蝦咩 TGBOT。",
-                         "source":  "dashboard-task-override.json + 嵐熙 狀態"
+                         "detail":  "儀表盤網站 更新 1.嵐熙任務沒有同步 2.嵐熙 蝦咩位子左右對調 3.卡點救援要確實功能性 4.強制停止無效果，要讓tgbot暫停一起任務 5.卡點救援和 強制停止要能分開作業，舉例我頁面在嵐熙 就是救援嵐熙或者強停嵐熙 反之蝦咩也是",
+                         "source":  "telegram_request_status.json + 嵐熙 狀態"
                      },
                      {
                          "id":  "openclaw-process",
                          "label":  "嵐熙進程",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "偵測到 6 個相關進程",
+                         "detail":  "偵測到 4 個相關進程",
                          "source":  "Win32_Process"
                      },
                      {
                          "id":  "openclaw-watchdog",
                          "label":  "嵐熙看門排程",
-                         "statusKey":  "watch",
-                         "statusLabel":  "Ready",
+                         "statusKey":  "running",
+                         "statusLabel":  "Running",
                          "detail":  "OpenClaw Watchdog 排程目前狀態",
                          "source":  "Scheduled Task"
                      },
@@ -77,7 +77,7 @@
                          "label":  "Codex token 統計",
                          "statusKey":  "running",
                          "statusLabel":  "已讀取",
-                         "detail":  "99579302 tokens，任務 10",
+                         "detail":  "105173046 tokens，任務 14",
                          "source":  "本機 Codex 執行緒紀錄"
                      },
                      {
@@ -85,7 +85,7 @@
                          "label":  "狀態產生器",
                          "statusKey":  "running",
                          "statusLabel":  "已更新",
-                         "detail":  "產生時間 2026-07-05 12:42:49",
+                         "detail":  "產生時間 2026-07-05 13:31:20",
                          "source":  "tools/update-runtime-status.ps1"
                      },
                      {

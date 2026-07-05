@@ -1,1 +1,1 @@
-window.OWNER_LIVE_STATUS_ENDPOINT = "https://theories-pharmacies-plains-violation.trycloudflare.com";
+window.OWNER_LIVE_STATUS_ENDPOINT = "https://weekends-hampton-advisor-fares.trycloudflare.com";

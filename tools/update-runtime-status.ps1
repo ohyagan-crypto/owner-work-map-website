@@ -189,6 +189,16 @@ function Get-NewestRequestRecord {
     return $records | Sort-Object { if ($_.updated_at) { [double]$_.updated_at } else { 0 } } | Select-Object -Last 1
 }
 
+function Get-RequestTaskInstruction {
+    param($RequestRecord)
+    if ($null -eq $RequestRecord -or -not $RequestRecord.task) { return "" }
+    $raw = ([string]$RequestRecord.task).Trim()
+    if ($raw -match "^(讀取照片|讀取文件|安裝文件|安裝檔案)(\s|$)") { return "" }
+    $repaired = Repair-MojibakeText -Text $raw
+    if (-not $repaired -or (Test-MojibakeText -Text $repaired)) { return "" }
+    return Normalize-TaskText -Text $repaired
+}
+
 function Test-MojibakeText {
     param([string]$Text)
     if (-not $Text) { return $false }
@@ -510,6 +520,8 @@ $lanxiTaskInstruction = ""
 $lanxiTaskSource = ""
 $lanxiTaskStatusKey = $openclawTask.statusKey
 $lanxiTaskStatusLabel = $openclawTask.statusLabel
+$headlineFromDashboardOverride = $false
+$requestTaskInstruction = Get-RequestTaskInstruction -RequestRecord $request
 
 $statusKey = "standby"
 $statusLabel = "正常待命"
@@ -602,9 +614,13 @@ if ($heartbeatAge -gt 120) {
 if ($CurrentTask.Trim()) {
     $headline = $CurrentTask.Trim()
     $currentInstructionSource = "手動指定目前任務"
+} elseif ($requestTaskInstruction) {
+    $headline = $requestTaskInstruction
+    $currentInstructionSource = "telegram_request_status.json"
 } elseif ($dashboardTaskOverride) {
     $headline = $dashboardTaskOverride.currentTaskInstruction
     $currentInstructionSource = $dashboardTaskOverride.source
+    $headlineFromDashboardOverride = $true
 } elseif (
     $existingStatus -and
     $existingStatus.currentTaskInstruction -and
@@ -627,12 +643,6 @@ if ($CurrentTask.Trim()) {
 ) {
     $headline = $uploadCaption
     $currentInstructionSource = "telegram_recent_uploads.json"
-} elseif ($request -and $request.task) {
-    $requestTaskText = Repair-MojibakeText -Text ([string]$request.task)
-    if ($requestTaskText -and -not (Test-MojibakeText -Text $requestTaskText)) {
-        $headline = Normalize-TaskText -Text $requestTaskText
-        $currentInstructionSource = "telegram_request_status.json"
-    }
 }
 
 if (-not $NextAction.Trim()) {
@@ -648,7 +658,7 @@ if ($explicitLanxiTask) {
     $lanxiTaskSource = "手動指定嵐熙任務 / $LanxiBotUsername"
     $lanxiTaskStatusKey = "running"
     $lanxiTaskStatusLabel = "手動同步"
-} elseif ($dashboardTaskOverride) {
+} elseif ($headlineFromDashboardOverride -and $dashboardTaskOverride) {
     $lanxiTaskInstruction = Protect-PublicText -Text $dashboardTaskOverride.lanxiTaskInstruction
     $lanxiTaskSource = "$($dashboardTaskOverride.source) + $LanxiBotUsername 狀態"
     $lanxiTaskStatusKey = $statusKey
@@ -656,6 +666,11 @@ if ($explicitLanxiTask) {
 } elseif ($currentInstructionSource) {
     $lanxiTaskInstruction = $headline
     $lanxiTaskSource = "$currentInstructionSource + $LanxiBotUsername 狀態"
+    $lanxiTaskStatusKey = $statusKey
+    $lanxiTaskStatusLabel = "同步目前指令"
+} elseif ($dashboardTaskOverride) {
+    $lanxiTaskInstruction = Protect-PublicText -Text $dashboardTaskOverride.lanxiTaskInstruction
+    $lanxiTaskSource = "$($dashboardTaskOverride.source) + $LanxiBotUsername 狀態"
     $lanxiTaskStatusKey = $statusKey
     $lanxiTaskStatusLabel = "同步目前指令"
 } elseif ($openclawTask.detail) {
