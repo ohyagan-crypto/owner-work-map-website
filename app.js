@@ -9,18 +9,19 @@ const LIVE_TIMEOUT_MS = 2200;
 const LIVE_RETRY_COOLDOWN_MS = 5000;
 const AGENT_VIEW_STORAGE_KEY = "ownerDashboardAgentViewLanxiTop20260704";
 const LANXI_BOT_USERNAME = "@codexmaster6726_bot";
+const AGENT_LABELS = { lanxi: "嵐熙", shami: "蝦咩" };
 const DASHBOARD_ACTIONS = {
   rescue: {
     loading: "救援中",
-    idle: "卡點救援",
-    success: "已送出卡點救援，會保留目前作業並嘗試續作。",
+    idle: "救援",
+    success: "已送出卡點救援，會依目前頁面角色嘗試續作，不會混用另一位助手。",
     failure: "卡點救援沒有完成，請確認本機即時服務仍在運作。",
     endpointMissing: "卡點救援需要本機即時服務，現在沒有讀到可用端點。"
   },
   "force-stop": {
     loading: "停止中",
-    idle: "強制停止",
-    success: "已送出強制停止。",
+    idle: "停止",
+    success: "已送出強制停止，嵐熙只停 OpenClaw；蝦咩會中斷 Telegram 執行中任務。",
     failure: "強制停止沒有完成，請確認本機即時服務仍在運作。",
     endpointMissing: "強制停止需要本機即時服務，現在沒有讀到可用端點。"
   }
@@ -703,16 +704,38 @@ async function liveEndpointCandidates() {
   ].filter(Boolean)));
 }
 
+function currentActionTarget() {
+  return selectedAgentView === "shami" ? "shami" : "lanxi";
+}
+
+function currentActionTargetLabel() {
+  return AGENT_LABELS[currentActionTarget()];
+}
+
+function updateActionTargetLabels() {
+  const targetLabel = currentActionTargetLabel();
+  document.querySelectorAll("[data-dashboard-action]").forEach((button) => {
+    const config = DASHBOARD_ACTIONS[button.dataset.dashboardAction] || {};
+    const text = `${config.idle || "操作"}${targetLabel}`;
+    const label = button.querySelector("b");
+    if (label && !button.classList.contains("is-running")) label.textContent = text;
+    button.setAttribute("aria-label", text);
+    button.title = `${text}，只處理目前頁面切換到的${targetLabel}任務`;
+  });
+}
+
 function setActionButtonsLoading(action, isLoading) {
   actionInFlight = isLoading ? action : "";
+  const targetLabel = currentActionTargetLabel();
   document.querySelectorAll("[data-dashboard-action]").forEach((button) => {
     const isTarget = button.dataset.dashboardAction === action;
     const config = DASHBOARD_ACTIONS[button.dataset.dashboardAction] || {};
     button.disabled = isLoading;
     button.classList.toggle("is-running", isLoading && isTarget);
     const label = button.querySelector("b");
-    if (label) label.textContent = isLoading && isTarget ? config.loading : config.idle;
+    if (label) label.textContent = isLoading && isTarget ? `${config.loading}${targetLabel}` : `${config.idle}${targetLabel}`;
   });
+  if (!isLoading) updateActionTargetLabels();
 }
 
 function activeTaskContent(status = lastRenderedStatus) {
@@ -1544,6 +1567,7 @@ function setAgentView(view, options = {}) {
   });
 
   renderActiveTaskPanel(lastRenderedStatus);
+  updateActionTargetLabels();
   if (options.persist === false) return;
   try {
     window.localStorage.setItem(AGENT_VIEW_STORAGE_KEY, nextView);
