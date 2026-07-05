@@ -18,7 +18,7 @@
 從網站資料夾執行：
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\update-runtime-status.ps1
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tools\update-runtime-status.ps1
 ```
 
 腳本會讀取本機心跳、Telegram 任務狀態、OpenClaw 摘要與 token 統計，產生 `runtime-status.json` 供公開頁讀取。

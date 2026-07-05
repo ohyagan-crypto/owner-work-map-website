@@ -695,6 +695,9 @@ if ($explicitLanxiTask) {
     $lanxiTaskSource = "手動指定嵐熙任務 / $LanxiBotUsername"
     $lanxiTaskStatusKey = "running"
     $lanxiTaskStatusLabel = "手動同步"
+} elseif ($openclawTask.detail) {
+    $lanxiTaskInstruction = Protect-PublicText -Text $openclawTask.detail
+    $lanxiTaskSource = Protect-PublicText -Text $openclawTask.source
 } elseif ($headlineFromDashboardOverride -and $dashboardTaskOverride) {
     $lanxiTaskInstruction = Protect-PublicText -Text $dashboardTaskOverride.lanxiTaskInstruction
     $lanxiTaskSource = "$($dashboardTaskOverride.source) + $LanxiBotUsername 狀態"
@@ -705,9 +708,6 @@ if ($explicitLanxiTask) {
     $lanxiTaskSource = "$($dashboardTaskOverride.source) + $LanxiBotUsername 狀態"
     $lanxiTaskStatusKey = $statusKey
     $lanxiTaskStatusLabel = "同步嵐熙指令"
-} elseif ($openclawTask.detail) {
-    $lanxiTaskInstruction = Protect-PublicText -Text $openclawTask.detail
-    $lanxiTaskSource = Protect-PublicText -Text $openclawTask.source
 } elseif ($null -ne $openclaw.processCount -and $openclaw.processCount -gt 0) {
     $lanxiTaskInstruction = "嵐熙 $LanxiBotUsername 自動化任務：瀏覽器流程、排程與本機進程監控正常；看門排程 $($openclaw.watchdogState)。"
     $lanxiTaskSource = "$LanxiBotUsername 本機狀態"
