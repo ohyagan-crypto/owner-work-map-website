@@ -98,7 +98,7 @@ function runPowerShellScript(scriptPath, target) {
       ],
       {
         windowsHide: true,
-        timeout: 20000,
+        timeout: 60000,
         maxBuffer: 1024 * 1024
       },
       (error, stdout) => {

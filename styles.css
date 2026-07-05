@@ -749,11 +749,11 @@ body[data-agent-view="lanxi"] .active-task-banner {
 .lanxi-column {
   --column-accent: var(--violet);
   --column-accent-soft: rgba(213, 107, 255, 0.14);
-  order: -1;
+  order: 1;
 }
 
 .shami-column {
-  order: 1;
+  order: -1;
 }
 
 .lanxi-column .actor-grid {
@@ -877,11 +877,11 @@ body[data-agent-view="lanxi"] .active-task-banner {
 }
 
 .agent-view-switch button[data-agent-view-button="lanxi"] {
-  order: -1;
+  order: 1;
 }
 
 .agent-view-switch button[data-agent-view-button="shami"] {
-  order: 1;
+  order: -1;
 }
 
 .agent-view-switch img {

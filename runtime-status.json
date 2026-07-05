@@ -6,19 +6,19 @@
     "lanxiTaskInstruction":  "儀表盤網站 1.嵐熙任務沒有同步 2.嵐熙 蝦咩位子左右對調 3.卡點救援要確實功能性 4.強制停止無效果，要讓tgbot暫停一起任務 5.卡點救援和 強制停止要能分開作業，舉例我頁面在嵐熙 就是救援嵐熙或者強停嵐熙 反之蝦咩也是",
     "blocker":  "沒有卡點",
     "nextAction":  "完成後更新交付結果、網址、檔案路徑或明確卡點。",
-    "updatedAt":  "2026-07-05T14:19:42+08:00",
-    "checkedAt":  "2026-07-05T14:19:42+08:00",
+    "updatedAt":  "2026-07-05T14:41:24+08:00",
+    "checkedAt":  "2026-07-05T14:41:24+08:00",
     "sourceType":  "local-generator",
     "sourceLabel":  "本機即時狀態產生器",
     "refreshSeconds":  1,
     "token":  {
-                  "totalTokens":  112815048,
-                  "taskCount":  16,
+                  "totalTokens":  116760760,
+                  "taskCount":  17,
                   "source":  "本機 Codex 執行緒紀錄"
               },
     "heartbeat":  {
                       "name":  "蝦咩",
-                      "ageSeconds":  18,
+                      "ageSeconds":  3,
                       "activeRequests":  1
                   },
     "openclaw":  {
@@ -26,7 +26,7 @@
                      "botUsername":  "嵐熙",
                      "statusKey":  "running",
                      "statusLabel":  "正常",
-                     "processCount":  4,
+                     "processCount":  5,
                      "watchdogState":  "Running",
                      "currentTaskInstruction":  "儀表盤網站 1.嵐熙任務沒有同步 2.嵐熙 蝦咩位子左右對調 3.卡點救援要確實功能性 4.強制停止無效果，要讓tgbot暫停一起任務 5.卡點救援和 強制停止要能分開作業，舉例我頁面在嵐熙 就是救援嵐熙或者強停嵐熙 反之蝦咩也是",
                      "currentTaskSource":  "telegram_request_status.json + 嵐熙 狀態"
@@ -37,7 +37,7 @@
                          "label":  "蝦咩心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 18 秒前，執行中任務 1",
+                         "detail":  "心跳 3 秒前，執行中任務 1",
                          "source":  "codex_bot_heartbeat.json"
                      },
                      {
@@ -61,7 +61,7 @@
                          "label":  "嵐熙進程",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "偵測到 4 個相關進程",
+                         "detail":  "偵測到 5 個相關進程",
                          "source":  "Win32_Process"
                      },
                      {
@@ -77,15 +77,23 @@
                          "label":  "Codex token 統計",
                          "statusKey":  "running",
                          "statusLabel":  "已讀取",
-                         "detail":  "112815048 tokens，任務 16",
+                         "detail":  "116760760 tokens，任務 17",
                          "source":  "本機 Codex 執行緒紀錄"
+                     },
+                     {
+                         "id":  "dashboard-control-action",
+                         "label":  "最近控制動作",
+                         "statusKey":  "running",
+                         "statusLabel":  "卡點救援：嵐熙",
+                         "detail":  "可續作排程已在運作中",
+                         "source":  "dashboard-control-actions"
                      },
                      {
                          "id":  "runtime-generator",
                          "label":  "狀態產生器",
                          "statusKey":  "running",
                          "statusLabel":  "已更新",
-                         "detail":  "產生時間 2026-07-05 14:19:42",
+                         "detail":  "產生時間 2026-07-05 14:41:24",
                          "source":  "tools/update-runtime-status.ps1"
                      },
                      {

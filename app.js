@@ -7,7 +7,7 @@ let liveStatusEndpoint = sameOriginLiveStatusEndpoint || configuredLiveStatusEnd
 const DEFAULT_REFRESH_SECONDS = 1;
 const LIVE_TIMEOUT_MS = 2200;
 const LIVE_RETRY_COOLDOWN_MS = 5000;
-const AGENT_VIEW_STORAGE_KEY = "ownerDashboardAgentViewLanxiTop20260704";
+const AGENT_VIEW_STORAGE_KEY = "ownerDashboardAgentViewTargetedControls20260705";
 const LANXI_BOT_USERNAME = "嵐熙";
 const AGENT_LABELS = { lanxi: "嵐熙", shami: "蝦咩" };
 const TELEGRAM_HANDLE_PATTERN = /@[A-Za-z0-9_]{5,}/g;
@@ -61,7 +61,7 @@ const completedItems = [
   {
     title: "頂端左右雙儀表盤",
     status: "已套用",
-    summary: "儀表盤固定放在頁面最上方，蝦咩與嵐熙左右分開顯示；手機窄螢幕保留雙欄主狀態，細節移到下方區塊避免擠壓。"
+    summary: "儀表盤固定放在頁面最上方，蝦咩改到左側、嵐熙改到右側；手機窄螢幕保留目前頁面角色的主狀態，細節移到下方區塊避免擠壓。"
   },
   {
     title: "手機排版與全頁科技底修正",
@@ -72,7 +72,7 @@ const completedItems = [
   {
     title: "蝦咩與嵐熙左右分類",
     status: "已套用",
-    summary: "頂部儀表盤改為人物分區：嵐熙在左集中自動化與快照狀態，蝦咩在右集中任務與回覆狀態。",
+    summary: "頂部儀表盤改為人物分區：蝦咩在左集中 Telegram 任務與回覆狀態，嵐熙在右集中 OpenClaw 自動化與快照狀態。",
     points: ["嵐熙任務集中顯示", "蝦咩任務集中顯示", "任務、token、監控與卡點依人物分類"]
   },
   {
@@ -555,9 +555,10 @@ const timeline = [
   ["2026-07-03", "整合主控台與技能入口版面，新增嵐熙獨立任務欄位與頂端嵐熙任務快覽。"],
   ["2026-07-03", "修正前端初始化中斷，讓 runtime-status.json、技能包清單與頂端同步狀態可正常顯示。"],
   ["2026-07-03", "重新同步按鈕移到頂端控制列，點擊時加入短促音效、彩色粒子與同步完成回饋。"],
-  ["2026-07-03", "頂端儀表盤改為嵐熙左側、蝦咩右側的雙欄總覽，手機版保留左右分開且不擠壓主狀態。"],
+  ["2026-07-05", "依最新指令把蝦咩與嵐熙左右對調為蝦咩左、嵐熙右，功能鍵依目前頁面角色分別救援或強停。"],
+  ["2026-07-03", "頂端儀表盤建立雙欄總覽，手機版保留左右分開且不擠壓主狀態。"],
   ["2026-07-03", "狀態總控台改成嵐熙左列、蝦咩右列，任務、token、監控、卡點與檢查依人物來源分類。"],
-  ["2026-07-03", "紅圈內 Live Status 說明文字不再顯示，主介面改成左右分欄，左看嵐熙，右看蝦咩與狀態監控。"],
+  ["2026-07-03", "紅圈內 Live Status 說明文字不再顯示，主介面改成左右分欄，集中顯示蝦咩與嵐熙狀態監控。"],
   ["2026-07-03", "依主人補充移除舊版說明區塊，改為監控、技能包與操作資訊。"],
   ["2026-07-03", "技能包清單擴充為功能、使用場景、觸發詞與備份版本備註。"],
   ["2026-07-03", "監控項目加入頂部即時儀表盤與下方明細區。"],
@@ -1092,7 +1093,7 @@ function renderTimeline() {
 
 function buildMonitorItems(status) {
   if (Array.isArray(status.monitors) && status.monitors.length) {
-    return status.monitors.map((item) => ({
+    return status.monitors.filter(Boolean).map((item) => ({
       id: item.id || item.label,
       label: item.label || "監控項目",
       stateKey: item.statusKey || item.stateKey || "watch",
@@ -1235,12 +1236,16 @@ function lanxiTaskSource(status) {
 function monitorOwner(item) {
   const id = String(item.id || "").toLowerCase();
   const label = String(item.label || "");
+  const statusLabel = String(item.statusLabel || "");
+  const detail = String(item.detail || "");
   if (
     id.includes("openclaw") ||
     id.includes("runtime") ||
     id.includes("pages") ||
     label.includes("嵐熙") ||
-    label.includes("OpenClaw")
+    label.includes("OpenClaw") ||
+    statusLabel.includes("嵐熙") ||
+    detail.includes("嵐熙")
   ) {
     return "lanxi";
   }

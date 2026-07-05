@@ -26,6 +26,7 @@ $UsagePath = Join-Path $BotRoot "codex_token_usage.jsonl"
 $DashboardTaskOverridePath = Join-Path $SiteRoot "dashboard-task-override.json"
 $StateDb = "C:\Users\max\.codex\state_5.sqlite"
 $OpenClawRunsDb = "C:\Users\max\.openclaw\tasks\runs.sqlite"
+$ControlActionRoot = "C:\Users\max\Desktop\龍蝦記憶\dashboard-control-actions"
 $LanxiBotUsername = "嵐熙"
 if (-not $OutputPath.Trim()) {
     $OutputPath = Join-Path $SiteRoot "runtime-status.json"
@@ -187,6 +188,14 @@ function Get-NewestRequestRecord {
     }
     if ($records.Count -eq 0) { return $null }
     return $records | Sort-Object { if ($_.updated_at) { [double]$_.updated_at } else { 0 } } | Select-Object -Last 1
+}
+
+function Get-ObjectPropertyValue {
+    param($Object, [string]$Name)
+    if ($null -eq $Object) { return $null }
+    $prop = $Object.PSObject.Properties.Item($Name)
+    if ($null -eq $prop) { return $null }
+    return $prop.Value
 }
 
 function Get-RequestTaskInstruction {
@@ -440,6 +449,35 @@ function Get-DashboardTaskOverride {
     }
 }
 
+function Get-LatestDashboardControlAction {
+    $paths = @(
+        (Join-Path $ControlActionRoot "dashboard_rescue_latest.json"),
+        (Join-Path $ControlActionRoot "dashboard_force_stop_latest.json")
+    )
+    $items = @()
+    foreach ($path in $paths) {
+        if (-not (Test-Path -LiteralPath $path)) { continue }
+        $data = Read-JsonFile -Path $path
+        if ($null -eq $data) { continue }
+        $createdAt = $null
+        try {
+            if ($data.createdAt) { $createdAt = [DateTimeOffset]::Parse([string]$data.createdAt) }
+        } catch {
+            $createdAt = $null
+        }
+        if ($null -eq $createdAt) {
+            try { $createdAt = [DateTimeOffset](Get-Item -LiteralPath $path).LastWriteTime } catch { $createdAt = [DateTimeOffset]::MinValue }
+        }
+        $items += [pscustomobject]@{
+            createdAt = $createdAt
+            path = $path
+            data = $data
+        }
+    }
+    if ($items.Count -eq 0) { return $null }
+    return ($items | Sort-Object createdAt | Select-Object -Last 1)
+}
+
 function Get-OpenClawSummary {
     $processCount = $null
     try {
@@ -514,6 +552,7 @@ $dashboardTaskOverride = Get-DashboardTaskOverride
 $token = Get-TokenSummary -TargetDate $Date
 $openclaw = Get-OpenClawSummary
 $openclawTask = Get-OpenClawTaskSummary
+$dashboardControlAction = Get-LatestDashboardControlAction
 $explicitLanxiTask = $LanxiTask.Trim()
 $currentInstructionSource = ""
 $lanxiTaskInstruction = ""
@@ -704,6 +743,43 @@ $tokenKey = if ($null -ne $token.totalTokens) { "running" } else { "watch" }
 $tokenLabel = if ($null -ne $token.totalTokens) { "已讀取" } else { "未取得" }
 $tokenDetail = if ($null -ne $token.totalTokens) { "$($token.totalTokens) tokens，任務 $($token.taskCount)" } else { "尚未讀到精確 token 統計" }
 
+$controlActionMonitor = $null
+if ($dashboardControlAction) {
+    $actionData = $dashboardControlAction.data
+    $action = [string](Get-ObjectPropertyValue -Object $actionData -Name "action")
+    $target = [string](Get-ObjectPropertyValue -Object $actionData -Name "target")
+    $actionName = switch ($action) {
+        "rescue" { "卡點救援" }
+        "force-stop" { "強制停止" }
+        default { if ($action) { $action } else { "控制動作" } }
+    }
+    $targetName = if ($target -eq "shami") { "蝦咩" } else { "嵐熙" }
+    $changedParts = @()
+    $startedTasks = Get-ObjectPropertyValue -Object $actionData -Name "startedTasks"
+    $enabledTasks = Get-ObjectPropertyValue -Object $actionData -Name "enabledTasks"
+    $stoppedTasks = Get-ObjectPropertyValue -Object $actionData -Name "stoppedTasks"
+    $disabledTasks = Get-ObjectPropertyValue -Object $actionData -Name "disabledTasks"
+    $interruptedTelegramRequests = Get-ObjectPropertyValue -Object $actionData -Name "interruptedTelegramRequests"
+    $stoppedCodexWorkers = Get-ObjectPropertyValue -Object $actionData -Name "stoppedCodexWorkers"
+    $alreadyRunning = Get-ObjectPropertyValue -Object $actionData -Name "alreadyRunning"
+    if ($startedTasks) { $changedParts += "啟動排程 " + (@($startedTasks) -join "、") }
+    if ($enabledTasks) { $changedParts += "恢復排程 " + (@($enabledTasks) -join "、") }
+    if ($stoppedTasks) { $changedParts += "停止排程 " + (@($stoppedTasks) -join "、") }
+    if ($disabledTasks) { $changedParts += "停用排程 " + (@($disabledTasks) -join "、") }
+    if ($null -ne $interruptedTelegramRequests) { $changedParts += "中斷 Telegram 任務 $interruptedTelegramRequests 筆" }
+    if ($null -ne $stoppedCodexWorkers) { $changedParts += "停止 Codex 子工作 $stoppedCodexWorkers 個" }
+    if ($changedParts.Count -eq 0 -and $alreadyRunning) { $changedParts += "可續作排程已在運作中" }
+    if ($changedParts.Count -eq 0) { $changedParts += "已寫入控制訊號" }
+    $controlActionMonitor = [ordered]@{
+        id = "dashboard-control-action"
+        label = "最近控制動作"
+        statusKey = "running"
+        statusLabel = "$actionName：$targetName"
+        detail = (($changedParts | Select-Object -Unique) -join "；")
+        source = "dashboard-control-actions"
+    }
+}
+
 $monitors = @(
     [ordered]@{
         id = "telegram-heartbeat"
@@ -753,6 +829,7 @@ $monitors = @(
         detail = $tokenDetail
         source = $token.source
     },
+    $controlActionMonitor,
     [ordered]@{
         id = "runtime-generator"
         label = "狀態產生器"

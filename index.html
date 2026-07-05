@@ -5,17 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AI 自動化作業儀表盤｜蝦咩 x 嵐熙</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="styles.css?v=20260705-dashboard-actions">
+  <link rel="stylesheet" href="styles.css?v=20260705-targeted-swap-controls">
 </head>
 <body data-agent-view="lanxi">
   <div class="agent-view-switch page-agent-switch" role="tablist" aria-label="蝦咩與嵐熙切換">
-    <button type="button" class="active" data-agent-view-button="lanxi" role="tab" aria-selected="true" aria-pressed="true">
-      <img src="assets/lanxi-avatar.png" alt="" aria-hidden="true">
-      <b>嵐熙</b>
-    </button>
     <button type="button" data-agent-view-button="shami" role="tab" aria-selected="false" aria-pressed="false">
       <img src="assets/shami-avatar.png" alt="" aria-hidden="true">
       <b>蝦咩</b>
+    </button>
+    <button type="button" class="active" data-agent-view-button="lanxi" role="tab" aria-selected="true" aria-pressed="true">
+      <img src="assets/lanxi-avatar.png" alt="" aria-hidden="true">
+      <b>嵐熙</b>
     </button>
   </div>
   <main>
@@ -63,18 +63,18 @@
         </div>
       </section>
       <div class="assistant-stage" aria-label="蝦咩與嵐熙助手圖片">
-        <article class="assistant-portrait lanxi-portrait">
-          <img src="assets/lanxi-avatar.png" alt="嵐熙 AI 助手圖片">
-          <div><b>嵐熙</b></div>
+        <article class="assistant-portrait shami-portrait">
+          <img src="assets/shami-avatar.png" alt="蝦咩 AI 助手圖片">
+          <div><b>蝦咩</b></div>
         </article>
         <div class="assistant-core-copy">
           <span>AI 智能助手</span>
           <strong>自動化作業系統</strong>
           <p>智能守護 · 永不中斷</p>
         </div>
-        <article class="assistant-portrait shami-portrait">
-          <img src="assets/shami-avatar.png" alt="蝦咩 AI 助手圖片">
-          <div><b>蝦咩</b></div>
+        <article class="assistant-portrait lanxi-portrait">
+          <img src="assets/lanxi-avatar.png" alt="嵐熙 AI 助手圖片">
+          <div><b>嵐熙</b></div>
         </article>
       </div>
 
@@ -97,20 +97,6 @@
       <div class="signal-ribbon" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
 
       <div class="dashboard-live-layout">
-        <section class="agent-status-column lanxi-column" aria-labelledby="lanxiColumnTitle">
-          <div class="column-heading"><h3 id="lanxiColumnTitle">嵐熙</h3></div>
-          <div class="agent-slot" id="lanxiAgent"></div>
-          <div class="dashboard-grid actor-grid">
-            <article class="status-card primary-status lanxi-primary-status"><span>嵐熙自動化狀態</span><strong id="openclawStatusLabel">讀取中</strong><p id="openclawStatusDetail">正在讀取嵐熙狀態。</p></article>
-            <article class="status-card blocker-status"><span>目前卡點</span><strong id="blockerText">讀取中</strong><p id="nextAction">等待同步資料。</p></article>
-            <article class="status-card"><span>最新檢查</span><strong id="liveAge">--</strong><p><span id="updatedAt">--</span><br><span id="refreshNote">頁面每秒重新讀取狀態資料。</span></p></article>
-          </div>
-          <div class="monitor-panel">
-            <div class="monitor-panel-head"><p class="eyebrow">Lanxi Monitoring</p><h3>嵐熙監控</h3></div>
-            <div class="monitor-grid compact actor-monitor-grid" id="lanxiMonitorGrid"></div>
-          </div>
-        </section>
-
         <section class="agent-status-column shami-column" aria-labelledby="shamiColumnTitle">
           <div class="column-heading"><h3 id="shamiColumnTitle">蝦咩</h3></div>
           <div class="agent-slot" id="shamiAgent"></div>
@@ -123,6 +109,20 @@
             <div class="monitor-grid compact actor-monitor-grid" id="shamiMonitorGrid"></div>
           </div>
           <div class="dashboard-footer column-footer"><div class="mini-list" id="deliverableList"></div></div>
+        </section>
+
+        <section class="agent-status-column lanxi-column" aria-labelledby="lanxiColumnTitle">
+          <div class="column-heading"><h3 id="lanxiColumnTitle">嵐熙</h3></div>
+          <div class="agent-slot" id="lanxiAgent"></div>
+          <div class="dashboard-grid actor-grid">
+            <article class="status-card primary-status lanxi-primary-status"><span>嵐熙自動化狀態</span><strong id="openclawStatusLabel">讀取中</strong><p id="openclawStatusDetail">正在讀取嵐熙狀態。</p></article>
+            <article class="status-card blocker-status"><span>目前卡點</span><strong id="blockerText">讀取中</strong><p id="nextAction">等待同步資料。</p></article>
+            <article class="status-card"><span>最新檢查</span><strong id="liveAge">--</strong><p><span id="updatedAt">--</span><br><span id="refreshNote">頁面每秒重新讀取狀態資料。</span></p></article>
+          </div>
+          <div class="monitor-panel">
+            <div class="monitor-panel-head"><p class="eyebrow">Lanxi Monitoring</p><h3>嵐熙監控</h3></div>
+            <div class="monitor-grid compact actor-monitor-grid" id="lanxiMonitorGrid"></div>
+          </div>
         </section>
       </div>
     </section>
@@ -205,6 +205,6 @@
   <footer><span>資料來源：本機技能索引、記憶索引、Codex 心跳、Telegram 任務狀態、OpenClaw 摘要與 GitHub Pages 快照。</span></footer>
 
   <script src="live-status-config.js?v=20260704-180800-control-fix"></script>
-  <script src="app.js?v=20260705-targeted-controls"></script>
+  <script src="app.js?v=20260705-targeted-swap-controls"></script>
 </body>
 </html>
