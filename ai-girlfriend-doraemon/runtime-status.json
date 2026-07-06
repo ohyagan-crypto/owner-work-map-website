@@ -1,0 +1,117 @@
+﻿{
+    "statusKey":  "running",
+    "statusLabel":  "運作中",
+    "headline":  "儀表盤網站更新 1.你（AI女友）與哆啦A夢（OC） 切換欄位放到最上面 2.點擊卡點有反應單無法聯通到tgbot 讓他幫你解卡救援，所以功能徹底檢查 3.OC 角色這個是哆啦A夢（OC） 以後記好，哆啦A夢（OC）在儀表盤網站上沒有同步我給的任務內容",
+    "currentTaskInstruction":  "儀表盤網站更新 1.你（AI女友）與哆啦A夢（OC） 切換欄位放到最上面 2.點擊卡點有反應單無法聯通到tgbot 讓他幫你解卡救援，所以功能徹底檢查 3.OC 角色這個是哆啦A夢（OC） 以後記好，哆啦A夢（OC）在儀表盤網站上沒有同步我給的任務內容",
+    "lanxiTaskInstruction":  "儀表盤網站更新 1.你（AI女友）與哆啦A夢（OC） 切換欄位放到最上面 2.點擊卡點有反應單無法聯通到tgbot 讓他幫你解卡救援，所以功能徹底檢查 3.OC 角色這個是哆啦A夢（OC） 以後記好，哆啦A夢（OC）在儀表盤網站上沒有同步我給的任務內容",
+    "blocker":  "沒有卡點",
+    "nextAction":  "完成後更新交付結果、網址、檔案路徑或明確卡點。",
+    "updatedAt":  "2026-07-04T22:07:12+08:00",
+    "checkedAt":  "2026-07-04T22:07:12+08:00",
+    "sourceType":  "local-generator",
+    "sourceLabel":  "本機即時狀態產生器",
+    "refreshSeconds":  1,
+    "token":  {
+                  "totalTokens":  165738973,
+                  "taskCount":  42,
+                  "source":  "本機 Codex 執行緒紀錄"
+              },
+    "heartbeat":  {
+                      "name":  "你（AI女友）",
+                      "ageSeconds":  10,
+                      "activeRequests":  1
+                  },
+    "openclaw":  {
+                     "name":  "哆啦A夢（OC）",
+                     "botUsername":  "OC 角色",
+                     "statusKey":  "running",
+                     "statusLabel":  "正常",
+                     "processCount":  6,
+                     "watchdogState":  "Running",
+                     "currentTaskInstruction":  "儀表盤網站更新 1.你（AI女友）與哆啦A夢（OC） 切換欄位放到最上面 2.點擊卡點有反應單無法聯通到tgbot 讓他幫你解卡救援，所以功能徹底檢查 3.OC 角色這個是哆啦A夢（OC） 以後記好，哆啦A夢（OC）在儀表盤網站上沒有同步我給的任務內容",
+                     "currentTaskSource":  "telegram_conversation_history.json + OC / 右列 狀態"
+                 },
+    "monitors":  [
+                     {
+                         "id":  "telegram-heartbeat",
+                         "label":  "你（AI女友）心跳",
+                         "statusKey":  "running",
+                         "statusLabel":  "正常",
+                         "detail":  "心跳 10 秒前，執行中任務 1",
+                         "source":  "codex_bot_heartbeat.json"
+                     },
+                     {
+                         "id":  "telegram-request",
+                         "label":  "Telegram 任務佇列",
+                         "statusKey":  "running",
+                         "statusLabel":  "運作中",
+                         "detail":  "儀表盤網站更新 1.你（AI女友）與哆啦A夢（OC） 切換欄位放到最上面 2.點擊卡點有反應單無法聯通到tgbot 讓他幫你解卡救援，所以功能徹底檢查 3.OC 角色這個是哆啦A夢（OC） 以後記好，哆啦A夢（OC）在儀表盤網站上沒有同步我給的任務內容",
+                         "source":  "telegram_request_status.json"
+                     },
+                     {
+                         "id":  "openclaw-task",
+                         "label":  "哆啦A夢（OC）任務",
+                         "statusKey":  "running",
+                         "statusLabel":  "同步目前指令",
+                         "detail":  "儀表盤網站更新 1.你（AI女友）與哆啦A夢（OC） 切換欄位放到最上面 2.點擊卡點有反應單無法聯通到tgbot 讓他幫你解卡救援，所以功能徹底檢查 3.OC 角色這個是哆啦A夢（OC） 以後記好，哆啦A夢（OC）在儀表盤網站上沒有同步我給的任務內容",
+                         "source":  "telegram_conversation_history.json + OC / 右列 狀態"
+                     },
+                     {
+                         "id":  "openclaw-process",
+                         "label":  "哆啦A夢（OC）進程",
+                         "statusKey":  "running",
+                         "statusLabel":  "正常",
+                         "detail":  "偵測到 6 個相關進程",
+                         "source":  "Win32_Process"
+                     },
+                     {
+                         "id":  "openclaw-watchdog",
+                         "label":  "哆啦A夢（OC）看門排程",
+                         "statusKey":  "running",
+                         "statusLabel":  "Running",
+                         "detail":  "OpenClaw Watchdog 排程目前狀態",
+                         "source":  "Scheduled Task"
+                     },
+                     {
+                         "id":  "codex-token",
+                         "label":  "Codex token 統計",
+                         "statusKey":  "running",
+                         "statusLabel":  "已讀取",
+                         "detail":  "165738973 tokens，任務 42",
+                         "source":  "本機 Codex 執行緒紀錄"
+                     },
+                     {
+                         "id":  "runtime-generator",
+                         "label":  "狀態產生器",
+                         "statusKey":  "running",
+                         "statusLabel":  "已更新",
+                         "detail":  "產生時間 2026-07-04 22:07:12",
+                         "source":  "tools/update-runtime-status.ps1"
+                     },
+                     {
+                         "id":  "pages-snapshot",
+                         "label":  "GitHub Pages 快照",
+                         "statusKey":  "running",
+                         "statusLabel":  "可讀取",
+                         "detail":  "runtime-status.json 提供公開頁備援狀態",
+                         "source":  "runtime-status.json"
+                     },
+                     {
+                         "id":  "deliverable-check",
+                         "label":  "交付結果追蹤",
+                         "statusKey":  "running",
+                         "statusLabel":  "已列入",
+                         "detail":  "公開網址、狀態資料與網站更新會列入交付結果",
+                         "source":  "dashboard deliverables"
+                     }
+                 ],
+    "deliverables":  [
+                         "公開總控台：GitHub Pages",
+                         "狀態資料：runtime-status.json",
+                         "監控項目：9 項",
+                         "哆啦A夢（OC）任務：獨立欄位",
+                         "功能鍵：卡點救援 / 強制停止",
+                         "技能包清單：功能與使用場景"
+                     ]
+}
+

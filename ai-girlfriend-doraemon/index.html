@@ -1,0 +1,231 @@
+﻿<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI 自動化作業儀表盤｜你（AI女友） x 哆啦A夢（OC）</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="styles.css?v=20260705-targeted-controls-v3">
+</head>
+<body data-agent-view="lanxi">
+  <div class="agent-view-switch page-agent-switch" role="tablist" aria-label="你（AI女友）與哆啦A夢（OC）切換">
+    <button type="button" data-agent-view-button="shami" role="tab" aria-selected="false" aria-pressed="false">
+      <img src="assets/shami-avatar.png" alt="" aria-hidden="true">
+      <span>AI女友 / 左列</span>
+      <b>你（AI女友）</b>
+    </button>
+    <button type="button" class="active" data-agent-view-button="lanxi" role="tab" aria-selected="true" aria-pressed="true">
+      <img src="assets/lanxi-avatar.png" alt="" aria-hidden="true">
+      <span>OC 角色</span>
+      <b>哆啦A夢（OC）</b>
+    </button>
+  </div>
+  <div class="command-chip updated-chip top-updated-card page-top-updated" aria-label="最後更新時間">
+    <span>最後更新</span>
+    <b id="chipUpdatedAt">--</b>
+  </div>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">你（AI女友） x 哆啦A夢（OC） / Live Control</p>
+      <h1>AI 自動化作業儀表盤</h1>
+    </div>
+    <div class="topbar-meta">
+      <button type="button" class="theme-toggle" id="themeToggle" aria-pressed="false" title="切換深色與霓虹模式">◐</button>
+      <span>版本 2026-07-04</span>
+      <span id="localClock">讀取秒級時間</span>
+      <span>1 秒即時刷新</span>
+    </div>
+  </header>
+
+  <main>
+    <section class="status-dashboard" id="status-dashboard" aria-live="polite">
+      <span class="state-pill sr-only" id="statePill">讀取中</span>
+      <section class="active-task-banner" aria-labelledby="activeTaskScope">
+        <div class="active-task-copy">
+          <span id="activeTaskScope">你（AI女友）任務指令</span>
+          <strong id="activeTaskText">--</strong>
+          <p id="activeTaskDetail">Telegram 最新任務會固定放在最上方。</p>
+        </div>
+        <div class="task-control-panel" aria-label="任務功能鍵">
+          <div class="task-control-buttons">
+            <button type="button" class="control-button rescue-button" data-dashboard-action="rescue" title="嘗試恢復卡點並保留目前作業">
+              <span class="control-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path d="M12 3l7 3v5c0 4.7-2.9 8.4-7 10-4.1-1.6-7-5.3-7-10V6l7-3z"></path>
+                  <path d="M8.4 12.1l2.2 2.2 5-5"></path>
+                </svg>
+              </span><b>救援哆啦A夢（OC）</b>
+            </button>
+            <button type="button" class="control-button stop-button" data-dashboard-action="force-stop" title="強制停止儀表板自動升級排程">
+              <span class="control-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path d="M7.8 3h8.4L21 7.8v8.4L16.2 21H7.8L3 16.2V7.8L7.8 3z"></path>
+                  <path d="M8 8l8 8M16 8l-8 8"></path>
+                </svg>
+              </span><b>停止哆啦A夢（OC）</b>
+            </button>
+            <button type="button" id="refreshStatus" class="control-button sync-control-button" aria-describedby="refreshFeedback" title="立即同步本機即時狀態">
+              <span class="refresh-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path d="M21 12a9 9 0 0 1-15.3 6.4"></path>
+                  <path d="M3 12A9 9 0 0 1 18.3 5.6"></path>
+                  <path d="M18 2v4h-4"></path>
+                  <path d="M6 22v-4h4"></path>
+                </svg>
+              </span>
+              <b class="refresh-label">重新同步</b>
+              <div class="effect-layer" id="refreshEffectLayer" aria-hidden="true"></div>
+            </button>
+          </div>
+          <small class="refresh-feedback" id="refreshFeedback">每 1 秒自動同步。</small>
+          <small class="action-feedback" id="actionFeedback" aria-live="polite">功能鍵待命。</small>
+        </div>
+      </section>
+
+      <div class="assistant-stage" aria-label="你（AI女友）與哆啦A夢（OC）助手圖片">
+        <article class="assistant-portrait shami-portrait">
+          <img src="assets/shami-avatar.png" alt="你（AI女友） AI 助手圖片">
+          <div><span>TGBOT</span><b>你（AI女友）</b></div>
+        </article>
+        <div class="assistant-core-copy">
+          <span>AI 智能助手</span>
+          <strong>自動化作業系統</strong>
+          <p>智能守護 · 永不中斷</p>
+        </div>
+        <article class="assistant-portrait lanxi-portrait">
+          <img src="assets/lanxi-avatar.png" alt="哆啦A夢（OC） AI 助手圖片">
+          <div><span>OC 角色</span><b>哆啦A夢（OC）</b></div>
+        </article>
+      </div>
+
+      <div class="command-strip" aria-label="總覽狀態">
+        <div class="command-chip shami-chip"><span>你（AI女友）狀態</span><b id="chipShamiStatus">讀取中</b></div>
+        <div class="command-chip lanxi-chip"><span>哆啦A夢（OC）狀態</span><b id="chipLanxiStatus">讀取中</b></div>
+        <div class="command-chip skill-chip"><span>技能包</span><b id="chipSkillStatus">80 個已載入</b><small id="chipSkillDetail">等待清單渲染</small></div>
+        <div class="command-chip task-chip shami-task-chip"><span>你（AI女友）任務</span><b id="chipCurrentTask">同步中</b></div>
+        <div class="command-chip task-chip lanxi-task-chip"><span>哆啦A夢（OC）任務</span><b id="chipLanxiTask">同步中</b></div>
+      </div>
+
+      <div class="ai-metrics">
+        <article class="energy-ring-card">
+          <div class="energy-ring" id="energyRing" style="--energy: 72"><span id="energyValue">72%</span></div>
+          <div><span>系統活躍度</span><b id="energyLabel">穩定運作</b><p>依任務、心跳、OpenClaw 與資料來源綜合估算。</p></div>
+        </article>
+        <article class="micro-panel"><span>資訊層級</span><b>重點優先</b><p>主要狀態放大，技術細節保留在監控明細。</p></article>
+      </div>
+
+      <div class="signal-ribbon" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+
+      <div class="dashboard-live-layout">
+        <section class="agent-status-column shami-column" aria-labelledby="shamiColumnTitle">
+          <div class="column-heading"><p class="eyebrow">AI女友 / 左列</p><h3 id="shamiColumnTitle">你（AI女友）</h3></div>
+          <div class="agent-slot" id="shamiAgent"></div>
+          <div class="dashboard-grid actor-grid">
+            <article class="status-card primary-status"><span>你（AI女友）任務狀態</span><strong id="statusLabel">讀取中</strong><p id="statusHeadline">正在讀取本機即時狀態。</p></article>
+            <article class="status-card"><span>今日 token</span><strong id="todayTokens">--</strong><p id="tokenSource">等待統計來源。</p></article>
+          </div>
+          <div class="monitor-panel">
+            <div class="monitor-panel-head"><p class="eyebrow">AI女友監控</p><h3>你（AI女友）監控</h3></div>
+            <div class="monitor-grid compact actor-monitor-grid" id="shamiMonitorGrid"></div>
+          </div>
+          <div class="dashboard-footer column-footer"><div class="mini-list" id="deliverableList"></div></div>
+        </section>
+
+        <section class="agent-status-column lanxi-column" aria-labelledby="lanxiColumnTitle">
+          <div class="column-heading"><p class="eyebrow">OC / 右列</p><h3 id="lanxiColumnTitle">哆啦A夢（OC）</h3></div>
+          <div class="agent-slot" id="lanxiAgent"></div>
+          <div class="dashboard-grid actor-grid">
+            <article class="status-card primary-status lanxi-primary-status"><span>哆啦A夢（OC）自動化狀態</span><strong id="openclawStatusLabel">讀取中</strong><p id="openclawStatusDetail">正在讀取 OpenClaw / 哆啦A夢（OC） bot 狀態。</p></article>
+            <article class="status-card blocker-status"><span>目前卡點</span><strong id="blockerText">讀取中</strong><p id="nextAction">等待同步資料。</p></article>
+            <article class="status-card"><span>最新檢查</span><strong id="liveAge">--</strong><p><span id="updatedAt">--</span><br><span id="refreshNote">頁面每秒重新讀取狀態資料。</span></p></article>
+          </div>
+          <div class="monitor-panel">
+            <div class="monitor-panel-head"><p class="eyebrow">哆啦A夢監控</p><h3>哆啦A夢（OC）監控</h3></div>
+            <div class="monitor-grid compact actor-monitor-grid" id="lanxiMonitorGrid"></div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="overview" id="overview">
+      <div class="overview-copy">
+        <p class="eyebrow">Owner Map</p>
+        <h2>把你（AI女友）任務、哆啦A夢（OC）任務、監控項目與技能入口整合在同一頁</h2>
+        <p>這個儀表板聚焦主人要看的操作資訊：你（AI女友） TGBOT 任務、哆啦A夢（OC） OpenClaw 任務、目前卡點、監控項目、技能包能力與常用 SOP。</p>
+        <div class="quick-actions" aria-label="主要區塊">
+          <a href="#monitoring">監控項目</a><a href="#skills">技能包</a><a href="#sop-library">SOP</a><a href="#daily-timeline">今日時間軸</a>
+        </div>
+      </div>
+      <div class="stat-grid" id="statGrid"></div>
+    </section>
+
+    <section id="completed" class="content-section">
+      <div class="section-heading"><div><p class="eyebrow">Updated</p><h2>本次儀表板更新</h2></div><span class="status done">已套用</span></div>
+      <div class="item-grid" id="completedGrid"></div>
+    </section>
+
+    <section id="daily-timeline" class="content-section timeline-console">
+      <div class="section-heading"><div><p class="eyebrow">Today Flow</p><h2>今日任務時間軸</h2></div><span class="status watch">即時整理</span></div>
+      <div class="today-flow" id="todayFlow">
+        <article><time>收到</time><b>Telegram 指令</b><p>讀取最新需求與畫面狀態。</p></article>
+        <article><time>處理</time><b>本機修改</b><p>更新版面、狀態與互動功能。</p></article>
+        <article><time>驗證</time><b>手機 / 桌機檢查</b><p>確認左右欄、文字與科技視覺不溢出。</p></article>
+        <article><time>公開</time><b>GitHub Pages</b><p>推送後確認公開網址生效。</p></article>
+      </div>
+    </section>
+
+    <section id="monitoring" class="content-section">
+      <div class="section-heading"><div><p class="eyebrow">Monitoring Detail</p><h2>監控項目狀態</h2></div><span class="status watch">秒級刷新</span></div>
+      <div class="monitor-section-columns">
+        <section class="monitor-section-column shami-monitor-section"><div class="mini-section-title"><p class="eyebrow">AI女友 / 左列</p><h3>你（AI女友）狀態</h3></div><div class="monitor-grid detail" id="shamiMonitorSectionGrid"></div></section>
+        <section class="monitor-section-column lanxi-monitor-section"><div class="mini-section-title"><p class="eyebrow">OC / 右列</p><h3>哆啦A夢（OC）狀態</h3></div><div class="monitor-grid detail" id="lanxiMonitorSectionGrid"></div></section>
+      </div>
+    </section>
+
+    <section id="skills" class="content-section skill-section">
+      <div class="section-heading"><div><p class="eyebrow">Skill Packages</p><h2>技能包分類總覽與精簡入口</h2></div><span class="status done">已整理</span></div>
+      <div class="skill-control-bar">
+        <label class="skill-search-field" for="skillSearch">
+          <span>搜尋技能</span>
+          <input id="skillSearch" type="search" placeholder="輸入技能、功能、場景">
+        </label>
+        <div class="skill-view-meta" id="skillViewMeta"></div>
+      </div>
+      <div class="skill-layout">
+        <aside class="skill-sidebar" aria-label="技能包分類與統計">
+          <div class="skill-summary" id="skillSummary"></div>
+          <div class="skill-filter-panel">
+            <div class="mini-section-title"><p class="eyebrow">Categories</p><h3>分類</h3></div>
+            <div class="skill-filters" id="skillFilters"></div>
+          </div>
+        </aside>
+        <div class="skill-main">
+          <div class="skill-group-overview" id="skillGroupOverview"></div>
+          <div class="skill-card-grid" id="skillCards"></div>
+          <div class="skill-empty" id="skillEmpty">沒有符合的技能包</div>
+        </div>
+      </div>
+      <details class="skill-table-disclosure">
+        <summary>完整表格</summary>
+        <div class="table-shell"><table><thead><tr><th>技能包</th><th>分類</th><th>功能</th><th>使用場景</th><th>觸發 / 備註</th></tr></thead><tbody id="skillTable"></tbody></table></div>
+      </details>
+    </section>
+
+    <section id="sop-library" class="content-section">
+      <div class="section-heading"><div><p class="eyebrow">SOP Library</p><h2>任務回覆與狀態 SOP</h2></div><span class="status done">可追蹤</span></div>
+      <div class="sop-grid" id="sopGrid"></div>
+    </section>
+
+    <section id="timeline" class="content-section">
+      <div class="section-heading"><div><p class="eyebrow">Log</p><h2>修改紀錄</h2></div><span class="status watch">持續同步</span></div>
+      <div class="timeline" id="timelineList"></div>
+    </section>
+  </main>
+
+  <footer><span>資料來源：本機技能索引、記憶索引、Codex 心跳、Telegram 任務狀態、OpenClaw 摘要與 GitHub Pages 快照。</span></footer>
+
+  <script src="live-status-config.js?v=20260704-180800-control-fix"></script>
+  <script src="app.js?v=20260705-targeted-controls-v3"></script>
+</body>
+</html>
+
