@@ -1,24 +1,24 @@
 {
     "statusKey":  "running",
     "statusLabel":  "運作中",
-    "headline":  "儀表盤網站任務部分要同步",
-    "currentTaskInstruction":  "儀表盤網站任務部分要同步",
-    "lanxiTaskInstruction":  "目前沒有執行中的 OpenClaw 任務；最近任務：每日9點運勢提醒（已完成，最後更新 07/05 09:00）。",
+    "headline":  "檢查tg123都正常嗎",
+    "currentTaskInstruction":  "檢查tg123都正常嗎",
+    "lanxiTaskInstruction":  "目前沒有執行中的 OpenClaw 任務；最近任務：每日9點運勢提醒（失敗，最後更新 07/08 09:03）。",
     "blocker":  "沒有卡點",
     "nextAction":  "完成後更新交付結果、網址、檔案路徑或明確卡點。",
-    "updatedAt":  "2026-07-05T17:45:51+08:00",
-    "checkedAt":  "2026-07-05T17:45:51+08:00",
+    "updatedAt":  "2026-07-08T15:04:54+08:00",
+    "checkedAt":  "2026-07-08T15:04:54+08:00",
     "sourceType":  "local-generator",
     "sourceLabel":  "本機即時狀態產生器",
     "refreshSeconds":  1,
     "token":  {
-                  "totalTokens":  135567631,
-                  "taskCount":  26,
+                  "totalTokens":  80251115,
+                  "taskCount":  17,
                   "source":  "本機 Codex 執行緒紀錄"
               },
     "heartbeat":  {
                       "name":  "蝦咩",
-                      "ageSeconds":  21,
+                      "ageSeconds":  9,
                       "activeRequests":  1
                   },
     "openclaw":  {
@@ -26,9 +26,9 @@
                      "botUsername":  "嵐熙",
                      "statusKey":  "running",
                      "statusLabel":  "正常",
-                     "processCount":  4,
-                     "watchdogState":  "Running",
-                     "currentTaskInstruction":  "目前沒有執行中的 OpenClaw 任務；最近任務：每日9點運勢提醒（已完成，最後更新 07/05 09:00）。",
+                     "processCount":  9,
+                     "watchdogState":  "Disabled",
+                     "currentTaskInstruction":  "目前沒有執行中的 OpenClaw 任務；最近任務：每日9點運勢提醒（失敗，最後更新 07/08 09:03）。",
                      "currentTaskSource":  "OpenClaw task_runs.sqlite"
                  },
     "monitors":  [
@@ -37,7 +37,7 @@
                          "label":  "蝦咩心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 21 秒前，執行中任務 1",
+                         "detail":  "心跳 9 秒前，執行中任務 1",
                          "source":  "codex_bot_heartbeat.json"
                      },
                      {
@@ -45,15 +45,15 @@
                          "label":  "Telegram 任務佇列",
                          "statusKey":  "running",
                          "statusLabel":  "運作中",
-                         "detail":  "儀表盤網站任務部分要同步",
+                         "detail":  "檢查tg123都正常嗎",
                          "source":  "telegram_request_status.json"
                      },
                      {
                          "id":  "openclaw-task",
                          "label":  "嵐熙任務",
-                         "statusKey":  "running",
-                         "statusLabel":  "最近已完成",
-                         "detail":  "目前沒有執行中的 OpenClaw 任務；最近任務：每日9點運勢提醒（已完成，最後更新 07/05 09:00）。",
+                         "statusKey":  "watch",
+                         "statusLabel":  "最近失敗",
+                         "detail":  "目前沒有執行中的 OpenClaw 任務；最近任務：每日9點運勢提醒（失敗，最後更新 07/08 09:03）。",
                          "source":  "OpenClaw task_runs.sqlite"
                      },
                      {
@@ -61,14 +61,14 @@
                          "label":  "嵐熙進程",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "偵測到 4 個相關進程",
+                         "detail":  "偵測到 9 個相關進程",
                          "source":  "Win32_Process"
                      },
                      {
                          "id":  "openclaw-watchdog",
                          "label":  "嵐熙看門排程",
-                         "statusKey":  "running",
-                         "statusLabel":  "Running",
+                         "statusKey":  "watch",
+                         "statusLabel":  "Disabled",
                          "detail":  "OpenClaw Watchdog 排程目前狀態",
                          "source":  "Scheduled Task"
                      },
@@ -77,15 +77,15 @@
                          "label":  "Codex token 統計",
                          "statusKey":  "running",
                          "statusLabel":  "已讀取",
-                         "detail":  "135567631 tokens，任務 26",
+                         "detail":  "80251115 tokens，任務 17",
                          "source":  "本機 Codex 執行緒紀錄"
                      },
                      {
                          "id":  "dashboard-control-action",
                          "label":  "最近控制動作",
                          "statusKey":  "running",
-                         "statusLabel":  "卡點救援：嵐熙",
-                         "detail":  "可續作排程已在運作中",
+                         "statusLabel":  "卡點救援：蝦咩",
+                         "detail":  "啟動排程 Codex Telegram Bot Watchdog Hourly、Codex Telegram Bot Watchdog Startup、TGBot OpenClaw Maintenance Hourly、OpenClaw_CodexBot_HourlyHealth",
                          "source":  "dashboard-control-actions"
                      },
                      {
@@ -93,7 +93,7 @@
                          "label":  "狀態產生器",
                          "statusKey":  "running",
                          "statusLabel":  "已更新",
-                         "detail":  "產生時間 2026-07-05 17:45:51",
+                         "detail":  "產生時間 2026-07-08 15:04:54",
                          "source":  "tools/update-runtime-status.ps1"
                      },
                      {
