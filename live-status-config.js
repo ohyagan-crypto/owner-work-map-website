@@ -1,1 +1,1 @@
-window.OWNER_LIVE_STATUS_ENDPOINT = "https://accessibility-connecticut-blues-committee.trycloudflare.com";
+window.OWNER_LIVE_STATUS_ENDPOINT = "https://directory-melissa-toddler-sydney.trycloudflare.com";
