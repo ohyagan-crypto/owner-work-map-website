@@ -1,7 +1,7 @@
 ﻿param(
   [string]$SiteRoot = (Split-Path -Parent $PSScriptRoot),
   [string]$BotRoot = "C:\Users\max\tg-openai-bot",
-  [ValidateSet("lanxi", "shami")]
+  [ValidateSet("lanxi", "shami", "mengzi")]
   [string]$Target = "lanxi"
 )
 
@@ -10,6 +10,10 @@ $ErrorActionPreference = "Stop"
 $utf8NoBom = [System.Text.UTF8Encoding]::new($false)
 [Console]::OutputEncoding = $utf8NoBom
 $OutputEncoding = $utf8NoBom
+
+if ($Target -eq "mengzi" -and $BotRoot -eq "C:\Users\max\tg-openai-bot") {
+  $BotRoot = "C:\Users\max\tg-openai-bot-2"
+}
 
 $stamp = Get-Date -Format "yyyyMMdd_HHmmss"
 $backupRoot = "C:\Users\max\Desktop\龍蝦記憶\dashboard-control-actions"
@@ -96,6 +100,8 @@ function Start-RecoverableTask {
 
 $candidateTasks = if ($Target -eq "lanxi") {
   @("OpenClaw Watchdog", "OpenClaw Gateway")
+} elseif ($Target -eq "mengzi") {
+  @("Codex Telegram Bot 2 Watchdog Hourly", "Codex Telegram Bot 2 Watchdog Startup")
 } else {
   @("Codex Telegram Bot Watchdog Hourly", "Codex Telegram Bot Watchdog Startup", "TGBot OpenClaw Maintenance Hourly", "OpenClaw_CodexBot_HourlyHealth")
 }
@@ -108,7 +114,7 @@ if (Test-Path -LiteralPath $statusScript) {
   & $statusScript -SiteRoot $SiteRoot -OutputPath $statusPath | Out-Null
 }
 
-if ($Target -eq "shami" -and (Test-Path -LiteralPath $healthScript)) {
+if (($Target -eq "shami" -or $Target -eq "mengzi") -and (Test-Path -LiteralPath $healthScript)) {
   try {
     & $healthScript | Out-Null
     $healthActions.Add("TGBOT 自動健康檢查")
@@ -124,7 +130,7 @@ $payload = [ordered]@{
   target = $Target
   createdAt = (Get-Date).ToString("o")
   siteRoot = $SiteRoot
-  behavior = if ($Target -eq "lanxi") { "refresh lanxi status and restart recoverable OpenClaw schedules only" } else { "refresh shami TGBOT status, run health check, and restart recoverable bot schedules only" }
+  behavior = if ($Target -eq "lanxi") { "refresh lanxi status and restart recoverable OpenClaw schedules only" } elseif ($Target -eq "mengzi") { "refresh mengzi TGBOT2 status and restart recoverable bot2 schedules only" } else { "refresh shami TGBOT status, run health check, and restart recoverable bot schedules only" }
   startedTasks = @($startedTasks)
   enabledTasks = @($enabledTasks)
   alreadyRunning = @($alreadyRunning)
@@ -136,7 +142,7 @@ $payload = [ordered]@{
 $json = $payload | ConvertTo-Json -Depth 5
 [System.IO.File]::WriteAllText($signalPath, $json + [Environment]::NewLine, $utf8NoBom)
 [System.IO.File]::WriteAllText($latestSignalPath, $json + [Environment]::NewLine, $utf8NoBom)
-if ($Target -eq "shami" -and (Test-Path -LiteralPath $BotRoot)) {
+if (($Target -eq "shami" -or $Target -eq "mengzi") -and (Test-Path -LiteralPath $BotRoot)) {
   [System.IO.File]::WriteAllText($botSignalPath, $json + [Environment]::NewLine, $utf8NoBom)
 }
 
@@ -152,6 +158,12 @@ if ($Target -eq "lanxi") {
     "已送出嵐熙卡點救援：已刷新狀態，並啟動或恢復 " + ($changed -join "、") + "。蝦咩 TGBOT 沒有被停止。"
   } else {
     "已送出嵐熙卡點救援：已刷新狀態，嵐熙可續作排程目前已在待命或運作中。蝦咩 TGBOT 沒有被停止。"
+  }
+} elseif ($Target -eq "mengzi") {
+  if ($changed.Count -gt 0) {
+    "已送出林孟姿卡點救援：已啟動或恢復 " + ($changed -join "、") + "。$heartbeatText 蝦咩與嵐熙沒有被停止。"
+  } else {
+    "已送出林孟姿卡點救援：TGBOT2 可續作排程目前已在待命或運作中。$heartbeatText 蝦咩與嵐熙沒有被停止。"
   }
 } else {
   if ($changed.Count -gt 0) {

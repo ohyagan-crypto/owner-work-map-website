@@ -1,6 +1,7 @@
 ﻿param(
     [string]$SiteRoot,
     [string]$BotRoot = "C:\Users\max\tg-openai-bot",
+    [string]$Bot2Root = "C:\Users\max\tg-openai-bot-2",
     [string]$Date = (Get-Date).ToString("yyyy-MM-dd"),
     [string]$CurrentTask = "",
     [string]$LanxiTask = "",
@@ -23,11 +24,14 @@ $RequestStatusPath = Join-Path $BotRoot "telegram_request_status.json"
 $RecentUploadsPath = Join-Path $BotRoot "telegram_recent_uploads.json"
 $ConversationHistoryPath = Join-Path $BotRoot "telegram_conversation_history.json"
 $UsagePath = Join-Path $BotRoot "codex_token_usage.jsonl"
+$Bot2HeartbeatPath = Join-Path $Bot2Root "codex_bot_heartbeat.json"
+$Bot2RequestStatusPath = Join-Path $Bot2Root "telegram_request_status.json"
 $DashboardTaskOverridePath = Join-Path $SiteRoot "dashboard-task-override.json"
 $StateDb = "C:\Users\max\.codex\state_5.sqlite"
 $OpenClawRunsDb = "C:\Users\max\.openclaw\tasks\runs.sqlite"
 $ControlActionRoot = "C:\Users\max\Desktop\龍蝦記憶\dashboard-control-actions"
 $LanxiBotUsername = "嵐熙"
+$Bot2DisplayName = "林孟姿"
 if (-not $OutputPath.Trim()) {
     $OutputPath = Join-Path $SiteRoot "runtime-status.json"
 }
@@ -190,12 +194,34 @@ function Get-NewestRequestRecord {
     return $records | Sort-Object { if ($_.updated_at) { [double]$_.updated_at } else { 0 } } | Select-Object -Last 1
 }
 
+function Get-NewestRequestRecordFromPath {
+    param([string]$Path)
+    $data = Read-JsonFile -Path $Path
+    if ($null -eq $data) { return $null }
+    $records = @()
+    foreach ($property in $data.PSObject.Properties) {
+        if ($property.Value) { $records += $property.Value }
+    }
+    if ($records.Count -eq 0) { return $null }
+    return $records | Sort-Object { if ($_.updated_at) { [double]$_.updated_at } else { 0 } } | Select-Object -Last 1
+}
+
 function Get-ObjectPropertyValue {
     param($Object, [string]$Name)
     if ($null -eq $Object) { return $null }
     $prop = $Object.PSObject.Properties.Item($Name)
     if ($null -eq $prop) { return $null }
     return $prop.Value
+}
+
+function Get-HeartbeatAgeSeconds {
+    param($Heartbeat)
+    if ($null -eq $Heartbeat -or -not $Heartbeat.timestamp) { return 999999 }
+    try {
+        return [Math]::Max(0, [int]([DateTimeOffset]$now).ToUnixTimeSeconds() - [int64][math]::Round([double]$Heartbeat.timestamp))
+    } catch {
+        return 999999
+    }
 }
 
 function Get-RequestTaskInstruction {
@@ -529,7 +555,9 @@ function Get-OpenClawSummary {
 
 $now = Get-Date
 $heartbeat = Read-JsonFile -Path $HeartbeatPath
+$bot2Heartbeat = Read-JsonFile -Path $Bot2HeartbeatPath
 $request = Get-NewestRequestRecord
+$bot2Request = Get-NewestRequestRecordFromPath -Path $Bot2RequestStatusPath
 $existingStatus = Read-JsonFile -Path $OutputPath
 $siteRuntimeStatusPath = Join-Path $SiteRoot "runtime-status.json"
 $siteRuntimeStatus = if ($siteRuntimeStatusPath -ne $OutputPath) { Read-JsonFile -Path $siteRuntimeStatusPath } else { $null }
@@ -722,6 +750,31 @@ if ($explicitLanxiTask) {
 $lanxiTaskInstruction = Protect-PublicText -Text $lanxiTaskInstruction
 $lanxiTaskSource = Protect-PublicText -Text $lanxiTaskSource
 
+$bot2Age = Get-HeartbeatAgeSeconds -Heartbeat $bot2Heartbeat
+$bot2ActiveRequests = if ($bot2Heartbeat -and $bot2Heartbeat.PSObject.Properties.Item("active_requests")) { $bot2Heartbeat.active_requests } else { $null }
+$bot2RequestTaskInstruction = Get-RequestTaskInstruction -RequestRecord $bot2Request
+$bot2TaskSource = "tg-openai-bot-2/telegram_request_status.json"
+$bot2StatusKey = if ($bot2Age -le 120) { "standby" } else { "watch" }
+$bot2StatusLabel = if ($bot2Age -le 120) { "正常待命" } else { "心跳待確認" }
+$bot2TaskInstruction = "林孟姿 TGBOT2 目前沒有執行中的任務。"
+
+if ($bot2Request -and ($bot2Request.status -in @("queued", "running", "ready_to_send", "sending"))) {
+    $bot2StatusKey = "running"
+    $bot2StatusLabel = "運作中"
+    $bot2TaskInstruction = if ($bot2RequestTaskInstruction) { $bot2RequestTaskInstruction } else { "林孟姿 TGBOT2 目前有任務正在處理。" }
+} elseif ($bot2Request -and ($bot2Request.status -in @("failed", "blocked", "interrupted"))) {
+    $bot2StatusKey = "blocked"
+    $bot2StatusLabel = "卡點"
+    $bot2TaskInstruction = if ($bot2RequestTaskInstruction) { $bot2RequestTaskInstruction } else { "林孟姿 TGBOT2 最近任務異常，需要檢查。" }
+} elseif ($bot2Request -and $bot2Request.status -eq "completed") {
+    $bot2TaskInstruction = if ($bot2RequestTaskInstruction) { "最近完成：$bot2RequestTaskInstruction" } else { "林孟姿 TGBOT2 最近任務已完成。" }
+}
+
+$bot2StatusKey = Protect-PublicText -Text $bot2StatusKey
+$bot2StatusLabel = Protect-PublicText -Text $bot2StatusLabel
+$bot2TaskInstruction = Protect-PublicText -Text $bot2TaskInstruction
+$bot2TaskSource = Protect-PublicText -Text $bot2TaskSource
+
 $heartbeatMonitorKey = if ($heartbeatAge -le 120) { "running" } else { "watch" }
 $heartbeatMonitorLabel = if ($heartbeatAge -le 120) { "正常" } else { "待確認" }
 $activeRequestsText = if ($heartbeat -and $heartbeat.PSObject.Properties.Item("active_requests")) { [string]$heartbeat.active_requests } else { "未取得" }
@@ -791,6 +844,22 @@ $monitors = @(
         statusLabel = $statusLabel
         detail = $headline
         source = "telegram_request_status.json"
+    },
+    [ordered]@{
+        id = "tgbot2-heartbeat"
+        label = "林孟姿心跳"
+        statusKey = if ($bot2Age -le 120) { "running" } else { "watch" }
+        statusLabel = if ($bot2Age -le 120) { "正常" } else { "待確認" }
+        detail = "心跳 $bot2Age 秒前，執行中任務 $(if ($null -ne $bot2ActiveRequests) { $bot2ActiveRequests } else { "未取得" })"
+        source = "tg-openai-bot-2/codex_bot_heartbeat.json"
+    },
+    [ordered]@{
+        id = "tgbot2-request"
+        label = "林孟姿任務佇列"
+        statusKey = $bot2StatusKey
+        statusLabel = $bot2StatusLabel
+        detail = $bot2TaskInstruction
+        source = $bot2TaskSource
     },
     [ordered]@{
         id = "openclaw-task"
@@ -874,6 +943,15 @@ $payload = [ordered]@{
         ageSeconds = $heartbeatAge
         activeRequests = if ($heartbeat -and $heartbeat.PSObject.Properties.Item("active_requests")) { $heartbeat.active_requests } else { $null }
     }
+    tgbot2 = [ordered]@{
+        name = $Bot2DisplayName
+        statusKey = $bot2StatusKey
+        statusLabel = $bot2StatusLabel
+        ageSeconds = $bot2Age
+        activeRequests = $bot2ActiveRequests
+        currentTaskInstruction = $bot2TaskInstruction
+        currentTaskSource = $bot2TaskSource
+    }
     openclaw = [ordered]@{
         name = $openclaw.name
         botUsername = $LanxiBotUsername
@@ -888,7 +966,8 @@ $payload = [ordered]@{
     deliverables = @(
         "公開總控台：GitHub Pages",
         "狀態資料：runtime-status.json",
-        "監控項目：9 項",
+        "監控項目：11 項",
+        "林孟姿 TGBOT2：獨立欄位",
         "嵐熙任務：獨立欄位",
         "功能鍵：卡點救援 / 強制停止",
         "技能包清單：功能與使用場景"

@@ -71,7 +71,9 @@ function refreshRuntimeStatus() {
 }
 
 function normalizeTarget(value) {
-  return value === "shami" ? "shami" : "lanxi";
+  if (value === "shami") return "shami";
+  if (value === "mengzi") return "mengzi";
+  return "lanxi";
 }
 
 function targetFromRequest(req, url) {
