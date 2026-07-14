@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AI 自動化作業儀表盤｜蝦咩 x 林孟姿 x 嵐熙</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="styles.css?v=20260714-tg123-three-columns">
+  <link rel="stylesheet" href="styles.css?v=20260714-tg123-sync-order-fix">
 </head>
 <body data-agent-view="shami">
   <div class="agent-view-switch page-agent-switch" role="tablist" aria-label="蝦咩、林孟姿與嵐熙切換">
@@ -82,20 +82,13 @@
         <img src="assets/lanxi-avatar.png" alt="嵐熙 AI 助手圖片">
         <div><span>TG3</span><b>嵐熙</b></div>
       </article>
-      <div class="assistant-core-copy">
-        <span>AI 智能助手</span>
-        <strong>自動化作業系統</strong>
-        <p>蝦咩 · 林孟姿 · 嵐熙 即時守護</p>
-      </div>
       </div>
 
       <div class="command-strip" aria-label="總覽狀態">
-        <div class="command-chip shami-chip"><span>蝦咩狀態</span><b id="chipShamiStatus">讀取中</b></div>
-        <div class="command-chip mengzi-chip"><span>林孟姿狀態</span><b id="chipMengziStatus">讀取中</b></div>
+        <div class="command-chip shami-chip tg-task-summary-chip"><span>TG1 蝦咩狀態 / 任務</span><b id="chipShamiStatus">讀取中</b><small id="chipCurrentTask">同步中</small></div>
+        <div class="command-chip mengzi-chip tg-task-summary-chip"><span>TG2 林孟姿狀態 / 任務</span><b id="chipMengziStatus">讀取中</b><small id="chipMengziTask">同步中</small></div>
         <div class="command-chip tg3-chip tg3-merged-chip"><span>嵐熙狀態 / 任務</span><b id="chipTg3Status">讀取中</b><small id="chipTg3Task">同步中</small></div>
         <div class="command-chip skill-chip"><span>技能包</span><b id="chipSkillStatus">80 個已載入</b><small id="chipSkillDetail">等待清單渲染</small></div>
-        <div class="command-chip task-chip shami-task-chip"><span>蝦咩任務</span><b id="chipCurrentTask">同步中</b></div>
-        <div class="command-chip task-chip mengzi-task-chip"><span>林孟姿任務</span><b id="chipMengziTask">同步中</b></div>
       </div>
 
       <div class="ai-metrics">

@@ -26,8 +26,10 @@ $ConversationHistoryPath = Join-Path $BotRoot "telegram_conversation_history.jso
 $UsagePath = Join-Path $BotRoot "codex_token_usage.jsonl"
 $Bot2HeartbeatPath = Join-Path $Bot2Root "codex_bot_heartbeat.json"
 $Bot2RequestStatusPath = Join-Path $Bot2Root "telegram_request_status.json"
+$Bot2ConversationHistoryPath = Join-Path $Bot2Root "telegram_conversation_history.json"
 $Bot3HeartbeatPath = Join-Path $Bot3Root "codex_bot_heartbeat.json"
 $Bot3RequestStatusPath = Join-Path $Bot3Root "telegram_request_status.json"
+$Bot3ConversationHistoryPath = Join-Path $Bot3Root "telegram_conversation_history.json"
 $DashboardTaskOverridePath = Join-Path $SiteRoot "dashboard-task-override.json"
 $StateDb = "C:\Users\max\.codex\state_5.sqlite"
 $ControlActionRoot = "C:\Users\max\Desktop\龍蝦記憶\dashboard-control-actions"
@@ -229,10 +231,16 @@ function Get-RequestTaskInstruction {
     param($RequestRecord)
     if ($null -eq $RequestRecord -or -not $RequestRecord.task) { return "" }
     $raw = ([string]$RequestRecord.task).Trim()
-    if ($raw -match "^(讀取照片|讀取文件|安裝文件|安裝檔案)(\s|$)") { return "" }
+    if ($raw -match "^(續跑[:：]?\s*)?(讀取照片|讀取文件|讀取多素材|安裝文件|安裝檔案)(\s|$)") { return "" }
     $repaired = Repair-MojibakeText -Text $raw
     if (-not $repaired -or (Test-MojibakeText -Text $repaired)) { return "" }
     return Normalize-TaskText -Text $repaired
+}
+
+function Test-GenericReadTask {
+    param([string]$TaskText)
+    if (-not $TaskText) { return $false }
+    return ([string]$TaskText).Trim() -match "^(續跑[:：]?\s*)?(讀取照片|讀取文件|讀取多素材|安裝文件|安裝檔案)(\s|$)"
 }
 
 function Test-MojibakeText {
@@ -300,10 +308,7 @@ function Clean-TelegramInstructionText {
         }
     }
 
-    $parts = @()
-    if ($uploadLine) { $parts += $uploadLine }
-    if ($instruction.Trim()) { $parts += $instruction.Trim() }
-    $clean = ($parts -join " | ")
+    $clean = $instruction.Trim()
     $clean = Repair-MojibakeText -Text $clean
     $clean = Normalize-TaskText -Text $clean -Limit $Limit
     if (Test-MojibakeText -Text $clean) { return "" }
@@ -311,25 +316,36 @@ function Clean-TelegramInstructionText {
 }
 
 function Get-NewestUploadCaption {
-    $data = Read-JsonFile -Path $RecentUploadsPath
-    if ($null -eq $data) { return "" }
+    if (-not (Test-Path -LiteralPath $RecentUploadsPath)) { return "" }
     $records = @()
-    foreach ($property in $data.PSObject.Properties) {
-        if ($property.Value) { $records += $property.Value }
+    $pendingCaption = ""
+    foreach ($line in @(Get-Content -LiteralPath $RecentUploadsPath -Encoding UTF8)) {
+        if ($line -match '"caption"\s*:\s*"(?<caption>.*)"\s*,?\s*$') {
+            $pendingCaption = ([string]$Matches.caption) -replace '\\n', ' '
+            continue
+        }
+        if ($pendingCaption -and $line -match '"ts"\s*:\s*(?<ts>[0-9.]+)') {
+            $records += [pscustomobject]@{
+                caption = $pendingCaption
+                ts = [double]$Matches.ts
+            }
+            $pendingCaption = ""
+        }
     }
     if ($records.Count -eq 0) { return "" }
 
     $latest = $records |
         Where-Object { $_.caption -and -not (Test-MojibakeText ([string]$_.caption)) } |
-        Sort-Object { if ($_.ts) { [double]$_.ts } else { 0 } } |
+        Sort-Object ts |
         Select-Object -Last 1
 
     if (-not $latest) { return "" }
     return Normalize-TaskText -Text ([string]$latest.caption)
 }
 
-function Get-LatestConversationInstruction {
-    $data = Read-JsonFile -Path $ConversationHistoryPath
+function Get-LatestConversationInstructionFromPath {
+    param([string]$Path)
+    $data = Read-JsonFile -Path $Path
     if ($null -eq $data) { return "" }
 
     $records = @()
@@ -347,6 +363,10 @@ function Get-LatestConversationInstruction {
 
     if ($records.Count -eq 0) { return "" }
     return ($records | Sort-Object ts | Select-Object -Last 1).text
+}
+
+function Get-LatestConversationInstruction {
+    return Get-LatestConversationInstructionFromPath -Path $ConversationHistoryPath
 }
 
 function Get-DashboardTaskOverride {
@@ -423,6 +443,8 @@ if (
 }
 $uploadCaption = Get-NewestUploadCaption
 $conversationInstruction = Get-LatestConversationInstruction
+$bot2ConversationInstruction = Get-LatestConversationInstructionFromPath -Path $Bot2ConversationHistoryPath
+$bot3ConversationInstruction = Get-LatestConversationInstructionFromPath -Path $Bot3ConversationHistoryPath
 $dashboardTaskOverride = Get-DashboardTaskOverride
 $token = Get-TokenSummary -TargetDate $Date
 $dashboardControlAction = Get-LatestDashboardControlAction
@@ -528,28 +550,24 @@ if ($CurrentTask.Trim()) {
     $headline = $dashboardTaskOverride.currentTaskInstruction
     $currentInstructionSource = $dashboardTaskOverride.source
     $headlineFromDashboardOverride = $true
-} elseif (
-    $existingStatus -and
-    $existingStatus.currentTaskInstruction -and
-    $request -and
-    $request.task -and
-    ([string]$request.task).Trim() -match "^(讀取照片|讀取文件|安裝文件|安裝檔案)(\s|$)" -and
-    $conversationInstruction -and
-    ([string]$existingStatus.currentTaskInstruction).Trim() -ne $conversationInstruction
-) {
-    $headline = Normalize-TaskText -Text ([string]$existingStatus.currentTaskInstruction)
-    $currentInstructionSource = "runtime-status.json 最新指令保留"
 } elseif ($conversationInstruction) {
     $headline = $conversationInstruction
     $currentInstructionSource = "telegram_conversation_history.json"
 } elseif (
     $uploadCaption -and
     $request -and
-    $request.task -and
-    ([string]$request.task).Trim() -match "^(讀取照片|讀取文件|安裝文件|安裝檔案)(\s|$)"
+    (Test-GenericReadTask -TaskText ([string]$request.task))
 ) {
     $headline = $uploadCaption
     $currentInstructionSource = "telegram_recent_uploads.json"
+} elseif (
+    $existingStatus -and
+    $existingStatus.currentTaskInstruction -and
+    $request -and
+    (Test-GenericReadTask -TaskText ([string]$request.task))
+) {
+    $headline = Normalize-TaskText -Text ([string]$existingStatus.currentTaskInstruction)
+    $currentInstructionSource = "runtime-status.json 最新指令保留"
 }
 
 if (-not $NextAction.Trim()) {
@@ -571,7 +589,7 @@ $bot2TaskInstruction = "林孟姿 TGBOT2 目前沒有執行中的任務。"
 if ($bot2Request -and ($bot2Request.status -in @("queued", "running", "ready_to_send", "sending"))) {
     $bot2StatusKey = "running"
     $bot2StatusLabel = "運作中"
-    $bot2TaskInstruction = if ($bot2RequestTaskInstruction) { $bot2RequestTaskInstruction } else { "林孟姿 TGBOT2 目前有任務正在處理。" }
+    $bot2TaskInstruction = if ($bot2RequestTaskInstruction) { $bot2RequestTaskInstruction } elseif ($bot2ConversationInstruction) { $bot2ConversationInstruction } else { "林孟姿 TGBOT2 目前有任務正在處理。" }
 } elseif ($bot2Request -and ($bot2Request.status -in @("failed", "blocked", "interrupted"))) {
     $bot2StatusKey = "blocked"
     $bot2StatusLabel = "卡點"
@@ -587,7 +605,14 @@ $bot2TaskSource = Protect-PublicText -Text $bot2TaskSource
 
 $bot3Age = Get-HeartbeatAgeSeconds -Heartbeat $bot3Heartbeat
 $bot3ActiveRequests = if ($bot3Heartbeat -and $bot3Heartbeat.PSObject.Properties.Item("active_requests")) { $bot3Heartbeat.active_requests } else { $null }
+$bot3RequestAge = if ($bot3Request -and $bot3Request.updated_at) {
+    [Math]::Max(0, [int]([DateTimeOffset]$now).ToUnixTimeSeconds() - [int64]$bot3Request.updated_at)
+} else {
+    0
+}
 $bot3RequestTaskInstruction = Get-RequestTaskInstruction -RequestRecord $bot3Request
+$bot3HasGenericReadTask = $bot3Request -and (Test-GenericReadTask -TaskText ([string]$bot3Request.task))
+$bot3UploadTaskInstruction = if ($uploadCaption) { $uploadCaption } elseif ($dashboardTaskOverride) { $dashboardTaskOverride.currentTaskInstruction } else { "" }
 $bot3TaskSource = "tg-openai-bot-3/telegram_request_status.json"
 $bot3StatusKey = if ($bot3Age -le 120) { "standby" } else { "watch" }
 $bot3StatusLabel = if ($bot3Age -le 120) { "正常待命" } else { "心跳待確認" }
@@ -596,13 +621,27 @@ $bot3TaskInstruction = "TG3 目前沒有執行中的任務。"
 if ($bot3Request -and ($bot3Request.status -in @("queued", "running", "ready_to_send", "sending"))) {
     $bot3StatusKey = "running"
     $bot3StatusLabel = "運作中"
-    $bot3TaskInstruction = if ($bot3RequestTaskInstruction) { $bot3RequestTaskInstruction } else { "TG3 目前有任務正在處理。" }
+    if (-not $bot3RequestTaskInstruction -and $dashboardTaskOverride -and $bot3RequestAge -ge 300) {
+        $bot3TaskInstruction = $dashboardTaskOverride.currentTaskInstruction
+    } elseif ($bot3HasGenericReadTask) {
+        $bot3TaskInstruction = if ($bot3UploadTaskInstruction) { $bot3UploadTaskInstruction } else { "嵐熙正在檢查本輪上傳內容。" }
+    } else {
+        $bot3TaskInstruction = if ($bot3RequestTaskInstruction) { $bot3RequestTaskInstruction } elseif ($bot3ConversationInstruction) { $bot3ConversationInstruction } else { "嵐熙目前有任務正在處理。" }
+    }
 } elseif ($bot3Request -and ($bot3Request.status -in @("failed", "blocked", "interrupted"))) {
     $bot3StatusKey = "blocked"
     $bot3StatusLabel = "卡點"
-    $bot3TaskInstruction = if ($bot3RequestTaskInstruction) { $bot3RequestTaskInstruction } else { "TG3 最近任務異常，需要檢查。" }
+    if ($bot3HasGenericReadTask) {
+        $bot3TaskInstruction = if ($bot3UploadTaskInstruction) { $bot3UploadTaskInstruction } else { "嵐熙最近任務異常，需要檢查本輪上傳內容。" }
+    } else {
+        $bot3TaskInstruction = if ($bot3RequestTaskInstruction) { $bot3RequestTaskInstruction } else { "TG3 最近任務異常，需要檢查。" }
+    }
 } elseif ($bot3Request -and $bot3Request.status -eq "completed") {
-    $bot3TaskInstruction = if ($bot3RequestTaskInstruction) { "最近完成：$bot3RequestTaskInstruction" } else { "TG3 最近任務已完成。" }
+    if ($bot3HasGenericReadTask) {
+        $bot3TaskInstruction = if ($bot3UploadTaskInstruction) { "最近完成：$bot3UploadTaskInstruction" } else { "TG3 最近讀取／檢查任務已完成。" }
+    } else {
+        $bot3TaskInstruction = if ($bot3RequestTaskInstruction) { "最近完成：$bot3RequestTaskInstruction" } else { "TG3 最近任務已完成。" }
+    }
 }
 
 $bot3StatusKey = Protect-PublicText -Text $bot3StatusKey
