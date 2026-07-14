@@ -1,34 +1,43 @@
 {
-    "statusKey":  "running",
-    "statusLabel":  "運作中",
-    "headline":  "改去藍星通道做",
-    "currentTaskInstruction":  "改去藍星通道做",
-    "lanxiTaskInstruction":  "目前沒有執行中的 OpenClaw 任務；最近任務：每日9點運勢提醒（失敗，最後更新 07/10 09:00）。",
-    "blocker":  "沒有卡點",
-    "nextAction":  "完成後更新交付結果、網址、檔案路徑或明確卡點。",
-    "updatedAt":  "2026-07-10T13:20:51+08:00",
-    "checkedAt":  "2026-07-10T13:20:51+08:00",
+    "statusKey":  "blocked",
+    "statusLabel":  "疑似卡點",
+    "headline":  "繼續",
+    "currentTaskInstruction":  "繼續",
+    "lanxiTaskInstruction":  "目前沒有執行中的 OpenClaw 任務；最近任務：每日9點運勢提醒（失敗，最後更新 07/14 09:00）。",
+    "blocker":  "任務執行時間過長",
+    "nextAction":  "檢查最近任務狀態，必要時清楚回報卡點。",
+    "updatedAt":  "2026-07-14T14:49:30+08:00",
+    "checkedAt":  "2026-07-14T14:49:30+08:00",
     "sourceType":  "local-generator",
     "sourceLabel":  "本機即時狀態產生器",
     "refreshSeconds":  1,
     "token":  {
-                  "totalTokens":  8527904,
-                  "taskCount":  8,
+                  "totalTokens":  21230219,
+                  "taskCount":  27,
                   "source":  "本機 Codex 執行緒紀錄"
               },
     "heartbeat":  {
                       "name":  "蝦咩",
-                      "ageSeconds":  0,
+                      "ageSeconds":  9,
                       "activeRequests":  1
                   },
     "tgbot2":  {
                    "name":  "林孟姿",
                    "statusKey":  "standby",
                    "statusLabel":  "正常待命",
-                   "ageSeconds":  47,
+                   "ageSeconds":  37,
                    "activeRequests":  0,
-                   "currentTaskInstruction":  "最近完成：https://youtu.be/zpCdqNckdVs?si=RcSvy-eit3qvfW5f 這個影片在講什麼ˉ",
+                   "currentTaskInstruction":  "最近完成：上一個任務",
                    "currentTaskSource":  "tg-openai-bot-2/telegram_request_status.json"
+               },
+    "tgbot3":  {
+                   "name":  "TG3",
+                   "statusKey":  "running",
+                   "statusLabel":  "運作中",
+                   "ageSeconds":  23,
+                   "activeRequests":  1,
+                   "currentTaskInstruction":  "https://ohyagan-crypto.github.io/owner-work-map-website/#in-progress 檢查網站所有功能 尤其是卡點和停止 tg123任務同步顯示",
+                   "currentTaskSource":  "tg-openai-bot-3/telegram_request_status.json"
                },
     "openclaw":  {
                      "name":  "嵐熙",
@@ -36,8 +45,8 @@
                      "statusKey":  "running",
                      "statusLabel":  "正常",
                      "processCount":  3,
-                     "watchdogState":  "Running",
-                     "currentTaskInstruction":  "目前沒有執行中的 OpenClaw 任務；最近任務：每日9點運勢提醒（失敗，最後更新 07/10 09:00）。",
+                     "watchdogState":  "Ready",
+                     "currentTaskInstruction":  "目前沒有執行中的 OpenClaw 任務；最近任務：每日9點運勢提醒（失敗，最後更新 07/14 09:00）。",
                      "currentTaskSource":  "OpenClaw task_runs.sqlite"
                  },
     "monitors":  [
@@ -46,15 +55,15 @@
                          "label":  "蝦咩心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 0 秒前，執行中任務 1",
+                         "detail":  "心跳 9 秒前，執行中任務 1",
                          "source":  "codex_bot_heartbeat.json"
                      },
                      {
                          "id":  "telegram-request",
                          "label":  "Telegram 任務佇列",
-                         "statusKey":  "running",
-                         "statusLabel":  "運作中",
-                         "detail":  "改去藍星通道做",
+                         "statusKey":  "blocked",
+                         "statusLabel":  "疑似卡點",
+                         "detail":  "繼續",
                          "source":  "telegram_request_status.json"
                      },
                      {
@@ -62,7 +71,7 @@
                          "label":  "林孟姿心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 47 秒前，執行中任務 0",
+                         "detail":  "心跳 37 秒前，執行中任務 0",
                          "source":  "tg-openai-bot-2/codex_bot_heartbeat.json"
                      },
                      {
@@ -70,15 +79,31 @@
                          "label":  "林孟姿任務佇列",
                          "statusKey":  "standby",
                          "statusLabel":  "正常待命",
-                         "detail":  "最近完成：https://youtu.be/zpCdqNckdVs?si=RcSvy-eit3qvfW5f 這個影片在講什麼ˉ",
+                         "detail":  "最近完成：上一個任務",
                          "source":  "tg-openai-bot-2/telegram_request_status.json"
+                     },
+                     {
+                         "id":  "tgbot3-heartbeat",
+                         "label":  "TG3 心跳",
+                         "statusKey":  "running",
+                         "statusLabel":  "正常",
+                         "detail":  "心跳 23 秒前，執行中任務 1",
+                         "source":  "tg-openai-bot-3/codex_bot_heartbeat.json"
+                     },
+                     {
+                         "id":  "tgbot3-request",
+                         "label":  "TG3 任務佇列",
+                         "statusKey":  "running",
+                         "statusLabel":  "運作中",
+                         "detail":  "https://ohyagan-crypto.github.io/owner-work-map-website/#in-progress 檢查網站所有功能 尤其是卡點和停止 tg123任務同步顯示",
+                         "source":  "tg-openai-bot-3/telegram_request_status.json"
                      },
                      {
                          "id":  "openclaw-task",
                          "label":  "嵐熙任務",
                          "statusKey":  "watch",
                          "statusLabel":  "最近失敗",
-                         "detail":  "目前沒有執行中的 OpenClaw 任務；最近任務：每日9點運勢提醒（失敗，最後更新 07/10 09:00）。",
+                         "detail":  "目前沒有執行中的 OpenClaw 任務；最近任務：每日9點運勢提醒（失敗，最後更新 07/14 09:00）。",
                          "source":  "OpenClaw task_runs.sqlite"
                      },
                      {
@@ -92,8 +117,8 @@
                      {
                          "id":  "openclaw-watchdog",
                          "label":  "嵐熙看門排程",
-                         "statusKey":  "running",
-                         "statusLabel":  "Running",
+                         "statusKey":  "watch",
+                         "statusLabel":  "Ready",
                          "detail":  "OpenClaw Watchdog 排程目前狀態",
                          "source":  "Scheduled Task"
                      },
@@ -102,7 +127,7 @@
                          "label":  "Codex token 統計",
                          "statusKey":  "running",
                          "statusLabel":  "已讀取",
-                         "detail":  "8527904 tokens，任務 8",
+                         "detail":  "21230219 tokens，任務 27",
                          "source":  "本機 Codex 執行緒紀錄"
                      },
                      {
@@ -118,7 +143,7 @@
                          "label":  "狀態產生器",
                          "statusKey":  "running",
                          "statusLabel":  "已更新",
-                         "detail":  "產生時間 2026-07-10 13:20:51",
+                         "detail":  "產生時間 2026-07-14 14:49:30",
                          "source":  "tools/update-runtime-status.ps1"
                      },
                      {
@@ -143,6 +168,7 @@
                          "狀態資料：runtime-status.json",
                          "監控項目：11 項",
                          "林孟姿 TGBOT2：獨立欄位",
+                         "TG3：獨立欄位",
                          "嵐熙任務：獨立欄位",
                          "功能鍵：卡點救援 / 強制停止",
                          "技能包清單：功能與使用場景"

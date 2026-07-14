@@ -17,6 +17,10 @@
       <span class="agent-avatar-fallback" aria-hidden="true">林</span>
       <b>林孟姿</b>
     </button>
+    <button type="button" data-agent-view-button="tg3" role="tab" aria-selected="false" aria-pressed="false">
+      <span class="agent-avatar-fallback tg3-avatar-fallback" aria-hidden="true">3</span>
+      <b>TG3</b>
+    </button>
     <button type="button" data-agent-view-button="lanxi" role="tab" aria-selected="false" aria-pressed="false">
       <img src="assets/lanxi-avatar.png" alt="" aria-hidden="true">
       <b>嵐熙</b>
@@ -71,14 +75,18 @@
           <img src="assets/shami-avatar.png" alt="蝦咩 AI 助手圖片">
         <div><b>蝦咩</b></div>
       </article>
-      <article class="assistant-portrait mengzi-portrait">
+        <article class="assistant-portrait mengzi-portrait">
         <span class="assistant-initial" aria-hidden="true">林</span>
         <div><b>林孟姿</b></div>
+      </article>
+      <article class="assistant-portrait tg3-portrait">
+        <span class="assistant-initial" aria-hidden="true">3</span>
+        <div><b>TG3</b></div>
       </article>
       <div class="assistant-core-copy">
         <span>AI 智能助手</span>
         <strong>自動化作業系統</strong>
-        <p>TGBOT1 · TGBOT2 · OpenClaw 即時守護</p>
+        <p>TGBOT1 · TGBOT2 · TGBOT3 · OpenClaw 即時守護</p>
       </div>
         <article class="assistant-portrait lanxi-portrait">
           <img src="assets/lanxi-avatar.png" alt="嵐熙 AI 助手圖片">
@@ -89,10 +97,12 @@
       <div class="command-strip" aria-label="總覽狀態">
         <div class="command-chip shami-chip"><span>蝦咩狀態</span><b id="chipShamiStatus">讀取中</b></div>
         <div class="command-chip mengzi-chip"><span>林孟姿狀態</span><b id="chipMengziStatus">讀取中</b></div>
+        <div class="command-chip tg3-chip"><span>TG3 狀態</span><b id="chipTg3Status">讀取中</b></div>
         <div class="command-chip lanxi-chip"><span>嵐熙狀態</span><b id="chipLanxiStatus">讀取中</b></div>
         <div class="command-chip skill-chip"><span>技能包</span><b id="chipSkillStatus">80 個已載入</b><small id="chipSkillDetail">等待清單渲染</small></div>
         <div class="command-chip task-chip shami-task-chip"><span>蝦咩任務</span><b id="chipCurrentTask">同步中</b></div>
         <div class="command-chip task-chip mengzi-task-chip"><span>林孟姿任務</span><b id="chipMengziTask">同步中</b></div>
+        <div class="command-chip task-chip tg3-task-chip"><span>TG3 任務</span><b id="chipTg3Task">同步中</b></div>
         <div class="command-chip task-chip lanxi-task-chip"><span>嵐熙任務</span><b id="chipLanxiTask">同步中</b></div>
       </div>
 
@@ -131,6 +141,19 @@
           <div class="monitor-panel">
             <div class="monitor-panel-head"><p class="eyebrow">TG2 Monitoring</p><h3>林孟姿監控</h3></div>
             <div class="monitor-grid compact actor-monitor-grid" id="mengziMonitorGrid"></div>
+          </div>
+        </section>
+
+        <section class="agent-status-column tg3-column" aria-labelledby="tg3ColumnTitle">
+          <div class="column-heading"><h3 id="tg3ColumnTitle">TG3</h3></div>
+          <div class="agent-slot" id="tg3Agent"></div>
+          <div class="dashboard-grid actor-grid">
+            <article class="status-card primary-status tg3-primary-status"><span>TG3 狀態</span><strong id="tgbot3StatusLabel">讀取中</strong><p id="tgbot3StatusDetail">正在讀取 TG3 bot 狀態。</p></article>
+            <article class="status-card task-status-card"><span>TG3 目前任務</span><strong id="tgbot3TaskText">同步中</strong><p id="tgbot3TaskSource">等待 TG3 任務來源。</p></article>
+          </div>
+          <div class="monitor-panel">
+            <div class="monitor-panel-head"><p class="eyebrow">TG3 Monitoring</p><h3>TG3 監控</h3></div>
+            <div class="monitor-grid compact actor-monitor-grid" id="tg3MonitorGrid"></div>
           </div>
         </section>
 
@@ -182,6 +205,7 @@
       <div class="monitor-section-columns">
         <section class="monitor-section-column shami-monitor-section"><div class="mini-section-title"><h3>蝦咩狀態</h3></div><div class="monitor-grid detail" id="shamiMonitorSectionGrid"></div></section>
         <section class="monitor-section-column mengzi-monitor-section"><div class="mini-section-title"><h3>林孟姿狀態</h3></div><div class="monitor-grid detail" id="mengziMonitorSectionGrid"></div></section>
+        <section class="monitor-section-column tg3-monitor-section"><div class="mini-section-title"><h3>TG3 狀態</h3></div><div class="monitor-grid detail" id="tg3MonitorSectionGrid"></div></section>
         <section class="monitor-section-column lanxi-monitor-section"><div class="mini-section-title"><h3>嵐熙狀態</h3></div><div class="monitor-grid detail" id="lanxiMonitorSectionGrid"></div></section>
       </div>
     </section>

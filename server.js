@@ -73,6 +73,7 @@ function refreshRuntimeStatus() {
 function normalizeTarget(value) {
   if (value === "shami") return "shami";
   if (value === "mengzi") return "mengzi";
+  if (value === "tg3") return "tg3";
   return "lanxi";
 }
 

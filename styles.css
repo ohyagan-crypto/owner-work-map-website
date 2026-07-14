@@ -711,7 +711,7 @@ body[data-agent-view="mengzi"] .active-task-banner {
 .dashboard-live-layout {
   order: -12;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
   align-items: stretch;
   width: 100%;
@@ -784,6 +784,12 @@ body[data-agent-view="mengzi"] .active-task-banner {
 .lanxi-column {
   --column-accent: var(--violet);
   --column-accent-soft: rgba(213, 107, 255, 0.14);
+  order: 2;
+}
+
+.tg3-column {
+  --column-accent: var(--amber);
+  --column-accent-soft: rgba(255, 188, 66, 0.13);
   order: 1;
 }
 
@@ -895,6 +901,7 @@ body[data-agent-view="mengzi"] .active-task-banner {
 .page-agent-switch {
   width: min(1240px, calc(100% - 32px));
   margin: 12px auto 8px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .agent-view-switch button {
@@ -918,6 +925,10 @@ body[data-agent-view="mengzi"] .active-task-banner {
 }
 
 .agent-view-switch button[data-agent-view-button="lanxi"] {
+  order: 2;
+}
+
+.agent-view-switch button[data-agent-view-button="tg3"] {
   order: 1;
 }
 
@@ -945,6 +956,10 @@ body[data-agent-view="mengzi"] .active-task-banner {
   box-shadow: 0 0 14px rgba(185, 255, 79, 0.24);
 }
 
+.agent-view-switch button[data-agent-view-button="tg3"] .agent-avatar-fallback {
+  box-shadow: 0 0 14px rgba(255, 188, 66, 0.28);
+}
+
 .agent-view-switch button:hover,
 .agent-view-switch button:focus-visible {
   border-color: rgba(46, 233, 255, 0.44);
@@ -968,6 +983,11 @@ body[data-agent-view="mengzi"] .active-task-banner {
   box-shadow: 0 0 22px rgba(185, 255, 79, 0.17) inset, 0 0 18px rgba(185, 255, 79, 0.12);
 }
 
+.agent-view-switch button[data-agent-view-button="tg3"].active {
+  border-color: rgba(255, 188, 66, 0.6);
+  box-shadow: 0 0 22px rgba(255, 188, 66, 0.17) inset, 0 0 18px rgba(255, 188, 66, 0.12);
+}
+
 .agent-view-switch span {
   font-size: 12px;
   font-weight: 850;
@@ -984,54 +1004,76 @@ body[data-agent-view="mengzi"] .active-task-banner {
 @media (max-width: 720px) {
   body[data-agent-view="shami"] .lanxi-column,
   body[data-agent-view="shami"] .mengzi-column,
+  body[data-agent-view="shami"] .tg3-column,
   body[data-agent-view="shami"] .lanxi-chip,
   body[data-agent-view="shami"] .mengzi-chip,
+  body[data-agent-view="shami"] .tg3-chip,
   body[data-agent-view="shami"] .lanxi-task-chip,
   body[data-agent-view="shami"] .mengzi-task-chip,
+  body[data-agent-view="shami"] .tg3-task-chip,
   body[data-agent-view="shami"] .lanxi-monitor-section,
   body[data-agent-view="shami"] .mengzi-monitor-section,
+  body[data-agent-view="shami"] .tg3-monitor-section,
   body[data-agent-view="mengzi"] .shami-column,
   body[data-agent-view="mengzi"] .lanxi-column,
+  body[data-agent-view="mengzi"] .tg3-column,
   body[data-agent-view="mengzi"] .shami-chip,
   body[data-agent-view="mengzi"] .lanxi-chip,
+  body[data-agent-view="mengzi"] .tg3-chip,
   body[data-agent-view="mengzi"] .shami-task-chip,
   body[data-agent-view="mengzi"] .lanxi-task-chip,
+  body[data-agent-view="mengzi"] .tg3-task-chip,
   body[data-agent-view="mengzi"] .shami-monitor-section,
   body[data-agent-view="mengzi"] .lanxi-monitor-section,
+  body[data-agent-view="mengzi"] .tg3-monitor-section,
+  body[data-agent-view="tg3"] .shami-column,
+  body[data-agent-view="tg3"] .mengzi-column,
+  body[data-agent-view="tg3"] .lanxi-column,
+  body[data-agent-view="tg3"] .shami-chip,
+  body[data-agent-view="tg3"] .mengzi-chip,
+  body[data-agent-view="tg3"] .lanxi-chip,
+  body[data-agent-view="tg3"] .shami-task-chip,
+  body[data-agent-view="tg3"] .mengzi-task-chip,
+  body[data-agent-view="tg3"] .lanxi-task-chip,
+  body[data-agent-view="tg3"] .shami-monitor-section,
+  body[data-agent-view="tg3"] .mengzi-monitor-section,
+  body[data-agent-view="tg3"] .lanxi-monitor-section,
   body[data-agent-view="lanxi"] .shami-column,
   body[data-agent-view="lanxi"] .mengzi-column,
+  body[data-agent-view="lanxi"] .tg3-column,
   body[data-agent-view="lanxi"] .shami-chip,
   body[data-agent-view="lanxi"] .mengzi-chip,
+  body[data-agent-view="lanxi"] .tg3-chip,
   body[data-agent-view="lanxi"] .shami-task-chip,
   body[data-agent-view="lanxi"] .mengzi-task-chip,
+  body[data-agent-view="lanxi"] .tg3-task-chip,
   body[data-agent-view="lanxi"] .shami-monitor-section,
-  body[data-agent-view="lanxi"] .mengzi-monitor-section {
+  body[data-agent-view="lanxi"] .mengzi-monitor-section,
+  body[data-agent-view="lanxi"] .tg3-monitor-section {
     display: none;
   }
 
   body[data-agent-view="shami"] .dashboard-live-layout,
   body[data-agent-view="mengzi"] .dashboard-live-layout,
+  body[data-agent-view="tg3"] .dashboard-live-layout,
   body[data-agent-view="lanxi"] .dashboard-live-layout,
   body[data-agent-view="shami"] .monitor-section-columns,
   body[data-agent-view="mengzi"] .monitor-section-columns,
+  body[data-agent-view="tg3"] .monitor-section-columns,
   body[data-agent-view="lanxi"] .monitor-section-columns {
     grid-template-columns: minmax(0, 1fr);
   }
 
   body[data-agent-view="shami"] .dashboard-live-layout::before,
   body[data-agent-view="mengzi"] .dashboard-live-layout::before,
+  body[data-agent-view="tg3"] .dashboard-live-layout::before,
   body[data-agent-view="lanxi"] .dashboard-live-layout::before {
     display: none;
   }
 }
 
 body[data-agent-view] .command-strip {
-  grid-template-columns:
-    minmax(180px, 0.9fr)
-    minmax(120px, 0.62fr)
-    minmax(160px, 0.78fr)
-    minmax(180px, 1fr)
-    minmax(150px, 0.72fr);
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
 }
 
 .agent-strip {
@@ -1304,7 +1346,7 @@ body[data-agent-view] .command-strip {
 
 .monitor-section-columns {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 14px;
 }
 
@@ -2275,6 +2317,14 @@ footer {
   background: linear-gradient(180deg, var(--lime), var(--cyan));
 }
 
+.tg3-chip {
+  border-color: rgba(255, 188, 66, 0.38);
+}
+
+.tg3-chip::before {
+  background: linear-gradient(180deg, var(--amber), var(--violet));
+}
+
 .sync-chip {
   border-color: rgba(185, 255, 79, 0.4);
   background:
@@ -2968,6 +3018,7 @@ body.light-mode .theme-toggle {
   .skill-chip,
   .task-chip,
   .mengzi-task-chip,
+  .tg3-task-chip,
   .lanxi-task-chip,
   .updated-chip {
     grid-column: 1 / -1;

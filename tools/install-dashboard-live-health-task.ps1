@@ -1,6 +1,6 @@
 param(
-    [string]$TaskName = "OwnerWorkMapDashboardLiveHealth30m",
-    [int]$IntervalMinutes = 30,
+    [string]$TaskName = "OwnerWorkMapDashboardLiveHealthHourly",
+    [int]$IntervalMinutes = 60,
     [int]$Port = 4206
 )
 
