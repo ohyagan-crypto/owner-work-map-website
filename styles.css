@@ -883,7 +883,7 @@ body[data-agent-view="mengzi"] .active-task-banner {
 .page-agent-switch {
   width: min(1240px, calc(100% - 32px));
   margin: 12px auto 8px;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .agent-view-switch button {
@@ -1012,6 +1012,38 @@ body[data-agent-view="mengzi"] .active-task-banner {
   body[data-agent-view="tg3"] .dashboard-live-layout::before {
     display: none;
   }
+
+  .page-agent-switch {
+    width: calc(100% - 16px);
+    gap: 4px;
+    padding: 4px;
+  }
+
+  .page-agent-switch button {
+    min-height: 58px;
+    grid-template-columns: 42px minmax(0, 1fr);
+    column-gap: 6px;
+    padding: 7px;
+  }
+
+  .page-agent-switch img,
+  .page-agent-switch .agent-avatar-fallback {
+    width: 42px;
+  }
+
+  .page-agent-switch b {
+    font-size: 18px;
+    white-space: nowrap;
+  }
+}
+
+.agent-view-switch small {
+  align-self: end;
+  color: rgba(235, 255, 248, 0.66);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  line-height: 1;
 }
 
 body[data-agent-view] .command-strip {

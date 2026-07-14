@@ -5,20 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AI 自動化作業儀表盤｜蝦咩 x 林孟姿 x 嵐熙</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="styles.css?v=20260714-tg123-only">
+  <link rel="stylesheet" href="styles.css?v=20260714-tg123-three-columns">
 </head>
 <body data-agent-view="shami">
   <div class="agent-view-switch page-agent-switch" role="tablist" aria-label="蝦咩、林孟姿與嵐熙切換">
     <button type="button" class="active" data-agent-view-button="shami" role="tab" aria-selected="true" aria-pressed="true">
       <img src="assets/shami-avatar.png" alt="" aria-hidden="true">
+      <small>TG1</small>
       <b>蝦咩</b>
     </button>
     <button type="button" data-agent-view-button="mengzi" role="tab" aria-selected="false" aria-pressed="false">
       <span class="agent-avatar-fallback" aria-hidden="true">林</span>
+      <small>TG2</small>
       <b>林孟姿</b>
     </button>
     <button type="button" data-agent-view-button="tg3" role="tab" aria-selected="false" aria-pressed="false">
       <img src="assets/lanxi-avatar.png" alt="" aria-hidden="true">
+      <small>TG3</small>
       <b>嵐熙</b>
     </button>
   </div>
@@ -69,15 +72,15 @@
       <div class="assistant-stage" aria-label="蝦咩、林孟姿與嵐熙助手圖片">
         <article class="assistant-portrait shami-portrait">
           <img src="assets/shami-avatar.png" alt="蝦咩 AI 助手圖片">
-        <div><b>蝦咩</b></div>
+        <div><span>TG1</span><b>蝦咩</b></div>
       </article>
         <article class="assistant-portrait mengzi-portrait">
         <span class="assistant-initial" aria-hidden="true">林</span>
-        <div><b>林孟姿</b></div>
+        <div><span>TG2</span><b>林孟姿</b></div>
       </article>
       <article class="assistant-portrait tg3-portrait">
         <img src="assets/lanxi-avatar.png" alt="嵐熙 AI 助手圖片">
-        <div><b>嵐熙</b></div>
+        <div><span>TG3</span><b>嵐熙</b></div>
       </article>
       <div class="assistant-core-copy">
         <span>AI 智能助手</span>
@@ -107,7 +110,7 @@
 
       <div class="dashboard-live-layout">
         <section class="agent-status-column shami-column" aria-labelledby="shamiColumnTitle">
-          <div class="column-heading"><h3 id="shamiColumnTitle">蝦咩</h3></div>
+          <div class="column-heading"><h3 id="shamiColumnTitle">TG1 蝦咩</h3></div>
           <div class="agent-slot" id="shamiAgent"></div>
           <div class="dashboard-grid actor-grid">
             <article class="status-card primary-status"><span>蝦咩任務狀態</span><strong id="statusLabel">讀取中</strong><p id="statusHeadline">正在讀取本機即時狀態。</p></article>
@@ -121,7 +124,7 @@
         </section>
 
         <section class="agent-status-column mengzi-column" aria-labelledby="mengziColumnTitle">
-          <div class="column-heading"><h3 id="mengziColumnTitle">林孟姿</h3></div>
+          <div class="column-heading"><h3 id="mengziColumnTitle">TG2 林孟姿</h3></div>
           <div class="agent-slot" id="mengziAgent"></div>
           <div class="dashboard-grid actor-grid">
             <article class="status-card primary-status mengzi-primary-status"><span>林孟姿 TGBOT2 狀態</span><strong id="tgbot2StatusLabel">讀取中</strong><p id="tgbot2StatusDetail">正在讀取 TG2 / 林孟姿 bot 狀態。</p></article>
@@ -134,7 +137,7 @@
         </section>
 
         <section class="agent-status-column tg3-column" aria-labelledby="tg3ColumnTitle">
-          <div class="column-heading"><h3 id="tg3ColumnTitle">嵐熙</h3></div>
+          <div class="column-heading"><h3 id="tg3ColumnTitle">TG3 嵐熙</h3></div>
           <div class="agent-slot" id="tg3Agent"></div>
           <div class="dashboard-grid actor-grid">
             <article class="status-card primary-status tg3-primary-status tg3-merged-status">
