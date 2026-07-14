@@ -1375,8 +1375,7 @@ function renderAgentStrip(status) {
   const agents = [
     {
       kind: "mengzi",
-      avatar: "",
-      avatarFallback: "林",
+      avatar: "assets/mengzi-avatar.png",
       role: "TGBOT2",
       name: tgbot2.name || MENGZI_BOT_NAME,
       state: publicText(tgbot2.statusLabel) || "資料待同步",
