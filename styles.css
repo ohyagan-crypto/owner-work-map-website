@@ -354,7 +354,7 @@ main {
   box-shadow: 0 0 18px var(--active-accent);
 }
 
-body[data-agent-view="lanxi"] .active-task-banner {
+body[data-agent-view="tg3"] .active-task-banner {
   --active-accent: var(--violet);
   --active-accent-soft: rgba(213, 107, 255, 0.14);
   border-color: rgba(213, 107, 255, 0.38);
@@ -575,7 +575,7 @@ body[data-agent-view="mengzi"] .active-task-banner {
   order: 0;
 }
 
-.assistant-stage .lanxi-portrait {
+.assistant-stage .tg3-portrait {
   order: 1;
 }
 
@@ -630,7 +630,7 @@ body[data-agent-view="mengzi"] .active-task-banner {
   filter: drop-shadow(0 0 24px rgba(46, 233, 255, 0.22));
 }
 
-.lanxi-portrait img {
+.tg3-portrait img {
   filter: drop-shadow(0 0 24px rgba(213, 107, 255, 0.26));
 }
 
@@ -676,7 +676,7 @@ body[data-agent-view="mengzi"] .active-task-banner {
   text-shadow: 0 0 18px rgba(46, 233, 255, 0.24);
 }
 
-.lanxi-portrait b {
+.tg3-portrait b {
   text-shadow: 0 0 18px rgba(213, 107, 255, 0.28);
 }
 
@@ -711,7 +711,7 @@ body[data-agent-view="mengzi"] .active-task-banner {
 .dashboard-live-layout {
   order: -12;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
   align-items: stretch;
   width: 100%;
@@ -781,15 +781,9 @@ body[data-agent-view="mengzi"] .active-task-banner {
   opacity: 0.74;
 }
 
-.lanxi-column {
+.tg3-column {
   --column-accent: var(--violet);
   --column-accent-soft: rgba(213, 107, 255, 0.14);
-  order: 2;
-}
-
-.tg3-column {
-  --column-accent: var(--amber);
-  --column-accent-soft: rgba(255, 188, 66, 0.13);
   order: 1;
 }
 
@@ -801,18 +795,6 @@ body[data-agent-view="mengzi"] .active-task-banner {
 
 .shami-column {
   order: -1;
-}
-
-.lanxi-column .actor-grid {
-  order: 1;
-}
-
-.lanxi-column .agent-slot {
-  order: 2;
-}
-
-.lanxi-column .monitor-panel {
-  order: 3;
 }
 
 .blocker-status {
@@ -924,10 +906,6 @@ body[data-agent-view="mengzi"] .active-task-banner {
   transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
 }
 
-.agent-view-switch button[data-agent-view-button="lanxi"] {
-  order: 2;
-}
-
 .agent-view-switch button[data-agent-view-button="tg3"] {
   order: 1;
 }
@@ -946,10 +924,6 @@ body[data-agent-view="mengzi"] .active-task-banner {
   aspect-ratio: 1;
   object-fit: contain;
   filter: drop-shadow(0 0 14px rgba(46, 233, 255, 0.2));
-}
-
-.agent-view-switch button[data-agent-view-button="lanxi"] img {
-  filter: drop-shadow(0 0 14px rgba(213, 107, 255, 0.24));
 }
 
 .agent-view-switch button[data-agent-view-button="mengzi"] .agent-avatar-fallback {
@@ -971,11 +945,6 @@ body[data-agent-view="mengzi"] .active-task-banner {
   color: #fff;
   border-color: rgba(46, 233, 255, 0.54);
   box-shadow: 0 0 22px rgba(46, 233, 255, 0.18) inset, 0 0 18px rgba(46, 233, 255, 0.12);
-}
-
-.agent-view-switch button[data-agent-view-button="lanxi"].active {
-  border-color: rgba(213, 107, 255, 0.58);
-  box-shadow: 0 0 22px rgba(213, 107, 255, 0.18) inset, 0 0 18px rgba(213, 107, 255, 0.12);
 }
 
 .agent-view-switch button[data-agent-view-button="mengzi"].active {
@@ -1002,72 +971,45 @@ body[data-agent-view="mengzi"] .active-task-banner {
 }
 
 @media (max-width: 720px) {
-  body[data-agent-view="shami"] .lanxi-column,
   body[data-agent-view="shami"] .mengzi-column,
   body[data-agent-view="shami"] .tg3-column,
-  body[data-agent-view="shami"] .lanxi-chip,
   body[data-agent-view="shami"] .mengzi-chip,
   body[data-agent-view="shami"] .tg3-chip,
-  body[data-agent-view="shami"] .lanxi-task-chip,
   body[data-agent-view="shami"] .mengzi-task-chip,
   body[data-agent-view="shami"] .tg3-task-chip,
-  body[data-agent-view="shami"] .lanxi-monitor-section,
   body[data-agent-view="shami"] .mengzi-monitor-section,
   body[data-agent-view="shami"] .tg3-monitor-section,
   body[data-agent-view="mengzi"] .shami-column,
-  body[data-agent-view="mengzi"] .lanxi-column,
   body[data-agent-view="mengzi"] .tg3-column,
   body[data-agent-view="mengzi"] .shami-chip,
-  body[data-agent-view="mengzi"] .lanxi-chip,
   body[data-agent-view="mengzi"] .tg3-chip,
   body[data-agent-view="mengzi"] .shami-task-chip,
-  body[data-agent-view="mengzi"] .lanxi-task-chip,
   body[data-agent-view="mengzi"] .tg3-task-chip,
   body[data-agent-view="mengzi"] .shami-monitor-section,
-  body[data-agent-view="mengzi"] .lanxi-monitor-section,
   body[data-agent-view="mengzi"] .tg3-monitor-section,
   body[data-agent-view="tg3"] .shami-column,
   body[data-agent-view="tg3"] .mengzi-column,
-  body[data-agent-view="tg3"] .lanxi-column,
   body[data-agent-view="tg3"] .shami-chip,
   body[data-agent-view="tg3"] .mengzi-chip,
-  body[data-agent-view="tg3"] .lanxi-chip,
   body[data-agent-view="tg3"] .shami-task-chip,
   body[data-agent-view="tg3"] .mengzi-task-chip,
-  body[data-agent-view="tg3"] .lanxi-task-chip,
   body[data-agent-view="tg3"] .shami-monitor-section,
-  body[data-agent-view="tg3"] .mengzi-monitor-section,
-  body[data-agent-view="tg3"] .lanxi-monitor-section,
-  body[data-agent-view="lanxi"] .shami-column,
-  body[data-agent-view="lanxi"] .mengzi-column,
-  body[data-agent-view="lanxi"] .tg3-column,
-  body[data-agent-view="lanxi"] .shami-chip,
-  body[data-agent-view="lanxi"] .mengzi-chip,
-  body[data-agent-view="lanxi"] .tg3-chip,
-  body[data-agent-view="lanxi"] .shami-task-chip,
-  body[data-agent-view="lanxi"] .mengzi-task-chip,
-  body[data-agent-view="lanxi"] .tg3-task-chip,
-  body[data-agent-view="lanxi"] .shami-monitor-section,
-  body[data-agent-view="lanxi"] .mengzi-monitor-section,
-  body[data-agent-view="lanxi"] .tg3-monitor-section {
+  body[data-agent-view="tg3"] .mengzi-monitor-section {
     display: none;
   }
 
   body[data-agent-view="shami"] .dashboard-live-layout,
   body[data-agent-view="mengzi"] .dashboard-live-layout,
   body[data-agent-view="tg3"] .dashboard-live-layout,
-  body[data-agent-view="lanxi"] .dashboard-live-layout,
   body[data-agent-view="shami"] .monitor-section-columns,
   body[data-agent-view="mengzi"] .monitor-section-columns,
-  body[data-agent-view="tg3"] .monitor-section-columns,
-  body[data-agent-view="lanxi"] .monitor-section-columns {
+  body[data-agent-view="tg3"] .monitor-section-columns {
     grid-template-columns: minmax(0, 1fr);
   }
 
   body[data-agent-view="shami"] .dashboard-live-layout::before,
   body[data-agent-view="mengzi"] .dashboard-live-layout::before,
-  body[data-agent-view="tg3"] .dashboard-live-layout::before,
-  body[data-agent-view="lanxi"] .dashboard-live-layout::before {
+  body[data-agent-view="tg3"] .dashboard-live-layout::before {
     display: none;
   }
 }
@@ -1130,7 +1072,7 @@ body[data-agent-view] .command-strip {
   filter: drop-shadow(0 0 16px rgba(46, 233, 255, 0.2));
 }
 
-.lanxi-agent-card .agent-card-avatar {
+.tg3-agent-card .agent-card-avatar {
   filter: drop-shadow(0 0 16px rgba(213, 107, 255, 0.24));
 }
 
@@ -1212,7 +1154,7 @@ body[data-agent-view] .command-strip {
   border-color: rgba(46, 233, 255, 0.3);
 }
 
-.lanxi-task-card {
+.tg3-task-card {
   border-color: rgba(213, 107, 255, 0.34);
 }
 
@@ -1296,7 +1238,7 @@ body[data-agent-view] .command-strip {
     linear-gradient(135deg, rgba(33, 209, 139, 0.9) 0%, rgba(56, 168, 255, 0.74) 62%, rgba(213, 107, 255, 0.54) 100%);
 }
 
-.lanxi-primary-status {
+.tg3-primary-status {
   border-color: rgba(213, 107, 255, 0.42);
   background:
     linear-gradient(135deg, rgba(56, 168, 255, 0.82) 0%, rgba(213, 107, 255, 0.64) 58%, rgba(255, 188, 66, 0.48) 100%);
@@ -2301,14 +2243,6 @@ footer {
   background: linear-gradient(180deg, var(--cyan), var(--blue));
 }
 
-.lanxi-chip {
-  border-color: rgba(213, 107, 255, 0.34);
-}
-
-.lanxi-chip::before {
-  background: linear-gradient(180deg, var(--violet), var(--amber));
-}
-
 .mengzi-chip {
   border-color: rgba(185, 255, 79, 0.36);
 }
@@ -2358,14 +2292,6 @@ footer {
 
 .shami-task-chip::before {
   background: linear-gradient(180deg, var(--cyan), var(--lime));
-}
-
-.lanxi-task-chip {
-  border-color: rgba(213, 107, 255, 0.38);
-}
-
-.lanxi-task-chip::before {
-  background: linear-gradient(180deg, var(--violet), var(--amber));
 }
 
 .mengzi-task-chip {
@@ -3019,7 +2945,6 @@ body.light-mode .theme-toggle {
   .task-chip,
   .mengzi-task-chip,
   .tg3-task-chip,
-  .lanxi-task-chip,
   .updated-chip {
     grid-column: 1 / -1;
     min-height: 86px;

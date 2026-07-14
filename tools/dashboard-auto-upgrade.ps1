@@ -85,7 +85,7 @@ $profiles = @(
 .command-strip { box-shadow: 0 18px 38px rgba(0, 0, 0, 0.24), 0 0 0 1px rgba(115, 232, 242, 0.12) inset; }
 .mission-board-head { background: linear-gradient(90deg, rgba(115, 232, 242, 0.11), rgba(255,255,255,0.035), rgba(244, 207, 123, 0.08)); }
 .primary-status { border-color: rgba(115, 232, 242, 0.48); }
-.lanxi-primary-status { border-color: rgba(244, 207, 123, 0.44); }
+.tg3-primary-status { border-color: rgba(244, 207, 123, 0.44); }
 "@
   },
   [pscustomobject]@{
@@ -96,7 +96,7 @@ $profiles = @(
     Css = @"
 @media (max-width: 640px) {
   .status-dashboard { padding: 14px; }
-  .command-chip, .sync-chip, .skill-chip, .task-chip, .lanxi-task-chip, .updated-chip { flex-basis: min(80vw, 258px); }
+  .command-chip, .sync-chip, .skill-chip, .task-chip, .tg3-task-chip, .updated-chip { flex-basis: min(80vw, 258px); }
   .agent-status-column { padding: 12px; }
   .status-card strong, .task-status-card strong { font-size: clamp(22px, 7.2vw, 32px); }
 }

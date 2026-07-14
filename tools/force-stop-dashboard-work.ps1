@@ -1,7 +1,7 @@
 ﻿param(
   [string]$SiteRoot = (Split-Path -Parent $PSScriptRoot),
-  [ValidateSet("lanxi", "shami", "mengzi", "tg3")]
-  [string]$Target = "lanxi",
+  [ValidateSet("shami", "mengzi", "tg3")]
+  [string]$Target = "shami",
   [string]$BotRoot = "C:\Users\max\tg-openai-bot",
   [string]$Bot3Root = "C:\Users\max\tg-openai-bot-3"
 )
@@ -101,11 +101,7 @@ function Stop-RunningCodexWorkers {
   return $count
 }
 
-if ($Target -eq "lanxi") {
-  foreach ($name in @("OpenClaw Watchdog", "OpenClaw Gateway")) {
-    Stop-DashboardTask -TaskName $name -DisableAfterStop $true
-  }
-} elseif ($Target -eq "mengzi") {
+if ($Target -eq "mengzi") {
   $pauseUntil = (Get-Date).AddMinutes(15).ToString("o")
   $interruptedRequests = Set-TelegramRequestsInterrupted
   $stoppedProcesses = Stop-RunningCodexWorkers
@@ -123,7 +119,7 @@ if ($Target -eq "lanxi") {
   $pauseUntil = (Get-Date).AddMinutes(15).ToString("o")
   $interruptedRequests = Set-TelegramRequestsInterrupted
   $stoppedProcesses = Stop-RunningCodexWorkers
-  foreach ($name in @("Codex Telegram Bot Watchdog Hourly", "Codex Telegram Bot Watchdog Startup", "OpenClaw_CodexBot_HourlyHealth")) {
+  foreach ($name in @("Codex Telegram Bot Watchdog Hourly", "Codex Telegram Bot Watchdog Startup")) {
     Stop-DashboardTask -TaskName $name -DisableAfterStop $false
   }
 }
@@ -140,8 +136,8 @@ $payload = [ordered]@{
   stoppedCodexWorkers = $stoppedProcesses
   paused = if ($Target -eq "shami" -or $Target -eq "mengzi" -or $Target -eq "tg3") { $true } else { $false }
   pauseUntil = $pauseUntil
-  scope = if ($Target -eq "lanxi") { "lanxi OpenClaw automation only" } elseif ($Target -eq "mengzi") { "mengzi TGBOT2 current work pause/interrupt" } elseif ($Target -eq "tg3") { "TG3 current work pause/interrupt" } else { "shami TGBOT current work pause/interrupt" }
-  behavior = if ($Target -eq "lanxi") { "stop OpenClaw schedules without touching TGBOT" } elseif ($Target -eq "mengzi") { "interrupt Telegram bot2 request records, stop Codex child work, and write the TGBOT2 force-stop signal" } elseif ($Target -eq "tg3") { "interrupt Telegram bot3 request records, stop Codex child work, and write the TG3 force-stop signal" } else { "interrupt Telegram request records, stop Codex child work, and write the TGBOT force-stop signal" }
+  scope = if ($Target -eq "mengzi") { "mengzi TGBOT2 current work pause/interrupt" } elseif ($Target -eq "tg3") { "TG3 current work pause/interrupt" } else { "shami TGBOT current work pause/interrupt" }
+  behavior = if ($Target -eq "mengzi") { "interrupt Telegram bot2 request records, stop Codex child work, and write the TGBOT2 force-stop signal" } elseif ($Target -eq "tg3") { "interrupt Telegram bot3 request records, stop Codex child work, and write the TG3 force-stop signal" } else { "interrupt Telegram request records, stop Codex child work, and write the TGBOT force-stop signal" }
 }
 
 $json = $payload | ConvertTo-Json -Depth 5
@@ -159,21 +155,13 @@ if (Test-Path -LiteralPath $statusScript) {
   }
 }
 
-if ($Target -eq "lanxi") {
-  $changed = @(@($stoppedTasks + $disabledTasks) | Select-Object -Unique)
+if ($Target -eq "mengzi") {
   $warningText = if ($taskWarnings.Count -gt 0) { "；" + (($taskWarnings | Select-Object -Unique) -join "、") } else { "" }
-  if ($changed.Count -gt 0) {
-    "已強制停止嵐熙：已處理 " + ($changed -join "、") + "$warningText。蝦咩 TGBOT 沒有被停止。"
-  } else {
-    "已送出嵐熙強制停止；目前沒有找到正在執行的嵐熙排程$warningText。蝦咩 TGBOT 沒有被停止。"
-  }
-} elseif ($Target -eq "mengzi") {
-  $warningText = if ($taskWarnings.Count -gt 0) { "；" + (($taskWarnings | Select-Object -Unique) -join "、") } else { "" }
-  "已強制停止林孟姿：已中斷 TG2 執行中任務 $interruptedRequests 筆，停止 Codex 子工作 $stoppedProcesses 個，並寫入 TGBOT2 暫停訊號$warningText。蝦咩與嵐熙沒有被停止。"
+  "已強制停止林孟姿：已中斷 TG2 執行中任務 $interruptedRequests 筆，停止 Codex 子工作 $stoppedProcesses 個，並寫入 TGBOT2 暫停訊號$warningText。TG1 與 TG3 沒有被停止。"
 } elseif ($Target -eq "tg3") {
   $warningText = if ($taskWarnings.Count -gt 0) { "；" + (($taskWarnings | Select-Object -Unique) -join "、") } else { "" }
-  "已強制停止 TG3：已中斷 TG3 執行中任務 $interruptedRequests 筆，停止 Codex 子工作 $stoppedProcesses 個，並寫入 TG3 暫停訊號$warningText。TG1、TG2 與嵐熙沒有被停止。"
+  "已強制停止嵐熙（TG3）：已中斷執行中任務 $interruptedRequests 筆，停止 Codex 子工作 $stoppedProcesses 個，並寫入 TG3 暫停訊號$warningText。TG1 與 TG2 沒有被停止。"
 } else {
   $warningText = if ($taskWarnings.Count -gt 0) { "；" + (($taskWarnings | Select-Object -Unique) -join "、") } else { "" }
-  "已強制停止蝦咩：已中斷 Telegram 執行中任務 $interruptedRequests 筆，停止 Codex 子工作 $stoppedProcesses 個，並寫入 TGBOT 暫停訊號$warningText。嵐熙 OpenClaw 沒有被停止。"
+  "已強制停止蝦咩：已中斷 Telegram 執行中任務 $interruptedRequests 筆，停止 Codex 子工作 $stoppedProcesses 個，並寫入 TGBOT 暫停訊號$warningText。TG2 與 TG3 沒有被停止。"
 }

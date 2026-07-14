@@ -8,10 +8,9 @@ const DEFAULT_REFRESH_SECONDS = 1;
 const LIVE_TIMEOUT_MS = 2200;
 const LIVE_RETRY_COOLDOWN_MS = 5000;
 const AGENT_VIEW_STORAGE_KEY = "ownerDashboardAgentViewTargetedControls20260705v2";
-const LANXI_BOT_USERNAME = "嵐熙";
 const MENGZI_BOT_NAME = "林孟姿";
-const TG3_BOT_NAME = "TG3";
-const AGENT_LABELS = { lanxi: "嵐熙", tg3: "TG3", mengzi: "林孟姿", shami: "蝦咩" };
+const TG3_BOT_NAME = "嵐熙";
+const AGENT_LABELS = { tg3: "嵐熙", mengzi: "林孟姿", shami: "蝦咩" };
 const TELEGRAM_HANDLE_PATTERN = /@[A-Za-z0-9_]{5,}/g;
 
 function publicText(value) {
@@ -38,21 +37,21 @@ const dashboardStats = [
   { label: "已安裝技能", value: "80", note: "含主技能、備份版與歷史入口" },
   { label: "主技能項目", value: "53", note: "依技能名稱去重後的可查能力" },
   { label: "記憶檔", value: "88", note: "規則、偏好、成功流程與工作交接記錄" },
-  { label: "監控項目", value: "9", note: "嵐熙、蝦咩任務、token 與快照" }
+  { label: "監控項目", value: "9", note: "TG1、TG2、TG3 任務、token 與快照" }
 ];
 
 const completedItems = [
   {
     title: "頂部任務指令與功能鍵",
     status: "已套用",
-    summary: "目前任務指令移到儀表板最上方，會跟著蝦咩／嵐熙切換；新增卡點救援與強制停止兩個功能鍵。",
+    summary: "目前任務指令移到儀表板最上方，會跟著 TG1／TG2／TG3 切換；新增卡點救援與強制停止兩個功能鍵。",
     points: ["任務指令最上方顯示", "卡點救援保留作業並嘗試續作", "強制停止獨立成按鈕"]
   },
   {
-    title: "雙頁資訊整合與嵐熙任務欄",
+    title: "TG1 / TG2 / TG3 任務欄整合",
     status: "已套用",
-    summary: "把主控台與技能入口整理成同一個操作頁；蝦咩與嵐熙各自有任務快覽，右欄新增嵐熙獨立任務指令。",
-    points: ["蝦咩任務與嵐熙任務分開顯示", "嵐熙可吃獨立任務欄位", "技能包改成分類摘要與精簡入口"]
+    summary: "把主控台與技能入口整理成同一個操作頁；TG1、TG2、TG3 各自有任務快覽，TG3 對外顯示為嵐熙。",
+    points: ["TG1 / TG2 / TG3 任務分開顯示", "嵐熙對應 TG3", "技能包改成分類摘要與精簡入口"]
   },
   {
     title: "同步、按鈕與技能包修正",
@@ -63,7 +62,7 @@ const completedItems = [
   {
     title: "頂端左右雙儀表盤",
     status: "已套用",
-    summary: "儀表盤固定放在頁面最上方，蝦咩改到左側、嵐熙改到右側；手機窄螢幕保留目前頁面角色的主狀態，細節移到下方區塊避免擠壓。"
+    summary: "儀表盤固定放在頁面最上方，TG1、TG2、TG3 分欄顯示；手機窄螢幕保留目前頁面角色的主狀態，細節移到下方區塊避免擠壓。"
   },
   {
     title: "手機排版與全頁科技底修正",
@@ -72,10 +71,10 @@ const completedItems = [
     points: ["總覽卡片可換行不省略", "窄螢幕欄位改完整寬度", "全頁卡片、表格、時間軸統一深色科技底"]
   },
   {
-    title: "蝦咩與嵐熙左右分類",
+    title: "TG1 / TG2 / TG3 分類",
     status: "已套用",
-    summary: "頂部儀表盤改為人物分區：蝦咩在左集中 Telegram 任務與回覆狀態，嵐熙在右集中 OpenClaw 自動化與快照狀態。",
-    points: ["嵐熙任務集中顯示", "蝦咩任務集中顯示", "任務、token、監控與卡點依人物分類"]
+    summary: "頂部儀表盤改為三個 Telegram bot 分區：蝦咩、林孟姿、嵐熙各自集中任務與回覆狀態。",
+    points: ["嵐熙任務集中顯示在 TG3", "蝦咩任務集中顯示", "任務、token、監控與卡點依 bot 分類"]
   },
   {
     title: "移除舊版說明區塊",
@@ -93,7 +92,7 @@ const completedItems = [
     title: "監控狀態上儀表盤",
     status: "已套用",
     summary: "頂部即時狀態區直接顯示監控項目，下方再提供完整監控明細。",
-    points: ["蝦咩心跳", "嵐熙進程", "任務佇列", "token 統計", "GitHub Pages 快照"]
+    points: ["TG1 心跳", "TG2 心跳", "TG3 心跳", "任務佇列", "token 統計", "GitHub Pages 快照"]
   },
   {
     title: "秒級刷新與科技特效",
@@ -117,7 +116,7 @@ const sopItems = [
   {
     title: "監控判斷",
     summary: "狀態不是靠記憶猜測，而是從心跳、任務狀態、進程、排程與快照資料整理。",
-    steps: ["讀取心跳", "讀取任務佇列", "檢查嵐熙進程", "整理 token 與快照來源"]
+    steps: ["讀取 TG1 心跳", "讀取 TG2 任務佇列", "讀取 TG3 任務佇列", "整理 token 與快照來源"]
   },
   {
     title: "技能路由",
@@ -554,18 +553,19 @@ const skillCatalog = [
 ];
 
 const timeline = [
-  ["2026-07-03", "整合主控台與技能入口版面，新增嵐熙獨立任務欄位與頂端嵐熙任務快覽。"],
+  ["2026-07-14", "將嵐熙併回 TG3，只保留 TG1、TG2、TG3 三個任務入口。"],
+  ["2026-07-03", "整合主控台與技能入口版面，新增 TG1 / TG2 / TG3 任務欄位與頂端任務快覽。"],
   ["2026-07-03", "修正前端初始化中斷，讓 runtime-status.json、技能包清單與頂端同步狀態可正常顯示。"],
   ["2026-07-03", "重新同步按鈕移到頂端控制列，點擊時加入短促音效、彩色粒子與同步完成回饋。"],
-  ["2026-07-05", "依最新指令把蝦咩與嵐熙左右對調為蝦咩左、嵐熙右，功能鍵依目前頁面角色分別救援或強停。"],
+  ["2026-07-05", "功能鍵依目前頁面角色分別救援或強停。"],
   ["2026-07-03", "頂端儀表盤建立雙欄總覽，手機版保留左右分開且不擠壓主狀態。"],
-  ["2026-07-03", "狀態總控台改成嵐熙左列、蝦咩右列，任務、token、監控、卡點與檢查依人物來源分類。"],
-  ["2026-07-03", "紅圈內 Live Status 說明文字不再顯示，主介面改成左右分欄，集中顯示蝦咩與嵐熙狀態監控。"],
+  ["2026-07-03", "狀態總控台依 TG1、TG2、TG3 分類，任務、token、監控、卡點與檢查依 bot 來源分類。"],
+  ["2026-07-03", "紅圈內 Live Status 說明文字不再顯示，主介面集中顯示 TG1、TG2、TG3 狀態監控。"],
   ["2026-07-03", "依主人補充移除舊版說明區塊，改為監控、技能包與操作資訊。"],
   ["2026-07-03", "技能包清單擴充為功能、使用場景、觸發詞與備份版本備註。"],
   ["2026-07-03", "監控項目加入頂部即時儀表盤與下方明細區。"],
   ["2026-07-03", "維持每秒刷新與點擊重新整理的多巴胺科技特效。"],
-  ["2026-07-02", "建立蝦咩 TGBOT 與嵐熙 OpenClaw 秒級狀態卡。"]
+  ["2026-07-02", "建立 TG1、TG2、TG3 秒級狀態卡。"]
 ];
 
 const fallbackRuntimeStatus = {
@@ -582,9 +582,7 @@ const fallbackRuntimeStatus = {
   token: { totalTokens: null, taskCount: null, source: "尚未讀到 token 統計" },
   heartbeat: { name: "蝦咩", ageSeconds: null, activeRequests: null },
   tgbot2: { name: MENGZI_BOT_NAME, statusKey: "watch", statusLabel: "狀態待同步", ageSeconds: null, activeRequests: null, currentTaskInstruction: "林孟姿 TGBOT2 任務待同步。", currentTaskSource: "tg-openai-bot-2" },
-  tgbot3: { name: TG3_BOT_NAME, statusKey: "watch", statusLabel: "狀態待同步", ageSeconds: null, activeRequests: null, currentTaskInstruction: "TG3 任務待同步。", currentTaskSource: "tg-openai-bot-3" },
-  lanxiTaskInstruction: "嵐熙自動化任務與瀏覽器流程監控待同步。",
-  openclaw: { name: "嵐熙", botUsername: LANXI_BOT_USERNAME, statusKey: "watch", statusLabel: "狀態待同步", processCount: null, watchdogState: "未取得", currentTaskInstruction: "嵐熙自動化任務與瀏覽器流程監控待同步。" },
+  tgbot3: { name: TG3_BOT_NAME, statusKey: "watch", statusLabel: "狀態待同步", ageSeconds: null, activeRequests: null, currentTaskInstruction: "嵐熙 TG3 任務待同步。", currentTaskSource: "tg-openai-bot-3" },
   deliverables: [],
   monitors: []
 };
@@ -684,7 +682,6 @@ function setActionFeedback(message, state = "idle") {
 }
 
 function currentActionTarget() {
-  if (selectedAgentView === "lanxi") return "lanxi";
   if (selectedAgentView === "tg3") return "tg3";
   if (selectedAgentView === "mengzi") return "mengzi";
   return "shami";
@@ -752,15 +749,6 @@ function setActionButtonsLoading(action, isLoading) {
 }
 
 function activeTaskContent(status = lastRenderedStatus) {
-  if (selectedAgentView === "lanxi") {
-    return {
-      scope: "嵐熙任務指令",
-      text: lanxiTaskInstruction(status),
-      detail: lanxiTaskSource(status),
-      state: statusTone(status.openclaw?.statusKey || "watch")
-    };
-  }
-
   if (selectedAgentView === "mengzi") {
     return {
       scope: "林孟姿任務指令",
@@ -772,7 +760,7 @@ function activeTaskContent(status = lastRenderedStatus) {
 
   if (selectedAgentView === "tg3") {
     return {
-      scope: "TG3 任務指令",
+      scope: "嵐熙任務指令",
       text: tgbot3TaskInstruction(status),
       detail: tgbot3TaskSource(status),
       state: statusTone(status.tgbot3?.statusKey || "watch")
@@ -1131,15 +1119,12 @@ function buildMonitorItems(status) {
   const heartbeat = { ...fallbackRuntimeStatus.heartbeat, ...(status.heartbeat || {}) };
   const tgbot2 = { ...fallbackRuntimeStatus.tgbot2, ...(status.tgbot2 || {}) };
   const tgbot3 = { ...fallbackRuntimeStatus.tgbot3, ...(status.tgbot3 || {}) };
-  const openclaw = { ...fallbackRuntimeStatus.openclaw, ...(status.openclaw || {}) };
   const heartbeatAge = Number(heartbeat.ageSeconds);
   const tgbot2Age = Number(tgbot2.ageSeconds);
   const tgbot3Age = Number(tgbot3.ageSeconds);
   const heartbeatOk = Number.isFinite(heartbeatAge) && heartbeatAge <= 120;
   const tgbot2Ok = Number.isFinite(tgbot2Age) && tgbot2Age <= 120;
   const tgbot3Ok = Number.isFinite(tgbot3Age) && tgbot3Age <= 120;
-  const openclawProcesses = Number(openclaw.processCount);
-  const hasOpenclawProcess = Number.isFinite(openclawProcesses) && openclawProcesses > 0;
   const hasToken = status.token && Number.isFinite(Number(status.token.totalTokens));
 
   return [
@@ -1169,15 +1154,15 @@ function buildMonitorItems(status) {
     },
     {
       id: "tgbot3-heartbeat",
-      label: "TG3 心跳",
+      label: "嵐熙心跳",
       stateKey: tgbot3Ok ? "running" : "watch",
       statusLabel: tgbot3Ok ? "正常" : "待確認",
-      detail: tgbot3Ok ? `心跳 ${tgbot3Age} 秒前，執行中任務 ${formatNumber(tgbot3.activeRequests)}` : "尚未取得 TG3 新心跳",
+      detail: tgbot3Ok ? `心跳 ${tgbot3Age} 秒前，執行中任務 ${formatNumber(tgbot3.activeRequests)}` : "尚未取得嵐熙新心跳",
       source: "tg-openai-bot-3/codex_bot_heartbeat.json"
     },
     {
       id: "tgbot3-request",
-      label: "TG3 任務佇列",
+      label: "嵐熙任務佇列",
       stateKey: tgbot3.statusKey || "watch",
       statusLabel: tgbot3.statusLabel || "待同步",
       detail: tgbot3TaskInstruction(status),
@@ -1190,22 +1175,6 @@ function buildMonitorItems(status) {
       statusLabel: status.statusLabel || "待同步",
       detail: status.headline || "等待任務狀態",
       source: "telegram_request_status"
-    },
-    {
-      id: "openclaw-process",
-      label: "嵐熙進程",
-      stateKey: hasOpenclawProcess ? "running" : "watch",
-      statusLabel: hasOpenclawProcess ? "正常" : "未偵測到",
-      detail: hasOpenclawProcess ? `偵測到 ${formatNumber(openclaw.processCount)} 個相關進程` : "未取得 OpenClaw 進程數",
-      source: "Win32_Process"
-    },
-    {
-      id: "openclaw-watchdog",
-      label: "嵐熙看門排程",
-      stateKey: openclaw.watchdogState === "Running" ? "running" : "watch",
-      statusLabel: openclaw.watchdogState || "未取得",
-      detail: "OpenClaw Watchdog 排程狀態",
-      source: "Scheduled Task"
     },
     {
       id: "token-usage",
@@ -1257,45 +1226,6 @@ function currentTaskInstruction(status) {
   return value ? publicText(value) : "目前沒有可顯示的任務指令";
 }
 
-function lanxiTaskInstruction(status) {
-  const monitors = Array.isArray(status.monitors) ? status.monitors : [];
-  const lanxiTaskMonitor = monitors.find((item) => {
-    const id = String(item.id || "").toLowerCase();
-    const label = String(item.label || "");
-    return id.includes("lanxi-task") || id.includes("openclaw-task") || label.includes("嵐熙任務");
-  });
-  const openclawProcessMonitor = monitors.find((item) => String(item.id || "").toLowerCase().includes("openclaw-process"));
-  const watchdogMonitor = monitors.find((item) => String(item.id || "").toLowerCase().includes("openclaw-watchdog"));
-  const candidates = [
-    status.lanxiTaskInstruction,
-    status.lanxiTask,
-    status.openclaw?.currentTaskInstruction,
-    status.openclaw?.taskInstruction,
-    status.openclaw?.currentTask,
-    lanxiTaskMonitor?.detail
-  ];
-  const value = candidates.find((item) => typeof item === "string" && item.trim());
-  if (value) return publicText(value);
-
-  const processText = openclawProcessMonitor?.detail || (
-    status.openclaw?.processCount === null || status.openclaw?.processCount === undefined
-      ? "進程未取得"
-      : `相關進程 ${formatNumber(status.openclaw.processCount)}`
-  );
-  const watchdogText = watchdogMonitor?.statusLabel || status.openclaw?.watchdogState || "未取得";
-  return `嵐熙 ${LANXI_BOT_USERNAME} 自動化任務：${status.openclaw?.statusLabel || "狀態待同步"}；${publicText(processText)}；看門排程 ${publicText(watchdogText)}。`;
-}
-
-function lanxiTaskSource(status) {
-  const monitors = Array.isArray(status.monitors) ? status.monitors : [];
-  const taskMonitor = monitors.find((item) => {
-    const id = String(item.id || "").toLowerCase();
-    const label = String(item.label || "");
-    return id.includes("lanxi-task") || id.includes("openclaw-task") || label.includes("嵐熙任務");
-  });
-  return publicText(status.openclaw?.currentTaskSource || taskMonitor?.source || `${LANXI_BOT_USERNAME} 任務獨立欄位`);
-}
-
 function tgbot2TaskInstruction(status) {
   const monitors = Array.isArray(status.monitors) ? status.monitors : [];
   const taskMonitor = monitors.find((item) => {
@@ -1337,7 +1267,7 @@ function tgbot3TaskInstruction(status) {
     taskMonitor?.detail
   ];
   const value = candidates.find((item) => typeof item === "string" && item.trim());
-  return value ? publicText(value) : "TG3 目前沒有可顯示的任務指令。";
+  return value ? publicText(value) : "嵐熙目前沒有可顯示的任務指令。";
 }
 
 function tgbot3TaskSource(status) {
@@ -1357,19 +1287,11 @@ function monitorOwner(item) {
   if (id.includes("tgbot2") || id.includes("mengzi") || label.includes("林孟姿") || label.includes("TGBOT2")) {
     return "mengzi";
   }
-  if (id.includes("tgbot3") || id.includes("tg3") || label.includes("TG3") || label.includes("TGBOT3")) {
+  if (id.includes("tgbot3") || id.includes("tg3") || label.includes("TG3") || label.includes("TGBOT3") || label.includes("嵐熙")) {
     return "tg3";
   }
   if (id.includes("telegram") || id.includes("codex-token") || label.includes("蝦咩")) {
     return "shami";
-  }
-  if (
-    id.includes("openclaw") ||
-    label.includes("嵐熙") ||
-    label.includes("OpenClaw") ||
-    statusLabel.includes("嵐熙")
-  ) {
-    return "lanxi";
   }
   return "shami";
 }
@@ -1405,15 +1327,14 @@ function renderMonitorCards(items, emptyLabel) {
 
 function renderMonitoring(status) {
   const monitors = buildMonitorItems(status);
+  const visibleMonitors = monitors.filter((item) => monitorOwner(item) !== "hidden");
   const shamiMonitors = monitors.filter((item) => monitorOwner(item) === "shami");
   const mengziMonitors = monitors.filter((item) => monitorOwner(item) === "mengzi");
   const tg3Monitors = monitors.filter((item) => monitorOwner(item) === "tg3");
-  const lanxiMonitors = monitors.filter((item) => monitorOwner(item) === "lanxi");
   const shamiCards = renderMonitorCards(shamiMonitors, "蝦咩監控");
   const mengziCards = renderMonitorCards(mengziMonitors, "林孟姿監控");
-  const tg3Cards = renderMonitorCards(tg3Monitors, "TG3 監控");
-  const lanxiCards = renderMonitorCards(lanxiMonitors, "嵐熙監控");
-  const allCards = renderMonitorCards(monitors, "監控項目");
+  const tg3Cards = renderMonitorCards(tg3Monitors, "嵐熙監控");
+  const allCards = renderMonitorCards(visibleMonitors, "監控項目");
 
   const shamiCompact = $("#shamiMonitorGrid");
   if (shamiCompact) shamiCompact.innerHTML = shamiCards;
@@ -1421,16 +1342,12 @@ function renderMonitoring(status) {
   if (mengziCompact) mengziCompact.innerHTML = mengziCards;
   const tg3Compact = $("#tg3MonitorGrid");
   if (tg3Compact) tg3Compact.innerHTML = tg3Cards;
-  const lanxiCompact = $("#lanxiMonitorGrid");
-  if (lanxiCompact) lanxiCompact.innerHTML = lanxiCards;
   const shamiDetail = $("#shamiMonitorSectionGrid");
   if (shamiDetail) shamiDetail.innerHTML = shamiCards;
   const mengziDetail = $("#mengziMonitorSectionGrid");
   if (mengziDetail) mengziDetail.innerHTML = mengziCards;
   const tg3Detail = $("#tg3MonitorSectionGrid");
   if (tg3Detail) tg3Detail.innerHTML = tg3Cards;
-  const lanxiDetail = $("#lanxiMonitorSectionGrid");
-  if (lanxiDetail) lanxiDetail.innerHTML = lanxiCards;
 
   const compact = $("#monitorGrid");
   if (compact) compact.innerHTML = allCards;
@@ -1442,7 +1359,6 @@ function renderAgentStrip(status) {
   const heartbeat = { ...fallbackRuntimeStatus.heartbeat, ...(status.heartbeat || {}) };
   const tgbot2 = { ...fallbackRuntimeStatus.tgbot2, ...(status.tgbot2 || {}) };
   const tgbot3 = { ...fallbackRuntimeStatus.tgbot3, ...(status.tgbot3 || {}) };
-  const openclaw = { ...fallbackRuntimeStatus.openclaw, ...(status.openclaw || {}) };
   const heartbeatAge = Number.isFinite(Number(heartbeat.ageSeconds))
     ? `${Math.max(0, Number(heartbeat.ageSeconds))} 秒前`
     : formatAge(status.checkedAt || status.updatedAt);
@@ -1452,25 +1368,11 @@ function renderAgentStrip(status) {
   const tgbot3Age = Number.isFinite(Number(tgbot3.ageSeconds))
     ? `${Math.max(0, Number(tgbot3.ageSeconds))} 秒前`
     : formatAge(status.checkedAt || status.updatedAt);
-  const openclawProcessText = openclaw.processCount === null || openclaw.processCount === undefined
-    ? "進程未取得"
-    : `相關進程 ${formatNumber(openclaw.processCount)}`;
   const heartbeatMeta = `心跳 ${heartbeatAge} · 執行中任務 ${formatNumber(heartbeat.activeRequests)}`;
   const tgbot2Meta = `心跳 ${tgbot2Age} · 執行中任務 ${formatNumber(tgbot2.activeRequests)}`;
   const tgbot3Meta = `心跳 ${tgbot3Age} · 執行中任務 ${formatNumber(tgbot3.activeRequests)}`;
 
   const agents = [
-    {
-      kind: "lanxi",
-      avatar: "assets/lanxi-avatar.png",
-      role: LANXI_BOT_USERNAME,
-      name: openclaw.name || "嵐熙",
-      state: publicText(openclaw.statusLabel) || "狀態待同步",
-      stateKey: statusTone(openclaw.statusKey || "watch"),
-      metaLabel: "目前任務指令",
-      meta: lanxiTaskInstruction(status),
-      detail: publicText(`${openclawProcessText} · 看門排程 ${openclaw.watchdogState || "未取得"}`)
-    },
     {
       kind: "mengzi",
       avatar: "",
@@ -1485,8 +1387,7 @@ function renderAgentStrip(status) {
     },
     {
       kind: "tg3",
-      avatar: "",
-      avatarFallback: "3",
+      avatar: "assets/lanxi-avatar.png",
       role: "TGBOT3",
       name: tgbot3.name || TG3_BOT_NAME,
       state: publicText(tgbot3.statusLabel) || "資料待同步",
@@ -1530,14 +1431,10 @@ function renderAgentStrip(status) {
   const shamiSlot = $("#shamiAgent");
   const mengziSlot = $("#mengziAgent");
   const tg3Slot = $("#tg3Agent");
-  const lanxiSlot = $("#lanxiAgent");
-  if (shamiSlot && mengziSlot && tg3Slot && lanxiSlot) {
-    shamiSlot.innerHTML = agentCard(agents.find((agent) => agent.kind === "shami"));
-    mengziSlot.innerHTML = agentCard(agents.find((agent) => agent.kind === "mengzi"));
-    tg3Slot.innerHTML = agentCard(agents.find((agent) => agent.kind === "tg3"));
-    lanxiSlot.innerHTML = agentCard(agents.find((agent) => agent.kind === "lanxi"));
-    return;
-  }
+  if (shamiSlot) shamiSlot.innerHTML = agentCard(agents.find((agent) => agent.kind === "shami"));
+  if (mengziSlot) mengziSlot.innerHTML = agentCard(agents.find((agent) => agent.kind === "mengzi"));
+  if (tg3Slot) tg3Slot.innerHTML = agentCard(agents.find((agent) => agent.kind === "tg3"));
+  if (shamiSlot || mengziSlot || tg3Slot) return;
 
   const strip = $("#agentStrip");
   if (!strip) return;
@@ -1550,14 +1447,11 @@ function renderRuntimeStatus(data) {
   status.heartbeat = { ...fallbackRuntimeStatus.heartbeat, ...(status.heartbeat || {}) };
   status.tgbot2 = { ...fallbackRuntimeStatus.tgbot2, ...(status.tgbot2 || {}) };
   status.tgbot3 = { ...fallbackRuntimeStatus.tgbot3, ...(status.tgbot3 || {}) };
-  status.openclaw = { ...fallbackRuntimeStatus.openclaw, ...(status.openclaw || {}) };
+  status.tgbot3.name = TG3_BOT_NAME;
   status.refreshSeconds = refreshSecondsFrom(status);
   const deliverables = Array.isArray(status.deliverables) ? status.deliverables : [];
   const sourceLabel = status.sourceLabel || (status.sourceType === "live-api" ? "本機即時 API" : "公開快照");
   const displayTime = status.checkedAt || status.updatedAt || new Date().toISOString();
-  const openclawProcessText = status.openclaw.processCount === null || status.openclaw.processCount === undefined
-    ? "進程未取得"
-    : `相關進程 ${formatNumber(status.openclaw.processCount)}`;
 
   lastRenderedStatus = status;
 
@@ -1570,8 +1464,6 @@ function renderRuntimeStatus(data) {
   $("#tokenSource").textContent = status.token.taskCount
     ? `${status.token.source}，任務數 ${formatNumber(status.token.taskCount)}。`
     : status.token.source || "未取得 token 統計來源。";
-  $("#openclawStatusLabel").textContent = status.openclaw.statusLabel || "狀態待同步";
-  $("#openclawStatusDetail").textContent = `${LANXI_BOT_USERNAME}；${publicText(openclawProcessText)}，看門排程 ${publicText(status.openclaw.watchdogState || "未取得")}。`;
   setTextIfPresent("#tgbot2StatusLabel", status.tgbot2.statusLabel || "狀態待同步");
   setTextIfPresent("#tgbot2StatusDetail", `${status.tgbot2.name || MENGZI_BOT_NAME} TGBOT2；心跳 ${formatNumber(status.tgbot2.ageSeconds)} 秒前，執行中任務 ${formatNumber(status.tgbot2.activeRequests)}。`);
   setTextIfPresent("#tgbot2TaskText", tgbot2TaskInstruction(status));
@@ -1580,8 +1472,6 @@ function renderRuntimeStatus(data) {
   setTextIfPresent("#tgbot3StatusDetail", `${status.tgbot3.name || TG3_BOT_NAME} TGBOT3；心跳 ${formatNumber(status.tgbot3.ageSeconds)} 秒前，執行中任務 ${formatNumber(status.tgbot3.activeRequests)}。`);
   setTextIfPresent("#tgbot3TaskText", tgbot3TaskInstruction(status));
   setTextIfPresent("#tgbot3TaskSource", tgbot3TaskSource(status));
-  setTextIfPresent("#lanxiTaskText", lanxiTaskInstruction(status));
-  setTextIfPresent("#lanxiTaskSource", lanxiTaskSource(status));
   $("#blockerText").textContent = status.blocker || "沒有卡點";
   $("#nextAction").textContent = status.nextAction || "維持同步。";
   $("#updatedAt").textContent = formatDateTime(displayTime);
@@ -1642,11 +1532,7 @@ function runtimeSignature(status) {
     status.statusKey || "",
     status.statusLabel || "",
     status.currentTaskInstruction || "",
-    status.lanxiTaskInstruction || "",
     status.headline || "",
-    status.openclaw?.statusLabel || "",
-    status.openclaw?.currentTaskInstruction || "",
-    status.openclaw?.currentTaskSource || "",
     (status.monitors || []).map((item) => `${item.id || item.label}:${item.statusLabel}:${item.detail}:${item.source}`).join(",")
   ].join("|");
 }
@@ -1748,7 +1634,7 @@ function bindInteractions() {
 }
 
 function setAgentView(view, options = {}) {
-  const nextView = ["lanxi", "tg3", "mengzi", "shami"].includes(view) ? view : "shami";
+  const nextView = ["tg3", "mengzi", "shami"].includes(view) ? view : "shami";
   selectedAgentView = nextView;
   document.body.dataset.agentView = nextView;
 
@@ -1790,11 +1676,11 @@ function bindAgentViewSwitch() {
     button.addEventListener("keydown", (event) => {
       if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
       event.preventDefault();
-      const order = ["shami", "mengzi", "tg3", "lanxi"];
+      const order = ["shami", "mengzi", "tg3"];
       const currentIndex = Math.max(0, order.indexOf(selectedAgentView));
       let nextView = selectedAgentView;
       if (event.key === "Home") nextView = "shami";
-      if (event.key === "End") nextView = "lanxi";
+      if (event.key === "End") nextView = "tg3";
       if (event.key === "ArrowLeft") nextView = order[Math.max(0, currentIndex - 1)];
       if (event.key === "ArrowRight") nextView = order[Math.min(order.length - 1, currentIndex + 1)];
       setAgentView(nextView);
@@ -1816,19 +1702,16 @@ function renderAiEnhancements(status, displayTime) {
   const hasFreshHeartbeat = Number.isFinite(heartbeatAge) && heartbeatAge <= 120;
   const hasFreshTgbot2Heartbeat = Number.isFinite(tgbot2Age) && tgbot2Age <= 120;
   const hasFreshTgbot3Heartbeat = Number.isFinite(tgbot3Age) && tgbot3Age <= 120;
-  const hasOpenclaw = Number(status.openclaw?.processCount || 0) > 0;
   const isBlocked = statusTone(status.statusKey || "") === "blocked" || Boolean(status.blocker && !String(status.blocker).includes("沒有"));
-  const energy = Math.max(18, Math.min(98, 30 + (hasFreshHeartbeat ? 16 : 0) + (hasFreshTgbot2Heartbeat ? 12 : 0) + (hasFreshTgbot3Heartbeat ? 12 : 0) + (hasOpenclaw ? 14 : 0) + (!isBlocked ? 10 : -18)));
+  const energy = Math.max(18, Math.min(98, 30 + (hasFreshHeartbeat ? 18 : 0) + (hasFreshTgbot2Heartbeat ? 14 : 0) + (hasFreshTgbot3Heartbeat ? 14 : 0) + (!isBlocked ? 12 : -18)));
   const energyRing = $("#energyRing");
 
   setTextIfPresent("#chipShamiStatus", status.statusLabel || "同步中");
   setTextIfPresent("#chipMengziStatus", status.tgbot2?.statusLabel || "同步中");
   setTextIfPresent("#chipTg3Status", status.tgbot3?.statusLabel || "同步中");
-  setTextIfPresent("#chipLanxiStatus", status.openclaw?.statusLabel || "同步中");
   setTextIfPresent("#chipCurrentTask", currentTaskInstruction(status));
   setTextIfPresent("#chipMengziTask", tgbot2TaskInstruction(status));
   setTextIfPresent("#chipTg3Task", tgbot3TaskInstruction(status));
-  setTextIfPresent("#chipLanxiTask", lanxiTaskInstruction(status));
   setTextIfPresent("#chipUpdatedAt", formatDateTime(displayTime));
   setTextIfPresent("#energyValue", `${energy}%`);
   setTextIfPresent("#energyLabel", energy >= 80 ? "高活躍運作" : energy >= 60 ? "穩定運作" : energy >= 40 ? "觀察中" : "需要確認");

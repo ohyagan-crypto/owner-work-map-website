@@ -1,1 +1,1 @@
-window.OWNER_LIVE_STATUS_ENDPOINT = "https://newfoundland-chicken-cleaner-eric.trycloudflare.com";
+window.OWNER_LIVE_STATUS_ENDPOINT = "https://receivers-img-function-chronic.trycloudflare.com";

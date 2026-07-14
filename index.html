@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AI 自動化作業儀表盤｜蝦咩 x 林孟姿 x 嵐熙</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="styles.css?v=20260710-mengzi-tgbot2">
+  <link rel="stylesheet" href="styles.css?v=20260714-tg123-only">
 </head>
 <body data-agent-view="shami">
   <div class="agent-view-switch page-agent-switch" role="tablist" aria-label="蝦咩、林孟姿與嵐熙切換">
@@ -18,10 +18,6 @@
       <b>林孟姿</b>
     </button>
     <button type="button" data-agent-view-button="tg3" role="tab" aria-selected="false" aria-pressed="false">
-      <span class="agent-avatar-fallback tg3-avatar-fallback" aria-hidden="true">3</span>
-      <b>TG3</b>
-    </button>
-    <button type="button" data-agent-view-button="lanxi" role="tab" aria-selected="false" aria-pressed="false">
       <img src="assets/lanxi-avatar.png" alt="" aria-hidden="true">
       <b>嵐熙</b>
     </button>
@@ -70,7 +66,7 @@
           <small class="action-feedback" id="actionFeedback" aria-live="polite">功能鍵待命。</small>
         </div>
       </section>
-      <div class="assistant-stage" aria-label="蝦咩與嵐熙助手圖片">
+      <div class="assistant-stage" aria-label="蝦咩、林孟姿與嵐熙助手圖片">
         <article class="assistant-portrait shami-portrait">
           <img src="assets/shami-avatar.png" alt="蝦咩 AI 助手圖片">
         <div><b>蝦咩</b></div>
@@ -80,36 +76,29 @@
         <div><b>林孟姿</b></div>
       </article>
       <article class="assistant-portrait tg3-portrait">
-        <span class="assistant-initial" aria-hidden="true">3</span>
-        <div><b>TG3</b></div>
+        <img src="assets/lanxi-avatar.png" alt="嵐熙 AI 助手圖片">
+        <div><b>嵐熙</b></div>
       </article>
       <div class="assistant-core-copy">
         <span>AI 智能助手</span>
         <strong>自動化作業系統</strong>
-        <p>TGBOT1 · TGBOT2 · TGBOT3 · OpenClaw 即時守護</p>
+        <p>蝦咩 · 林孟姿 · 嵐熙 即時守護</p>
       </div>
-        <article class="assistant-portrait lanxi-portrait">
-          <img src="assets/lanxi-avatar.png" alt="嵐熙 AI 助手圖片">
-          <div><b>嵐熙</b></div>
-        </article>
       </div>
 
       <div class="command-strip" aria-label="總覽狀態">
         <div class="command-chip shami-chip"><span>蝦咩狀態</span><b id="chipShamiStatus">讀取中</b></div>
         <div class="command-chip mengzi-chip"><span>林孟姿狀態</span><b id="chipMengziStatus">讀取中</b></div>
-        <div class="command-chip tg3-chip"><span>TG3 狀態</span><b id="chipTg3Status">讀取中</b></div>
-        <div class="command-chip lanxi-chip"><span>嵐熙狀態</span><b id="chipLanxiStatus">讀取中</b></div>
+        <div class="command-chip tg3-chip tg3-merged-chip"><span>嵐熙狀態 / 任務</span><b id="chipTg3Status">讀取中</b><small id="chipTg3Task">同步中</small></div>
         <div class="command-chip skill-chip"><span>技能包</span><b id="chipSkillStatus">80 個已載入</b><small id="chipSkillDetail">等待清單渲染</small></div>
         <div class="command-chip task-chip shami-task-chip"><span>蝦咩任務</span><b id="chipCurrentTask">同步中</b></div>
         <div class="command-chip task-chip mengzi-task-chip"><span>林孟姿任務</span><b id="chipMengziTask">同步中</b></div>
-        <div class="command-chip task-chip tg3-task-chip"><span>TG3 任務</span><b id="chipTg3Task">同步中</b></div>
-        <div class="command-chip task-chip lanxi-task-chip"><span>嵐熙任務</span><b id="chipLanxiTask">同步中</b></div>
       </div>
 
       <div class="ai-metrics">
         <article class="energy-ring-card">
           <div class="energy-ring" id="energyRing" style="--energy: 72"><span id="energyValue">72%</span></div>
-          <div><span>系統活躍度</span><b id="energyLabel">穩定運作</b><p>依任務、心跳、OpenClaw 與資料來源綜合估算。</p></div>
+          <div><span>系統活躍度</span><b id="energyLabel">穩定運作</b><p>依 TG1、TG2、TG3 任務心跳與資料來源綜合估算。</p></div>
         </article>
         <article class="micro-panel"><span>資訊層級</span><b>重點優先</b><p>主要狀態放大，技術細節保留在監控明細。</p></article>
       </div>
@@ -145,29 +134,21 @@
         </section>
 
         <section class="agent-status-column tg3-column" aria-labelledby="tg3ColumnTitle">
-          <div class="column-heading"><h3 id="tg3ColumnTitle">TG3</h3></div>
+          <div class="column-heading"><h3 id="tg3ColumnTitle">嵐熙</h3></div>
           <div class="agent-slot" id="tg3Agent"></div>
           <div class="dashboard-grid actor-grid">
-            <article class="status-card primary-status tg3-primary-status"><span>TG3 狀態</span><strong id="tgbot3StatusLabel">讀取中</strong><p id="tgbot3StatusDetail">正在讀取 TG3 bot 狀態。</p></article>
-            <article class="status-card task-status-card"><span>TG3 目前任務</span><strong id="tgbot3TaskText">同步中</strong><p id="tgbot3TaskSource">等待 TG3 任務來源。</p></article>
-          </div>
-          <div class="monitor-panel">
-            <div class="monitor-panel-head"><p class="eyebrow">TG3 Monitoring</p><h3>TG3 監控</h3></div>
-            <div class="monitor-grid compact actor-monitor-grid" id="tg3MonitorGrid"></div>
-          </div>
-        </section>
-
-        <section class="agent-status-column lanxi-column" aria-labelledby="lanxiColumnTitle">
-          <div class="column-heading"><h3 id="lanxiColumnTitle">嵐熙</h3></div>
-          <div class="agent-slot" id="lanxiAgent"></div>
-          <div class="dashboard-grid actor-grid">
-            <article class="status-card primary-status lanxi-primary-status"><span>嵐熙自動化狀態</span><strong id="openclawStatusLabel">讀取中</strong><p id="openclawStatusDetail">正在讀取嵐熙狀態。</p></article>
+            <article class="status-card primary-status tg3-primary-status tg3-merged-status">
+              <span>嵐熙狀態 / 目前任務</span>
+              <strong id="tgbot3StatusLabel">讀取中</strong>
+              <p id="tgbot3StatusDetail">正在讀取嵐熙 bot 狀態。</p>
+              <div class="merged-task-line"><b id="tgbot3TaskText">同步中</b><small id="tgbot3TaskSource">等待嵐熙任務來源。</small></div>
+            </article>
             <article class="status-card blocker-status"><span>目前卡點</span><strong id="blockerText">讀取中</strong><p id="nextAction">等待同步資料。</p></article>
             <article class="status-card"><span>最新檢查</span><strong id="liveAge">--</strong><p><span id="updatedAt">--</span><br><span id="refreshNote">頁面每秒重新讀取狀態資料。</span></p></article>
           </div>
           <div class="monitor-panel">
             <div class="monitor-panel-head"><p class="eyebrow">Lanxi Monitoring</p><h3>嵐熙監控</h3></div>
-            <div class="monitor-grid compact actor-monitor-grid" id="lanxiMonitorGrid"></div>
+            <div class="monitor-grid compact actor-monitor-grid" id="tg3MonitorGrid"></div>
           </div>
         </section>
       </div>
@@ -176,8 +157,8 @@
     <section class="overview" id="overview">
       <div class="overview-copy">
         <p class="eyebrow">Owner Map</p>
-        <h2>把蝦咩任務、嵐熙任務、監控項目與技能入口整合在同一頁</h2>
-        <p>這個儀表板聚焦主人要看的操作資訊：蝦咩任務、嵐熙任務、目前卡點、監控項目、技能包能力與常用 SOP。</p>
+        <h2>把 TG1、TG2、TG3 任務、監控項目與技能入口整合在同一頁</h2>
+        <p>這個儀表板聚焦主人要看的操作資訊：TG1 蝦咩、TG2 林孟姿、TG3 嵐熙、目前卡點、監控項目、技能包能力與常用 SOP。</p>
         <div class="quick-actions" aria-label="主要區塊">
           <a href="#monitoring">監控項目</a><a href="#skills">技能包</a><a href="#sop-library">SOP</a><a href="#daily-timeline">今日時間軸</a>
         </div>
@@ -205,8 +186,7 @@
       <div class="monitor-section-columns">
         <section class="monitor-section-column shami-monitor-section"><div class="mini-section-title"><h3>蝦咩狀態</h3></div><div class="monitor-grid detail" id="shamiMonitorSectionGrid"></div></section>
         <section class="monitor-section-column mengzi-monitor-section"><div class="mini-section-title"><h3>林孟姿狀態</h3></div><div class="monitor-grid detail" id="mengziMonitorSectionGrid"></div></section>
-        <section class="monitor-section-column tg3-monitor-section"><div class="mini-section-title"><h3>TG3 狀態</h3></div><div class="monitor-grid detail" id="tg3MonitorSectionGrid"></div></section>
-        <section class="monitor-section-column lanxi-monitor-section"><div class="mini-section-title"><h3>嵐熙狀態</h3></div><div class="monitor-grid detail" id="lanxiMonitorSectionGrid"></div></section>
+        <section class="monitor-section-column tg3-monitor-section"><div class="mini-section-title"><h3>嵐熙狀態</h3></div><div class="monitor-grid detail" id="tg3MonitorSectionGrid"></div></section>
       </div>
     </section>
 
@@ -250,9 +230,9 @@
     </section>
   </main>
 
-  <footer><span>資料來源：本機技能索引、記憶索引、Codex 心跳、Telegram 任務狀態、OpenClaw 摘要與 GitHub Pages 快照。</span></footer>
+  <footer><span>資料來源：本機技能索引、記憶索引、Codex 心跳、TG1/TG2/TG3 任務狀態與 GitHub Pages 快照。</span></footer>
 
   <script src="live-status-config.js?v=20260704-180800-control-fix"></script>
-  <script src="app.js?v=20260710-mengzi-tgbot2"></script>
+  <script src="app.js?v=20260714-tg123-only"></script>
 </body>
 </html>

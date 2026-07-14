@@ -5,7 +5,6 @@
     [string]$Bot3Root = "C:\Users\max\tg-openai-bot-3",
     [string]$Date = (Get-Date).ToString("yyyy-MM-dd"),
     [string]$CurrentTask = "",
-    [string]$LanxiTask = "",
     [string]$NextAction = "",
     [string]$OutputPath = ""
 )
@@ -31,11 +30,9 @@ $Bot3HeartbeatPath = Join-Path $Bot3Root "codex_bot_heartbeat.json"
 $Bot3RequestStatusPath = Join-Path $Bot3Root "telegram_request_status.json"
 $DashboardTaskOverridePath = Join-Path $SiteRoot "dashboard-task-override.json"
 $StateDb = "C:\Users\max\.codex\state_5.sqlite"
-$OpenClawRunsDb = "C:\Users\max\.openclaw\tasks\runs.sqlite"
 $ControlActionRoot = "C:\Users\max\Desktop\龍蝦記憶\dashboard-control-actions"
-$LanxiBotUsername = "嵐熙"
 $Bot2DisplayName = "林孟姿"
-$Bot3DisplayName = "TG3"
+$Bot3DisplayName = "嵐熙"
 if (-not $OutputPath.Trim()) {
     $OutputPath = Join-Path $SiteRoot "runtime-status.json"
 }
@@ -313,104 +310,6 @@ function Clean-TelegramInstructionText {
     return $clean
 }
 
-function Format-OpenClawTaskStatus {
-    param([string]$Status)
-    switch ($Status) {
-        "queued" { return "排隊中" }
-        "running" { return "執行中" }
-        "started" { return "執行中" }
-        "in_progress" { return "執行中" }
-        "succeeded" { return "已完成" }
-        "failed" { return "失敗" }
-        "cancelled" { return "已取消" }
-        "canceled" { return "已取消" }
-        default {
-            if ($Status) { return $Status }
-            return "未取得"
-        }
-    }
-}
-
-function Get-LocalTimeTextFromUnixMs {
-    param($Milliseconds)
-    try {
-        if ($null -eq $Milliseconds) { return "" }
-        $ms = [int64]$Milliseconds
-        if ($ms -le 0) { return "" }
-        return ([DateTimeOffset]::FromUnixTimeMilliseconds($ms).ToLocalTime()).ToString("MM/dd HH:mm")
-    } catch {
-        return ""
-    }
-}
-
-function Get-OpenClawTaskSummary {
-    $sqliteExe = Resolve-SqliteExe
-    if (-not $sqliteExe -or -not (Test-Path -LiteralPath $OpenClawRunsDb)) {
-        return [pscustomobject]@{
-            detail = ""
-            source = "OpenClaw task database"
-            statusKey = "watch"
-            statusLabel = "未同步"
-        }
-    }
-
-    $activeSql = @"
-select label, task, status, coalesce(progress_summary, terminal_summary, '') as summary, coalesce(last_event_at, started_at, created_at) as event_ms
-from task_runs
-where status not in ('succeeded','failed','cancelled','canceled')
-order by coalesce(last_event_at, started_at, created_at) desc
-limit 1;
-"@
-    $latestSql = @"
-select label, task, status, coalesce(progress_summary, terminal_summary, '') as summary, coalesce(last_event_at, started_at, created_at) as event_ms
-from task_runs
-order by coalesce(last_event_at, started_at, created_at) desc
-limit 1;
-"@
-
-    $active = Invoke-SqliteJsonRows -SqliteExe $sqliteExe -DbPath $OpenClawRunsDb -Sql $activeSql | Select-Object -First 1
-    $isActive = $null -ne $active
-    $row = if ($isActive) { $active } else { Invoke-SqliteJsonRows -SqliteExe $sqliteExe -DbPath $OpenClawRunsDb -Sql $latestSql | Select-Object -First 1 }
-    if ($null -eq $row) {
-        return [pscustomobject]@{
-            detail = "目前沒有可同步的 OpenClaw 任務紀錄。"
-            source = "OpenClaw task database"
-            statusKey = "watch"
-            statusLabel = "無任務紀錄"
-        }
-    }
-
-    $title = ""
-    foreach ($candidate in @($row.label, $row.task, $row.summary)) {
-        if ($candidate -and -not (Test-MojibakeText ([string]$candidate))) {
-            $title = Normalize-TaskText -Text ([string]$candidate) -Limit 90
-            break
-        }
-    }
-    if (-not $title) { $title = "未命名任務" }
-
-    $statusText = Format-OpenClawTaskStatus -Status ([string]$row.status)
-    $timeText = Get-LocalTimeTextFromUnixMs -Milliseconds $row.event_ms
-    $suffix = if ($timeText) { "，最後更新 $timeText" } else { "" }
-
-    if ($isActive) {
-        return [pscustomobject]@{
-            detail = "嵐熙目前任務：$title（$statusText$suffix）。"
-            source = "OpenClaw task_runs.sqlite"
-            statusKey = "running"
-            statusLabel = $statusText
-        }
-    }
-
-    $latestStatusKey = if ($row.status -eq "failed") { "watch" } else { "running" }
-    return [pscustomobject]@{
-        detail = "目前沒有執行中的 OpenClaw 任務；最近任務：$title（$statusText$suffix）。"
-        source = "OpenClaw task_runs.sqlite"
-        statusKey = $latestStatusKey
-        statusLabel = "最近$statusText"
-    }
-}
-
 function Get-NewestUploadCaption {
     $data = Read-JsonFile -Path $RecentUploadsPath
     if ($null -eq $data) { return "" }
@@ -466,13 +365,8 @@ function Get-DashboardTaskOverride {
     $current = Clean-TelegramInstructionText -Text ([string]$data.currentTaskInstruction)
     if (-not $current) { return $null }
 
-    $lanxi = ""
-    if ($data.lanxiTaskInstruction) {
-        $lanxi = Clean-TelegramInstructionText -Text ([string]$data.lanxiTaskInstruction)
-    }
     return [pscustomobject]@{
         currentTaskInstruction = $current
-        lanxiTaskInstruction = $lanxi
         source = if ($data.source) { [string]$data.source } else { "dashboard-task-override.json" }
     }
 }
@@ -506,57 +400,6 @@ function Get-LatestDashboardControlAction {
     return ($items | Sort-Object createdAt | Select-Object -Last 1)
 }
 
-function Get-OpenClawSummary {
-    $processCount = $null
-    try {
-        $query = "SELECT ProcessId,CommandLine FROM Win32_Process WHERE CommandLine LIKE '%openclaw%' OR CommandLine LIKE '%gateway --port 18789%'"
-        $rows = Get-CimInstance -Query $query -ErrorAction Stop |
-            Where-Object { $_.ProcessId -ne $PID }
-        $processCount = @($rows).Count
-    } catch {
-        $processCount = $null
-    }
-
-    $watchdogState = "未取得"
-    try {
-        $task = Get-ScheduledTask -TaskName "OpenClaw Watchdog" -ErrorAction SilentlyContinue
-        if ($task) { $watchdogState = [string]$task.State }
-    } catch {
-        $watchdogState = "未取得"
-    }
-
-    if ($null -eq $processCount) {
-        return [pscustomobject]@{
-            name = "嵐熙"
-            botUsername = $LanxiBotUsername
-            statusKey = "watch"
-            statusLabel = "未確認"
-            processCount = $null
-            watchdogState = $watchdogState
-        }
-    }
-
-    if ($processCount -gt 0) {
-        return [pscustomobject]@{
-            name = "嵐熙"
-            botUsername = $LanxiBotUsername
-            statusKey = "running"
-            statusLabel = "正常"
-            processCount = $processCount
-            watchdogState = $watchdogState
-        }
-    }
-
-    return [pscustomobject]@{
-        name = "嵐熙"
-        botUsername = $LanxiBotUsername
-        statusKey = "watch"
-        statusLabel = "未偵測到進程"
-        processCount = 0
-        watchdogState = $watchdogState
-    }
-}
-
 $now = Get-Date
 $heartbeat = Read-JsonFile -Path $HeartbeatPath
 $bot2Heartbeat = Read-JsonFile -Path $Bot2HeartbeatPath
@@ -582,15 +425,8 @@ $uploadCaption = Get-NewestUploadCaption
 $conversationInstruction = Get-LatestConversationInstruction
 $dashboardTaskOverride = Get-DashboardTaskOverride
 $token = Get-TokenSummary -TargetDate $Date
-$openclaw = Get-OpenClawSummary
-$openclawTask = Get-OpenClawTaskSummary
 $dashboardControlAction = Get-LatestDashboardControlAction
-$explicitLanxiTask = $LanxiTask.Trim()
 $currentInstructionSource = ""
-$lanxiTaskInstruction = ""
-$lanxiTaskSource = ""
-$lanxiTaskStatusKey = $openclawTask.statusKey
-$lanxiTaskStatusLabel = $openclawTask.statusLabel
 $headlineFromDashboardOverride = $false
 $requestTaskInstruction = Get-RequestTaskInstruction -RequestRecord $request
 
@@ -724,38 +560,6 @@ $headline = Protect-PublicText -Text $headline
 $blocker = Protect-PublicText -Text $blocker
 $NextAction = Protect-PublicText -Text $NextAction
 
-if ($explicitLanxiTask) {
-    $lanxiTaskInstruction = Protect-PublicText -Text $explicitLanxiTask
-    $lanxiTaskSource = "手動指定嵐熙任務 / $LanxiBotUsername"
-    $lanxiTaskStatusKey = "running"
-    $lanxiTaskStatusLabel = "手動同步"
-} elseif ($openclawTask.detail) {
-    $lanxiTaskInstruction = Protect-PublicText -Text $openclawTask.detail
-    $lanxiTaskSource = Protect-PublicText -Text $openclawTask.source
-} elseif ($headlineFromDashboardOverride -and $dashboardTaskOverride) {
-    $lanxiTaskInstruction = Protect-PublicText -Text $dashboardTaskOverride.lanxiTaskInstruction
-    $lanxiTaskSource = "$($dashboardTaskOverride.source) + $LanxiBotUsername 狀態"
-    $lanxiTaskStatusKey = $statusKey
-    $lanxiTaskStatusLabel = "同步嵐熙指令"
-} elseif ($dashboardTaskOverride -and $dashboardTaskOverride.lanxiTaskInstruction) {
-    $lanxiTaskInstruction = Protect-PublicText -Text $dashboardTaskOverride.lanxiTaskInstruction
-    $lanxiTaskSource = "$($dashboardTaskOverride.source) + $LanxiBotUsername 狀態"
-    $lanxiTaskStatusKey = $statusKey
-    $lanxiTaskStatusLabel = "同步嵐熙指令"
-} elseif ($null -ne $openclaw.processCount -and $openclaw.processCount -gt 0) {
-    $lanxiTaskInstruction = "嵐熙 $LanxiBotUsername 自動化任務：瀏覽器流程、排程與本機進程監控正常；看門排程 $($openclaw.watchdogState)。"
-    $lanxiTaskSource = "$LanxiBotUsername 本機狀態"
-} elseif ($null -eq $openclaw.processCount) {
-    $lanxiTaskInstruction = "嵐熙 $LanxiBotUsername 自動化任務：進程數尚未取得，保留排程與瀏覽器流程監控。"
-    $lanxiTaskSource = "$LanxiBotUsername 本機狀態"
-} else {
-    $lanxiTaskInstruction = "嵐熙 $LanxiBotUsername 自動化任務：目前未偵測到相關進程，需要檢查嵐熙自動化服務。"
-    $lanxiTaskSource = "$LanxiBotUsername 本機狀態"
-}
-
-$lanxiTaskInstruction = Protect-PublicText -Text $lanxiTaskInstruction
-$lanxiTaskSource = Protect-PublicText -Text $lanxiTaskSource
-
 $bot2Age = Get-HeartbeatAgeSeconds -Heartbeat $bot2Heartbeat
 $bot2ActiveRequests = if ($bot2Heartbeat -and $bot2Heartbeat.PSObject.Properties.Item("active_requests")) { $bot2Heartbeat.active_requests } else { $null }
 $bot2RequestTaskInstruction = Get-RequestTaskInstruction -RequestRecord $bot2Request
@@ -810,12 +614,6 @@ $heartbeatMonitorKey = if ($heartbeatAge -le 120) { "running" } else { "watch" }
 $heartbeatMonitorLabel = if ($heartbeatAge -le 120) { "正常" } else { "待確認" }
 $activeRequestsText = if ($heartbeat -and $heartbeat.PSObject.Properties.Item("active_requests")) { [string]$heartbeat.active_requests } else { "未取得" }
 
-$openclawProcessCount = $openclaw.processCount
-$openclawProcessKey = if ($null -ne $openclawProcessCount -and $openclawProcessCount -gt 0) { "running" } else { "watch" }
-$openclawProcessLabel = if ($null -ne $openclawProcessCount -and $openclawProcessCount -gt 0) { "正常" } elseif ($null -eq $openclawProcessCount) { "未確認" } else { "未偵測到" }
-$openclawProcessDetail = if ($null -ne $openclawProcessCount) { "偵測到 $openclawProcessCount 個相關進程" } else { "尚未取得進程數" }
-
-$watchdogKey = if ($openclaw.watchdogState -eq "Running") { "running" } else { "watch" }
 $tokenKey = if ($null -ne $token.totalTokens) { "running" } else { "watch" }
 $tokenLabel = if ($null -ne $token.totalTokens) { "已讀取" } else { "未取得" }
 $tokenDetail = if ($null -ne $token.totalTokens) { "$($token.totalTokens) tokens，任務 $($token.taskCount)" } else { "尚未讀到精確 token 統計" }
@@ -830,7 +628,11 @@ if ($dashboardControlAction) {
         "force-stop" { "強制停止" }
         default { if ($action) { $action } else { "控制動作" } }
     }
-    $targetName = if ($target -eq "shami") { "蝦咩" } else { "嵐熙" }
+    $targetName = switch ($target) {
+        "mengzi" { "林孟姿" }
+        "tg3" { "嵐熙" }
+        default { "蝦咩" }
+    }
     $changedParts = @()
     $startedTasks = Get-ObjectPropertyValue -Object $actionData -Name "startedTasks"
     $enabledTasks = Get-ObjectPropertyValue -Object $actionData -Name "enabledTasks"
@@ -840,10 +642,14 @@ if ($dashboardControlAction) {
     $stoppedCodexWorkers = Get-ObjectPropertyValue -Object $actionData -Name "stoppedCodexWorkers"
     $pauseUntil = Get-ObjectPropertyValue -Object $actionData -Name "pauseUntil"
     $alreadyRunning = Get-ObjectPropertyValue -Object $actionData -Name "alreadyRunning"
-    if ($startedTasks) { $changedParts += "啟動排程 " + (@($startedTasks) -join "、") }
-    if ($enabledTasks) { $changedParts += "恢復排程 " + (@($enabledTasks) -join "、") }
-    if ($stoppedTasks) { $changedParts += "停止排程 " + (@($stoppedTasks) -join "、") }
-    if ($disabledTasks) { $changedParts += "停用排程 " + (@($disabledTasks) -join "、") }
+    $startedTasks = @($startedTasks | Where-Object { [string]$_ -notmatch "OpenClaw" })
+    $enabledTasks = @($enabledTasks | Where-Object { [string]$_ -notmatch "OpenClaw" })
+    $stoppedTasks = @($stoppedTasks | Where-Object { [string]$_ -notmatch "OpenClaw" })
+    $disabledTasks = @($disabledTasks | Where-Object { [string]$_ -notmatch "OpenClaw" })
+    if ($startedTasks.Count -gt 0) { $changedParts += "啟動排程 " + ($startedTasks -join "、") }
+    if ($enabledTasks.Count -gt 0) { $changedParts += "恢復排程 " + ($enabledTasks -join "、") }
+    if ($stoppedTasks.Count -gt 0) { $changedParts += "停止排程 " + ($stoppedTasks -join "、") }
+    if ($disabledTasks.Count -gt 0) { $changedParts += "停用排程 " + ($disabledTasks -join "、") }
     if ($null -ne $interruptedTelegramRequests) { $changedParts += "中斷 Telegram 任務 $interruptedTelegramRequests 筆" }
     if ($null -ne $stoppedCodexWorkers) { $changedParts += "停止 Codex 子工作 $stoppedCodexWorkers 個" }
     if ($pauseUntil) { $changedParts += "TGBOT 暫停訊號有效至 $pauseUntil" }
@@ -894,7 +700,7 @@ $monitors = @(
     },
     [ordered]@{
         id = "tgbot3-heartbeat"
-        label = "TG3 心跳"
+        label = "嵐熙心跳"
         statusKey = if ($bot3Age -le 120) { "running" } else { "watch" }
         statusLabel = if ($bot3Age -le 120) { "正常" } else { "待確認" }
         detail = "心跳 $bot3Age 秒前，執行中任務 $(if ($null -ne $bot3ActiveRequests) { $bot3ActiveRequests } else { "未取得" })"
@@ -902,35 +708,11 @@ $monitors = @(
     },
     [ordered]@{
         id = "tgbot3-request"
-        label = "TG3 任務佇列"
+        label = "嵐熙任務佇列"
         statusKey = $bot3StatusKey
         statusLabel = $bot3StatusLabel
         detail = $bot3TaskInstruction
         source = $bot3TaskSource
-    },
-    [ordered]@{
-        id = "openclaw-task"
-        label = "嵐熙任務"
-        statusKey = $lanxiTaskStatusKey
-        statusLabel = $lanxiTaskStatusLabel
-        detail = $lanxiTaskInstruction
-        source = $lanxiTaskSource
-    },
-    [ordered]@{
-        id = "openclaw-process"
-        label = "嵐熙進程"
-        statusKey = $openclawProcessKey
-        statusLabel = $openclawProcessLabel
-        detail = $openclawProcessDetail
-        source = "Win32_Process"
-    },
-    [ordered]@{
-        id = "openclaw-watchdog"
-        label = "嵐熙看門排程"
-        statusKey = $watchdogKey
-        statusLabel = $openclaw.watchdogState
-        detail = "OpenClaw Watchdog 排程目前狀態"
-        source = "Scheduled Task"
     },
     [ordered]@{
         id = "codex-token"
@@ -972,7 +754,6 @@ $payload = [ordered]@{
     statusLabel = $statusLabel
     headline = $headline
     currentTaskInstruction = $headline
-    lanxiTaskInstruction = $lanxiTaskInstruction
     blocker = $blocker
     nextAction = $NextAction.Trim()
     updatedAt = $now.ToString("yyyy-MM-ddTHH:mm:sszzz")
@@ -1008,24 +789,13 @@ $payload = [ordered]@{
         currentTaskInstruction = $bot3TaskInstruction
         currentTaskSource = $bot3TaskSource
     }
-    openclaw = [ordered]@{
-        name = $openclaw.name
-        botUsername = $LanxiBotUsername
-        statusKey = $openclaw.statusKey
-        statusLabel = $openclaw.statusLabel
-        processCount = $openclaw.processCount
-        watchdogState = $openclaw.watchdogState
-        currentTaskInstruction = $lanxiTaskInstruction
-        currentTaskSource = $lanxiTaskSource
-    }
     monitors = $monitors
     deliverables = @(
         "公開總控台：GitHub Pages",
         "狀態資料：runtime-status.json",
-        "監控項目：11 項",
+        "監控項目：TG1、TG2、TG3",
         "林孟姿 TGBOT2：獨立欄位",
-        "TG3：獨立欄位",
-        "嵐熙任務：獨立欄位",
+        "嵐熙 TGBOT3：獨立欄位",
         "功能鍵：卡點救援 / 強制停止",
         "技能包清單：功能與使用場景"
     )

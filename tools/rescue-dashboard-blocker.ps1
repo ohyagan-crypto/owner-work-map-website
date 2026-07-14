@@ -1,8 +1,8 @@
 ﻿param(
   [string]$SiteRoot = (Split-Path -Parent $PSScriptRoot),
   [string]$BotRoot = "C:\Users\max\tg-openai-bot",
-  [ValidateSet("lanxi", "shami", "mengzi", "tg3")]
-  [string]$Target = "lanxi",
+  [ValidateSet("shami", "mengzi", "tg3")]
+  [string]$Target = "shami",
   [string]$Bot3Root = "C:\Users\max\tg-openai-bot-3"
 )
 
@@ -102,14 +102,12 @@ function Start-RecoverableTask {
   }
 }
 
-$candidateTasks = if ($Target -eq "lanxi") {
-  @("OpenClaw Watchdog", "OpenClaw Gateway")
-} elseif ($Target -eq "mengzi") {
+$candidateTasks = if ($Target -eq "mengzi") {
   @("Codex Telegram Bot 2 Watchdog Hourly", "Codex Telegram Bot 2 Watchdog Startup")
 } elseif ($Target -eq "tg3") {
   @("Codex Telegram Bot 3 Watchdog Hourly", "Codex Telegram Bot 3 Watchdog Startup")
 } else {
-  @("Codex Telegram Bot Watchdog Hourly", "Codex Telegram Bot Watchdog Startup", "TGBot OpenClaw Maintenance Hourly", "OpenClaw_CodexBot_HourlyHealth")
+  @("Codex Telegram Bot Watchdog Hourly", "Codex Telegram Bot Watchdog Startup")
 }
 
 foreach ($taskName in $candidateTasks) {
@@ -136,7 +134,7 @@ $payload = [ordered]@{
   target = $Target
   createdAt = (Get-Date).ToString("o")
   siteRoot = $SiteRoot
-  behavior = if ($Target -eq "lanxi") { "refresh lanxi status and restart recoverable OpenClaw schedules only" } elseif ($Target -eq "mengzi") { "refresh mengzi TGBOT2 status and restart recoverable bot2 schedules only" } elseif ($Target -eq "tg3") { "refresh TG3 status and restart recoverable bot3 schedules only" } else { "refresh shami TGBOT status, run health check, and restart recoverable bot schedules only" }
+  behavior = if ($Target -eq "mengzi") { "refresh mengzi TGBOT2 status and restart recoverable bot2 schedules only" } elseif ($Target -eq "tg3") { "refresh TG3 status and restart recoverable bot3 schedules only" } else { "refresh shami TGBOT status, run health check, and restart recoverable bot schedules only" }
   startedTasks = @($startedTasks)
   enabledTasks = @($enabledTasks)
   alreadyRunning = @($alreadyRunning)
@@ -159,28 +157,22 @@ $heartbeatText = if ($heartbeatSummary.ok) {
   "$($heartbeatSummary.label)。"
 }
 
-if ($Target -eq "lanxi") {
+if ($Target -eq "mengzi") {
   if ($changed.Count -gt 0) {
-    "已送出嵐熙卡點救援：已刷新狀態，並啟動或恢復 " + ($changed -join "、") + "。蝦咩 TGBOT 沒有被停止。"
+    "已送出林孟姿卡點救援：已啟動或恢復 " + ($changed -join "、") + "。$heartbeatText TG1 與 TG3 沒有被停止。"
   } else {
-    "已送出嵐熙卡點救援：已刷新狀態，嵐熙可續作排程目前已在待命或運作中。蝦咩 TGBOT 沒有被停止。"
-  }
-} elseif ($Target -eq "mengzi") {
-  if ($changed.Count -gt 0) {
-    "已送出林孟姿卡點救援：已啟動或恢復 " + ($changed -join "、") + "。$heartbeatText 蝦咩與嵐熙沒有被停止。"
-  } else {
-    "已送出林孟姿卡點救援：TGBOT2 可續作排程目前已在待命或運作中。$heartbeatText 蝦咩與嵐熙沒有被停止。"
+    "已送出林孟姿卡點救援：TGBOT2 可續作排程目前已在待命或運作中。$heartbeatText TG1 與 TG3 沒有被停止。"
   }
 } elseif ($Target -eq "tg3") {
   if ($changed.Count -gt 0) {
-    "已送出 TG3 卡點救援：已啟動或恢復 " + ($changed -join "、") + "。$heartbeatText TG1、TG2 與嵐熙沒有被停止。"
+    "已送出嵐熙（TG3）卡點救援：已啟動或恢復 " + ($changed -join "、") + "。$heartbeatText TG1 與 TG2 沒有被停止。"
   } else {
-    "已送出 TG3 卡點救援：TG3 可續作排程目前已在待命或運作中。$heartbeatText TG1、TG2 與嵐熙沒有被停止。"
+    "已送出嵐熙（TG3）卡點救援：TG3 可續作排程目前已在待命或運作中。$heartbeatText TG1 與 TG2 沒有被停止。"
   }
 } else {
   if ($changed.Count -gt 0) {
-    "已送出蝦咩卡點救援：已啟動或恢復 " + ($changed -join "、") + "。$heartbeatText 嵐熙 OpenClaw 沒有被停止。"
+    "已送出蝦咩卡點救援：已啟動或恢復 " + ($changed -join "、") + "。$heartbeatText TG2 與 TG3 沒有被停止。"
   } else {
-    "已送出蝦咩卡點救援：TGBOT 可續作排程已在待命或運作中。$heartbeatText 嵐熙 OpenClaw 沒有被停止。"
+    "已送出蝦咩卡點救援：TGBOT 可續作排程已在待命或運作中。$heartbeatText TG2 與 TG3 沒有被停止。"
   }
 }
