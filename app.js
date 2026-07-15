@@ -716,8 +716,8 @@ function controlRequestHeaders(extra = {}) {
 async function unlockDashboardControls() {
   const codeInput = $("#controlCode");
   const code = codeInput?.value.trim() || "";
-  if (!/^\d{6}$/.test(code)) {
-    setControlLockState(false, "請輸入 6 位數本機操作碼");
+  if (!/^\d{4}$/.test(code)) {
+    setControlLockState(false, "請輸入 4 位數本機操作碼");
     codeInput?.focus();
     return;
   }

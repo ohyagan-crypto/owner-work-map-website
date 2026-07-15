@@ -77,7 +77,7 @@ function writeJson(filePath, value) {
 function ensureControlSecret() {
   const existing = readJson(secretPath, null);
   if (existing?.code && existing?.salt && existing?.hash) return existing;
-  const code = String(crypto.randomInt(100000, 1000000));
+  const code = String(crypto.randomInt(1000, 10000));
   const salt = crypto.randomBytes(16).toString("hex");
   const hash = crypto.scryptSync(code, salt, 32).toString("hex");
   const secret = { code, salt, hash, createdAt: new Date().toISOString(), note: "公開控制頁操作碼；請勿提交版本庫或傳給他人。" };
@@ -98,7 +98,7 @@ function safeEqualHex(left, right) {
 }
 
 function verifyControlCode(code) {
-  if (!/^\d{6}$/.test(String(code || ""))) return false;
+  if (!/^\d{4}$/.test(String(code || ""))) return false;
   const hash = crypto.scryptSync(String(code), controlSecret.salt, 32).toString("hex");
   return safeEqualHex(hash, controlSecret.hash);
 }
