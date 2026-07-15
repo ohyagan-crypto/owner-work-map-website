@@ -567,6 +567,40 @@ body[data-agent-view="mengzi"] .active-task-banner {
   order: 1;
 }
 
+.bot-restart-grid {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.restart-button {
+  min-height: 52px;
+  border-color: rgba(213, 107, 255, 0.42);
+  background: linear-gradient(135deg, rgba(85, 129, 255, 0.22), rgba(213, 107, 255, 0.18)), rgba(3, 15, 28, 0.82);
+}
+
+.restart-button .control-icon {
+  background: rgba(213, 107, 255, 0.16);
+  box-shadow: 0 0 18px rgba(213, 107, 255, 0.2);
+}
+
+.restart-button:hover,
+.restart-button:focus-visible {
+  border-color: rgba(213, 107, 255, 0.68);
+  box-shadow: 0 0 22px rgba(151, 98, 255, 0.2);
+}
+
+.shami-restart-button { border-color: rgba(46, 233, 255, 0.48); }
+.mengzi-restart-button { border-color: rgba(33, 209, 139, 0.5); }
+.tg3-restart-button { border-color: rgba(213, 107, 255, 0.52); }
+
+.restart-warning {
+  color: rgba(255, 214, 126, 0.9);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
 .assistant-stage .mengzi-portrait {
   order: 2;
 }
@@ -2733,6 +2767,10 @@ body.light-mode .theme-toggle {
 
   .active-task-banner {
     padding: 11px;
+  }
+
+  .bot-restart-grid {
+    grid-template-columns: 1fr;
   }
 
   .assistant-stage {

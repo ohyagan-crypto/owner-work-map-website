@@ -8,6 +8,7 @@ const port = Number(process.env.PORT || 4206);
 const statusScript = path.join(root, "tools", "update-runtime-status.ps1");
 const rescueScript = path.join(root, "tools", "rescue-dashboard-blocker.ps1");
 const forceStopScript = path.join(root, "tools", "force-stop-dashboard-work.ps1");
+const restartScript = path.join(root, "tools", "restart-dashboard-bot.ps1");
 const liveRuntimeStatusPath = path.join(process.env.TEMP || root, "owner-work-map-live-runtime-status.json");
 const windowsPowerShellPath = path.join(
   process.env.SystemRoot || "C:\\Windows",
@@ -171,6 +172,11 @@ const server = http.createServer((req, res) => {
 
   if (req.method === "POST" && url.pathname === "/api/action/force-stop") {
     handleActionApi(res, forceStopScript, "已送出強制停止。", targetFromRequest(req, url));
+    return;
+  }
+
+  if (req.method === "POST" && url.pathname === "/api/action/restart") {
+    handleActionApi(res, restartScript, "指定機器人已重啟並恢復心跳。", targetFromRequest(req, url));
     return;
   }
 

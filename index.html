@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AI 自動化作業儀表盤｜蝦咩 x 林孟姿 x 嵐熙</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="styles.css?v=20260714-tg123-sync-order-fix">
+  <link rel="stylesheet" href="styles.css?v=20260715-tg123-restart-controls">
 </head>
 <body data-agent-view="shami">
   <div class="agent-view-switch page-agent-switch" role="tablist" aria-label="蝦咩、林孟姿與嵐熙切換">
@@ -65,6 +65,12 @@
               <div class="effect-layer" id="refreshEffectLayer" aria-hidden="true"></div>
             </button>
           </div>
+          <div class="bot-restart-grid" aria-label="TG1、TG2、TG3 獨立重啟">
+            <button type="button" class="control-button restart-button shami-restart-button" data-dashboard-action="restart" data-action-target="shami" title="只重啟 TG1 蝦咩，不影響 TG2 與 TG3"><span class="control-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M20 11a8 8 0 1 0-2.3 5.7"></path><path d="M20 4v7h-7"></path></svg></span><b>重啟 TG1</b></button>
+            <button type="button" class="control-button restart-button mengzi-restart-button" data-dashboard-action="restart" data-action-target="mengzi" title="只重啟 TG2 林孟姿，不影響 TG1 與 TG3"><span class="control-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M20 11a8 8 0 1 0-2.3 5.7"></path><path d="M20 4v7h-7"></path></svg></span><b>重啟 TG2</b></button>
+            <button type="button" class="control-button restart-button tg3-restart-button" data-dashboard-action="restart" data-action-target="tg3" title="只重啟 TG3 嵐熙，不影響 TG1 與 TG2"><span class="control-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M20 11a8 8 0 1 0-2.3 5.7"></path><path d="M20 4v7h-7"></path></svg></span><b>重啟 TG3</b></button>
+          </div>
+          <small class="restart-warning">重啟會中斷該機器人正在執行的任務，按下後會再次確認。</small>
           <small class="refresh-feedback" id="refreshFeedback">每 1 秒自動同步。</small>
           <small class="action-feedback" id="actionFeedback" aria-live="polite">功能鍵待命。</small>
         </div>

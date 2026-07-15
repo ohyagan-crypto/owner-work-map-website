@@ -99,7 +99,7 @@ function Test-RuntimeSnapshot {
 
 function Test-PublicSite {
     $baseUrl = $PublicSiteUrl.TrimEnd("/") + "/"
-    $index = Invoke-WebCheck -Url $baseUrl -RequiredText @("TG1", "TG2", "TG3", "data-dashboard-action=`"rescue`"", "data-dashboard-action=`"force-stop`"")
+    $index = Invoke-WebCheck -Url $baseUrl -RequiredText @("TG1", "TG2", "TG3", "data-dashboard-action=`"rescue`"", "data-dashboard-action=`"force-stop`"", "data-dashboard-action=`"restart`"", "data-action-target=`"shami`"", "data-action-target=`"mengzi`"", "data-action-target=`"tg3`"")
     $app = Invoke-WebCheck -Url ($baseUrl + "app.js") -RequiredText @("TG3_BOT_NAME", "tgbot3", "runtime-status.json")
     $styles = Invoke-WebCheck -Url ($baseUrl + "styles.css")
     $runtime = Test-RuntimeSnapshot -Url ($baseUrl + "runtime-status.json")

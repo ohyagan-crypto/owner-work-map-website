@@ -30,6 +30,13 @@ const DASHBOARD_ACTIONS = {
     success: "已送出強制停止，會依目前頁面角色只處理對應任務。",
     failure: "強制停止沒有完成，請確認本機即時服務仍在運作。",
     endpointMissing: "強制停止需要本機即時服務，現在沒有讀到可用端點。"
+  },
+  restart: {
+    loading: "重啟中",
+    idle: "重啟",
+    success: "指定機器人已重啟並恢復心跳。",
+    failure: "重啟沒有完成，請確認本機即時服務與看門排程仍在運作。",
+    endpointMissing: "重啟需要本機即時服務，現在沒有讀到可用端點。"
   }
 };
 
@@ -44,8 +51,8 @@ const completedItems = [
   {
     title: "頂部任務指令與功能鍵",
     status: "已套用",
-    summary: "目前任務指令移到儀表板最上方，會跟著 TG1／TG2／TG3 切換；新增卡點救援與強制停止兩個功能鍵。",
-    points: ["任務指令最上方顯示", "卡點救援保留作業並嘗試續作", "強制停止獨立成按鈕"]
+    summary: "目前任務指令移到儀表板最上方，會跟著 TG1／TG2／TG3 切換；卡點救援、強制停止與三端獨立重啟集中在同一控制區。",
+    points: ["任務指令最上方顯示", "卡點救援保留作業並嘗試續作", "TG1／TG2／TG3 可分別重啟並驗證新心跳"]
   },
   {
     title: "TG1 / TG2 / TG3 任務欄整合",
@@ -726,24 +733,31 @@ function updateActionTargetLabels() {
   const targetLabel = currentActionTargetLabel();
   document.querySelectorAll("[data-dashboard-action]").forEach((button) => {
     const config = DASHBOARD_ACTIONS[button.dataset.dashboardAction] || {};
-    const text = `${config.idle || "操作"}${targetLabel}`;
+    const explicitTarget = button.dataset.actionTarget;
+    const buttonTargetLabel = explicitTarget ? AGENT_LABELS[explicitTarget] : targetLabel;
+    const text = explicitTarget
+      ? `${config.idle || "操作"} ${explicitTarget === "shami" ? "TG1" : explicitTarget === "mengzi" ? "TG2" : "TG3"}`
+      : `${config.idle || "操作"}${buttonTargetLabel}`;
     const label = button.querySelector("b");
     if (label && !button.classList.contains("is-running")) label.textContent = text;
     button.setAttribute("aria-label", text);
-    button.title = `${text}，只處理目前頁面切換到的${targetLabel}任務`;
+    button.title = explicitTarget
+      ? `${text}，只處理${buttonTargetLabel}，不影響另外兩個機器人`
+      : `${text}，只處理目前頁面切換到的${buttonTargetLabel}任務`;
   });
 }
 
-function setActionButtonsLoading(action, isLoading) {
+function setActionButtonsLoading(action, isLoading, requestedTarget = "") {
   actionInFlight = isLoading ? action : "";
   const targetLabel = currentActionTargetLabel();
   document.querySelectorAll("[data-dashboard-action]").forEach((button) => {
-    const isTarget = button.dataset.dashboardAction === action;
+    const explicitTarget = button.dataset.actionTarget || "";
+    const isTarget = button.dataset.dashboardAction === action && (!requestedTarget || !explicitTarget || explicitTarget === requestedTarget);
     const config = DASHBOARD_ACTIONS[button.dataset.dashboardAction] || {};
     button.disabled = isLoading;
     button.classList.toggle("is-running", isLoading && isTarget);
     const label = button.querySelector("b");
-    if (label) label.textContent = isLoading && isTarget ? `${config.loading}${targetLabel}` : `${config.idle}${targetLabel}`;
+    if (label && isLoading && isTarget) label.textContent = `${config.loading}${AGENT_LABELS[requestedTarget] || targetLabel}`;
   });
   if (!isLoading) updateActionTargetLabels();
 }
@@ -785,16 +799,29 @@ function renderActiveTaskPanel(status = lastRenderedStatus) {
   setTextIfPresent("#activeTaskDetail", content.detail);
 }
 
-async function runDashboardAction(action) {
+async function runDashboardAction(action, requestedTarget = "") {
   const config = DASHBOARD_ACTIONS[action];
   if (!config || actionInFlight) return;
-  const target = currentActionTarget();
-  const targetLabel = currentActionTargetLabel();
+  const target = requestedTarget || currentActionTarget();
+  const targetLabel = AGENT_LABELS[target] || currentActionTargetLabel();
+
+  if (action === "restart") {
+    const confirmed = window.confirm(`確定要重啟${targetLabel}嗎？\n\n該機器人正在執行的任務會被中斷，TG1／TG2／TG3 其他兩端不受影響。`);
+    if (!confirmed) {
+      setActionFeedback(`已取消重啟${targetLabel}。`, "idle");
+      return;
+    }
+  }
 
   playRefreshSound();
   triggerRefreshEffect();
-  setActionButtonsLoading(action, true);
-  setActionFeedback(action === "rescue" ? `正在嘗試救援${targetLabel}卡點...` : `正在送出${targetLabel}強制停止...`, "idle");
+  setActionButtonsLoading(action, true, target);
+  const actionProgress = action === "rescue"
+    ? `正在嘗試救援${targetLabel}卡點...`
+    : action === "restart"
+      ? `正在重啟${targetLabel}並等待恢復心跳...`
+      : `正在送出${targetLabel}強制停止...`;
+  setActionFeedback(actionProgress, "idle");
 
   try {
     const endpoints = await liveEndpointCandidates();
@@ -823,7 +850,7 @@ async function runDashboardAction(action) {
         }
         liveStatusEndpoint = endpoint;
         setActionFeedback(payload.message || config.success, "success");
-        setActionButtonsLoading(action, false);
+        setActionButtonsLoading(action, false, target);
         await loadRuntimeStatus({ manual: true });
         return;
       } catch (error) {
@@ -835,7 +862,7 @@ async function runDashboardAction(action) {
   } catch (error) {
     setActionFeedback(error?.message || config.failure, "blocked");
   } finally {
-    setActionButtonsLoading(action, false);
+    setActionButtonsLoading(action, false, target);
   }
 }
 
@@ -1606,7 +1633,7 @@ function bindInteractions() {
   }
 
   document.querySelectorAll("[data-dashboard-action]").forEach((button) => {
-    button.addEventListener("click", () => runDashboardAction(button.dataset.dashboardAction));
+    button.addEventListener("click", () => runDashboardAction(button.dataset.dashboardAction, button.dataset.actionTarget || ""));
   });
 
   const themeToggle = $("#themeToggle");
