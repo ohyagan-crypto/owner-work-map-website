@@ -30,4 +30,12 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tools\update-runtime-s
 node .\server.js
 ```
 
+控制功能預設鎖定。第一次啟動即時服務後，本機操作碼會建立在：
+
+```text
+output/dashboard-control-secret.json
+```
+
+公開頁輸入 6 位數操作碼後會取得 30 分鐘控制權限。安全重啟會在偵測到執行中任務時排隊，立即重啟才會中斷目前任務；最近操作、原因、結果與新舊程序編號會保留在本機操作紀錄。
+
 預設會在 `http://127.0.0.1:4179/` 提供本機預覽與 `/api/status` 即時狀態 API。

@@ -1,18 +1,18 @@
 {
-    "statusKey":  "completed",
-    "statusLabel":  "已回覆完成",
-    "headline":  "藍星科技官方客服新增 1.七月份新人或者介紹三位新人才能兌換新人贈品 介紹需提供新人大名並且你要幫我核對名單表是否有確實簽到 2.藍星聚合平台/一個月份 原價1499，目前體驗優惠價700 參與課程加入聚合平台人人都能代理",
-    "currentTaskInstruction":  "藍星科技官方客服新增 1.七月份新人或者介紹三位新人才能兌換新人贈品 介紹需提供新人大名並且你要幫我核對名單表是否有確實簽到 2.藍星聚合平台/一個月份 原價1499，目前體驗優惠價700 參與課程加入聚合平台人人都能代理",
+    "statusKey":  "standby",
+    "statusLabel":  "正常待命",
+    "headline":  "現在執行一次新的台股工作流",
+    "currentTaskInstruction":  "現在執行一次新的台股工作流",
     "blocker":  "沒有卡點",
-    "nextAction":  "可直接查看 Telegram 回覆結果。",
-    "updatedAt":  "2026-07-15T09:02:34+08:00",
-    "checkedAt":  "2026-07-15T09:02:34+08:00",
+    "nextAction":  "有新任務時會更新 Telegram 狀態與本頁快照。",
+    "updatedAt":  "2026-07-15T11:00:00+08:00",
+    "checkedAt":  "2026-07-15T11:00:00+08:00",
     "sourceType":  "local-generator",
     "sourceLabel":  "本機即時狀態產生器",
     "refreshSeconds":  1,
     "token":  {
-                  "totalTokens":  2787432,
-                  "taskCount":  2,
+                  "totalTokens":  10929284,
+                  "taskCount":  5,
                   "source":  "本機 Codex 執行緒紀錄"
               },
     "heartbeat":  {
@@ -22,20 +22,20 @@
                   },
     "tgbot2":  {
                    "name":  "林孟姿",
-                   "statusKey":  "standby",
-                   "statusLabel":  "正常待命",
-                   "ageSeconds":  4,
+                   "statusKey":  "blocked",
+                   "statusLabel":  "卡點",
+                   "ageSeconds":  42,
                    "activeRequests":  0,
-                   "currentTaskInstruction":  "最近完成：tg123 都要安裝skill bb browser",
+                   "currentTaskInstruction":  "聚合平台有登入嗎",
                    "currentTaskSource":  "tg-openai-bot-2/telegram_request_status.json"
                },
     "tgbot3":  {
                    "name":  "嵐熙",
-                   "statusKey":  "running",
-                   "statusLabel":  "運作中",
-                   "ageSeconds":  6,
-                   "activeRequests":  1,
-                   "currentTaskInstruction":  "每個小時第27分鐘檢查網站是否正常運作 沒有要修正好 https://ohyagan-crypto.github.io/owner-work-map-website/#in-progress`",
+                   "statusKey":  "standby",
+                   "statusLabel":  "正常待命",
+                   "ageSeconds":  34,
+                   "activeRequests":  0,
+                   "currentTaskInstruction":  "最近完成：tg123都加入這次升級設定",
                    "currentTaskSource":  "tg-openai-bot-3/telegram_request_status.json"
                },
     "monitors":  [
@@ -50,9 +50,9 @@
                      {
                          "id":  "telegram-request",
                          "label":  "Telegram 任務佇列",
-                         "statusKey":  "completed",
-                         "statusLabel":  "已回覆完成",
-                         "detail":  "藍星科技官方客服新增 1.七月份新人或者介紹三位新人才能兌換新人贈品 介紹需提供新人大名並且你要幫我核對名單表是否有確實簽到 2.藍星聚合平台/一個月份 原價1499，目前體驗優惠價700 參與課程加入聚合平台人人都能代理",
+                         "statusKey":  "standby",
+                         "statusLabel":  "正常待命",
+                         "detail":  "現在執行一次新的台股工作流",
                          "source":  "telegram_request_status.json"
                      },
                      {
@@ -60,15 +60,15 @@
                          "label":  "林孟姿心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 4 秒前，執行中任務 0",
+                         "detail":  "心跳 42 秒前，執行中任務 0",
                          "source":  "tg-openai-bot-2/codex_bot_heartbeat.json"
                      },
                      {
                          "id":  "tgbot2-request",
                          "label":  "林孟姿任務佇列",
-                         "statusKey":  "standby",
-                         "statusLabel":  "正常待命",
-                         "detail":  "最近完成：tg123 都要安裝skill bb browser",
+                         "statusKey":  "blocked",
+                         "statusLabel":  "卡點",
+                         "detail":  "聚合平台有登入嗎",
                          "source":  "tg-openai-bot-2/telegram_request_status.json"
                      },
                      {
@@ -76,15 +76,15 @@
                          "label":  "嵐熙心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 6 秒前，執行中任務 1",
+                         "detail":  "心跳 34 秒前，執行中任務 0",
                          "source":  "tg-openai-bot-3/codex_bot_heartbeat.json"
                      },
                      {
                          "id":  "tgbot3-request",
                          "label":  "嵐熙任務佇列",
-                         "statusKey":  "running",
-                         "statusLabel":  "運作中",
-                         "detail":  "每個小時第27分鐘檢查網站是否正常運作 沒有要修正好 https://ohyagan-crypto.github.io/owner-work-map-website/#in-progress`",
+                         "statusKey":  "standby",
+                         "statusLabel":  "正常待命",
+                         "detail":  "最近完成：tg123都加入這次升級設定",
                          "source":  "tg-openai-bot-3/telegram_request_status.json"
                      },
                      {
@@ -92,7 +92,7 @@
                          "label":  "Codex token 統計",
                          "statusKey":  "running",
                          "statusLabel":  "已讀取",
-                         "detail":  "2787432 tokens，任務 2",
+                         "detail":  "10929284 tokens，任務 5",
                          "source":  "本機 Codex 執行緒紀錄"
                      },
                      {
@@ -108,7 +108,7 @@
                          "label":  "狀態產生器",
                          "statusKey":  "running",
                          "statusLabel":  "已更新",
-                         "detail":  "產生時間 2026-07-15 09:02:34",
+                         "detail":  "產生時間 2026-07-15 11:00:00",
                          "source":  "tools/update-runtime-status.ps1"
                      },
                      {

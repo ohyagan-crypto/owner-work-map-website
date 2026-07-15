@@ -601,6 +601,106 @@ body[data-agent-view="mengzi"] .active-task-banner {
   line-height: 1.45;
 }
 
+.control-security,
+.restart-options {
+  display: grid;
+  grid-template-columns: auto minmax(120px, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+  padding: 9px;
+  border: 1px solid rgba(46, 233, 255, 0.2);
+  border-radius: 8px;
+  background: rgba(2, 12, 25, 0.62);
+}
+
+.control-security label,
+.restart-options label {
+  color: var(--status-muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.control-security input,
+.restart-options input,
+.restart-options select {
+  min-width: 0;
+  height: 38px;
+  padding: 0 10px;
+  border: 1px solid rgba(46, 233, 255, 0.28);
+  border-radius: 6px;
+  color: #fff;
+  background: rgba(1, 9, 19, 0.86);
+}
+
+.restart-options {
+  grid-template-columns: auto minmax(190px, 1fr) minmax(150px, 0.8fr);
+}
+
+.control-unlock-button {
+  min-height: 38px;
+  padding: 0 14px;
+  border-color: rgba(185, 255, 79, 0.46);
+  border-radius: 6px;
+  color: #f7ffe8;
+  background: rgba(96, 150, 33, 0.25);
+}
+
+#controlLockStatus {
+  grid-column: 1 / -1;
+  color: var(--red);
+  font-size: 12px;
+}
+
+#controlLockStatus[data-state="unlocked"] {
+  color: var(--lime);
+}
+
+.action-history-panel {
+  display: grid;
+  gap: 7px;
+  padding: 10px;
+  border: 1px solid rgba(213, 107, 255, 0.22);
+  border-radius: 8px;
+  background: rgba(2, 12, 25, 0.58);
+}
+
+.action-history-panel > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  color: #fff;
+  font-size: 12px;
+}
+
+#eventSyncStatus {
+  color: var(--cyan);
+  font-weight: 600;
+}
+
+.action-history-list {
+  display: grid;
+  gap: 6px;
+  max-height: 190px;
+  overflow: auto;
+}
+
+.action-history-list article {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 3px 10px;
+  padding: 8px;
+  border-left: 3px solid var(--cyan);
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.action-history-list article[data-state="queued"] { border-left-color: var(--orange); }
+.action-history-list article[data-state="failed"] { border-left-color: var(--red); }
+.action-history-list article[data-state="completed"] { border-left-color: var(--lime); }
+.action-history-list article b { color: #fff; font-size: 12px; }
+.action-history-list article span { color: var(--status-muted); font-size: 11px; }
+.action-history-list article small { grid-column: 1 / -1; color: rgba(231, 244, 255, 0.78); overflow-wrap: anywhere; }
+
 .assistant-stage .mengzi-portrait {
   order: 2;
 }
@@ -2771,6 +2871,15 @@ body.light-mode .theme-toggle {
 
   .bot-restart-grid {
     grid-template-columns: 1fr;
+  }
+
+  .control-security,
+  .restart-options {
+    grid-template-columns: 1fr;
+  }
+
+  #controlLockStatus {
+    grid-column: auto;
   }
 
   .assistant-stage {

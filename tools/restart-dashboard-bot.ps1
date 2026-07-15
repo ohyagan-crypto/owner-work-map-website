@@ -2,6 +2,9 @@
   [string]$SiteRoot = (Split-Path -Parent $PSScriptRoot),
   [ValidateSet("shami", "mengzi", "tg3")]
   [string]$Target = "shami",
+  [ValidateSet("safe", "force")]
+  [string]$Mode = "safe",
+  [string]$Reason = "dashboard control",
   [switch]$DryRun
 )
 
@@ -47,7 +50,7 @@ do {
 if (-not $newHeartbeat) { throw "$($config.Label) 已送出重啟，但在等待時間內沒有確認到新的心跳。" }
 
 New-Item -ItemType Directory -Path $signalDir -Force | Out-Null
-$payload = [ordered]@{ action = "restart"; target = $Target; label = $config.Label; createdAt = (Get-Date).ToString("o"); oldPid = $oldPid; newPid = $newHeartbeat.pid; startedAt = $newHeartbeat.started_at_utc; heartbeatAt = $newHeartbeat.timestamp_utc; otherBotsUntouched = $config.OtherBots }
+$payload = [ordered]@{ action = "restart"; mode = $Mode; reason = $Reason; target = $Target; label = $config.Label; createdAt = (Get-Date).ToString("o"); oldPid = $oldPid; newPid = $newHeartbeat.pid; startedAt = $newHeartbeat.started_at_utc; heartbeatAt = $newHeartbeat.timestamp_utc; otherBotsUntouched = $config.OtherBots }
 [System.IO.File]::WriteAllText($signalPath, ($payload | ConvertTo-Json -Depth 4) + [Environment]::NewLine, $utf8NoBom)
 $statusScript = Join-Path $PSScriptRoot "update-runtime-status.ps1"
 if (Test-Path -LiteralPath $statusScript) { & $statusScript -SiteRoot $SiteRoot -OutputPath (Join-Path $SiteRoot "runtime-status.json") | Out-Null }

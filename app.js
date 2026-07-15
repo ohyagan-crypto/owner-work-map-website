@@ -8,10 +8,15 @@ const DEFAULT_REFRESH_SECONDS = 1;
 const LIVE_TIMEOUT_MS = 2200;
 const LIVE_RETRY_COOLDOWN_MS = 5000;
 const AGENT_VIEW_STORAGE_KEY = "ownerDashboardAgentViewTargetedControls20260705v2";
+const CONTROL_SESSION_KEY = "ownerDashboardControlSession20260715";
 const MENGZI_BOT_NAME = "林孟姿";
 const TG3_BOT_NAME = "嵐熙";
 const AGENT_LABELS = { tg3: "嵐熙", mengzi: "林孟姿", shami: "蝦咩" };
 const TELEGRAM_HANDLE_PATTERN = /@[A-Za-z0-9_]{5,}/g;
+let controlSessionToken = window.sessionStorage.getItem(CONTROL_SESSION_KEY) || "";
+let controlSessionExpiresAt = 0;
+let liveEventSource = null;
+let eventStreamOpen = false;
 
 function publicText(value) {
   return typeof value === "string" ? value.replace(TELEGRAM_HANDLE_PATTERN, "嵐熙").trim() : value;
@@ -694,6 +699,100 @@ function currentActionTarget() {
   return "shami";
 }
 
+function setControlLockState(unlocked, message = "") {
+  const status = $("#controlLockStatus");
+  if (!status) return;
+  status.dataset.state = unlocked ? "unlocked" : "locked";
+  status.textContent = message || (unlocked ? "控制功能已解鎖" : "控制功能已鎖定");
+}
+
+function controlRequestHeaders(extra = {}) {
+  return {
+    ...extra,
+    ...(controlSessionToken ? { Authorization: `Bearer ${controlSessionToken}` } : {})
+  };
+}
+
+async function unlockDashboardControls() {
+  const codeInput = $("#controlCode");
+  const code = codeInput?.value.trim() || "";
+  if (!/^\d{6}$/.test(code)) {
+    setControlLockState(false, "請輸入 6 位數本機操作碼");
+    codeInput?.focus();
+    return;
+  }
+
+  const button = $("#unlockControls");
+  if (button) button.disabled = true;
+  try {
+    const endpoints = await liveEndpointCandidates();
+    if (!endpoints.length) throw new Error("目前沒有可用的即時控制服務。");
+    let lastError = null;
+    for (const endpoint of endpoints) {
+      try {
+        const response = await fetch(`${endpoint}/api/control/unlock`, {
+          method: "POST",
+          cache: "no-store",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ code })
+        });
+        const payload = await response.json().catch(() => ({}));
+        if (!response.ok || !payload.token) throw new Error(payload.message || "操作碼驗證失敗。");
+        liveStatusEndpoint = endpoint;
+        controlSessionToken = payload.token;
+        controlSessionExpiresAt = Number(payload.expiresAt || 0);
+        window.sessionStorage.setItem(CONTROL_SESSION_KEY, controlSessionToken);
+        if (codeInput) codeInput.value = "";
+        setControlLockState(true, "控制功能已解鎖 30 分鐘");
+        setActionFeedback("控制功能已可使用。", "success");
+        return;
+      } catch (error) {
+        lastError = error;
+      }
+    }
+    throw lastError || new Error("操作碼驗證失敗。");
+  } catch (error) {
+    controlSessionToken = "";
+    window.sessionStorage.removeItem(CONTROL_SESSION_KEY);
+    setControlLockState(false, error?.message || "操作碼驗證失敗。");
+  } finally {
+    if (button) button.disabled = false;
+  }
+}
+
+function renderActionHistory(history = [], queue = []) {
+  const list = $("#actionHistoryList");
+  if (!list) return;
+  const queueTargets = new Set((queue || []).map((item) => item.target));
+  if (!history.length) {
+    list.innerHTML = "<span>目前沒有操作紀錄</span>";
+    return;
+  }
+  list.innerHTML = history.slice(0, 8).map((item) => {
+    const actionLabel = item.action === "restart" ? "重啟" : item.action === "rescue" ? "救援" : "停止";
+    const statusLabel = item.status === "completed" ? "完成" : item.status === "queued" || queueTargets.has(item.target) ? "排隊中" : item.status === "failed" ? "失敗" : "執行中";
+    const time = formatDateTime(item.completedAt || item.startedAt || item.requestedAt);
+    const processDetail = item.oldPid || item.newPid ? ` · 程序 ${item.oldPid || "--"} → ${item.newPid || "--"}` : "";
+    const reasonDetail = item.reason ? ` · 原因：${item.reason}` : "";
+    return `<article data-state="${escapeHtml(item.status || "requested")}"><b>${escapeHtml(item.targetLabel || AGENT_LABELS[item.target] || item.target)} · ${actionLabel}</b><span>${escapeHtml(statusLabel)} · ${escapeHtml(time)}</span><small>${escapeHtml(`${item.message || ""}${reasonDetail}${processDetail}`)}</small></article>`;
+  }).join("");
+}
+
+async function loadActionHistory() {
+  const endpoints = await liveEndpointCandidates();
+  for (const endpoint of endpoints) {
+    try {
+      const response = await fetch(`${endpoint}/api/action-history?ts=${Date.now()}`, { cache: "no-store", headers: controlRequestHeaders() });
+      if (!response.ok) continue;
+      const payload = await response.json();
+      renderActionHistory(payload.history, payload.queue);
+      return;
+    } catch {
+      // Try the next known endpoint.
+    }
+  }
+}
+
 function currentActionTargetLabel() {
   return AGENT_LABELS[currentActionTarget()];
 }
@@ -804,9 +903,22 @@ async function runDashboardAction(action, requestedTarget = "") {
   if (!config || actionInFlight) return;
   const target = requestedTarget || currentActionTarget();
   const targetLabel = AGENT_LABELS[target] || currentActionTargetLabel();
+  const restartMode = $("#restartMode")?.value === "force" ? "force" : "safe";
+  const reason = $("#actionReason")?.value.trim() || "網站控制台操作";
+
+  if (!controlSessionToken || (controlSessionExpiresAt && controlSessionExpiresAt <= Date.now())) {
+    controlSessionToken = "";
+    window.sessionStorage.removeItem(CONTROL_SESSION_KEY);
+    setControlLockState(false, "請先輸入本機操作碼解鎖控制功能");
+    $("#controlCode")?.focus();
+    return;
+  }
 
   if (action === "restart") {
-    const confirmed = window.confirm(`確定要重啟${targetLabel}嗎？\n\n該機器人正在執行的任務會被中斷，TG1／TG2／TG3 其他兩端不受影響。`);
+    const modeText = restartMode === "force"
+      ? "立即重啟會中斷該機器人目前任務。"
+      : "安全重啟會在有任務時自動排隊，等任務完成後再執行。";
+    const confirmed = window.confirm(`確定要${restartMode === "force" ? "立即" : "安全"}重啟${targetLabel}嗎？\n\n${modeText}\n另外兩端不受影響。`);
     if (!confirmed) {
       setActionFeedback(`已取消重啟${targetLabel}。`, "idle");
       return;
@@ -832,12 +944,13 @@ async function runDashboardAction(action, requestedTarget = "") {
     let lastError = null;
     for (const endpoint of endpoints) {
       try {
-        const response = await fetch(`${endpoint}/api/action/${action}?target=${encodeURIComponent(target)}`, {
+        const actionUrl = `${endpoint}/api/action/${action}?target=${encodeURIComponent(target)}&mode=${encodeURIComponent(restartMode)}&reason=${encodeURIComponent(reason)}`;
+        const response = await fetch(actionUrl, {
           method: "POST",
           cache: "no-store",
-          headers: {
+          headers: controlRequestHeaders({
             "X-Dashboard-Target": target
-          }
+          })
         });
         let payload = {};
         try {
@@ -845,12 +958,18 @@ async function runDashboardAction(action, requestedTarget = "") {
         } catch {
           payload = {};
         }
+        if (response.status === 401) {
+          controlSessionToken = "";
+          window.sessionStorage.removeItem(CONTROL_SESSION_KEY);
+          setControlLockState(false, "控制權限已到期，請重新輸入操作碼");
+        }
         if (!response.ok || payload.ok === false) {
           throw new Error(payload.message || config.failure);
         }
         liveStatusEndpoint = endpoint;
         setActionFeedback(payload.message || config.success, "success");
         setActionButtonsLoading(action, false, target);
+        await loadActionHistory();
         await loadRuntimeStatus({ manual: true });
         return;
       } catch (error) {
@@ -1270,6 +1389,41 @@ function tgbot2TaskInstruction(status) {
   return value ? publicText(value) : "林孟姿 TGBOT2 目前沒有可顯示的任務指令。";
 }
 
+async function connectLiveEvents() {
+  await refreshLiveEndpointFromConfig();
+  if (!liveStatusEndpoint || typeof window.EventSource !== "function") return;
+  if (liveEventSource) liveEventSource.close();
+  const syncStatus = $("#eventSyncStatus");
+  liveEventSource = new EventSource(`${liveStatusEndpoint}/api/events`);
+  liveEventSource.addEventListener("open", () => {
+    eventStreamOpen = true;
+    if (syncStatus) syncStatus.textContent = "即時事件已連線";
+    setRefreshFeedback("即時事件同步中；狀態變更會立即更新。", "success");
+  });
+  liveEventSource.addEventListener("status", (event) => {
+    try {
+      const data = JSON.parse(event.data);
+      renderRuntimeStatus(data);
+      lastStatusSignature = runtimeSignature(data);
+      setRefreshFeedback(`狀態已即時更新：${formatDateTime(data.checkedAt || data.updatedAt)}`, "success");
+    } catch {
+      // Ignore malformed transient events and keep the stream alive.
+    }
+  });
+  liveEventSource.addEventListener("action", (event) => {
+    try {
+      const data = JSON.parse(event.data);
+      renderActionHistory(data.history || [], data.queue || []);
+    } catch {
+      // Keep the current history view.
+    }
+  });
+  liveEventSource.onerror = () => {
+    eventStreamOpen = false;
+    if (syncStatus) syncStatus.textContent = "事件連線暫停，使用備援同步";
+  };
+}
+
 function tgbot2TaskSource(status) {
   const monitors = Array.isArray(status.monitors) ? status.monitors : [];
   const taskMonitor = monitors.find((item) => {
@@ -1616,12 +1770,11 @@ async function loadRuntimeStatus(options = {}) {
 }
 
 function scheduleStatusRefresh() {
-  const tick = async () => {
-    await loadRuntimeStatus();
-    const seconds = refreshSecondsFrom(lastRenderedStatus);
-    window.setTimeout(tick, seconds * 1000);
-  };
-  tick();
+  loadRuntimeStatus().then(connectLiveEvents);
+  loadActionHistory();
+  window.setInterval(() => {
+    if (!eventStreamOpen) loadRuntimeStatus();
+  }, 30000);
 }
 
 function bindInteractions() {
@@ -1629,8 +1782,20 @@ function bindInteractions() {
 
   const refreshButton = $("#refreshStatus");
   if (refreshButton) {
-    refreshButton.addEventListener("click", () => loadRuntimeStatus({ manual: true }));
+    refreshButton.addEventListener("click", async () => {
+      await loadRuntimeStatus({ manual: true });
+      await loadActionHistory();
+      if (!eventStreamOpen) connectLiveEvents();
+    });
   }
+
+  const unlockButton = $("#unlockControls");
+  if (unlockButton) unlockButton.addEventListener("click", unlockDashboardControls);
+  const controlCode = $("#controlCode");
+  if (controlCode) controlCode.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") unlockDashboardControls();
+  });
+  setControlLockState(Boolean(controlSessionToken), controlSessionToken ? "控制權限等待伺服器驗證" : "控制功能已鎖定");
 
   document.querySelectorAll("[data-dashboard-action]").forEach((button) => {
     button.addEventListener("click", () => runDashboardAction(button.dataset.dashboardAction, button.dataset.actionTarget || ""));
