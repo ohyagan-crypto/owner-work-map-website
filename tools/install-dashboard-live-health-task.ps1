@@ -1,14 +1,16 @@
 param(
     [string]$TaskName = "OwnerWorkMapDashboardLiveHealthHourly",
     [int]$IntervalMinutes = 60,
-    [int]$Port = 4206
+    [int]$MinuteOfHour = 27,
+    [int]$Port = 4206,
+    [string]$PublicSiteUrl = "https://ohyagan-crypto.github.io/owner-work-map-website/"
 )
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
 $repoRoot = (Resolve-Path -LiteralPath (Split-Path -Parent $PSScriptRoot)).Path
-$scriptPath = Join-Path $PSScriptRoot "check-live-status-health.ps1"
+$scriptPath = Join-Path $PSScriptRoot "check-public-site-health.ps1"
 $powerShellPath = Join-Path $env:WINDIR "System32\WindowsPowerShell\v1.0\powershell.exe"
 
 if (-not (Test-Path -LiteralPath $scriptPath)) {
@@ -17,12 +19,16 @@ if (-not (Test-Path -LiteralPath $scriptPath)) {
 
 $action = New-ScheduledTaskAction `
     -Execute $powerShellPath `
-    -Argument ("-NoProfile -ExecutionPolicy Bypass -File `"{0}`" -SiteRoot `"{1}`" -Port {2} -Repair -PushConfig" -f $scriptPath, $repoRoot, $Port) `
+    -Argument ("-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"{0}`" -SiteRoot `"{1}`" -PublicSiteUrl `"{2}`" -Port {3} -Repair" -f $scriptPath, $repoRoot, $PublicSiteUrl, $Port) `
     -WorkingDirectory $repoRoot
+
+$now = Get-Date
+$nextRun = Get-Date -Year $now.Year -Month $now.Month -Day $now.Day -Hour $now.Hour -Minute $MinuteOfHour -Second 0
+if ($nextRun -le $now) { $nextRun = $nextRun.AddHours(1) }
 
 $trigger = New-ScheduledTaskTrigger `
     -Once `
-    -At (Get-Date).AddMinutes(1)
+    -At $nextRun
 
 $trigger.Repetition = New-CimInstance `
     -Namespace root/Microsoft/Windows/TaskScheduler `
@@ -53,4 +59,4 @@ Register-ScheduledTask `
     -Principal $principal `
     -Force | Out-Null
 
-Write-Output ("installed {0}; interval {1} minutes; port {2}" -f $TaskName, $IntervalMinutes, $Port)
+Write-Output ("installed {0}; every hour at minute {1}; port {2}; site {3}" -f $TaskName, $MinuteOfHour, $Port, $PublicSiteUrl)
