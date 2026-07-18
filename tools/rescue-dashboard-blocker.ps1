@@ -114,10 +114,6 @@ foreach ($taskName in $candidateTasks) {
   Start-RecoverableTask -TaskName $taskName
 }
 
-if (Test-Path -LiteralPath $statusScript) {
-  & $statusScript -SiteRoot $SiteRoot -OutputPath $statusPath | Out-Null
-}
-
 if (($Target -eq "shami" -or $Target -eq "mengzi" -or $Target -eq "tg3") -and (Test-Path -LiteralPath $healthScript)) {
   try {
     & $healthScript | Out-Null
@@ -148,6 +144,10 @@ $json = $payload | ConvertTo-Json -Depth 5
 [System.IO.File]::WriteAllText($latestSignalPath, $json + [Environment]::NewLine, $utf8NoBom)
 if (($Target -eq "shami" -or $Target -eq "mengzi" -or $Target -eq "tg3") -and (Test-Path -LiteralPath $BotRoot)) {
   [System.IO.File]::WriteAllText($botSignalPath, $json + [Environment]::NewLine, $utf8NoBom)
+}
+
+if (Test-Path -LiteralPath $statusScript) {
+  & $statusScript -SiteRoot $SiteRoot -OutputPath $statusPath | Out-Null
 }
 
 $changed = @($enabledTasks + $startedTasks)

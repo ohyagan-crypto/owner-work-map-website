@@ -520,11 +520,39 @@ if ($heartbeatAge -gt 120) {
         $defaultNext = "完成後更新交付結果、網址、檔案路徑或明確卡點。"
     }
 } elseif ($request -and ($request.status -in @("failed", "blocked", "interrupted"))) {
-    $statusKey = "blocked"
-    $statusLabel = "卡點"
-    $headline = "最近任務沒有正常完成，需要處理卡點。"
-    $blocker = "最近任務異常"
-    $defaultNext = "查看最近任務，修復後再回報。"
+    $requestUpdatedAt = $null
+    try {
+        if ($request.updated_at) {
+            $requestUpdatedAt = [DateTimeOffset]::FromUnixTimeMilliseconds([int64]([double]$request.updated_at * 1000))
+        }
+    } catch {
+        $requestUpdatedAt = $null
+    }
+    $rescueClearedFailure = $false
+    if ($dashboardControlAction -and $dashboardControlAction.data) {
+        $latestAction = [string](Get-ObjectPropertyValue -Object $dashboardControlAction.data -Name "action")
+        $latestTarget = [string](Get-ObjectPropertyValue -Object $dashboardControlAction.data -Name "target")
+        $isShamiRescue = $latestAction -eq "rescue" -and ($latestTarget -eq "shami" -or -not $latestTarget)
+        $rescueIsNewer = $requestUpdatedAt -and $dashboardControlAction.createdAt -gt $requestUpdatedAt
+        $heartbeatIsHealthy = $heartbeatAge -le 120
+        if ($isShamiRescue -and $rescueIsNewer -and $heartbeatIsHealthy) {
+            $rescueClearedFailure = $true
+        }
+    }
+
+    if ($rescueClearedFailure) {
+        $statusKey = "standby"
+        $statusLabel = "救援完成"
+        $headline = "卡點救援後心跳正常，舊的失敗狀態已清除。"
+        $blocker = "沒有卡點"
+        $defaultNext = "目前可正常接收新任務；若原任務仍需續作，請從最新指令繼續。"
+    } else {
+        $statusKey = "blocked"
+        $statusLabel = "卡點"
+        $headline = "最近任務沒有正常完成，需要處理卡點。"
+        $blocker = "最近任務異常"
+        $defaultNext = "查看最近任務，修復後再回報。"
+    }
 } elseif ($request -and $request.status -eq "completed") {
     $completedAge = if ($request.updated_at) {
         [Math]::Max(0, [int]([DateTimeOffset]$now).ToUnixTimeSeconds() - [int64]$request.updated_at)
