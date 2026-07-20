@@ -1,7 +1,7 @@
 const siteStats = [
   { label: "已安裝條目", value: "169", note: "包含正式版、歷史版與備份入口" },
-  { label: "主技能名稱", value: "55", note: "公開站目前保留 55 個主技能入口" },
-  { label: "核心工作流", value: "21", note: "每條都附可複製的新手指令公式" },
+  { label: "主技能名稱", value: "43", note: "公開站目前保留 43 個主技能入口" },
+  { label: "核心工作流", value: "17", note: "每條都附可複製的新手指令公式" },
   { label: "記憶檔", value: "345", note: "偏好、成功流程、安全規則與工作流補強" }
 ];
 
@@ -200,7 +200,7 @@ const templates = [
   {
     title: "影片模板",
     description: "適合 cmsd、sd、hfsw、剪輯任務。",
-    prompt: "cmsd / hfsw / acs。\n成品：MP4。\n規格：時長 ___、比例 ___、語言 ___。\n素材：本次素材 ___。\n限制：不要混上一輪角色或舊素材。\n完成標準：檔案輸出、驗證完成，再回到同一個 Telegram 對話。"
+    prompt: "cmsd / hfsw / ComfyUI。\n成品：MP4。\n規格：時長 ___、比例 ___、語言 ___。\n素材：本次素材 ___。\n限制：不要混上一輪角色或舊素材。\n完成標準：檔案輸出、驗證完成，再回到同一個 Telegram 對話。"
   },
   {
     title: "對話模板",
@@ -216,28 +216,16 @@ const skills = [
   { name: "做圖", category: "圖片生成", summary: "image2 API 單一做圖主入口。", useCase: "做海報、教學圖、商品圖、文案轉圖。" },
   { name: "teaching-step-images", category: "圖片生成", summary: "教學步驟圖、SOP 圖與手機操作圖，統一走 image2 API 風格改版。", useCase: "做 4 張、8 張、逐步說明圖。" },
   { name: "character-memory-manager", category: "圖片生成", summary: "固定角色外觀、服裝、負面限制。", useCase: "嵐熙、庫裡、蝦咩等角色要保持一致。" },
-  { name: "acs", category: "影片工作流", summary: "剪映 / CapCut 自動剪輯。", useCase: "對標剪輯、字幕、轉場、素材組裝。" },
-  { name: "acs2", category: "影片工作流", summary: "複製參考短片的節奏與版型。", useCase: "拿一支參考影片照著做同款。" },
   { name: "ai-auto-short-video-workflow", category: "影片工作流", summary: "長影片自動切短影音。", useCase: "把長影片拆成หลาย支 9:16 短片。" },
-  { name: "ans", category: "影片工作流", summary: "微信小程式 AI 影片工作流。", useCase: "跑微信端生成影片與下載。" },
-  { name: "cls", category: "影片工作流", summary: "Claude 劇本與影片前置分析。", useCase: "先分析腳本、分鏡、提示詞。" },
   { name: "cmsd", category: "影片工作流", summary: "Claude 分析到 IMS 分鏡再到 SD 影片。", useCase: "做完整 AI 影片故事板與影片生成。" },
   { name: "dreamina-cli", category: "影片工作流", summary: "Dreamina / Seedance / SD 任務提交與下載。", useCase: "送影片生成、查狀態、抓成品。" },
   { name: "dreamina-sd-video-workflow", category: "影片工作流", summary: "SD / Dreamina 影片完整生成流程。", useCase: "需要正式跑一整條影片工作流。" },
   { name: "douyin-peipao", category: "影片工作流", summary: "抖音陪跑、選題、對標與腳本整理。", useCase: "短影音帳號經營與內容規劃。" },
   { name: "hfsw", category: "影片工作流", summary: "長影片完整製作工作流。", useCase: "旁白、字幕、BGM、畫面一條龍輸出。" },
   { name: "hyperframes", category: "影片工作流", summary: "動畫合成、標題卡、視覺節奏與動態場景。", useCase: "做動態字幕、片頭、場景動畫。" },
-  { name: "nms-digital-human", category: "影片工作流", summary: "數字人、AI 網紅與口播人物製作。", useCase: "做虛擬人物口播或數位分身。" },
   { name: "video-frame-analysis", category: "影片工作流", summary: "逐幀或高密度分析影片內容。", useCase: "拆教學影片、判斷鏡頭與字幕節奏。" },
   { name: "video-spec-builder", category: "影片工作流", summary: "把故事整理成可執行影片規格。", useCase: "先做拍攝或生成規格再送影片。" },
   { name: "nbs", category: "摘要 / 文件", summary: "NotebookLM 統一正式工作流。", useCase: "做語音摘要、簡報、影片摘要。" },
-  { name: "nbps", category: "摘要 / 文件", summary: "NotebookLM 音訊舊別名入口。", useCase: "維護舊命令或相容入口。" },
-  { name: "nbvs", category: "摘要 / 文件", summary: "NotebookLM 影片舊別名入口。", useCase: "維護舊命令或相容入口。" },
-  { name: "nbs-media-summary-pack", category: "摘要 / 文件", summary: "NBS 媒體摘要流程教學包。", useCase: "把 NBS 工作流交接給其他人。" },
-  { name: "nbs-skill", category: "摘要 / 文件", summary: "NBS 舊版技能入口。", useCase: "舊包相容或學習用途。" },
-  { name: "notebooklm-brief-to-deck-workflow", category: "摘要 / 文件", summary: "NotebookLM 簡報舊流程。", useCase: "需要維護舊簡報工作流。" },
-  { name: "notebooklm-presentation-prompt", category: "摘要 / 文件", summary: "NotebookLM 簡報提示詞與版型規格。", useCase: "要讓簡報更像正式作品。" },
-  { name: "notebooklm-source-builder", category: "摘要 / 文件", summary: "整理可丟進 NotebookLM 的來源包。", useCase: "資料很散，先做來源整理。" },
   { name: "notion-knowledge-capture", category: "摘要 / 文件", summary: "把對話、決策與知識寫進 Notion。", useCase: "知識整理與後續查找。" },
   { name: "pdf", category: "摘要 / 文件", summary: "PDF 讀取、OCR、整理與輸出。", useCase: "做 PDF 摘要、轉檔、修正。" },
   { name: "speech", category: "摘要 / 文件", summary: "文字轉語音與旁白輸出。", useCase: "做配音、旁白、語音檔。" },
@@ -314,29 +302,9 @@ const workflows = [
     formula: "hfsw 製作完整影片。\n主題：___。\n素材：___。\n規格：___ 比例、速度 ___、字幕樣式 ___。\n旁白：___。\n配樂：___。\n完成標準：畫面、旁白、字幕、音樂全部驗證後回傳 MP4。"
   },
   {
-    name: "ACS 剪映自動剪輯", category: "影片", trigger: "acs、剪映自動剪輯、CapCut",
-    summary: "把素材、字幕、轉場、節奏與輸出規格組成可執行的剪輯流程。", output: "剪輯完成的 MP4 或專案成果",
-    formula: "acs 自動剪輯影片。\n素材：___。\n成品：___ 秒、___ 比例 MP4。\n字幕：___。\n剪輯節奏：___。\n限制：___。\n完成標準：輸出並檢查字幕、音訊、轉場與畫面。"
-  },
-  {
-    name: "ACS2 對標影片復刻", category: "影片", trigger: "acs2、照這支影片做同款",
-    summary: "先分析參考影片的節奏、鏡頭、字幕與版型，再用本次素材復刻結構。", output: "對標剪輯 MP4",
-    formula: "acs2 對標這支參考影片。\n參考影片：___。\n本次素材：___。\n要保留：節奏／字幕／轉場／構圖 ___。\n不要照搬：___。\n完成標準：逐段核對後輸出 MP4。"
-  },
-  {
     name: "AI 長影片自動切短影音", category: "影片", trigger: "AI 自動剪短影音、長影片切短片",
     summary: "先轉錄與找重點，再自動去停頓、切段、加字幕並輸出多支 9:16 短片。", output: "多支短影音 MP4",
     formula: "把這支長影片自動剪成 ___ 支短影音。\n來源影片：___。\n每支長度：___ 秒。\n比例：9:16。\n字幕與標題：繁體中文。\n完成標準：每支內容不重複，逐支驗證後回傳。"
-  },
-  {
-    name: "NMS 數位人影片", category: "影片", trigger: "nms、數字人、AI 網紅",
-    summary: "建立數位人物形象、口播內容、聲音與動作，輸出可用口播影片。", output: "數位人 MP4",
-    formula: "nms 製作數位人口播影片。\n角色：___。\n口播稿：___。\n聲音：___。\n規格：___ 秒、___ 比例。\n背景與動作：___。\n完成標準：人物、口型、聲音與畫面驗證完成。"
-  },
-  {
-    name: "ANS 微信 AI 影片", category: "影片", trigger: "ans、微信小程式 AI 影片",
-    summary: "操作微信端影片生成流程，提交後追蹤、下載並驗證最終檔案。", output: "下載完成的 MP4",
-    formula: "ans 製作 AI 影片。\n素材：___。\n提示詞：___。\n規格：___ 秒、___ 比例。\n確認後再提交；完成標準：下載原始影片並驗證可播放。"
   },
   {
     name: "NBS NotebookLM 摘要", category: "文件", trigger: "nbs、NotebookLM、語音摘要、簡報",
@@ -617,7 +585,7 @@ function renderSkills() {
           <div class="skill-formula">
             <strong>可直接複製的指令公式</strong>
             <pre id="skill-formula-${index}">${escapeHtml(buildSkillFormula(skill))}</pre>
-            <button type="button" class="copy-button" data-copy-target="skill-formula-${index}" data-copy-label="複製並開啟 Telegram" data-open-telegram="true">複製並開啟 Telegram</button>
+            <button type="button" class="copy-button" data-copy-target="skill-formula-${index}" data-copy-label="複製">複製</button>
           </div>
         </article>
       `
@@ -668,7 +636,7 @@ function renderWorkflows() {
           <div class="skill-formula">
             <strong>可直接複製的工作流公式</strong>
             <pre id="workflow-formula-${index}">${escapeHtml(workflow.formula)}</pre>
-            <button type="button" class="copy-button" data-copy-target="workflow-formula-${index}" data-copy-label="複製並開啟 Telegram" data-open-telegram="true">複製並開啟 Telegram</button>
+            <button type="button" class="copy-button" data-copy-target="workflow-formula-${index}" data-copy-label="複製">複製</button>
           </div>
         </article>
       `
@@ -714,26 +682,17 @@ function bindEvents() {
     const target = document.getElementById(button.getAttribute("data-copy-target"));
     if (!target) return;
     const defaultLabel = button.getAttribute("data-copy-label") || "複製模板";
-    const shouldOpenTelegram = button.getAttribute("data-open-telegram") === "true";
     const text = target.textContent.trim();
     try {
       await navigator.clipboard.writeText(text);
       button.textContent = "已複製";
-      showCopyStatus("公式已複製，正在開啟 Telegram");
-      if (shouldOpenTelegram) {
-        window.location.href = `https://t.me/share/url?url=&text=${encodeURIComponent(text)}`;
-      }
+      showCopyStatus("公式已複製");
       window.setTimeout(() => {
         button.textContent = defaultLabel;
       }, 3000);
     } catch (error) {
-      if (shouldOpenTelegram) {
-        showCopyStatus("正在開啟 Telegram，公式會一起帶入");
-        window.location.href = `https://t.me/share/url?url=&text=${encodeURIComponent(text)}`;
-      } else {
-        button.textContent = "複製失敗";
-        showCopyStatus("無法自動複製，請長按公式手動複製");
-      }
+      button.textContent = "複製失敗";
+      showCopyStatus("無法自動複製，請長按公式手動複製");
       window.setTimeout(() => {
         button.textContent = defaultLabel;
       }, 3000);

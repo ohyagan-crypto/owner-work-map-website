@@ -6,7 +6,7 @@
   <title>藍星智能體 WBS 新手技能導覽站</title>
   <meta
     name="description"
-    content="給新手小白的一頁式藍星智能體技能與工作流教學站，整理 55 個主技能、21 條核心工作流、可複製指令公式與 Telegram 快速跳轉。"
+    content="給新手小白的一頁式藍星智能體技能與工作流教學站，整理 43 個主技能、17 條核心工作流與可複製指令公式。"
   >
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,7 +25,7 @@
         <h1>藍星智能體技能很多，但新手不用背。</h1>
         <p class="hero-text">
           這個網站把 <strong>所有主技能</strong>、<strong>核心工作流</strong>、<strong>工具分流規則</strong>、
-          <strong>可直接使用的指令公式</strong> 全部整理成一頁。按下公式後會自動開啟 Telegram，直接選 TGBOT 對話即可。
+          <strong>可直接使用的指令公式</strong> 全部整理成一頁。按下「複製」後，再貼到 TGBOT 對話即可。
         </p>
         <div class="hero-actions">
           <a href="#quick-start" class="primary-link">先看 3 分鐘上手</a>
@@ -76,9 +76,9 @@
       <section id="all-skills" class="content-block">
         <div class="section-heading">
           <p class="eyebrow">技能＋公式</p>
-          <h2>55 個主技能全部列出，找到就能直接複製</h2>
+          <h2>43 個主技能全部列出，找到就能直接複製</h2>
           <p>
-            每個技能都附用途、適合情境與新手指令公式。按「複製並開啟 Telegram」後，公式會先存入剪貼簿，再跳到 Telegram。
+            每個技能都附用途、適合情境與新手指令公式。按「複製」後，公式只會存入剪貼簿，不會自動跳轉。
           </p>
         </div>
         <div class="skill-toolbar">
@@ -96,7 +96,7 @@
       <section id="all-workflows" class="content-block">
         <div class="section-heading">
           <p class="eyebrow">工作流＋公式</p>
-          <h2>21 條核心工作流，從需求一路做到交付</h2>
+          <h2>17 條核心工作流，從需求一路做到交付</h2>
           <p>
             技能是能力入口，工作流是完整做事順序。每條工作流都列出觸發方式、執行重點、成品與可直接傳給 TGBOT 的公式。
           </p>
@@ -188,7 +188,7 @@
 規格：繁體中文、手機與桌機都要完整可讀。
 限制：不要混入舊站或其他任務內容。
 完成標準：本機測試、公開部署，再確認網址顯示最新版。</pre>
-            <button type="button" data-copy-target="template-0" data-open-telegram="true">複製並開啟 Telegram</button>
+            <button type="button" data-copy-target="template-0" data-copy-label="複製">複製</button>
           </article>
           <article class="template-card">
             <strong>做圖模板</strong>
@@ -199,7 +199,7 @@
 規格：9:16、繁體中文、___ 風格。
 素材：本輪沒有素材／本次素材如下：___。
 完成標準：先給精簡確認清單，我回覆確認後再生成。</pre>
-            <button type="button" data-copy-target="template-1" data-open-telegram="true">複製並開啟 Telegram</button>
+            <button type="button" data-copy-target="template-1" data-copy-label="複製">複製</button>
           </article>
           <article class="template-card">
             <strong>影片模板</strong>
@@ -211,7 +211,7 @@
 素材：本次素材 ___。
 限制：不要混入上一輪角色或舊素材。
 完成標準：輸出影片、檢查畫面與音訊，再回傳成品。</pre>
-            <button type="button" data-copy-target="template-2" data-open-telegram="true">複製並開啟 Telegram</button>
+            <button type="button" data-copy-target="template-2" data-copy-label="複製">複製</button>
           </article>
           <article class="template-card">
             <strong>一般任務模板</strong>
@@ -222,7 +222,7 @@
 規格：___。
 限制：不要混舊素材／不要固定式回覆／先給確認清單。
 完成標準：直接回可交付結果、檔案、網址或明確卡點。</pre>
-            <button type="button" data-copy-target="template-3" data-open-telegram="true">複製並開啟 Telegram</button>
+            <button type="button" data-copy-target="template-3" data-copy-label="複製">複製</button>
           </article>
         </div>
       </section>
@@ -237,6 +237,6 @@
 
   <div class="copy-status" id="copyStatus" role="status" aria-live="polite"></div>
 
-  <script src="app.js?v=20260720-skills-formulas-1"></script>
+  <script src="app.js?v=20260720-skills-formulas-3"></script>
 </body>
 </html>
