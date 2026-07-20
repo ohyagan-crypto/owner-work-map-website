@@ -8,13 +8,15 @@
     name="description"
     content="給新手小白的一頁式藍星智能體技能與 WBS 公開部署教學站，整理 55 個主技能、網站建置流程、image2 API 做圖路線、溝通模板與公開部署標準。"
   >
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
     href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Space+Grotesk:wght@500;700&display=swap"
     rel="stylesheet"
   >
-  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="styles.css?v=20260720-content-2">
 </head>
 <body>
   <div class="page-shell">
@@ -70,6 +72,26 @@
         <div class="tg-note-panel" id="tgChunkPanel"></div>
       </section>
 
+      <section id="all-skills" class="content-block">
+        <div class="section-heading">
+          <p class="eyebrow">技能＋公式</p>
+          <h2>55 個主技能全部列出，找到就能直接複製</h2>
+          <p>
+            每個技能都附用途、適合情境與新手指令公式。先搜尋或選分類，再按「複製公式」，把空格補成自己的需求後傳給 TGBOT。
+          </p>
+        </div>
+        <div class="skill-toolbar">
+          <label class="search-field" for="skillSearch">
+            <span>搜尋技能</span>
+            <input id="skillSearch" type="search" placeholder="輸入 wbs、nbs、做圖、影片、Telegram">
+          </label>
+          <div class="filter-row" id="categoryFilters" aria-label="技能分類篩選"></div>
+        </div>
+        <div class="skill-overview" id="skillOverview"></div>
+        <div class="skill-grid" id="skillGrid"></div>
+        <p class="empty-state" id="skillEmpty">沒有符合的技能，換個關鍵字試試看。</p>
+      </section>
+
       <section id="prompt-formula" class="content-block">
         <div class="section-heading">
           <p class="eyebrow">下指令公式</p>
@@ -103,46 +125,88 @@
           <div class="section-heading compact">
             <p class="eyebrow">完成標準</p>
             <h2>網站任務怎樣才算真的完成</h2>
+            <p>下面 5 項全部成立，才算交付完成，不是只看到本機畫面就結案。</p>
           </div>
-          <ul class="checklist" id="completionChecklist"></ul>
+          <ul class="checklist" id="completionChecklist">
+            <li><strong>真實檔案：</strong>HTML、CSS、JS 與必要素材已建立，不是空殼、截圖或口頭規劃。</li>
+            <li><strong>內容完整：</strong>標題、文字、按鈕、導覽與教學內容都已放入，沒有只剩區塊名稱。</li>
+            <li><strong>手機與桌機可讀：</strong>文字不裁切、不重疊，按鈕可點，版面不會在小螢幕爆掉。</li>
+            <li><strong>功能可用：</strong>搜尋、複製、導覽、表單或其他必要互動已實際測試。</li>
+            <li><strong>公開網址是最新版：</strong>完成推送後重新開啟公開網址，確認看到本次新增內容。</li>
+          </ul>
         </div>
         <div class="split-card">
           <div class="section-heading compact">
             <p class="eyebrow">常見踩雷</p>
             <h2>新手最容易漏掉的 5 件事</h2>
+            <p>每一項都附上正確說法，照著補充就能降低做錯網站的機率。</p>
           </div>
-          <ul class="warning-list" id="commonMistakes"></ul>
+          <ul class="warning-list" id="commonMistakes">
+            <li><strong>只說「做網站」：</strong>要再補主題、用途、對象與想要的成品。</li>
+            <li><strong>沒說是否公開：</strong>需要網址時，明確寫「公開部署並回傳網址」。</li>
+            <li><strong>新舊內容混在一起：</strong>新任務寫「不要沿用舊站素材」；續改則貼出目前網址。</li>
+            <li><strong>忘記手機版：</strong>規格直接寫「手機與桌機都要完整可讀」。</li>
+            <li><strong>把進度當完成：</strong>要求最後驗證公開網址，看到最新版內容才算完成。</li>
+          </ul>
         </div>
       </section>
 
       <section id="templates" class="content-block">
         <div class="section-heading">
           <p class="eyebrow">直接照抄</p>
-          <h2>三種最常用模板</h2>
-          <p>下面這些模板給新手最實用，改掉主題與規格就能直接丟給 Codex；做圖模板已統一成 image2 API 路線。</p>
+          <h2>四種最常用模板</h2>
+          <p>改掉空白欄位就能直接傳給藍星智能體；網站、做圖、影片與一般任務各有一套完整寫法。</p>
         </div>
-        <div class="template-grid" id="templateGrid"></div>
+        <div class="template-grid" id="templateGrid">
+          <article class="template-card">
+            <strong>網站模板</strong>
+            <p>適合新網站、舊站更新與公開部署。</p>
+            <pre id="template-0">wbs 做一個公開網站。
+主題：___
+內容：___
+成品：公開網址。
+規格：繁體中文、手機與桌機都要完整可讀。
+限制：不要混入舊站或其他任務內容。
+完成標準：本機測試、公開部署，再確認網址顯示最新版。</pre>
+            <button type="button" data-copy-target="template-0">複製模板</button>
+          </article>
+          <article class="template-card">
+            <strong>做圖模板</strong>
+            <p>指定 image2 API，並先確認再生成。</p>
+            <pre id="template-1">image2 API 做圖。
+成品：___ 張 PNG。
+內容：___
+規格：9:16、繁體中文、___ 風格。
+素材：本輪沒有素材／本次素材如下：___。
+完成標準：先給精簡確認清單，我回覆確認後再生成。</pre>
+            <button type="button" data-copy-target="template-1">複製模板</button>
+          </article>
+          <article class="template-card">
+            <strong>影片模板</strong>
+            <p>適合 cmsd、ComfyUI、SD、hfsw 或剪輯工作。</p>
+            <pre id="template-2">使用工作流：___。
+成品：MP4。
+內容：___
+規格：時長 ___、比例 ___、語言 ___。
+素材：本次素材 ___。
+限制：不要混入上一輪角色或舊素材。
+完成標準：輸出影片、檢查畫面與音訊，再回傳成品。</pre>
+            <button type="button" data-copy-target="template-2">複製模板</button>
+          </article>
+          <article class="template-card">
+            <strong>一般任務模板</strong>
+            <p>不知道技能名稱時，用這套也能清楚交代。</p>
+            <pre id="template-3">任務：___。
+成品：___。
+內容：___。
+規格：___。
+限制：不要混舊素材／不要固定式回覆／先給確認清單。
+完成標準：直接回可交付結果、檔案、網址或明確卡點。</pre>
+            <button type="button" data-copy-target="template-3">複製模板</button>
+          </article>
+        </div>
       </section>
 
-      <section id="all-skills" class="content-block">
-        <div class="section-heading">
-          <p class="eyebrow">所有技能</p>
-          <h2>本機主技能總覽</h2>
-          <p>
-            這裡列的是目前最常用的 <strong>55 個主技能名稱</strong>。實際安裝條目有 169 個，包含歷史版本與備份入口；公開站已移除聚合平台舊做圖入口。
-          </p>
-        </div>
-        <div class="skill-toolbar">
-          <label class="search-field" for="skillSearch">
-            <span>搜尋技能</span>
-            <input id="skillSearch" type="search" placeholder="輸入 wbs、nbs、做圖、影片、Telegram">
-          </label>
-          <div class="filter-row" id="categoryFilters" aria-label="技能分類篩選"></div>
-        </div>
-        <div class="skill-overview" id="skillOverview"></div>
-        <div class="skill-grid" id="skillGrid"></div>
-        <p class="empty-state" id="skillEmpty">沒有符合的技能，換個關鍵字試試看。</p>
-      </section>
     </main>
 
     <footer class="site-footer">
@@ -151,6 +215,6 @@
     </footer>
   </div>
 
-  <script src="app.js"></script>
+  <script src="app.js?v=20260720-content-2"></script>
 </body>
 </html>

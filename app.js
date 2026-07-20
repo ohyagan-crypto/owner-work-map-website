@@ -266,6 +266,22 @@ const skills = [
   { name: "binance-coin-research", category: "研究 / 分析", summary: "幣安 coin、meme coin、合約風險研究。", useCase: "查幣、做評分、產研究圖卡。" }
 ];
 
+const skillFormulaByCategory = {
+  "網站部署": (skill) => `${skill.name}\n任務：建立或更新 ___ 網站。\n內容：___。\n規格：手機與桌面都要清楚可用。\n完成標準：公開部署，並確認公開網址能正常開啟。`,
+  "圖片生成": (skill) => `${skill.name}\n任務：製作 ___。\n成品：___ 張圖片。\n規格：繁體中文、___ 比例、___ 風格。\n素材：本次素材 ___。\n先給我確認清單，確認後再開始生成。`,
+  "影片工作流": (skill) => `${skill.name}\n任務：製作 ___ 影片。\n成品：MP4。\n規格：___ 秒、___ 比例、繁體中文。\n素材：本次素材 ___。\n完成標準：畫面、聲音、字幕驗證完成後回傳。`,
+  "摘要 / 文件": (skill) => `${skill.name}\n任務：把 ___ 整理成 ___。\n成品：___。\n語言：繁體中文。\n保留重點：___。\n完成標準：檔案可開啟、內容可讀並完成回傳。`,
+  "Telegram / Bot": (skill) => `${skill.name}\n任務：處理 ___。\n目標 Bot／對話：本次來源。\n限制：不要使用舊對話、其他 Bot 或預設收件人。\n完成標準：實際功能驗證成功，檔案只回傳原對話。`,
+  "系統 / 自動化": (skill) => `${skill.name}\n任務：處理 ___。\n目前狀態：___。\n預期結果：___。\n限制：保留既有設定，不動無關檔案。\n完成標準：實際測試通過，回報結果或明確卡點。`,
+  "研究 / 分析": (skill) => `${skill.name}\n研究主題：___。\n範圍：___。\n我要的結論：___。\n風險檢查：___。\n完成標準：先給結論，再附依據與必要注意事項。`
+};
+
+function buildSkillFormula(skill) {
+  const builder = skillFormulaByCategory[skill.category];
+  if (builder) return builder(skill);
+  return `${skill.name}\n任務：${skill.useCase}\n成品：___。\n規格：___。\n完成標準：驗證完成後回傳成果。`;
+}
+
 const categoryOrder = [
   "全部",
   "網站部署",
@@ -459,7 +475,7 @@ function filteredSkills() {
     const matchesCategory = activeCategory === "全部" || skill.category === activeCategory;
     if (!matchesCategory) return false;
     if (!normalized) return true;
-    const haystack = [skill.name, skill.category, skill.summary, skill.useCase].join(" ").toLowerCase();
+    const haystack = [skill.name, skill.category, skill.summary, skill.useCase, buildSkillFormula(skill)].join(" ").toLowerCase();
     return haystack.includes(normalized);
   });
 }
@@ -480,13 +496,18 @@ function renderSkills() {
 
   grid.innerHTML = visibleSkills
     .map(
-      (skill) => `
+      (skill, index) => `
         <article class="skill-card">
           <span class="tag">${escapeHtml(skill.category)}</span>
           <h3>${escapeHtml(skill.name)}</h3>
           <p>${escapeHtml(skill.summary)}</p>
           <div class="meta-row">
             <span>適合：${escapeHtml(skill.useCase)}</span>
+          </div>
+          <div class="skill-formula">
+            <strong>可直接複製的指令公式</strong>
+            <pre id="skill-formula-${index}">${escapeHtml(buildSkillFormula(skill))}</pre>
+            <button type="button" class="copy-button" data-copy-target="skill-formula-${index}" data-copy-label="複製公式">複製公式</button>
           </div>
         </article>
       `
@@ -510,21 +531,22 @@ function bindEvents() {
     renderSkills();
   });
 
-  $("#templateGrid").addEventListener("click", async (event) => {
+  document.addEventListener("click", async (event) => {
     const button = event.target.closest("button[data-copy-target]");
     if (!button) return;
     const target = document.getElementById(button.getAttribute("data-copy-target"));
     if (!target) return;
+    const defaultLabel = button.getAttribute("data-copy-label") || "複製模板";
     try {
       await navigator.clipboard.writeText(target.textContent);
       button.textContent = "已複製";
       window.setTimeout(() => {
-        button.textContent = "複製模板";
+        button.textContent = defaultLabel;
       }, 1400);
     } catch (error) {
       button.textContent = "複製失敗";
       window.setTimeout(() => {
-        button.textContent = "複製模板";
+        button.textContent = defaultLabel;
       }, 1400);
     }
   });
@@ -538,9 +560,6 @@ function init() {
   renderTalkStyle();
   renderDialogues();
   renderFlow();
-  renderList("#completionChecklist", completionChecklist);
-  renderList("#commonMistakes", commonMistakes);
-  renderTemplates();
   renderCategoryFilters();
   renderSkills();
   bindEvents();
