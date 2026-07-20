@@ -24,9 +24,9 @@ const taskMapItems = [
   {
     tag: "網站 / 公開部署",
     title: "你要的是網址，不是只有畫面",
-    summary: "如果你要新站、改版、融合兩個網站、公開部署，先走 WBS、模板和網站工作流。",
-    jump: "#wbs-flow",
-    action: "先看網站流程"
+    summary: "如果你要新站、改版、融合兩個網站、公開部署，先看模板和完整工作流，不要只盯著單一流程區塊。",
+    jump: "#all-workflows",
+    action: "看網站工作流"
   },
   {
     tag: "圖片 / 海報 / 教學圖",
@@ -542,6 +542,7 @@ function renderDialogues() {
 
 function renderFlow() {
   const container = $("#flowTimeline");
+  if (!container) return;
   container.innerHTML = flowItems
     .map(
       (item) => `
