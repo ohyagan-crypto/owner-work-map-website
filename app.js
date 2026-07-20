@@ -19,6 +19,40 @@ const quickStartItems = [
   }
 ];
 
+const tgGuideItems = [
+  {
+    step: "1",
+    title: "停止所有工作：STOP",
+    summary: "當龍蝦卡住、做錯方向，或你要整批暫停時，直接輸入「STOP」。這會停下目前任務，不用先講一大段。"
+  },
+  {
+    step: "2",
+    title: "指令和內容一起送",
+    summary: "上傳照片、檔案或截圖時，請同時在下方輸入欄寫明任務內容，一起送出。不要只丟素材不講要做什麼。"
+  },
+  {
+    step: "3",
+    title: "停滯就回覆「繼續」",
+    summary: "如果長時間沒完成，請長按原本那則任務，選「回覆」，再輸入「繼續」。這樣最容易接回同一個工作。"
+  },
+  {
+    step: "4",
+    title: "有素材要明確標示",
+    summary: "如果這輪真的有素材，直接寫「本次素材」「參考圖」再附圖；沒有標示時，系統就應視為這輪沒有素材。"
+  },
+  {
+    step: "5",
+    title: "新任務就重新講完整",
+    summary: "如果不是延續上一件事，請直接重講完整需求，不要只丟「這個、上一張、照剛剛」。這樣最不容易混到舊任務。"
+  }
+];
+
+const tgGuideNotes = [
+  "TGBOT 可以一次連續回多段訊息，沒有固定只限 1 段。長回覆會自動拆開送出，避免 Telegram 單則上限截斷。",
+  "目前本機 Bot 會把長文字大約切成每段 3900 字元左右，所以你看到連續多則訊息是正常行為，不代表重複回覆。",
+  "如果你只是補一句話，最穩的做法是直接回覆原任務；如果是全新任務，就重新發一則完整指令。"
+];
+
 const formulaItems = [
   {
     step: "01",
@@ -82,6 +116,16 @@ const dialogueExamples = [
     label: "錯誤示範",
     owner: "在嗎 / 為什麼 / 幫我做",
     bot: "不要只回『收到』『思考中』『稍後回報』。這種回法沒有結論，也沒有真正處理任務。"
+  },
+  {
+    label: "停滯續跑",
+    owner: "長按原任務回覆：繼續",
+    bot: "我會接回上一個未完成任務，優先檢查真實狀態，再從安全的下一步繼續做。"
+  },
+  {
+    label: "多段回覆",
+    owner: "如果結果很多，可以一次回多段嗎？",
+    bot: "可以。長結果會自動拆成多則訊息連續送出；如果是檔案、圖片、網站網址，會直接回真正可交付的成果。"
   }
 ];
 
@@ -269,6 +313,28 @@ function renderQuickStart() {
     .join("");
 }
 
+function renderTgGuide() {
+  const container = $("#tgGuideGrid");
+  container.innerHTML = tgGuideItems
+    .map(
+      (item) => `
+        <article class="formula-card">
+          <em>${escapeHtml(item.step)}</em>
+          <strong>${escapeHtml(item.title)}</strong>
+          <p>${escapeHtml(item.summary)}</p>
+        </article>
+      `
+    )
+    .join("");
+
+  $("#tgNotePanel").innerHTML = `
+    <strong>TGBOT 一次可以回幾段？</strong>
+    <ul class="checklist">
+      ${tgGuideNotes.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+    </ul>
+  `;
+}
+
 function renderFormula() {
   const container = $("#formulaGrid");
   container.innerHTML = formulaItems
@@ -453,6 +519,7 @@ function bindEvents() {
 function init() {
   renderHeroStats();
   renderQuickStart();
+  renderTgGuide();
   renderFormula();
   renderTalkStyle();
   renderDialogues();

@@ -303,6 +303,7 @@ h1 {
 
 .spotlight-grid,
 .formula-grid,
+.tg-guide-grid,
 .talk-style-grid,
 .template-grid,
 .skill-grid {
@@ -316,6 +317,10 @@ h1 {
 }
 
 .formula-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.tg-guide-grid {
   grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
@@ -403,6 +408,24 @@ h1 {
 .bot-bubble {
   border-color: rgba(255, 209, 125, 0.22);
   background: rgba(255, 209, 125, 0.05);
+}
+
+.tg-note-panel {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+  padding: 22px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, rgba(255, 209, 125, 0.09), rgba(111, 229, 255, 0.04));
+}
+
+.tg-note-panel strong {
+  font-size: 1.08rem;
+}
+
+.tg-note-panel .checklist {
+  margin-top: 0;
 }
 
 .timeline-item {
@@ -581,6 +604,7 @@ h1 {
   }
 
   .formula-grid,
+  .tg-guide-grid,
   .talk-style-grid,
   .template-grid,
   .skill-grid {
@@ -611,6 +635,7 @@ h1 {
 
   .spotlight-grid,
   .formula-grid,
+  .tg-guide-grid,
   .talk-style-grid,
   .template-grid,
   .skill-grid {
