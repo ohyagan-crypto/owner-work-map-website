@@ -1,1 +1,1 @@
-window.OWNER_LIVE_STATUS_ENDPOINT = "https://receivers-img-function-chronic.trycloudflare.com";
+window.OWNER_LIVE_STATUS_ENDPOINT = "https://mental-retailers-treo-conceptual.trycloudflare.com";
