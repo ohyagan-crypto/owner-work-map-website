@@ -261,7 +261,21 @@ h1 {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  padding: 16px 0 10px;
+  position: sticky;
+  top: 10px;
+  z-index: 10;
+  padding: 14px;
+  margin-top: 14px;
+  border: 1px solid rgba(146, 190, 255, 0.14);
+  border-radius: 999px;
+  background: rgba(5, 12, 22, 0.78);
+  backdrop-filter: blur(18px);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.top-nav::-webkit-scrollbar {
+  display: none;
 }
 
 .top-nav a,
@@ -305,6 +319,7 @@ h1 {
 
 .spotlight-grid,
 .formula-grid,
+.task-map-grid,
 .tg-guide-grid,
 .talk-style-grid,
 .template-grid,
@@ -319,19 +334,24 @@ h1 {
 }
 
 .formula-grid {
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+}
+
+.task-map-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .tg-guide-grid {
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
 }
 
 .talk-style-grid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
 .spotlight-card,
 .formula-card,
+.route-card,
 .template-card,
 .skill-card {
   padding: 20px;
@@ -373,6 +393,39 @@ h1 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
   margin-top: 18px;
+}
+
+.route-card {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+  min-height: 100%;
+}
+
+.route-card strong {
+  display: block;
+  font-size: 1.08rem;
+}
+
+.route-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.72;
+}
+
+.route-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  min-height: 42px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(111, 229, 255, 0.24);
+  background: rgba(111, 229, 255, 0.08);
+  color: var(--cyan);
+  font-weight: 700;
+  text-decoration: none;
 }
 
 .dialogue-card {
@@ -552,7 +605,7 @@ h1 {
 }
 
 .skill-grid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .workflow-grid {
@@ -595,20 +648,46 @@ h1 {
   border-top: 1px solid var(--line);
 }
 
-.skill-formula strong {
-  margin: 0;
+.formula-details {
+  border: 1px solid rgba(111, 229, 255, 0.14);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.formula-details summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.formula-details summary::-webkit-details-marker {
+  display: none;
+}
+
+.formula-details summary span {
   color: var(--gold);
   font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.formula-details summary small {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.formula-details[open] summary {
+  border-bottom: 1px solid rgba(111, 229, 255, 0.14);
 }
 
 .skill-formula pre {
-  min-height: 188px;
   margin: 0;
   padding: 14px;
   overflow-x: auto;
-  border: 1px solid rgba(111, 229, 255, 0.14);
-  border-radius: var(--radius-md);
-  background: rgba(0, 0, 0, 0.24);
+  background: rgba(0, 0, 0, 0.18);
   color: #d7e8ff;
   font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
   font-size: 0.86rem;
@@ -706,6 +785,7 @@ h1 {
   }
 
   .formula-grid,
+  .task-map-grid,
   .tg-guide-grid,
   .talk-style-grid,
   .template-grid,
@@ -725,6 +805,12 @@ h1 {
     padding-top: 18px;
   }
 
+  .top-nav {
+    top: 8px;
+    gap: 8px;
+    padding: 12px;
+  }
+
   .hero,
   .content-block,
   .site-footer {
@@ -738,6 +824,7 @@ h1 {
 
   .spotlight-grid,
   .formula-grid,
+  .task-map-grid,
   .tg-guide-grid,
   .talk-style-grid,
   .template-grid,

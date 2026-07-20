@@ -20,6 +20,37 @@ const quickStartItems = [
   }
 ];
 
+const taskMapItems = [
+  {
+    tag: "網站 / 公開部署",
+    title: "你要的是網址，不是只有畫面",
+    summary: "如果你要新站、改版、融合兩個網站、公開部署，先走 WBS、模板和網站工作流。",
+    jump: "#wbs-flow",
+    action: "先看網站流程"
+  },
+  {
+    tag: "圖片 / 海報 / 教學圖",
+    title: "先決定 image2 還是 ComfyUI",
+    summary: "做圖先講工具路線、張數、比例、風格和有沒有本次素材。這類任務最怕混到舊圖。",
+    jump: "#all-workflows",
+    action: "看圖片工作流"
+  },
+  {
+    tag: "影片 / 剪輯 / 長影片",
+    title: "先講成品規格和素材來源",
+    summary: "影片任務一定要先補秒數、比例、語言、字幕、BGM 和本次素材，不然最容易整輪做偏。",
+    jump: "#all-workflows",
+    action: "看影片工作流"
+  },
+  {
+    tag: "Bot / 文件 / 其他任務",
+    title: "先用模板把需求講完整",
+    summary: "不確定要用哪個技能時，先用一般任務模板；要回檔、修 bot、做摘要，就再往下找對應技能。",
+    jump: "#templates",
+    action: "直接抄模板"
+  }
+];
+
 const tgGuideItems = [
   {
     step: "1",
@@ -414,6 +445,22 @@ function renderQuickStart() {
     .join("");
 }
 
+function renderTaskMap() {
+  const container = $("#taskMapGrid");
+  container.innerHTML = taskMapItems
+    .map(
+      (item) => `
+        <article class="route-card">
+          <span class="tag">${escapeHtml(item.tag)}</span>
+          <strong>${escapeHtml(item.title)}</strong>
+          <p>${escapeHtml(item.summary)}</p>
+          <a href="${escapeHtml(item.jump)}" class="route-link">${escapeHtml(item.action)}</a>
+        </article>
+      `
+    )
+    .join("");
+}
+
 function renderTgGuide() {
   const container = $("#tgGuideGrid");
   container.innerHTML = tgGuideItems
@@ -583,8 +630,13 @@ function renderSkills() {
             <span>適合：${escapeHtml(skill.useCase)}</span>
           </div>
           <div class="skill-formula">
-            <strong>可直接複製的指令公式</strong>
-            <pre id="skill-formula-${index}">${escapeHtml(buildSkillFormula(skill))}</pre>
+            <details class="formula-details">
+              <summary>
+                <span>可直接複製的指令公式</span>
+                <small>點開看完整寫法</small>
+              </summary>
+              <pre id="skill-formula-${index}">${escapeHtml(buildSkillFormula(skill))}</pre>
+            </details>
             <button type="button" class="copy-button" data-copy-target="skill-formula-${index}" data-copy-label="複製">複製</button>
           </div>
         </article>
@@ -634,8 +686,13 @@ function renderWorkflows() {
             </div>
           </dl>
           <div class="skill-formula">
-            <strong>可直接複製的工作流公式</strong>
-            <pre id="workflow-formula-${index}">${escapeHtml(workflow.formula)}</pre>
+            <details class="formula-details">
+              <summary>
+                <span>可直接複製的工作流公式</span>
+                <small>點開看完整寫法</small>
+              </summary>
+              <pre id="workflow-formula-${index}">${escapeHtml(workflow.formula)}</pre>
+            </details>
             <button type="button" class="copy-button" data-copy-target="workflow-formula-${index}" data-copy-label="複製">複製</button>
           </div>
         </article>
@@ -703,6 +760,8 @@ function bindEvents() {
 function init() {
   renderHeroStats();
   renderQuickStart();
+  renderTaskMap();
+  renderTemplates();
   renderTgGuide();
   renderFormula();
   renderTalkStyle();
