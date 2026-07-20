@@ -7,7 +7,7 @@ const siteStats = [
 const quickStartItems = [
   {
     title: "先講任務",
-    summary: "不要只說「幫我做一下」。先直接講要做網站、做圖、影片、摘要、部署，Codex 才知道要走哪條路。"
+    summary: "不要只說「幫我做一下」。先直接講要做網站、做圖、影片、摘要、部署，藍星智能體才知道要走哪條路。"
   },
   {
     title: "再講成品",
