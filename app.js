@@ -1,13 +1,13 @@
 const siteStats = [
   { label: "已安裝條目", value: "169", note: "包含正式版、歷史版與備份入口" },
-  { label: "主技能名稱", value: "61", note: "新手最需要認識的是這 61 個主技能" },
+  { label: "主技能名稱", value: "55", note: "公開站目前保留 55 個主技能入口" },
   { label: "記憶檔", value: "345", note: "偏好、成功流程、安全規則與工作流補強" }
 ];
 
 const quickStartItems = [
   {
     title: "先講任務",
-    summary: "不要只說「幫我做一下」。先直接講要做網站、做圖、影片、摘要、部署，藍星智能體才知道要走哪條路。"
+    summary: "不要只說「幫我做一下」。先直接講要做網站、做圖、影片、摘要、部署，藍星智能體才知道要走哪條路。做圖現在就直接講 image2 API。"
   },
   {
     title: "再講成品",
@@ -33,7 +33,7 @@ const formulaItems = [
   {
     step: "03",
     title: "規格",
-    summary: "把尺寸、語言、風格、時長、模型、平台、數量一次講清楚。"
+    summary: "把尺寸、語言、風格、時長、模型、API 路線、數量一次講清楚。"
   },
   {
     step: "04",
@@ -50,7 +50,7 @@ const formulaItems = [
 const talkStyleItems = [
   {
     title: "主人怎麼下",
-    summary: "直接講任務、成品、規格、限制。像是「wbs 做成公開網站」、「image2 先給確認清單」、「不要混舊素材」。"
+    summary: "直接講任務、成品、規格、限制。像是「wbs 做成公開網站」、「image2 API 先給確認清單」、「不要混舊素材」。"
   },
   {
     title: "TGBOT 怎麼回",
@@ -65,8 +65,8 @@ const talkStyleItems = [
 const dialogueExamples = [
   {
     label: "做圖任務",
-    owner: "image2 做圖，9:16 AI 科技風，先給我確認清單。",
-    bot: "結論：這次會做 1 張 9:16 海報。重點確認：模型、風格、內容、素材是否有標示。你回覆確認後才生成。"
+    owner: "image2 API 做圖，9:16 AI 科技風，先給我確認清單。",
+    bot: "結論：這次會用 image2 API 做 1 張 9:16 海報。重點確認：模型、風格、內容、素材是否有標示。你回覆確認後才生成。"
   },
   {
     label: "網站任務",
@@ -142,8 +142,8 @@ const templates = [
   },
   {
     title: "做圖模板",
-    description: "適合 image2、做圖、教學圖或海報任務。",
-    prompt: "做圖。\n成品：___ 張 PNG。\n規格：9:16、繁體中文、AI 科技風。\n素材：本輪沒有素材 / 本次素材如下：___。\n限制：不用歷史圖片。\n完成標準：先給確認清單，我回確認後再生成。"
+    description: "適合 image2 API、做圖、教學圖或海報任務。",
+    prompt: "image2 API 做圖。\n成品：___ 張 PNG。\n規格：9:16、繁體中文、AI 科技風。\n素材：本輪沒有素材 / 本次素材如下：___。\n限制：不用歷史圖片，只走 image2 API。\n完成標準：先給確認清單，我回確認後再生成。"
   },
   {
     title: "影片模板",
@@ -161,14 +161,8 @@ const skills = [
   { name: "wbs", category: "網站部署", summary: "網站建置、驗證、GitHub Pages 公開部署。", useCase: "做網站、改網站、公開部署。" },
   { name: "github-pages-deploy", category: "網站部署", summary: "專門處理 GitHub Pages 的推送與公開驗證。", useCase: "網站已做好，只差公開部署。" },
   { name: "monthly-course-site-updater", category: "網站部署", summary: "每月課程報名與活動網站更新。", useCase: "只改日期、場次、報名資訊。" },
-  { name: "codex-zuotu-lanxin", category: "圖片生成", summary: "藍星 / 聚合平台繁中海報與做圖主入口。", useCase: "做海報、教學圖、商品圖。" },
-  { name: "ims", category: "圖片生成", summary: "聚合平台圖片生成與分鏡製作。", useCase: "要做圖片組、分鏡、行銷視覺。" },
-  { name: "lanxin-image-workflow", category: "圖片生成", summary: "藍星平台完整做圖工作流。", useCase: "要檢查登入、提交、下載、驗圖。" },
-  { name: "做圖", category: "圖片生成", summary: "中文做圖入口，適合直接口語下單。", useCase: "只想說『做圖』也能路由到正確流程。" },
-  { name: "teaching-step-images", category: "圖片生成", summary: "教學步驟圖、SOP 圖與手機操作圖。", useCase: "做 4 張、8 張、逐步說明圖。" },
-  { name: "imagegen", category: "圖片生成", summary: "通用圖片生成入口。", useCase: "一般圖片生成或編修。" },
-  { name: "imagegen-disabled-use-lanxin", category: "圖片生成", summary: "舊版圖片入口，提醒正式任務改走藍星流程。", useCase: "遇到舊任務或相容需求。" },
-  { name: "imagegen-poster-telegram", category: "圖片生成", summary: "海報任務與 Telegram 交付舊入口。", useCase: "維護舊有海報交付流程。" },
+  { name: "做圖", category: "圖片生成", summary: "image2 API 單一做圖主入口。", useCase: "做海報、教學圖、商品圖、文案轉圖。" },
+  { name: "teaching-step-images", category: "圖片生成", summary: "教學步驟圖、SOP 圖與手機操作圖，統一走 image2 API 風格改版。", useCase: "做 4 張、8 張、逐步說明圖。" },
   { name: "character-memory-manager", category: "圖片生成", summary: "固定角色外觀、服裝、負面限制。", useCase: "嵐熙、庫裡、蝦咩等角色要保持一致。" },
   { name: "acs", category: "影片工作流", summary: "剪映 / CapCut 自動剪輯。", useCase: "對標剪輯、字幕、轉場、素材組裝。" },
   { name: "acs2", category: "影片工作流", summary: "複製參考短片的節奏與版型。", useCase: "拿一支參考影片照著做同款。" },
