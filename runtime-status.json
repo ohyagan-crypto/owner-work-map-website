@@ -1,66 +1,66 @@
 {
-    "statusKey":  "disconnected",
-    "statusLabel":  "疑似斷線",
-    "headline":  "這段加入進去 https://ohyagan-crypto.github.io/owner-work-map-website/ 結論：**可以，但不要無限制亂切。** 同一個任務可以分段下給 TGBOT，**只要每段都還是在補同一件事**，",
-    "currentTaskInstruction":  "這段加入進去 https://ohyagan-crypto.github.io/owner-work-map-website/ 結論：**可以，但不要無限制亂切。** 同一個任務可以分段下給 TGBOT，**只要每段都還是在補同一件事**，",
-    "blocker":  "心跳過舊",
-    "nextAction":  "需要檢查 Telegram bot 或 Codex 執行程序。",
-    "updatedAt":  "2026-07-20T17:27:13+08:00",
-    "checkedAt":  "2026-07-20T17:27:13+08:00",
+    "statusKey":  "standby",
+    "statusLabel":  "正常待命",
+    "headline":  "tg2 3 都沒有運作",
+    "currentTaskInstruction":  "tg2 3 都沒有運作",
+    "blocker":  "沒有卡點",
+    "nextAction":  "有新任務時會更新 Telegram 狀態與本頁快照。",
+    "updatedAt":  "2026-07-20T18:27:21+08:00",
+    "checkedAt":  "2026-07-20T18:27:21+08:00",
     "sourceType":  "local-generator",
     "sourceLabel":  "本機即時狀態產生器",
     "refreshSeconds":  1,
     "token":  {
-                  "totalTokens":  47375175,
-                  "taskCount":  9,
+                  "totalTokens":  69134744,
+                  "taskCount":  11,
                   "source":  "本機 Codex 執行緒紀錄"
               },
     "heartbeat":  {
                       "name":  "蝦咩",
-                      "ageSeconds":  566,
+                      "ageSeconds":  31,
                       "activeRequests":  0
                   },
     "tgbot2":  {
                    "name":  "林孟姿",
                    "statusKey":  "running",
                    "statusLabel":  "運作中",
-                   "ageSeconds":  545,
+                   "ageSeconds":  4,
                    "activeRequests":  2,
                    "currentTaskInstruction":  "用com生影片",
                    "currentTaskSource":  "tg-openai-bot-2/telegram_request_status.json"
                },
     "tgbot3":  {
                    "name":  "嵐熙",
-                   "statusKey":  "watch",
-                   "statusLabel":  "心跳待確認",
-                   "ageSeconds":  586,
+                   "statusKey":  "standby",
+                   "statusLabel":  "正常待命",
+                   "ageSeconds":  7,
                    "activeRequests":  0,
-                   "currentTaskInstruction":  "最近完成：字體沒有用預設的 字體再大一號",
+                   "currentTaskInstruction":  "最近完成：在嗎",
                    "currentTaskSource":  "tg-openai-bot-3/telegram_request_status.json"
                },
     "monitors":  [
                      {
                          "id":  "telegram-heartbeat",
                          "label":  "蝦咩心跳",
-                         "statusKey":  "watch",
-                         "statusLabel":  "待確認",
-                         "detail":  "心跳 566 秒前，執行中任務 0",
+                         "statusKey":  "running",
+                         "statusLabel":  "正常",
+                         "detail":  "心跳 31 秒前，執行中任務 0",
                          "source":  "codex_bot_heartbeat.json"
                      },
                      {
                          "id":  "telegram-request",
                          "label":  "Telegram 任務佇列",
-                         "statusKey":  "disconnected",
-                         "statusLabel":  "疑似斷線",
-                         "detail":  "這段加入進去 https://ohyagan-crypto.github.io/owner-work-map-website/ 結論：**可以，但不要無限制亂切。** 同一個任務可以分段下給 TGBOT，**只要每段都還是在補同一件事**，",
+                         "statusKey":  "standby",
+                         "statusLabel":  "正常待命",
+                         "detail":  "tg2 3 都沒有運作",
                          "source":  "telegram_request_status.json"
                      },
                      {
                          "id":  "tgbot2-heartbeat",
                          "label":  "林孟姿心跳",
-                         "statusKey":  "watch",
-                         "statusLabel":  "待確認",
-                         "detail":  "心跳 545 秒前，執行中任務 2",
+                         "statusKey":  "running",
+                         "statusLabel":  "正常",
+                         "detail":  "心跳 4 秒前，執行中任務 2",
                          "source":  "tg-openai-bot-2/codex_bot_heartbeat.json"
                      },
                      {
@@ -74,17 +74,17 @@
                      {
                          "id":  "tgbot3-heartbeat",
                          "label":  "嵐熙心跳",
-                         "statusKey":  "watch",
-                         "statusLabel":  "待確認",
-                         "detail":  "心跳 586 秒前，執行中任務 0",
+                         "statusKey":  "running",
+                         "statusLabel":  "正常",
+                         "detail":  "心跳 7 秒前，執行中任務 0",
                          "source":  "tg-openai-bot-3/codex_bot_heartbeat.json"
                      },
                      {
                          "id":  "tgbot3-request",
                          "label":  "嵐熙任務佇列",
-                         "statusKey":  "watch",
-                         "statusLabel":  "心跳待確認",
-                         "detail":  "最近完成：字體沒有用預設的 字體再大一號",
+                         "statusKey":  "standby",
+                         "statusLabel":  "正常待命",
+                         "detail":  "最近完成：在嗎",
                          "source":  "tg-openai-bot-3/telegram_request_status.json"
                      },
                      {
@@ -92,7 +92,7 @@
                          "label":  "Codex token 統計",
                          "statusKey":  "running",
                          "statusLabel":  "已讀取",
-                         "detail":  "47375175 tokens，任務 9",
+                         "detail":  "69134744 tokens，任務 11",
                          "source":  "本機 Codex 執行緒紀錄"
                      },
                      {
@@ -108,7 +108,7 @@
                          "label":  "狀態產生器",
                          "statusKey":  "running",
                          "statusLabel":  "已更新",
-                         "detail":  "產生時間 2026-07-20 17:27:13",
+                         "detail":  "產生時間 2026-07-20 18:27:21",
                          "source":  "tools/update-runtime-status.ps1"
                      },
                      {
