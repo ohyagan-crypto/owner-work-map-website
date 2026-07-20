@@ -733,10 +733,45 @@ h1 {
   line-height: 1.6;
 }
 
-.copy-status {
+.back-to-top {
   position: fixed;
   right: 20px;
   bottom: 20px;
+  z-index: 21;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  border: 1px solid rgba(111, 229, 255, 0.28);
+  border-radius: 999px;
+  background: rgba(5, 14, 26, 0.92);
+  color: var(--cyan);
+  font-size: 1.4rem;
+  font-weight: 700;
+  box-shadow: var(--glow);
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(12px);
+  transition: opacity 160ms ease, transform 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.back-to-top:hover {
+  border-color: rgba(111, 229, 255, 0.48);
+  background: rgba(11, 26, 45, 0.98);
+}
+
+.back-to-top.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.copy-status {
+  position: fixed;
+  right: 20px;
+  bottom: 86px;
   z-index: 20;
   max-width: min(360px, calc(100% - 40px));
   padding: 13px 16px;
@@ -835,8 +870,15 @@ h1 {
 
   .copy-status {
     right: 10px;
-    bottom: 10px;
+    bottom: 78px;
     max-width: calc(100% - 20px);
+  }
+
+  .back-to-top {
+    right: 10px;
+    bottom: 10px;
+    width: 50px;
+    height: 50px;
   }
 
   .timeline-item {

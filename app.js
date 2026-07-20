@@ -714,7 +714,15 @@ function showCopyStatus(message) {
   }, 3000);
 }
 
+function toggleBackToTop() {
+  const button = $("#backToTop");
+  if (!button) return;
+  button.classList.toggle("is-visible", window.scrollY > 320);
+}
+
 function bindEvents() {
+  const backToTop = $("#backToTop");
+
   $("#skillSearch").addEventListener("input", (event) => {
     searchTerm = event.target.value;
     renderSkills();
@@ -755,6 +763,15 @@ function bindEvents() {
       }, 3000);
     }
   });
+
+  if (backToTop) {
+    backToTop.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }
+
+  window.addEventListener("scroll", toggleBackToTop, { passive: true });
+  toggleBackToTop();
 }
 
 function init() {
