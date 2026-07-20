@@ -47,6 +47,44 @@ const formulaItems = [
   }
 ];
 
+const talkStyleItems = [
+  {
+    title: "主人怎麼下",
+    summary: "直接講任務、成品、規格、限制。像是「wbs 做成公開網站」、「image2 先給確認清單」、「不要混舊素材」。"
+  },
+  {
+    title: "TGBOT 怎麼回",
+    summary: "先講結論，再補原因、做法、必要注意事項。不能只回收到、稍後回報、正在處理。"
+  },
+  {
+    title: "什麼叫正確完成",
+    summary: "不是開始做了，而是檔案、網址、圖片、部署或同一個 Telegram 交付真的成立。"
+  }
+];
+
+const dialogueExamples = [
+  {
+    label: "做圖任務",
+    owner: "image2 做圖，9:16 AI 科技風，先給我確認清單。",
+    bot: "結論：這次會做 1 張 9:16 海報。重點確認：模型、風格、內容、素材是否有標示。你回覆確認後才生成。"
+  },
+  {
+    label: "網站任務",
+    owner: "wbs 做成公開部署網站，結合我的和 TGBOT 說話方式。",
+    bot: "結論：我會先改本機網站，再驗證，最後更新公開網址；內容會加入你的下指令方式和 TGBOT 正確回法。"
+  },
+  {
+    label: "卡點回覆",
+    owner: "好了沒？",
+    bot: "結論：公開站還差最後部署驗證。網站檔案已改完，現在正在確認 GitHub Pages 已更新到最新版。"
+  },
+  {
+    label: "錯誤示範",
+    owner: "在嗎 / 為什麼 / 幫我做",
+    bot: "不要只回『收到』『思考中』『稍後回報』。這種回法沒有結論，也沒有真正處理任務。"
+  }
+];
+
 const flowItems = [
   {
     index: "1",
@@ -111,6 +149,11 @@ const templates = [
     title: "影片模板",
     description: "適合 cmsd、sd、hfsw、剪輯任務。",
     prompt: "cmsd / hfsw / acs。\n成品：MP4。\n規格：時長 ___、比例 ___、語言 ___。\n素材：本次素材 ___。\n限制：不要混上一輪角色或舊素材。\n完成標準：檔案輸出、驗證完成，再回到同一個 Telegram 對話。"
+  },
+  {
+    title: "對話模板",
+    description: "適合教新手怎麼跟 TGBOT 下令。",
+    prompt: "任務：___。\n成品：___。\n規格：___。\n限制：不要混舊素材 / 不要固定式回覆 / 先給確認清單。\n完成標準：直接回可交付結果、檔案、網址或明確卡點。"
   }
 ];
 
@@ -241,6 +284,41 @@ function renderFormula() {
           <em>${escapeHtml(item.step)}</em>
           <strong>${escapeHtml(item.title)}</strong>
           <p>${escapeHtml(item.summary)}</p>
+        </article>
+      `
+    )
+    .join("");
+}
+
+function renderTalkStyle() {
+  const container = $("#talkStyleGrid");
+  container.innerHTML = talkStyleItems
+    .map(
+      (item) => `
+        <article class="spotlight-card">
+          <strong>${escapeHtml(item.title)}</strong>
+          <p>${escapeHtml(item.summary)}</p>
+        </article>
+      `
+    )
+    .join("");
+}
+
+function renderDialogues() {
+  const container = $("#dialogueGrid");
+  container.innerHTML = dialogueExamples
+    .map(
+      (item) => `
+        <article class="dialogue-card">
+          <span class="tag">${escapeHtml(item.label)}</span>
+          <div class="dialogue-bubble owner-bubble">
+            <strong>你可以這樣說</strong>
+            <p>${escapeHtml(item.owner)}</p>
+          </div>
+          <div class="dialogue-bubble bot-bubble">
+            <strong>TGBOT 應該這樣回</strong>
+            <p>${escapeHtml(item.bot)}</p>
+          </div>
         </article>
       `
     )
@@ -382,6 +460,8 @@ function init() {
   renderHeroStats();
   renderQuickStart();
   renderFormula();
+  renderTalkStyle();
+  renderDialogues();
   renderFlow();
   renderList("#completionChecklist", completionChecklist);
   renderList("#commonMistakes", commonMistakes);

@@ -303,6 +303,7 @@ h1 {
 
 .spotlight-grid,
 .formula-grid,
+.talk-style-grid,
 .template-grid,
 .skill-grid {
   display: grid;
@@ -316,6 +317,10 @@ h1 {
 
 .formula-grid {
   grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.talk-style-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .spotlight-card,
@@ -354,6 +359,50 @@ h1 {
   display: grid;
   gap: 14px;
   margin-top: 24px;
+}
+
+.dialogue-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.dialogue-card {
+  display: grid;
+  gap: 12px;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, rgba(7, 17, 31, 0.9), rgba(10, 22, 40, 0.76));
+}
+
+.dialogue-bubble {
+  padding: 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.dialogue-bubble strong {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 0.98rem;
+}
+
+.dialogue-bubble p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.owner-bubble {
+  border-color: rgba(111, 229, 255, 0.24);
+}
+
+.bot-bubble {
+  border-color: rgba(255, 209, 125, 0.22);
+  background: rgba(255, 209, 125, 0.05);
 }
 
 .timeline-item {
@@ -398,7 +447,7 @@ h1 {
 }
 
 .template-grid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .template-card {
@@ -532,9 +581,14 @@ h1 {
   }
 
   .formula-grid,
+  .talk-style-grid,
   .template-grid,
   .skill-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dialogue-grid {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -557,6 +611,7 @@ h1 {
 
   .spotlight-grid,
   .formula-grid,
+  .talk-style-grid,
   .template-grid,
   .skill-grid {
     grid-template-columns: 1fr;
