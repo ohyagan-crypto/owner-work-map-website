@@ -1,6 +1,7 @@
 const siteStats = [
   { label: "已安裝條目", value: "169", note: "包含正式版、歷史版與備份入口" },
   { label: "主技能名稱", value: "55", note: "公開站目前保留 55 個主技能入口" },
+  { label: "核心工作流", value: "21", note: "每條都附可複製的新手指令公式" },
   { label: "記憶檔", value: "345", note: "偏好、成功流程、安全規則與工作流補強" }
 ];
 
@@ -266,6 +267,114 @@ const skills = [
   { name: "binance-coin-research", category: "研究 / 分析", summary: "幣安 coin、meme coin、合約風險研究。", useCase: "查幣、做評分、產研究圖卡。" }
 ];
 
+const workflows = [
+  {
+    name: "WBS 網站建置與公開部署", category: "網站", trigger: "wbs、做網站、更新網站、公開部署",
+    summary: "修改真實網站檔案，完成手機與桌機驗證，再推送並確認公開網址是最新版。", output: "公開網址＋可維護的網站原始檔",
+    formula: "wbs 更新／建立 ___ 網站。\n內容：___。\n規格：繁體中文，手機與桌機都要清楚可用。\n功能：___。\n完成標準：本機驗證、公開部署，並確認公開網址顯示最新版。"
+  },
+  {
+    name: "image2 API 做圖", category: "圖片", trigger: "image2、image2 API、gpt-image-2",
+    summary: "只走 image2 外部 API；先整理精簡確認清單，收到確認後才生成與驗字。", output: "PNG 原圖",
+    formula: "image2 API 做圖。\n內容：___。\n成品：___ 張 PNG。\n規格：___ 比例、繁體中文、___ 風格。\n素材：本輪沒有素材／本次素材如下：___。\n先給我精簡確認清單，確認後再生成。"
+  },
+  {
+    name: "ComfyUI 圖片製作", category: "圖片", trigger: "ComfyUI、comfy、com 做圖",
+    summary: "只使用 ComfyUI 跑文生圖、圖生圖、ControlNet、局部重繪或放大，不切換 image2。", output: "PNG 圖片＋工作流結果",
+    formula: "用 ComfyUI 做圖，只使用 ComfyUI。\n內容：___。\n模式：文生圖／圖生圖／ControlNet／局部重繪／放大。\n規格：___ 比例、___ 風格。\n素材：___。\n完成標準：圖片生成並檢查尺寸、文字與畫面。"
+  },
+  {
+    name: "教學步驟圖", category: "圖片", trigger: "教學圖、SOP 圖、手機操作圖",
+    summary: "先列完整順序，一張只教一個動作，保留按鈕名稱並用紅框或箭頭標示。", output: "依步驟排序的 9:16 PNG 圖組",
+    formula: "用 image2 API 做 ___ 張教學步驟圖。\n主題：___。\n每張一個動作，使用繁體中文與清楚紅框／箭頭。\n敏感資訊一律遮蔽。\n先列完整步驟確認清單，確認後整批生成。"
+  },
+  {
+    name: "角色一致性管理", category: "圖片", trigger: "固定角色、角色記憶、保持人物一致",
+    summary: "固定臉部、服裝、配件、個性與禁用特徵，供後續圖片、分鏡與影片沿用。", output: "角色規格與可重用參考",
+    formula: "建立／更新角色記憶。\n角色名稱：___。\n固定外觀：___。\n服裝配件：___。\n個性與動作：___。\n禁止出現：___。\n後續用於：圖片／分鏡／影片。"
+  },
+  {
+    name: "CMSD 故事到 AI 影片", category: "影片", trigger: "cmsd、cmde",
+    summary: "素材分析、劇情規劃、角色分鏡、九宮格視覺到 SD／Seedance 影片的完整流程。", output: "分鏡素材＋最終 MP4",
+    formula: "cmsd 製作影片。\n故事：___。\n角色：___。\n素材：本次素材 ___。\n規格：___ 秒、___ 比例。\n必說台詞：___。\n先完成素材分析與分鏡確認，再送影片生成。"
+  },
+  {
+    name: "SD／Dreamina／Seedance 影片生成", category: "影片", trigger: "sd、sdf、sdv、Dreamina、Seedance",
+    summary: "確認素材、模型、時長、比例與提示詞後提交，追蹤狀態、下載並驗證影片。", output: "可播放 MP4",
+    formula: "用 SD／Seedance 製作影片。\n模式：文生影片／圖生影片。\n素材：___。\n模型：___。\n規格：___ 秒、___ 比例。\n動作與鏡頭：___。\n先給確認清單，確認後提交。"
+  },
+  {
+    name: "ComfyUI 圖生／文生影片", category: "影片", trigger: "ComfyUI 生影片、com 生影片",
+    summary: "只使用 ComfyUI 的 Wan 等工作流，依需求做圖生影片或文生影片並輸出 MP4。", output: "MP4 影片",
+    formula: "用 ComfyUI 生影片，只使用 ComfyUI。\n模式：圖生影片／文生影片。\n素材：___。\n規格：___ 秒、___ 比例、___ fps。\n動態要求：___。\n完成標準：輸出 MP4 並檢查畫面、文字與時長。"
+  },
+  {
+    name: "HFSW 長影片製作", category: "影片", trigger: "hfsw、完整長影片",
+    summary: "整合腳本、旁白、畫面、字幕、配樂、速度與輸出驗證。", output: "完整 MP4",
+    formula: "hfsw 製作完整影片。\n主題：___。\n素材：___。\n規格：___ 比例、速度 ___、字幕樣式 ___。\n旁白：___。\n配樂：___。\n完成標準：畫面、旁白、字幕、音樂全部驗證後回傳 MP4。"
+  },
+  {
+    name: "ACS 剪映自動剪輯", category: "影片", trigger: "acs、剪映自動剪輯、CapCut",
+    summary: "把素材、字幕、轉場、節奏與輸出規格組成可執行的剪輯流程。", output: "剪輯完成的 MP4 或專案成果",
+    formula: "acs 自動剪輯影片。\n素材：___。\n成品：___ 秒、___ 比例 MP4。\n字幕：___。\n剪輯節奏：___。\n限制：___。\n完成標準：輸出並檢查字幕、音訊、轉場與畫面。"
+  },
+  {
+    name: "ACS2 對標影片復刻", category: "影片", trigger: "acs2、照這支影片做同款",
+    summary: "先分析參考影片的節奏、鏡頭、字幕與版型，再用本次素材復刻結構。", output: "對標剪輯 MP4",
+    formula: "acs2 對標這支參考影片。\n參考影片：___。\n本次素材：___。\n要保留：節奏／字幕／轉場／構圖 ___。\n不要照搬：___。\n完成標準：逐段核對後輸出 MP4。"
+  },
+  {
+    name: "AI 長影片自動切短影音", category: "影片", trigger: "AI 自動剪短影音、長影片切短片",
+    summary: "先轉錄與找重點，再自動去停頓、切段、加字幕並輸出多支 9:16 短片。", output: "多支短影音 MP4",
+    formula: "把這支長影片自動剪成 ___ 支短影音。\n來源影片：___。\n每支長度：___ 秒。\n比例：9:16。\n字幕與標題：繁體中文。\n完成標準：每支內容不重複，逐支驗證後回傳。"
+  },
+  {
+    name: "NMS 數位人影片", category: "影片", trigger: "nms、數字人、AI 網紅",
+    summary: "建立數位人物形象、口播內容、聲音與動作，輸出可用口播影片。", output: "數位人 MP4",
+    formula: "nms 製作數位人口播影片。\n角色：___。\n口播稿：___。\n聲音：___。\n規格：___ 秒、___ 比例。\n背景與動作：___。\n完成標準：人物、口型、聲音與畫面驗證完成。"
+  },
+  {
+    name: "ANS 微信 AI 影片", category: "影片", trigger: "ans、微信小程式 AI 影片",
+    summary: "操作微信端影片生成流程，提交後追蹤、下載並驗證最終檔案。", output: "下載完成的 MP4",
+    formula: "ans 製作 AI 影片。\n素材：___。\n提示詞：___。\n規格：___ 秒、___ 比例。\n確認後再提交；完成標準：下載原始影片並驗證可播放。"
+  },
+  {
+    name: "NBS NotebookLM 摘要", category: "文件", trigger: "nbs、NotebookLM、語音摘要、簡報",
+    summary: "整理來源、建立 NotebookLM 專案，再依需求製作簡報、影片摘要或 MP3 語音摘要。", output: "PPTX／MP4／MP3，依任務指定",
+    formula: "nbs 處理這份資料。\n來源：___。\n成品：PPTX／MP4／MP3 ___。\n語言：繁體中文。\n受眾與用途：___。\n保留重點：___。\n完成標準：下載每個成品、驗證可開啟並回傳。"
+  },
+  {
+    name: "PDF 讀取與輸出", category: "文件", trigger: "pdf、讀 PDF、做 PDF、修亂碼",
+    summary: "讀取、OCR、摘要、重排或產生 PDF，並檢查中文字、頁數與版面。", output: "PDF 或整理後文件",
+    formula: "pdf 處理這份文件。\n來源：___。\n任務：讀取／OCR／摘要／重排／輸出。\n語言：繁體中文。\n版面要求：___。\n完成標準：頁數正確、文字無亂碼、檔案可正常開啟。"
+  },
+  {
+    name: "Speech 配音", category: "文件", trigger: "speech、配音、文字轉語音",
+    summary: "依指定語言、聲線、速度與情緒產生旁白，並檢查音訊品質。", output: "MP3／WAV",
+    formula: "speech 製作配音。\n文稿：___。\n語言與口音：___。\n聲線：___。\n速度：___。\n情緒：___。\n成品：MP3／WAV。\n完成標準：音訊無異常靜音、時長與內容正確。"
+  },
+  {
+    name: "Transcribe 轉錄字幕", category: "文件", trigger: "transcribe、逐字稿、字幕",
+    summary: "將音訊或影片轉為繁體中文逐字稿、時間軸字幕與講者標記。", output: "TXT／SRT／VTT",
+    formula: "transcribe 轉錄這個音訊／影片。\n來源：___。\n語言：繁體中文。\n成品：TXT／SRT／VTT ___。\n講者區分：要／不要。\n完成標準：時間軸、專有名詞與段落核對完成。"
+  },
+  {
+    name: "Telegram Bot 管理與修復", category: "Telegram", trigger: "檢查 TGBOT、修 bot、重啟 bot、回傳檔案",
+    summary: "檢查實際程序、心跳、連線與任務狀態，修復後驗證同源回覆與檔案交付。", output: "可運作的 Bot 或明確修復結果",
+    formula: "檢查並修復目前 TGBOT。\n問題：___。\n影響範圍：___。\n保留：既有排程與自動恢復。\n完成標準：實際連線、程序、心跳與回覆測試通過。"
+  },
+  {
+    name: "技能與記憶交接", category: "系統", trigger: "打包技能、記憶、工作流、交接 Codex／OC",
+    summary: "整理技能、記憶、安裝教學、測試方式與安全排除，製作可一次學會的交接包。", output: "含日期的 ZIP 教學包",
+    formula: "打包 ___ 技能／記憶／工作流，交給其他 Codex／OpenClaw 學習。\n範圍：___。\n要包含：安裝教學、觸發詞、完整流程、測試題、安全規則。\n禁止包含：密碼、Token、Cookie、登入資料與原始紀錄。"
+  },
+  {
+    name: "幣安 Coin 研究", category: "研究", trigger: "幣安 coin、查 coin、合約地址、meme coin",
+    summary: "核對鏈與合約地址，研究市場、持倉、風險、流動性與可疑訊號。", output: "繁體中文研究結論與風險判斷",
+    formula: "幣安 coin 研究。\n幣種／合約地址：___。\n鏈：___。\n要查：市場表現、持倉、流動性、合約風險、聰明錢。\n完成標準：先給結論，再附依據與風險提醒。"
+  }
+];
+
 const skillFormulaByCategory = {
   "網站部署": (skill) => `${skill.name}\n任務：建立或更新 ___ 網站。\n內容：___。\n規格：手機與桌面都要清楚可用。\n完成標準：公開部署，並確認公開網址能正常開啟。`,
   "圖片生成": (skill) => `${skill.name}\n任務：製作 ___。\n成品：___ 張圖片。\n規格：繁體中文、___ 比例、___ 風格。\n素材：本次素材 ___。\n先給我確認清單，確認後再開始生成。`,
@@ -295,6 +404,7 @@ const categoryOrder = [
 
 let activeCategory = "全部";
 let searchTerm = "";
+let workflowSearchTerm = "";
 
 const $ = (selector) => document.querySelector(selector);
 
@@ -507,7 +617,7 @@ function renderSkills() {
           <div class="skill-formula">
             <strong>可直接複製的指令公式</strong>
             <pre id="skill-formula-${index}">${escapeHtml(buildSkillFormula(skill))}</pre>
-            <button type="button" class="copy-button" data-copy-target="skill-formula-${index}" data-copy-label="複製公式">複製公式</button>
+            <button type="button" class="copy-button" data-copy-target="skill-formula-${index}" data-copy-label="複製並開啟 Telegram" data-open-telegram="true">複製並開啟 Telegram</button>
           </div>
         </article>
       `
@@ -515,6 +625,68 @@ function renderSkills() {
     .join("");
 
   empty.classList.toggle("is-visible", visibleSkills.length === 0);
+}
+
+function filteredWorkflows() {
+  const normalized = workflowSearchTerm.trim().toLowerCase();
+  if (!normalized) return workflows;
+  return workflows.filter((workflow) => {
+    const haystack = [workflow.name, workflow.category, workflow.trigger, workflow.summary, workflow.output, workflow.formula]
+      .join(" ")
+      .toLowerCase();
+    return haystack.includes(normalized);
+  });
+}
+
+function renderWorkflows() {
+  const visibleWorkflows = filteredWorkflows();
+  const grid = $("#workflowGrid");
+  const empty = $("#workflowEmpty");
+
+  $("#workflowOverview").innerHTML = `
+    <span class="tag">目前視圖</span>
+    <p>顯示 <strong>${visibleWorkflows.length}</strong> 條工作流；每條都包含觸發方式、執行重點、成品與可直接使用的公式。</p>
+  `;
+
+  grid.innerHTML = visibleWorkflows
+    .map(
+      (workflow, index) => `
+        <article class="skill-card workflow-card">
+          <span class="tag">${escapeHtml(workflow.category)}</span>
+          <h3>${escapeHtml(workflow.name)}</h3>
+          <p>${escapeHtml(workflow.summary)}</p>
+          <dl class="workflow-meta">
+            <div>
+              <dt>怎麼觸發</dt>
+              <dd>${escapeHtml(workflow.trigger)}</dd>
+            </div>
+            <div>
+              <dt>最後成品</dt>
+              <dd>${escapeHtml(workflow.output)}</dd>
+            </div>
+          </dl>
+          <div class="skill-formula">
+            <strong>可直接複製的工作流公式</strong>
+            <pre id="workflow-formula-${index}">${escapeHtml(workflow.formula)}</pre>
+            <button type="button" class="copy-button" data-copy-target="workflow-formula-${index}" data-copy-label="複製並開啟 Telegram" data-open-telegram="true">複製並開啟 Telegram</button>
+          </div>
+        </article>
+      `
+    )
+    .join("");
+
+  empty.classList.toggle("is-visible", visibleWorkflows.length === 0);
+}
+
+function showCopyStatus(message) {
+  const status = $("#copyStatus");
+  if (!status) return;
+  status.textContent = message;
+  status.classList.add("is-visible");
+  window.clearTimeout(showCopyStatus.timer);
+  showCopyStatus.timer = window.setTimeout(() => {
+    status.classList.remove("is-visible");
+  }, 3000);
 }
 
 function bindEvents() {
@@ -531,23 +703,40 @@ function bindEvents() {
     renderSkills();
   });
 
+  $("#workflowSearch").addEventListener("input", (event) => {
+    workflowSearchTerm = event.target.value;
+    renderWorkflows();
+  });
+
   document.addEventListener("click", async (event) => {
     const button = event.target.closest("button[data-copy-target]");
     if (!button) return;
     const target = document.getElementById(button.getAttribute("data-copy-target"));
     if (!target) return;
     const defaultLabel = button.getAttribute("data-copy-label") || "複製模板";
+    const shouldOpenTelegram = button.getAttribute("data-open-telegram") === "true";
+    const text = target.textContent.trim();
     try {
-      await navigator.clipboard.writeText(target.textContent);
+      await navigator.clipboard.writeText(text);
       button.textContent = "已複製";
+      showCopyStatus("公式已複製，正在開啟 Telegram");
+      if (shouldOpenTelegram) {
+        window.location.href = `https://t.me/share/url?url=&text=${encodeURIComponent(text)}`;
+      }
       window.setTimeout(() => {
         button.textContent = defaultLabel;
-      }, 1400);
+      }, 3000);
     } catch (error) {
-      button.textContent = "複製失敗";
+      if (shouldOpenTelegram) {
+        showCopyStatus("正在開啟 Telegram，公式會一起帶入");
+        window.location.href = `https://t.me/share/url?url=&text=${encodeURIComponent(text)}`;
+      } else {
+        button.textContent = "複製失敗";
+        showCopyStatus("無法自動複製，請長按公式手動複製");
+      }
       window.setTimeout(() => {
         button.textContent = defaultLabel;
-      }, 1400);
+      }, 3000);
     }
   });
 }
@@ -562,6 +751,7 @@ function init() {
   renderFlow();
   renderCategoryFilters();
   renderSkills();
+  renderWorkflows();
   bindEvents();
 }
 

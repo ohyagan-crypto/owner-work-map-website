@@ -6,7 +6,7 @@
   <title>藍星智能體 WBS 新手技能導覽站</title>
   <meta
     name="description"
-    content="給新手小白的一頁式藍星智能體技能與 WBS 公開部署教學站，整理 55 個主技能、網站建置流程、image2 API 做圖路線、溝通模板與公開部署標準。"
+    content="給新手小白的一頁式藍星智能體技能與工作流教學站，整理 55 個主技能、21 條核心工作流、可複製指令公式與 Telegram 快速跳轉。"
   >
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,8 +15,7 @@
     href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Space+Grotesk:wght@500;700&display=swap"
     rel="stylesheet"
   >
-  <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="styles.css?v=20260720-content-2">
+  <link rel="stylesheet" href="styles.css?v=20260720-workflows-2">
 </head>
 <body>
   <div class="page-shell">
@@ -25,12 +24,13 @@
         <p class="eyebrow">WBS 公開站</p>
         <h1>藍星智能體技能很多，但新手不用背。</h1>
         <p class="hero-text">
-          這個網站把 <strong>WBS 網站工作流</strong>、<strong>所有主技能</strong>、<strong>image2 API 做圖路線</strong>、
-          <strong>最短可用話術</strong> 全部整理成一頁。你只要照著說，藍星智能體就知道該走哪條工作流。
+          這個網站把 <strong>所有主技能</strong>、<strong>核心工作流</strong>、<strong>工具分流規則</strong>、
+          <strong>可直接使用的指令公式</strong> 全部整理成一頁。按下公式後會自動開啟 Telegram，直接選 TGBOT 對話即可。
         </p>
         <div class="hero-actions">
           <a href="#quick-start" class="primary-link">先看 3 分鐘上手</a>
           <a href="#all-skills" class="secondary-link">直接看全部技能</a>
+          <a href="#all-workflows" class="secondary-link">直接看工作流</a>
         </div>
       </div>
       <div class="hero-panel">
@@ -45,11 +45,12 @@
     <nav class="top-nav" aria-label="頁面導覽">
       <a href="#quick-start">新手上手</a>
       <a href="#tg-guide">TG 對話</a>
-      <a href="#prompt-formula">下指令公式</a>
+      <a href="#all-skills">所有技能</a>
+      <a href="#all-workflows">所有工作流</a>
+      <a href="#prompt-formula">公式結構</a>
       <a href="#talk-style">對話方式</a>
       <a href="#wbs-flow">WBS 流程</a>
       <a href="#templates">可直接複製</a>
-      <a href="#all-skills">所有技能</a>
     </nav>
 
     <main>
@@ -77,7 +78,7 @@
           <p class="eyebrow">技能＋公式</p>
           <h2>55 個主技能全部列出，找到就能直接複製</h2>
           <p>
-            每個技能都附用途、適合情境與新手指令公式。先搜尋或選分類，再按「複製公式」，把空格補成自己的需求後傳給 TGBOT。
+            每個技能都附用途、適合情境與新手指令公式。按「複製並開啟 Telegram」後，公式會先存入剪貼簿，再跳到 Telegram。
           </p>
         </div>
         <div class="skill-toolbar">
@@ -90,6 +91,25 @@
         <div class="skill-overview" id="skillOverview"></div>
         <div class="skill-grid" id="skillGrid"></div>
         <p class="empty-state" id="skillEmpty">沒有符合的技能，換個關鍵字試試看。</p>
+      </section>
+
+      <section id="all-workflows" class="content-block">
+        <div class="section-heading">
+          <p class="eyebrow">工作流＋公式</p>
+          <h2>21 條核心工作流，從需求一路做到交付</h2>
+          <p>
+            技能是能力入口，工作流是完整做事順序。每條工作流都列出觸發方式、執行重點、成品與可直接傳給 TGBOT 的公式。
+          </p>
+        </div>
+        <div class="skill-toolbar">
+          <label class="search-field" for="workflowSearch">
+            <span>搜尋工作流</span>
+            <input id="workflowSearch" type="search" placeholder="輸入網站、image2、ComfyUI、NBS、影片、Telegram">
+          </label>
+        </div>
+        <div class="skill-overview" id="workflowOverview"></div>
+        <div class="workflow-grid" id="workflowGrid"></div>
+        <p class="empty-state" id="workflowEmpty">沒有符合的工作流，換個關鍵字試試看。</p>
       </section>
 
       <section id="prompt-formula" class="content-block">
@@ -168,7 +188,7 @@
 規格：繁體中文、手機與桌機都要完整可讀。
 限制：不要混入舊站或其他任務內容。
 完成標準：本機測試、公開部署，再確認網址顯示最新版。</pre>
-            <button type="button" data-copy-target="template-0">複製模板</button>
+            <button type="button" data-copy-target="template-0" data-open-telegram="true">複製並開啟 Telegram</button>
           </article>
           <article class="template-card">
             <strong>做圖模板</strong>
@@ -179,7 +199,7 @@
 規格：9:16、繁體中文、___ 風格。
 素材：本輪沒有素材／本次素材如下：___。
 完成標準：先給精簡確認清單，我回覆確認後再生成。</pre>
-            <button type="button" data-copy-target="template-1">複製模板</button>
+            <button type="button" data-copy-target="template-1" data-open-telegram="true">複製並開啟 Telegram</button>
           </article>
           <article class="template-card">
             <strong>影片模板</strong>
@@ -191,7 +211,7 @@
 素材：本次素材 ___。
 限制：不要混入上一輪角色或舊素材。
 完成標準：輸出影片、檢查畫面與音訊，再回傳成品。</pre>
-            <button type="button" data-copy-target="template-2">複製模板</button>
+            <button type="button" data-copy-target="template-2" data-open-telegram="true">複製並開啟 Telegram</button>
           </article>
           <article class="template-card">
             <strong>一般任務模板</strong>
@@ -202,7 +222,7 @@
 規格：___。
 限制：不要混舊素材／不要固定式回覆／先給確認清單。
 完成標準：直接回可交付結果、檔案、網址或明確卡點。</pre>
-            <button type="button" data-copy-target="template-3">複製模板</button>
+            <button type="button" data-copy-target="template-3" data-open-telegram="true">複製並開啟 Telegram</button>
           </article>
         </div>
       </section>
@@ -210,11 +230,13 @@
     </main>
 
     <footer class="site-footer">
-      <p>公開站用途：幫新手快速理解怎麼跟藍星智能體 / TGBOT 溝通、怎麼選技能、怎麼判斷網站工作流是否完成，並統一使用 image2 API 做圖。</p>
+      <p>公開站用途：幫新手理解怎麼跟藍星智能體 / TGBOT 溝通、怎麼選技能與工作流，以及怎麼用公式直接開始任務。圖片任務依明確指令分流至 image2 API 或 ComfyUI。</p>
       <p>更新日期：2026-07-20</p>
     </footer>
   </div>
 
-  <script src="app.js?v=20260720-content-2"></script>
+  <div class="copy-status" id="copyStatus" role="status" aria-live="polite"></div>
+
+  <script src="app.js?v=20260720-workflows-2"></script>
 </body>
 </html>
