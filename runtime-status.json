@@ -1,39 +1,39 @@
 {
-    "statusKey":  "standby",
-    "statusLabel":  "正常待命",
-    "headline":  "列出所有技能 wbs做成一個說明網站含使用教學 給新手小白一看就會 並公開部署",
-    "currentTaskInstruction":  "列出所有技能 wbs做成一個說明網站含使用教學 給新手小白一看就會 並公開部署",
+    "statusKey":  "running",
+    "statusLabel":  "運作中",
+    "headline":  "tgbot可以一次給幾段訊息 這樣要加進去 怎麼使用tg跟tgbot對話 https://ohyagan-crypto.github.io/owner-work-map-website/` 1、停止所有工作指令：STOP 當龍蝦卡住時，請手",
+    "currentTaskInstruction":  "tgbot可以一次給幾段訊息 這樣要加進去 怎麼使用tg跟tgbot對話 https://ohyagan-crypto.github.io/owner-work-map-website/` 1、停止所有工作指令：STOP 當龍蝦卡住時，請手",
     "blocker":  "沒有卡點",
-    "nextAction":  "有新任務時會更新 Telegram 狀態與本頁快照。",
-    "updatedAt":  "2026-07-20T14:27:11+08:00",
-    "checkedAt":  "2026-07-20T14:27:11+08:00",
+    "nextAction":  "完成後更新交付結果、網址、檔案路徑或明確卡點。",
+    "updatedAt":  "2026-07-20T16:27:14+08:00",
+    "checkedAt":  "2026-07-20T16:27:14+08:00",
     "sourceType":  "local-generator",
     "sourceLabel":  "本機即時狀態產生器",
     "refreshSeconds":  1,
     "token":  {
-                  "totalTokens":  3576652,
-                  "taskCount":  1,
+                  "totalTokens":  28794146,
+                  "taskCount":  5,
                   "source":  "本機 Codex 執行緒紀錄"
               },
     "heartbeat":  {
                       "name":  "蝦咩",
-                      "ageSeconds":  23,
-                      "activeRequests":  0
+                      "ageSeconds":  6,
+                      "activeRequests":  1
                   },
     "tgbot2":  {
                    "name":  "林孟姿",
-                   "statusKey":  "standby",
-                   "statusLabel":  "正常待命",
-                   "ageSeconds":  48,
-                   "activeRequests":  0,
-                   "currentTaskInstruction":  "林孟姿 TGBOT2 最近任務已完成。",
+                   "statusKey":  "running",
+                   "statusLabel":  "運作中",
+                   "ageSeconds":  27,
+                   "activeRequests":  1,
+                   "currentTaskInstruction":  "comfyui做圖 這份文案設計成繁體中文版海報給我，ai科技風格 9：16 再麻煩回傳藍星聚合平台的註冊信箱 ‼️務必先向推薦人索取註冊連接 ‼️註冊完成後，請將「註冊信箱」回傳給我們，我們會協助您開通正式帳號與贈品✨ ⚠️ 重要提醒：",
                    "currentTaskSource":  "tg-openai-bot-2/telegram_request_status.json"
                },
     "tgbot3":  {
                    "name":  "嵐熙",
                    "statusKey":  "standby",
                    "statusLabel":  "正常待命",
-                   "ageSeconds":  19,
+                   "ageSeconds":  33,
                    "activeRequests":  0,
                    "currentTaskInstruction":  "最近完成：字體沒有用預設的 字體再大一號",
                    "currentTaskSource":  "tg-openai-bot-3/telegram_request_status.json"
@@ -44,15 +44,15 @@
                          "label":  "蝦咩心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 23 秒前，執行中任務 0",
+                         "detail":  "心跳 6 秒前，執行中任務 1",
                          "source":  "codex_bot_heartbeat.json"
                      },
                      {
                          "id":  "telegram-request",
                          "label":  "Telegram 任務佇列",
-                         "statusKey":  "standby",
-                         "statusLabel":  "正常待命",
-                         "detail":  "列出所有技能 wbs做成一個說明網站含使用教學 給新手小白一看就會 並公開部署",
+                         "statusKey":  "running",
+                         "statusLabel":  "運作中",
+                         "detail":  "tgbot可以一次給幾段訊息 這樣要加進去 怎麼使用tg跟tgbot對話 https://ohyagan-crypto.github.io/owner-work-map-website/` 1、停止所有工作指令：STOP 當龍蝦卡住時，請手",
                          "source":  "telegram_request_status.json"
                      },
                      {
@@ -60,15 +60,15 @@
                          "label":  "林孟姿心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 48 秒前，執行中任務 0",
+                         "detail":  "心跳 27 秒前，執行中任務 1",
                          "source":  "tg-openai-bot-2/codex_bot_heartbeat.json"
                      },
                      {
                          "id":  "tgbot2-request",
                          "label":  "林孟姿任務佇列",
-                         "statusKey":  "standby",
-                         "statusLabel":  "正常待命",
-                         "detail":  "林孟姿 TGBOT2 最近任務已完成。",
+                         "statusKey":  "running",
+                         "statusLabel":  "運作中",
+                         "detail":  "comfyui做圖 這份文案設計成繁體中文版海報給我，ai科技風格 9：16 再麻煩回傳藍星聚合平台的註冊信箱 ‼️務必先向推薦人索取註冊連接 ‼️註冊完成後，請將「註冊信箱」回傳給我們，我們會協助您開通正式帳號與贈品✨ ⚠️ 重要提醒：",
                          "source":  "tg-openai-bot-2/telegram_request_status.json"
                      },
                      {
@@ -76,7 +76,7 @@
                          "label":  "嵐熙心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 19 秒前，執行中任務 0",
+                         "detail":  "心跳 33 秒前，執行中任務 0",
                          "source":  "tg-openai-bot-3/codex_bot_heartbeat.json"
                      },
                      {
@@ -92,7 +92,7 @@
                          "label":  "Codex token 統計",
                          "statusKey":  "running",
                          "statusLabel":  "已讀取",
-                         "detail":  "3576652 tokens，任務 1",
+                         "detail":  "28794146 tokens，任務 5",
                          "source":  "本機 Codex 執行緒紀錄"
                      },
                      {
@@ -108,7 +108,7 @@
                          "label":  "狀態產生器",
                          "statusKey":  "running",
                          "statusLabel":  "已更新",
-                         "detail":  "產生時間 2026-07-20 14:27:11",
+                         "detail":  "產生時間 2026-07-20 16:27:14",
                          "source":  "tools/update-runtime-status.ps1"
                      },
                      {

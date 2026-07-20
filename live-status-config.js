@@ -1,1 +1,1 @@
-window.OWNER_LIVE_STATUS_ENDPOINT = "https://mental-retailers-treo-conceptual.trycloudflare.com";
+window.OWNER_LIVE_STATUS_ENDPOINT = "https://mention-margaret-trace-requests.trycloudflare.com";
