@@ -53,6 +53,13 @@ const tgGuideNotes = [
   "如果你只是補一句話，最穩的做法是直接回覆原任務；如果是全新任務，就重新發一則完整指令。"
 ];
 
+const tgChunkNotes = [
+  "可以，但不要無限制亂切。同一個任務可以分段補充，只要每段都還是在補同一件事，TGBOT 就能接著理解。",
+  "最穩的順序是：先講主題，再補規格，再補限制；最後要收口，例如「以上同一任務，請開始」或「先給我確認清單」。",
+  "有素材時要明確標示「本次素材」或「參考圖」，不要讓舊任務圖片被誤認成這次素材。",
+  "不要一直拆成很多很短的片段，也不要把新舊任務混在一起；如果換新任務，就直接重新完整下新指令。"
+];
+
 const formulaItems = [
   {
     step: "01",
@@ -331,6 +338,13 @@ function renderTgGuide() {
     <strong>TGBOT 一次可以回幾段？</strong>
     <ul class="checklist">
       ${tgGuideNotes.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+    </ul>
+  `;
+
+  $("#tgChunkPanel").innerHTML = `
+    <strong>TGBOT 可以一直分段下指令嗎？</strong>
+    <ul class="checklist">
+      ${tgChunkNotes.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
     </ul>
   `;
 }
