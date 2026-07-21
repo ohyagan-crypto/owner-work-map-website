@@ -343,6 +343,11 @@ const workflows = [
     formula: "wbs 更新／建立 ___ 網站。\n內容：___。\n規格：繁體中文，手機與桌機都要清楚可用。\n功能：___。\n完成標準：本機驗證、公開部署，並確認公開網址顯示最新版。"
   },
   {
+    name: "網站監控系統建置", category: "網站", trigger: "做監控網站、建立狀態儀表板、即時監控系統、SSE 監控",
+    summary: "建立 GitHub Pages 監控前端、本機狀態產生器與即時 API／SSE；即時服務失效時自動改讀公開狀態快照。", output: "公開監控網址＋即時監控服務＋狀態快照與操作驗證",
+    formula: "wbs 建立／更新網站監控系統。\n監控對象：___。\n要顯示的狀態：程序、心跳、目前任務、最後更新時間、錯誤摘要、用量統計 ___。\n架構：GitHub Pages 負責公開前端；本機程式產生 runtime-status.json；即時服務提供 /api/status 與 /api/events（SSE）；即時服務無法連線時自動改讀公開快照。\n控制功能：___（例如檢查、救援、停止、重啟）；敏感操作必須在伺服器端驗證操作碼或授權，不可把密碼、Token、Cookie 或金鑰放進前端。\n更新方式：狀態變更時用 SSE 推送，並保留定時輪詢與快照備援。\n介面要求：繁體中文，手機與桌機都清楚，顯示資料來源、最後更新時間、連線中斷與備援模式。\n完成標準：本機狀態資料可更新、API／SSE 或快照備援可讀、控制功能實測、公開部署完成，並確認公開網址顯示最新版。"
+  },
+  {
     name: "image2 API 做圖", category: "圖片", trigger: "image2、image2 API、gpt-image-2",
     summary: "只走 image2 外部 API；先整理精簡確認清單，收到確認後才生成與驗字。", output: "PNG 原圖",
     formula: "image2 API 做圖。\n內容：___。\n成品：___ 張 PNG。\n規格：___ 比例、繁體中文、___ 風格。\n素材：本輪沒有素材／本次素材如下：___。\n先給我精簡確認清單，確認後再生成。"
@@ -462,7 +467,7 @@ let workflowSearchTerm = "";
 let skillMode = "beginner";
 let workflowMode = "beginner";
 const beginnerSkills = new Set(["wbs", "做圖", "teaching-step-images", "hfsw", "nbs", "pdf", "telegram-bot-manager", "telegram-two-stage-reply", "bb-browser", "playwright"]);
-const beginnerWorkflows = new Set(["WBS 網站建置與公開部署", "image2 API 做圖", "教學步驟圖", "HFSW 長影片製作", "NBS NotebookLM 摘要", "Telegram Bot 管理與修復", "LINE 官方客服工作流"]);
+const beginnerWorkflows = new Set(["WBS 網站建置與公開部署", "網站監控系統建置", "image2 API 做圖", "教學步驟圖", "HFSW 長影片製作", "NBS NotebookLM 摘要", "Telegram Bot 管理與修復", "LINE 官方客服工作流"]);
 
 const $ = (selector) => document.querySelector(selector);
 
