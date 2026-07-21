@@ -1,4 +1,4 @@
-const CACHE_NAME = "blue-star-agent-v2";
+const CACHE_NAME = "tutorial-site-v3";
 const APP_SHELL = [
   "./",
   "./index.html",
