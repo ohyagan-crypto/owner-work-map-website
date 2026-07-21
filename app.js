@@ -28,13 +28,13 @@ const githubStartSteps = [
   },
   {
     step: "2",
-    title: "私下提供帳號與授權",
-    summary: "將 Gmail 帳號交給指定授權人員協助操作。密碼只可在安全、私密的登入流程使用，不可貼在公開頁面或群組。"
+    title: "授權 TGBOT 操作瀏覽器",
+    summary: "私下提供要綁定的 Gmail，讓 TGBOT 開啟 Google 與 GitHub 登入頁面；密碼只在安全登入欄位使用，不可貼到網站或群組。"
   },
   {
     step: "3",
-    title: "開啟 GitHub 登入",
-    summary: "前往 github.com/login，選擇使用 Google 繼續，並核對畫面顯示的是指定 Gmail。"
+    title: "由 TGBOT 開啟登入頁",
+    summary: "TGBOT 操作瀏覽器前往 github.com/login，選擇使用 Google 繼續，並核對畫面顯示的是指定 Gmail。"
   },
   {
     step: "4",
@@ -54,8 +54,8 @@ const githubStartSteps = [
 ];
 
 const githubStartNotes = [
-  "已有 Google 帳號時，直接使用指定 Gmail 綁定或登入 GitHub。",
-  "帳號與密碼僅限私下交給指定授權人員，不可公開張貼或寫入網站。",
+  "已有 Google 帳號時，直接讓 TGBOT 操作瀏覽器使用指定 Gmail 綁定或登入 GitHub。",
+  "密碼只在安全登入流程中使用，不可公開張貼、寫入網站或傳到群組。",
   "驗證碼、兩步驗證、Passkey 與安全確認必須由帳號本人完成。",
   "綁定後要確認 GitHub 帳號、信箱與建立程式庫功能皆正常。"
 ];
@@ -64,7 +64,7 @@ const taskMapItems = [
   {
     tag: "網站 / 公開部署",
     title: "第一次做網站，先綁定 GitHub",
-    summary: "使用既有 Google 帳號完成 GitHub 綁定與登入，再進入新站、改版、公開部署與網址驗收。",
+    summary: "先讓 TGBOT 操作瀏覽器，以既有 Google 帳號完成 GitHub 綁定與登入，再進入新站、改版、公開部署與網址驗收。",
     jump: "#github-start",
     action: "先看 GitHub 起步"
   },
@@ -311,7 +311,7 @@ const templates = [
   {
     title: "網站模板",
     description: "最適合要做公開網站的人。",
-    prompt: "wbs 做一個公開網站。\n我已有 Google 帳號，請協助用指定 Gmail 綁定或登入 GitHub；遇到驗證碼或兩步驗證時通知我本人完成。\n主題：___\n成品：公開網址。\n規格：繁體中文、手機版可讀、桌機版完整。\n限制：不要混舊站內容。\n完成標準：本機驗證後公開部署，網址真的打得開。"
+    prompt: "wbs 做一個公開網站。\n請讓 TGBOT 操作瀏覽器，使用指定 Gmail 登入 Google 並綁定或登入 GitHub；遇到驗證碼、兩步驗證、Passkey 或安全確認時通知我本人完成。\n主題：___\n成品：公開網址。\n規格：繁體中文、手機版可讀、桌機版完整。\n限制：不要混舊站內容。\n完成標準：本機驗證後公開部署，網址真的打得開。"
   },
   {
     title: "做圖模板",
@@ -379,8 +379,8 @@ const skills = [
 const workflows = [
   {
     name: "WBS 網站建置與公開部署", category: "網站", trigger: "wbs、做網站、更新網站、公開部署",
-    summary: "先用既有 Google 帳號完成 GitHub 綁定與登入，再修改真實網站檔案、驗證手機與桌機，最後確認公開網址是最新版。", output: "公開網址＋可維護的網站原始檔",
-    formula: "wbs 更新／建立 ___ 網站。\n我已有 Google 帳號，請協助用指定 Gmail 綁定或登入 GitHub；遇到驗證碼或兩步驗證時通知我本人完成。\n內容：___。\n規格：繁體中文，手機與桌機都要清楚可用。\n功能：___。\n完成標準：本機驗證、公開部署，並確認公開網址顯示最新版。"
+    summary: "先讓 TGBOT 操作瀏覽器，以既有 Google 帳號完成 GitHub 綁定與登入，再修改真實網站檔案、驗證手機與桌機，最後確認公開網址是最新版。", output: "公開網址＋可維護的網站原始檔",
+    formula: "wbs 更新／建立 ___ 網站。\n請讓 TGBOT 操作瀏覽器，使用指定 Gmail 登入 Google 並綁定或登入 GitHub；遇到驗證碼、兩步驗證、Passkey 或安全確認時通知我本人完成。\n內容：___。\n規格：繁體中文，手機與桌機都要清楚可用。\n功能：___。\n完成標準：本機驗證、公開部署，並確認公開網址顯示最新版。"
   },
   {
     name: "網站監控系統建置", category: "網站", trigger: "做監控網站、建立狀態儀表板、即時監控系統、SSE 監控",
