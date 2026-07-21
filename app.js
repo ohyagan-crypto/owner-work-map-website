@@ -20,13 +20,53 @@ const quickStartItems = [
   }
 ];
 
+const githubStartSteps = [
+  {
+    step: "1",
+    title: "開啟 GitHub 註冊頁",
+    summary: "使用你平常登入 Google 的瀏覽器，前往 github.com/signup，先確認網址是 github.com。"
+  },
+  {
+    step: "2",
+    title: "選擇「使用 Google 繼續」",
+    summary: "在註冊畫面點選 Continue with Google，不需要另外輸入一組新的 GitHub 註冊信箱。"
+  },
+  {
+    step: "3",
+    title: "選對 Google 帳號",
+    summary: "選擇之後要長期管理網站的 Google 帳號。多人共用時，先確認這是網站負責人的正式帳號。"
+  },
+  {
+    step: "4",
+    title: "完成 Google 授權",
+    summary: "確認 GitHub 顯示的服務名稱與申請權限後繼續，讓 Google 身分用於 GitHub 社群登入。"
+  },
+  {
+    step: "5",
+    title: "設定 GitHub 使用者名稱",
+    summary: "依畫面設定唯一的 GitHub 使用者名稱。日後網站網址與程式庫名稱都可能使用這個名稱。"
+  },
+  {
+    step: "6",
+    title: "完成信箱驗證與安全設定",
+    summary: "依 GitHub 提示完成信箱驗證。登入成功後，建議再設定密碼、通行密鑰或兩步驟驗證，避免帳號遺失。"
+  }
+];
+
+const githubStartNotes = [
+  "Google 登入是 GitHub 官方支援的社群登入方式。",
+  "建立帳號後仍要完成信箱驗證，才能正常建立程式庫等基本功能。",
+  "GitHub 使用者名稱要簡短、好辨識，建立前先確認拼字。",
+  "不要把 Google 密碼、驗證碼、GitHub 權杖或恢復碼傳給任何人。"
+];
+
 const taskMapItems = [
   {
     tag: "網站 / 公開部署",
-    title: "你要的是網址，不是只有畫面",
-    summary: "如果你要新站、改版、融合兩個網站、公開部署，先看模板和完整工作流，不要只盯著單一流程區塊。",
-    jump: "#all-workflows?category=網站",
-    action: "看網站工作流"
+    title: "第一次做網站，先完成 GitHub 帳號",
+    summary: "先用 Google 建立 GitHub 帳號並完成信箱驗證，再進入新站、改版、公開部署與網址驗收。",
+    jump: "#github-start",
+    action: "先看 GitHub 起步"
   },
   {
     tag: "圖片 / 海報 / 教學圖",
@@ -271,7 +311,7 @@ const templates = [
   {
     title: "網站模板",
     description: "最適合要做公開網站的人。",
-    prompt: "wbs 做一個公開網站。\n主題：___\n成品：公開網址。\n規格：繁體中文、手機版可讀、桌機版完整。\n限制：不要混舊站內容。\n完成標準：本機驗證後公開部署，網址真的打得開。"
+    prompt: "wbs 做一個公開網站。\n如果我還沒有 GitHub 帳號，先教我用 Google 建立並完成信箱驗證。\n主題：___\n成品：公開網址。\n規格：繁體中文、手機版可讀、桌機版完整。\n限制：不要混舊站內容。\n完成標準：本機驗證後公開部署，網址真的打得開。"
   },
   {
     title: "做圖模板",
@@ -339,8 +379,8 @@ const skills = [
 const workflows = [
   {
     name: "WBS 網站建置與公開部署", category: "網站", trigger: "wbs、做網站、更新網站、公開部署",
-    summary: "修改真實網站檔案，完成手機與桌機驗證，再推送並確認公開網址是最新版。", output: "公開網址＋可維護的網站原始檔",
-    formula: "wbs 更新／建立 ___ 網站。\n內容：___。\n規格：繁體中文，手機與桌機都要清楚可用。\n功能：___。\n完成標準：本機驗證、公開部署，並確認公開網址顯示最新版。"
+    summary: "新手先完成 Google 社群登入與 GitHub 信箱驗證，再修改真實網站檔案、驗證手機與桌機，最後確認公開網址是最新版。", output: "公開網址＋可維護的網站原始檔",
+    formula: "wbs 更新／建立 ___ 網站。\n如果我還沒有 GitHub 帳號，先教我用 Google 建立並完成信箱驗證。\n內容：___。\n規格：繁體中文，手機與桌機都要清楚可用。\n功能：___。\n完成標準：本機驗證、公開部署，並確認公開網址顯示最新版。"
   },
   {
     name: "網站監控系統建置", category: "網站", trigger: "做監控網站、建立狀態儀表板、即時監控系統、SSE 監控",
@@ -516,6 +556,28 @@ function renderQuickStart() {
       `
     )
     .join("");
+}
+
+function renderGithubStart() {
+  const stepGrid = $("#githubStepGrid");
+  const noteList = $("#githubNoteList");
+  if (!stepGrid || !noteList) return;
+
+  stepGrid.innerHTML = githubStartSteps
+    .map(
+      (item) => `
+        <article class="github-step-card">
+          <span class="github-step-number">${escapeHtml(item.step)}</span>
+          <div>
+            <strong>${escapeHtml(item.title)}</strong>
+            <p>${escapeHtml(item.summary)}</p>
+          </div>
+        </article>
+      `
+    )
+    .join("");
+
+  noteList.innerHTML = githubStartNotes.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
 }
 
 function renderErrorGuide() {
@@ -1060,6 +1122,7 @@ function bindEvents() {
 
 function init() {
   renderHeroStats();
+  renderGithubStart();
   renderQuickStart();
   renderTaskMap();
   renderErrorGuide();
