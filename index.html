@@ -8,14 +8,20 @@
     name="description"
     content="給新手小白的一頁式藍星智能體技能與工作流教學站，整理 43 個主技能、18 條核心工作流與可複製指令公式。"
   >
+  <meta name="theme-color" content="#07111f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="藍星智能體">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/app-icon-192.svg">
+  <link rel="manifest" href="manifest.webmanifest">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
     href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Space+Grotesk:wght@500;700&display=swap"
     rel="stylesheet"
   >
-  <link rel="stylesheet" href="styles.css?v=20260720-layout-refresh-1">
+  <link rel="stylesheet" href="styles.css?v=20260721-tg-guide-2">
 </head>
 <body>
   <div class="page-shell">
@@ -46,10 +52,11 @@
       <a href="#task-map">任務入口</a>
       <a href="#templates">直接照抄</a>
       <a href="#prompt-formula">公式結構</a>
-      <a href="#tg-guide">TG 對話</a>
+      <a href="#tg-guide">TG 操作指南</a>
       <a href="#all-skills">所有技能</a>
       <a href="#all-workflows">所有工作流</a>
       <a href="#talk-style">對話方式</a>
+      <button type="button" class="nav-install-button" id="openInstallApp">下載 App</button>
     </nav>
 
     <main>
@@ -90,11 +97,13 @@
 
       <section id="tg-guide" class="content-block">
         <div class="section-heading">
-          <p class="eyebrow">TG 對話</p>
-          <h2>怎麼用 Telegram 跟 TGBOT 對話，才不會卡住</h2>
-          <p>這一段是給第一次用的人看的。照下面 5 條做，會比一直補問「好了沒」更快拿到結果；如果要分段補充，也要讓每段都屬於同一個任務。</p>
+          <p class="eyebrow">TG 操作指南</p>
+          <h2>圖片、影片、檔案和指令要在同一則訊息送出</h2>
+          <p>最重要的規則是：先選好本次素材，再於同一則訊息的文字欄寫清楚任務，一起送給 TGBOT。照下面 8 條操作，能大幅降低漏讀素材、混到舊任務或交付順序錯亂。</p>
         </div>
+        <div class="tg-send-panel" id="tgSendPanel"></div>
         <div class="tg-guide-grid" id="tgGuideGrid"></div>
+        <div class="line-support-panel" id="lineSupportPanel"></div>
         <div class="tg-note-panel" id="tgNotePanel"></div>
         <div class="tg-note-panel" id="tgChunkPanel"></div>
       </section>
@@ -183,14 +192,30 @@
 
     <footer class="site-footer">
       <p>公開站用途：幫新手理解怎麼跟藍星智能體 / TGBOT 溝通、怎麼選技能與工作流，以及怎麼用公式直接開始任務。圖片任務依明確指令分流至 image2 API 或 ComfyUI。</p>
-      <p>更新日期：2026-07-20</p>
+      <p>更新日期：2026-07-21</p>
     </footer>
   </div>
 
   <button type="button" class="back-to-top" id="backToTop" aria-label="快速回到最上面">↑</button>
   <div class="copy-status" id="copyStatus" role="status" aria-live="polite"></div>
 
-  <script src="app.js?v=20260720-line-service-1"></script>
+  <div class="install-app-modal" id="installAppModal" role="dialog" aria-modal="true" aria-labelledby="installAppTitle" hidden>
+    <div class="install-app-backdrop" data-install-close></div>
+    <div class="install-app-dialog" role="document">
+      <button type="button" class="install-app-close" data-install-close aria-label="關閉下載提示">×</button>
+      <img class="install-app-icon" src="assets/app-icon-192.svg" alt="">
+      <p class="install-app-kicker">藍星智能體</p>
+      <h2 id="installAppTitle">下載 App，之後直接從主畫面開啟</h2>
+      <p class="install-app-copy">安裝後不必再找網址，手機與電腦都能像 App 一樣快速開啟。</p>
+      <div class="install-app-instructions" id="installAppInstructions" aria-live="polite"></div>
+      <div class="install-app-actions">
+        <button type="button" class="install-app-primary" id="installAppButton">下載 App</button>
+        <button type="button" class="install-app-secondary" data-install-close>暫時不要</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js?v=20260721-pwa-install-1"></script>
 </body>
 </html>
 

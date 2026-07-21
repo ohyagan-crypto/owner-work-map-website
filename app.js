@@ -59,8 +59,8 @@ const tgGuideItems = [
   },
   {
     step: "2",
-    title: "指令和內容一起送",
-    summary: "上傳照片、檔案或截圖時，請同時在下方輸入欄寫明任務內容，一起送出。不要只丟素材不講要做什麼。"
+    title: "附件和指令同一則送出",
+    summary: "選取圖片、影片或檔案後，直接在同一則訊息的文字欄寫明任務，再一起按送出。不要先傳附件、隔一則才補指令。"
   },
   {
     step: "3",
@@ -76,8 +76,37 @@ const tgGuideItems = [
     step: "5",
     title: "新任務就重新講完整",
     summary: "如果不是延續上一件事，請直接重講完整需求，不要只丟「這個、上一張、照剛剛」。這樣最不容易混到舊任務。"
+  },
+  {
+    step: "6",
+    title: "一個任務完成，再送下一個",
+    summary: "盡量等目前任務收到成品、網址或明確結果後，再傳第二個任務。這樣能避免兩件事互相插隊、素材混用或交付順序錯亂。"
+  },
+  {
+    step: "7",
+    title: "出錯先等 5～10 分鐘再試",
+    summary: "智能體不是萬能，偶爾會遇到平台忙碌、連線不穩或判斷錯誤。先等 5～10 分鐘再操作一次；如果連續無法操作，請直接聯繫客服。"
+  },
+  {
+    step: "8",
+    title: "看到成品才算完成",
+    summary: "圖片、影片、文件要真的回到目前對話，網站要能打開最新版網址。只看到開始、排隊、處理中或本機路徑，都還不算交付完成。"
   }
 ];
+
+const tgSendFormula = `本次任務：___。
+成品：___。
+規格：___。
+本次素材：已隨這則訊息附上，共 ___ 個，順序為 ___。
+限制：不要使用歷史附件或舊任務素材。
+完成標準：驗證完成後，將成品回傳目前這個 Telegram 對話。`;
+
+const lineSupportFormula = `執行 LINE 官方客服工作流。
+目標官方帳號：___。
+客戶最新訊息：___。
+相關截圖／訂單／錯誤內容：___。
+處理要求：先判斷問題，再提供可直接傳給客戶的繁體中文回覆；需要時檢查訊息轉送與連線狀態。
+注意：不要公開密碼、Token 或客戶個資；退款、付款爭議、補償與帳號安全問題交由負責人確認。`;
 
 const tgGuideNotes = [
   "TGBOT 可以一次連續回多段訊息，沒有固定只限 1 段。長回覆會自動拆開送出，避免 Telegram 單則上限截斷。",
@@ -468,6 +497,28 @@ function renderTaskMap() {
 
 function renderTgGuide() {
   const container = $("#tgGuideGrid");
+
+  $("#tgSendPanel").innerHTML = `
+    <div class="tg-send-copy">
+      <span class="support-kicker">最重要的發送方式</span>
+      <strong>先選附件，再把任務寫在同一則訊息裡</strong>
+      <p>圖片、影片、PDF、PPT、音訊或其他檔案都適用。多個素材請一次選取，並在文字裡標示數量、順序與用途。</p>
+      <button class="copy-button tg-send-copy-button" type="button" data-copy="${escapeHtml(tgSendFormula)}">複製附件任務格式</button>
+    </div>
+    <div class="tg-send-examples" aria-label="Telegram 正確與錯誤發送方式">
+      <div class="send-example is-correct">
+        <span>正確</span>
+        <strong>附件＋完整指令，一次送出</strong>
+        <p>本次素材 3 張，依順序做成 3 張 9:16 教學圖，先給確認清單。</p>
+      </div>
+      <div class="send-example is-wrong">
+        <span>容易出錯</span>
+        <strong>先丟附件，下一則只說「幫我做」</strong>
+        <p>指令和素材分開，容易被判成不同任務，也可能混到上一輪附件。</p>
+      </div>
+    </div>
+  `;
+
   container.innerHTML = tgGuideItems
     .map(
       (item) => `
@@ -479,6 +530,18 @@ function renderTgGuide() {
       `
     )
     .join("");
+
+  $("#lineSupportPanel").innerHTML = `
+    <div class="support-panel-copy">
+      <span class="support-kicker">LINE 官方客服工作流</span>
+      <strong>客戶問題、帳號開通與系統異常，都先整理成一個完整任務</strong>
+      <p>附上目標官方帳號、客戶最新訊息與相關截圖。智能體會先判斷問題，整理可直接使用的繁體中文回覆；涉及退款、補償、付款或帳號安全時，會保留給負責人確認。</p>
+    </div>
+    <div class="support-panel-actions">
+      <button class="copy-button support-copy" type="button" data-copy="${escapeHtml(lineSupportFormula)}">複製 LINE 客服公式</button>
+      <a class="support-link" href="#all-workflows">查看完整工作流</a>
+    </div>
+  `;
 
   $("#tgNotePanel").innerHTML = `
     <strong>TGBOT 一次可以回幾段？</strong>
@@ -748,12 +811,15 @@ function bindEvents() {
   });
 
   document.addEventListener("click", async (event) => {
-    const button = event.target.closest("button[data-copy-target]");
+    const button = event.target.closest("button[data-copy-target], button[data-copy]");
     if (!button) return;
-    const target = document.getElementById(button.getAttribute("data-copy-target"));
-    if (!target) return;
-    const defaultLabel = button.getAttribute("data-copy-label") || "複製模板";
-    const text = target.textContent.trim();
+    const target = button.getAttribute("data-copy-target")
+      ? document.getElementById(button.getAttribute("data-copy-target"))
+      : null;
+    if (button.hasAttribute("data-copy-target") && !target) return;
+    const defaultLabel = button.getAttribute("data-copy-label") || button.textContent.trim() || "複製";
+    const text = target ? target.textContent.trim() : button.getAttribute("data-copy");
+    if (!text) return;
     try {
       await navigator.clipboard.writeText(text);
       button.textContent = "已複製";
