@@ -1,30 +1,30 @@
 {
-    "statusKey":  "running",
-    "statusLabel":  "運作中",
-    "headline":  "繼續",
-    "currentTaskInstruction":  "繼續",
+    "statusKey":  "completed",
+    "statusLabel":  "已回覆完成",
+    "headline":  "打完了不用再回報了",
+    "currentTaskInstruction":  "打完了不用再回報了",
     "blocker":  "沒有卡點",
-    "nextAction":  "完成後更新交付結果、網址、檔案路徑或明確卡點。",
-    "updatedAt":  "2026-07-21T17:27:11+08:00",
-    "checkedAt":  "2026-07-21T17:27:11+08:00",
+    "nextAction":  "可直接查看 Telegram 回覆結果。",
+    "updatedAt":  "2026-07-21T18:27:11+08:00",
+    "checkedAt":  "2026-07-21T18:27:11+08:00",
     "sourceType":  "local-generator",
     "sourceLabel":  "本機即時狀態產生器",
     "refreshSeconds":  1,
     "token":  {
-                  "totalTokens":  83977719,
+                  "totalTokens":  90785644,
                   "taskCount":  2,
                   "source":  "本機 Codex 執行緒紀錄"
               },
     "heartbeat":  {
                       "name":  "蝦咩",
-                      "ageSeconds":  2,
+                      "ageSeconds":  8,
                       "activeRequests":  1
                   },
     "tgbot2":  {
                    "name":  "林孟姿",
                    "statusKey":  "standby",
                    "statusLabel":  "正常待命",
-                   "ageSeconds":  7,
+                   "ageSeconds":  2,
                    "activeRequests":  0,
                    "currentTaskInstruction":  "最近完成：確認",
                    "currentTaskSource":  "tg-openai-bot-2/telegram_request_status.json"
@@ -33,7 +33,7 @@
                    "name":  "嵐熙",
                    "statusKey":  "blocked",
                    "statusLabel":  "卡點",
-                   "ageSeconds":  32,
+                   "ageSeconds":  26,
                    "activeRequests":  0,
                    "currentTaskInstruction":  "把line客服工作流也加進去",
                    "currentTaskSource":  "tg-openai-bot-3/telegram_request_status.json"
@@ -44,15 +44,15 @@
                          "label":  "蝦咩心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 2 秒前，執行中任務 1",
+                         "detail":  "心跳 8 秒前，執行中任務 1",
                          "source":  "codex_bot_heartbeat.json"
                      },
                      {
                          "id":  "telegram-request",
                          "label":  "Telegram 任務佇列",
-                         "statusKey":  "running",
-                         "statusLabel":  "運作中",
-                         "detail":  "繼續",
+                         "statusKey":  "completed",
+                         "statusLabel":  "已回覆完成",
+                         "detail":  "打完了不用再回報了",
                          "source":  "telegram_request_status.json"
                      },
                      {
@@ -60,7 +60,7 @@
                          "label":  "林孟姿心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 7 秒前，執行中任務 0",
+                         "detail":  "心跳 2 秒前，執行中任務 0",
                          "source":  "tg-openai-bot-2/codex_bot_heartbeat.json"
                      },
                      {
@@ -76,7 +76,7 @@
                          "label":  "嵐熙心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 32 秒前，執行中任務 0",
+                         "detail":  "心跳 26 秒前，執行中任務 0",
                          "source":  "tg-openai-bot-3/codex_bot_heartbeat.json"
                      },
                      {
@@ -92,7 +92,7 @@
                          "label":  "Codex token 統計",
                          "statusKey":  "running",
                          "statusLabel":  "已讀取",
-                         "detail":  "83977719 tokens，任務 2",
+                         "detail":  "90785644 tokens，任務 2",
                          "source":  "本機 Codex 執行緒紀錄"
                      },
                      {
@@ -108,7 +108,7 @@
                          "label":  "狀態產生器",
                          "statusKey":  "running",
                          "statusLabel":  "已更新",
-                         "detail":  "產生時間 2026-07-21 17:27:11",
+                         "detail":  "產生時間 2026-07-21 18:27:11",
                          "source":  "tools/update-runtime-status.ps1"
                      },
                      {
