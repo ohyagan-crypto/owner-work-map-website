@@ -1,12 +1,12 @@
 {
-    "statusKey":  "running",
-    "statusLabel":  "運作中",
-    "headline":  "做網站 wbs 相關 要先教學怎麼用google綁定guthub帳號",
-    "currentTaskInstruction":  "做網站 wbs 相關 要先教學怎麼用google綁定guthub帳號",
+    "statusKey":  "completed",
+    "statusLabel":  "已回覆完成",
+    "headline":  "是要讓tgbot操作瀏覽器登入google綁定gub",
+    "currentTaskInstruction":  "是要讓tgbot操作瀏覽器登入google綁定gub",
     "blocker":  "沒有卡點",
-    "nextAction":  "完成後更新交付結果、網址、檔案路徑或明確卡點。",
-    "updatedAt":  "2026-07-21T12:27:12+08:00",
-    "checkedAt":  "2026-07-21T12:27:12+08:00",
+    "nextAction":  "可直接查看 Telegram 回覆結果。",
+    "updatedAt":  "2026-07-21T13:27:11+08:00",
+    "checkedAt":  "2026-07-21T13:27:11+08:00",
     "sourceType":  "local-generator",
     "sourceLabel":  "本機即時狀態產生器",
     "refreshSeconds":  1,
@@ -17,14 +17,14 @@
               },
     "heartbeat":  {
                       "name":  "蝦咩",
-                      "ageSeconds":  0,
-                      "activeRequests":  1
+                      "ageSeconds":  15,
+                      "activeRequests":  0
                   },
     "tgbot2":  {
                    "name":  "林孟姿",
                    "statusKey":  "standby",
                    "statusLabel":  "正常待命",
-                   "ageSeconds":  26,
+                   "ageSeconds":  22,
                    "activeRequests":  0,
                    "currentTaskInstruction":  "最近完成：確認",
                    "currentTaskSource":  "tg-openai-bot-2/telegram_request_status.json"
@@ -33,7 +33,7 @@
                    "name":  "嵐熙",
                    "statusKey":  "blocked",
                    "statusLabel":  "卡點",
-                   "ageSeconds":  4,
+                   "ageSeconds":  0,
                    "activeRequests":  0,
                    "currentTaskInstruction":  "把line客服工作流也加進去",
                    "currentTaskSource":  "tg-openai-bot-3/telegram_request_status.json"
@@ -44,15 +44,15 @@
                          "label":  "蝦咩心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 0 秒前，執行中任務 1",
+                         "detail":  "心跳 15 秒前，執行中任務 0",
                          "source":  "codex_bot_heartbeat.json"
                      },
                      {
                          "id":  "telegram-request",
                          "label":  "Telegram 任務佇列",
-                         "statusKey":  "running",
-                         "statusLabel":  "運作中",
-                         "detail":  "做網站 wbs 相關 要先教學怎麼用google綁定guthub帳號",
+                         "statusKey":  "completed",
+                         "statusLabel":  "已回覆完成",
+                         "detail":  "是要讓tgbot操作瀏覽器登入google綁定gub",
                          "source":  "telegram_request_status.json"
                      },
                      {
@@ -60,7 +60,7 @@
                          "label":  "林孟姿心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 26 秒前，執行中任務 0",
+                         "detail":  "心跳 22 秒前，執行中任務 0",
                          "source":  "tg-openai-bot-2/codex_bot_heartbeat.json"
                      },
                      {
@@ -76,7 +76,7 @@
                          "label":  "嵐熙心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 4 秒前，執行中任務 0",
+                         "detail":  "心跳 0 秒前，執行中任務 0",
                          "source":  "tg-openai-bot-3/codex_bot_heartbeat.json"
                      },
                      {
@@ -108,7 +108,7 @@
                          "label":  "狀態產生器",
                          "statusKey":  "running",
                          "statusLabel":  "已更新",
-                         "detail":  "產生時間 2026-07-21 12:27:12",
+                         "detail":  "產生時間 2026-07-21 13:27:11",
                          "source":  "tools/update-runtime-status.ps1"
                      },
                      {
