@@ -441,6 +441,11 @@ let workflowSearchTerm = "";
 
 const $ = (selector) => document.querySelector(selector);
 
+const installPromptDismissedKey = "blue-star-agent-install-prompt-dismissed-v1";
+let deferredInstallPrompt = null;
+let installPromptTimer = null;
+let installPromptPreviousFocus = null;
+
 function escapeHtml(value) {
   return String(value)
     .replace(/&/g, "&amp;")
@@ -789,6 +794,134 @@ function toggleBackToTop() {
   button.classList.toggle("is-visible", window.scrollY > 320);
 }
 
+function isInstalledApp() {
+  return window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+}
+
+function isIosDevice() {
+  return /iphone|ipad|ipod/i.test(window.navigator.userAgent);
+}
+
+function showInstallInstructions(message) {
+  const instructions = $("#installAppInstructions");
+  const button = $("#installAppButton");
+  if (!instructions || !button) return;
+  instructions.textContent = message;
+  instructions.classList.add("is-visible");
+  button.textContent = "我知道了";
+  button.dataset.action = "close";
+}
+
+function prepareInstallDialog() {
+  const instructions = $("#installAppInstructions");
+  const button = $("#installAppButton");
+  if (!instructions || !button) return;
+
+  instructions.classList.remove("is-visible");
+  instructions.textContent = "";
+  button.dataset.action = "install";
+  button.textContent = "下載 App";
+
+  if (isIosDevice() && !deferredInstallPrompt) {
+    showInstallInstructions("iPhone／iPad：點選瀏覽器的「分享」，再選擇「加入主畫面」。");
+  }
+}
+
+function openInstallDialog({ manual = false } = {}) {
+  const modal = $("#installAppModal");
+  if (!modal || isInstalledApp()) return;
+  if (!manual && window.localStorage.getItem(installPromptDismissedKey)) return;
+
+  window.clearTimeout(installPromptTimer);
+  installPromptPreviousFocus = document.activeElement;
+  prepareInstallDialog();
+  modal.hidden = false;
+  document.body.classList.add("install-modal-open");
+  window.setTimeout(() => $("#installAppButton")?.focus(), 0);
+}
+
+function closeInstallDialog({ remember = true } = {}) {
+  const modal = $("#installAppModal");
+  if (!modal || modal.hidden) return;
+  modal.hidden = true;
+  document.body.classList.remove("install-modal-open");
+  if (remember) window.localStorage.setItem(installPromptDismissedKey, "1");
+  if (installPromptPreviousFocus instanceof HTMLElement) installPromptPreviousFocus.focus();
+}
+
+async function installApp() {
+  const button = $("#installAppButton");
+  if (!button) return;
+
+  if (button.dataset.action === "close") {
+    closeInstallDialog();
+    return;
+  }
+
+  if (!deferredInstallPrompt) {
+    const message = isIosDevice()
+      ? "iPhone／iPad：點選瀏覽器的「分享」，再選擇「加入主畫面」。"
+      : "請開啟瀏覽器選單，選擇「安裝應用程式」或「加到主畫面」。";
+    showInstallInstructions(message);
+    return;
+  }
+
+  deferredInstallPrompt.prompt();
+  const choice = await deferredInstallPrompt.userChoice;
+  deferredInstallPrompt = null;
+  if (choice.outcome === "accepted") {
+    window.localStorage.removeItem(installPromptDismissedKey);
+    closeInstallDialog({ remember: false });
+    $("#openInstallApp").hidden = true;
+  } else {
+    closeInstallDialog();
+  }
+}
+
+function bindInstallApp() {
+  const openButton = $("#openInstallApp");
+  const installButton = $("#installAppButton");
+  const modal = $("#installAppModal");
+  if (!openButton || !installButton || !modal) return;
+
+  if (isInstalledApp()) {
+    openButton.hidden = true;
+    return;
+  }
+
+  openButton.addEventListener("click", () => openInstallDialog({ manual: true }));
+  installButton.addEventListener("click", installApp);
+  modal.querySelectorAll("[data-install-close]").forEach((element) => {
+    element.addEventListener("click", () => closeInstallDialog());
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !modal.hidden) closeInstallDialog();
+  });
+
+  window.addEventListener("beforeinstallprompt", (event) => {
+    event.preventDefault();
+    deferredInstallPrompt = event;
+    if (!modal.hidden) prepareInstallDialog();
+  });
+
+  window.addEventListener("appinstalled", () => {
+    deferredInstallPrompt = null;
+    window.localStorage.removeItem(installPromptDismissedKey);
+    closeInstallDialog({ remember: false });
+    openButton.hidden = true;
+  });
+
+  installPromptTimer = window.setTimeout(() => openInstallDialog(), 900);
+}
+
+function registerServiceWorker() {
+  if (!("serviceWorker" in navigator)) return;
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./service-worker.js").catch(() => {});
+  });
+}
+
 function bindEvents() {
   const backToTop = $("#backToTop");
 
@@ -860,6 +993,8 @@ function init() {
   renderSkills();
   renderWorkflows();
   bindEvents();
+  bindInstallApp();
+  registerServiceWorker();
 }
 
 init();
