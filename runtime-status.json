@@ -1,39 +1,39 @@
 {
-    "statusKey":  "completed",
-    "statusLabel":  "已回覆完成",
-    "headline":  "重新提交",
-    "currentTaskInstruction":  "重新提交",
-    "blocker":  "沒有卡點",
-    "nextAction":  "可直接查看 Telegram 回覆結果。",
-    "updatedAt":  "2026-07-21T21:27:11+08:00",
-    "checkedAt":  "2026-07-21T21:27:11+08:00",
+    "statusKey":  "blocked",
+    "statusLabel":  "卡點",
+    "headline":  "image2做圖 這份文案設計成繁體中文版海報給我，ai科技風格 9：16 ─── 🎬 剪映 SVIP 開通流程 第一步：複製連結 請先點擊複製按鈕，取得您的專屬連結。 第二步：開啟剪映 App 打開「剪映」App，系統通常會自動跳轉並引導",
+    "currentTaskInstruction":  "image2做圖 這份文案設計成繁體中文版海報給我，ai科技風格 9：16 ─── 🎬 剪映 SVIP 開通流程 第一步：複製連結 請先點擊複製按鈕，取得您的專屬連結。 第二步：開啟剪映 App 打開「剪映」App，系統通常會自動跳轉並引導",
+    "blocker":  "最近任務異常",
+    "nextAction":  "查看最近任務，修復後再回報。",
+    "updatedAt":  "2026-07-21T22:27:14+08:00",
+    "checkedAt":  "2026-07-21T22:27:14+08:00",
     "sourceType":  "local-generator",
     "sourceLabel":  "本機即時狀態產生器",
     "refreshSeconds":  1,
     "token":  {
-                  "totalTokens":  104693485,
+                  "totalTokens":  105395960,
                   "taskCount":  2,
                   "source":  "本機 Codex 執行緒紀錄"
               },
     "heartbeat":  {
                       "name":  "蝦咩",
-                      "ageSeconds":  3,
+                      "ageSeconds":  42,
                       "activeRequests":  0
                   },
     "tgbot2":  {
                    "name":  "林孟姿",
-                   "statusKey":  "running",
-                   "statusLabel":  "運作中",
-                   "ageSeconds":  11,
-                   "activeRequests":  1,
-                   "currentTaskInstruction":  "這家有嗎",
+                   "statusKey":  "standby",
+                   "statusLabel":  "正常待命",
+                   "ageSeconds":  10,
+                   "activeRequests":  0,
+                   "currentTaskInstruction":  "林孟姿 TGBOT2 最近任務已完成。",
                    "currentTaskSource":  "tg-openai-bot-2/telegram_request_status.json"
                },
     "tgbot3":  {
                    "name":  "嵐熙",
                    "statusKey":  "standby",
                    "statusLabel":  "正常待命",
-                   "ageSeconds":  38,
+                   "ageSeconds":  33,
                    "activeRequests":  0,
                    "currentTaskInstruction":  "最近完成：附上日期",
                    "currentTaskSource":  "tg-openai-bot-3/telegram_request_status.json"
@@ -44,15 +44,15 @@
                          "label":  "蝦咩心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 3 秒前，執行中任務 0",
+                         "detail":  "心跳 42 秒前，執行中任務 0",
                          "source":  "codex_bot_heartbeat.json"
                      },
                      {
                          "id":  "telegram-request",
                          "label":  "Telegram 任務佇列",
-                         "statusKey":  "completed",
-                         "statusLabel":  "已回覆完成",
-                         "detail":  "重新提交",
+                         "statusKey":  "blocked",
+                         "statusLabel":  "卡點",
+                         "detail":  "image2做圖 這份文案設計成繁體中文版海報給我，ai科技風格 9：16 ─── 🎬 剪映 SVIP 開通流程 第一步：複製連結 請先點擊複製按鈕，取得您的專屬連結。 第二步：開啟剪映 App 打開「剪映」App，系統通常會自動跳轉並引導",
                          "source":  "telegram_request_status.json"
                      },
                      {
@@ -60,15 +60,15 @@
                          "label":  "林孟姿心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 11 秒前，執行中任務 1",
+                         "detail":  "心跳 10 秒前，執行中任務 0",
                          "source":  "tg-openai-bot-2/codex_bot_heartbeat.json"
                      },
                      {
                          "id":  "tgbot2-request",
                          "label":  "林孟姿任務佇列",
-                         "statusKey":  "running",
-                         "statusLabel":  "運作中",
-                         "detail":  "這家有嗎",
+                         "statusKey":  "standby",
+                         "statusLabel":  "正常待命",
+                         "detail":  "林孟姿 TGBOT2 最近任務已完成。",
                          "source":  "tg-openai-bot-2/telegram_request_status.json"
                      },
                      {
@@ -76,7 +76,7 @@
                          "label":  "嵐熙心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 38 秒前，執行中任務 0",
+                         "detail":  "心跳 33 秒前，執行中任務 0",
                          "source":  "tg-openai-bot-3/codex_bot_heartbeat.json"
                      },
                      {
@@ -92,7 +92,7 @@
                          "label":  "Codex token 統計",
                          "statusKey":  "running",
                          "statusLabel":  "已讀取",
-                         "detail":  "104693485 tokens，任務 2",
+                         "detail":  "105395960 tokens，任務 2",
                          "source":  "本機 Codex 執行緒紀錄"
                      },
                      {
@@ -108,7 +108,7 @@
                          "label":  "狀態產生器",
                          "statusKey":  "running",
                          "statusLabel":  "已更新",
-                         "detail":  "產生時間 2026-07-21 21:27:11",
+                         "detail":  "產生時間 2026-07-21 22:27:14",
                          "source":  "tools/update-runtime-status.ps1"
                      },
                      {
