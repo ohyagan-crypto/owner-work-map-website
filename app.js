@@ -101,13 +101,6 @@ const tgSendFormula = `本次任務：___。
 限制：不要使用歷史附件或舊任務素材。
 完成標準：驗證完成後，將成品回傳目前這個 Telegram 對話。`;
 
-const lineSupportFormula = `執行 LINE 官方客服工作流。
-目標官方帳號：___。
-客戶最新訊息：___。
-相關截圖／訂單／錯誤內容：___。
-處理要求：先判斷問題，再提供可直接傳給客戶的繁體中文回覆；需要時檢查訊息轉送、登入與連線狀態。
-注意：不要公開密碼、Token 或客戶個資；退款、付款爭議、補償與帳號安全問題交由負責人確認。`;
-
 const tgGuideNotes = [
   "TGBOT 可以一次連續回多段訊息，沒有固定只限 1 段。長回覆會自動拆開送出，避免 Telegram 單則上限截斷。",
   "目前本機 Bot 會把長文字大約切成每段 3900 字元左右，所以你看到連續多則訊息是正常行為，不代表重複回覆。",
@@ -535,18 +528,6 @@ function renderTgGuide() {
       `
     )
     .join("");
-
-  $("#lineSupportPanel").innerHTML = `
-    <div class="support-panel-copy">
-      <span class="support-kicker">LINE 官方客服工作流</span>
-      <strong>LINE 客服也要當成一個完整任務送出，才能回得穩、修得準</strong>
-      <p>附上目標官方帳號、客戶最新訊息與相關截圖。智能體會先判斷問題、整理可直接傳給客戶的繁體中文回覆；需要時再檢查訊息轉送、登入與連線狀態。涉及退款、補償、付款或帳號安全時，仍會保留給負責人確認。</p>
-    </div>
-    <div class="support-panel-actions">
-      <button class="copy-button support-copy" type="button" data-copy="${escapeHtml(lineSupportFormula)}">複製 LINE 客服公式</button>
-      <a class="support-link" href="#all-workflows">查看完整工作流</a>
-    </div>
-  `;
 
   $("#tgNotePanel").innerHTML = `
     <strong>TGBOT 一次可以回幾段？</strong>
