@@ -23,48 +23,48 @@ const quickStartItems = [
 const githubStartSteps = [
   {
     step: "1",
-    title: "開啟 GitHub 註冊頁",
-    summary: "使用你平常登入 Google 的瀏覽器，前往 github.com/signup，先確認網址是 github.com。"
+    title: "確認要綁定的 Gmail",
+    summary: "選定之後要長期管理網站的 Google 帳號，先確認 Gmail 拼字正確，避免綁錯帳號。"
   },
   {
     step: "2",
-    title: "選擇「使用 Google 繼續」",
-    summary: "在註冊畫面點選 Continue with Google，不需要另外輸入一組新的 GitHub 註冊信箱。"
+    title: "私下提供帳號與授權",
+    summary: "將 Gmail 帳號交給指定授權人員協助操作。密碼只可在安全、私密的登入流程使用，不可貼在公開頁面或群組。"
   },
   {
     step: "3",
-    title: "選對 Google 帳號",
-    summary: "選擇之後要長期管理網站的 Google 帳號。多人共用時，先確認這是網站負責人的正式帳號。"
+    title: "開啟 GitHub 登入",
+    summary: "前往 github.com/login，選擇使用 Google 繼續，並核對畫面顯示的是指定 Gmail。"
   },
   {
     step: "4",
-    title: "完成 Google 授權",
-    summary: "確認 GitHub 顯示的服務名稱與申請權限後繼續，讓 Google 身分用於 GitHub 社群登入。"
+    title: "完成 Google 綁定",
+    summary: "確認 GitHub 服務名稱與授權內容後繼續。若帳號尚未建立 GitHub，依官方畫面完成必要設定。"
   },
   {
     step: "5",
-    title: "設定 GitHub 使用者名稱",
-    summary: "依畫面設定唯一的 GitHub 使用者名稱。日後網站網址與程式庫名稱都可能使用這個名稱。"
+    title: "本人完成安全驗證",
+    summary: "遇到驗證碼、兩步驗證、Passkey 或 Google 安全確認時，通知帳號本人完成，不代猜、不繞過。"
   },
   {
     step: "6",
-    title: "完成信箱驗證與安全設定",
-    summary: "依 GitHub 提示完成信箱驗證。登入成功後，建議再設定密碼、通行密鑰或兩步驟驗證，避免帳號遺失。"
+    title: "確認 GitHub 可正常使用",
+    summary: "登入後確認帳號名稱、信箱與程式庫功能正常，再開始建立網站、部署與公開網址驗收。"
   }
 ];
 
 const githubStartNotes = [
-  "Google 登入是 GitHub 官方支援的社群登入方式。",
-  "建立帳號後仍要完成信箱驗證，才能正常建立程式庫等基本功能。",
-  "GitHub 使用者名稱要簡短、好辨識，建立前先確認拼字。",
-  "不要把 Google 密碼、驗證碼、GitHub 權杖或恢復碼傳給任何人。"
+  "已有 Google 帳號時，直接使用指定 Gmail 綁定或登入 GitHub。",
+  "帳號與密碼僅限私下交給指定授權人員，不可公開張貼或寫入網站。",
+  "驗證碼、兩步驗證、Passkey 與安全確認必須由帳號本人完成。",
+  "綁定後要確認 GitHub 帳號、信箱與建立程式庫功能皆正常。"
 ];
 
 const taskMapItems = [
   {
     tag: "網站 / 公開部署",
-    title: "第一次做網站，先完成 GitHub 帳號",
-    summary: "先用 Google 建立 GitHub 帳號並完成信箱驗證，再進入新站、改版、公開部署與網址驗收。",
+    title: "第一次做網站，先綁定 GitHub",
+    summary: "使用既有 Google 帳號完成 GitHub 綁定與登入，再進入新站、改版、公開部署與網址驗收。",
     jump: "#github-start",
     action: "先看 GitHub 起步"
   },
@@ -311,7 +311,7 @@ const templates = [
   {
     title: "網站模板",
     description: "最適合要做公開網站的人。",
-    prompt: "wbs 做一個公開網站。\n如果我還沒有 GitHub 帳號，先教我用 Google 建立並完成信箱驗證。\n主題：___\n成品：公開網址。\n規格：繁體中文、手機版可讀、桌機版完整。\n限制：不要混舊站內容。\n完成標準：本機驗證後公開部署，網址真的打得開。"
+    prompt: "wbs 做一個公開網站。\n我已有 Google 帳號，請協助用指定 Gmail 綁定或登入 GitHub；遇到驗證碼或兩步驗證時通知我本人完成。\n主題：___\n成品：公開網址。\n規格：繁體中文、手機版可讀、桌機版完整。\n限制：不要混舊站內容。\n完成標準：本機驗證後公開部署，網址真的打得開。"
   },
   {
     title: "做圖模板",
@@ -379,8 +379,8 @@ const skills = [
 const workflows = [
   {
     name: "WBS 網站建置與公開部署", category: "網站", trigger: "wbs、做網站、更新網站、公開部署",
-    summary: "新手先完成 Google 社群登入與 GitHub 信箱驗證，再修改真實網站檔案、驗證手機與桌機，最後確認公開網址是最新版。", output: "公開網址＋可維護的網站原始檔",
-    formula: "wbs 更新／建立 ___ 網站。\n如果我還沒有 GitHub 帳號，先教我用 Google 建立並完成信箱驗證。\n內容：___。\n規格：繁體中文，手機與桌機都要清楚可用。\n功能：___。\n完成標準：本機驗證、公開部署，並確認公開網址顯示最新版。"
+    summary: "先用既有 Google 帳號完成 GitHub 綁定與登入，再修改真實網站檔案、驗證手機與桌機，最後確認公開網址是最新版。", output: "公開網址＋可維護的網站原始檔",
+    formula: "wbs 更新／建立 ___ 網站。\n我已有 Google 帳號，請協助用指定 Gmail 綁定或登入 GitHub；遇到驗證碼或兩步驗證時通知我本人完成。\n內容：___。\n規格：繁體中文，手機與桌機都要清楚可用。\n功能：___。\n完成標準：本機驗證、公開部署，並確認公開網址顯示最新版。"
   },
   {
     name: "網站監控系統建置", category: "網站", trigger: "做監控網站、建立狀態儀表板、即時監控系統、SSE 監控",
