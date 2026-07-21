@@ -1,8 +1,8 @@
 const siteStats = [
-  { label: "已安裝條目", value: "169", note: "包含正式版、歷史版與備份入口" },
-  { label: "主技能名稱", value: "43", note: "公開站目前保留 43 個主技能入口" },
-  { label: "核心工作流", value: "18", note: "每條都附可複製的新手指令公式" },
-  { label: "記憶檔", value: "345", note: "偏好、成功流程、安全規則與工作流補強" }
+  { label: "已安裝條目", value: "64", note: "目前可用的技能入口" },
+  { label: "主技能名稱", value: "0", note: "依目前清單自動更新" },
+  { label: "核心工作流", value: "0", note: "依目前清單自動更新" },
+  { label: "新手入口", value: "6", note: "先從任務分類開始" }
 ];
 
 const quickStartItems = [
@@ -25,30 +25,52 @@ const taskMapItems = [
     tag: "網站 / 公開部署",
     title: "你要的是網址，不是只有畫面",
     summary: "如果你要新站、改版、融合兩個網站、公開部署，先看模板和完整工作流，不要只盯著單一流程區塊。",
-    jump: "#all-workflows",
+    jump: "#all-workflows?category=網站",
     action: "看網站工作流"
   },
   {
     tag: "圖片 / 海報 / 教學圖",
-    title: "先決定 image2 還是 ComfyUI",
-    summary: "做圖先講工具路線、張數、比例、風格和有沒有本次素材。這類任務最怕混到舊圖。",
-    jump: "#all-workflows",
+    title: "一般做圖統一走 image2 API",
+    summary: "做圖先講張數、比例、風格和本次素材；只有你明確說 ComfyUI，才切換到 ComfyUI。這類任務最怕混到舊圖。",
+    jump: "#all-workflows?category=圖片",
     action: "看圖片工作流"
   },
   {
     tag: "影片 / 剪輯 / 長影片",
     title: "先講成品規格和素材來源",
     summary: "影片任務一定要先補秒數、比例、語言、字幕、BGM 和本次素材，不然最容易整輪做偏。",
-    jump: "#all-workflows",
+    jump: "#all-workflows?category=影片",
     action: "看影片工作流"
   },
   {
-    tag: "Bot / 文件 / 其他任務",
-    title: "先用模板把需求講完整",
-    summary: "不確定要用哪個技能時，先用一般任務模板；要回檔、修 bot、做摘要，就再往下找對應技能。",
-    jump: "#templates",
-    action: "直接抄模板"
+    tag: "文件 / 摘要 / 語音",
+    title: "先講來源與要輸出的格式",
+    summary: "PDF、逐字稿、語音、簡報與 NotebookLM 任務，先指定來源、語言和最後要的檔案格式。",
+    jump: "#all-workflows?category=文件",
+    action: "看文件工作流"
+  },
+  {
+    tag: "TGBOT / Telegram",
+    title: "先確認目前對話與真正卡點",
+    summary: "修 bot、回傳檔案或查狀態時，要依目前對話與實際程序判斷，不用舊聊天或其他 Bot 資料。",
+    jump: "#all-workflows?category=Telegram",
+    action: "看 TGBOT 工作流"
+  },
+  {
+    tag: "LINE 官方客服",
+    title: "客戶回覆與系統檢查一起處理",
+    summary: "先看最新客戶問題，再依客服規則回覆；涉及連線或帳號時，同步檢查實際系統狀態。",
+    jump: "#all-workflows?category=客服",
+    action: "看 LINE 工作流"
   }
+];
+
+const errorGuideItems = [
+  { title: "平台忙碌／連線不穩", icon: "⏳", action: "先等 5～10 分鐘，再用同一則任務回覆「繼續」或重新操作一次。" },
+  { title: "任務理解錯誤", icon: "🧭", action: "直接指出哪一段錯了，補上正確成品、規格與限制，不要只說「不對」。" },
+  { title: "素材遺失／認錯素材", icon: "🖼️", action: "重新上傳本次素材，並標示數量、順序與用途；沒有標示就視為本輪無素材。" },
+  { title: "檔案未回傳／網址未更新", icon: "📦", action: "回覆原任務「繼續」，要求核對檔案存在、公開網址版本或同源回傳狀態。" },
+  { title: "連續無法操作", icon: "🛟", action: "完成等待與重試後仍失敗，整理錯誤現象與任務內容，再聯繫客服。" }
 ];
 
 const tgGuideItems = [
@@ -431,6 +453,10 @@ const categoryOrder = [
 let activeCategory = "全部";
 let searchTerm = "";
 let workflowSearchTerm = "";
+let skillMode = "beginner";
+let workflowMode = "beginner";
+const beginnerSkills = new Set(["wbs", "做圖", "teaching-step-images", "hfsw", "nbs", "pdf", "telegram-bot-manager", "telegram-two-stage-reply", "bb-browser", "playwright"]);
+const beginnerWorkflows = new Set(["WBS 網站建置與公開部署", "image2 API 做圖", "教學步驟圖", "HFSW 長影片製作", "NBS NotebookLM 摘要", "Telegram Bot 管理與修復", "LINE 官方客服工作流"]);
 
 const $ = (selector) => document.querySelector(selector);
 
@@ -450,6 +476,10 @@ function escapeHtml(value) {
 
 function renderHeroStats() {
   const container = $("#heroStats");
+  siteStats[1].value = String(skills.length);
+  siteStats[1].note = `公開站目前保留 ${skills.length} 個技能入口`;
+  siteStats[2].value = String(workflows.length);
+  siteStats[2].note = `每條都附可複製的新手指令公式`;
   container.innerHTML = siteStats
     .map(
       (item) => `
@@ -477,6 +507,18 @@ function renderQuickStart() {
     .join("");
 }
 
+function renderErrorGuide() {
+  const container = $("#errorGuideGrid");
+  if (!container) return;
+  container.innerHTML = errorGuideItems.map((item) => `
+    <article class="error-card">
+      <span class="error-icon" aria-hidden="true">${item.icon}</span>
+      <strong>${escapeHtml(item.title)}</strong>
+      <p>${escapeHtml(item.action)}</p>
+    </article>
+  `).join("");
+}
+
 function renderTaskMap() {
   const container = $("#taskMapGrid");
   container.innerHTML = taskMapItems
@@ -486,7 +528,7 @@ function renderTaskMap() {
           <span class="tag">${escapeHtml(item.tag)}</span>
           <strong>${escapeHtml(item.title)}</strong>
           <p>${escapeHtml(item.summary)}</p>
-          <a href="${escapeHtml(item.jump)}" class="route-link">${escapeHtml(item.action)}</a>
+          <a href="${escapeHtml(item.jump.split("?")[0])}" class="route-link" data-route-category="${escapeHtml(item.jump.split("?")[1]?.replace("category=", "") || "")}">${escapeHtml(item.action)}</a>
         </article>
       `
     )
@@ -652,6 +694,7 @@ function renderCategoryFilters() {
 function filteredSkills() {
   const normalized = searchTerm.trim().toLowerCase();
   return skills.filter((skill) => {
+    if (skillMode === "beginner" && !beginnerSkills.has(skill.name) && !normalized) return false;
     const matchesCategory = activeCategory === "全部" || skill.category === activeCategory;
     if (!matchesCategory) return false;
     if (!normalized) return true;
@@ -664,7 +707,7 @@ function renderSkillOverview(visibleSkills) {
   const categoryCount = activeCategory === "全部" ? categoryOrder.length - 1 : 1;
   $("#skillOverview").innerHTML = `
     <span class="tag">目前視圖</span>
-    <p>顯示 <strong>${visibleSkills.length}</strong> 個技能；分類範圍 <strong>${escapeHtml(activeCategory)}</strong>；共整理 <strong>${categoryCount}</strong> 類新手入口。</p>
+    <p>顯示 <strong>${visibleSkills.length}</strong> 個技能；目前是 <strong>${skillMode === "beginner" ? "新手常用" : "完整技能"}</strong>；分類範圍 <strong>${escapeHtml(activeCategory)}</strong>。</p>
   `;
 }
 
@@ -704,8 +747,9 @@ function renderSkills() {
 
 function filteredWorkflows() {
   const normalized = workflowSearchTerm.trim().toLowerCase();
-  if (!normalized) return workflows;
-  return workflows.filter((workflow) => {
+  const modeFiltered = workflows.filter((workflow) => workflowMode === "full" || beginnerWorkflows.has(workflow.name));
+  if (!normalized) return modeFiltered;
+  return modeFiltered.filter((workflow) => {
     const haystack = [workflow.name, workflow.category, workflow.trigger, workflow.summary, workflow.output, workflow.formula]
       .join(" ")
       .toLowerCase();
@@ -720,7 +764,7 @@ function renderWorkflows() {
 
   $("#workflowOverview").innerHTML = `
     <span class="tag">目前視圖</span>
-    <p>顯示 <strong>${visibleWorkflows.length}</strong> 條工作流；每條都包含觸發方式、執行重點、成品與可直接使用的公式。</p>
+    <p>顯示 <strong>${visibleWorkflows.length}</strong> 條工作流；目前是 <strong>${workflowMode === "beginner" ? "新手常用" : "完整工作流"}</strong>。</p>
   `;
 
   grid.innerHTML = visibleWorkflows
@@ -893,7 +937,17 @@ function bindInstallApp() {
     openButton.hidden = true;
   });
 
-  installPromptTimer = window.setTimeout(() => openInstallDialog(), 900);
+  // 延後到使用者看過首屏或主動互動後，避免開站立即打斷閱讀。
+  const openAfterEngagement = () => {
+    if (window.scrollY > 260 || document.body.dataset.userEngaged === "1") {
+      window.removeEventListener("scroll", openAfterEngagement);
+      openInstallDialog();
+    }
+  };
+  window.addEventListener("scroll", openAfterEngagement, { passive: true });
+  window.setTimeout(() => {
+    if (document.body.dataset.userEngaged === "1") openInstallDialog();
+  }, 12000);
 }
 
 function registerServiceWorker() {
@@ -923,6 +977,39 @@ function bindEvents() {
     workflowSearchTerm = event.target.value;
     renderWorkflows();
   });
+
+  document.querySelectorAll(".mode-button").forEach((button) => {
+    button.addEventListener("click", () => {
+      skillMode = button.dataset.mode;
+      document.querySelectorAll(".mode-button").forEach((item) => item.classList.toggle("active", item === button));
+      renderSkills();
+    });
+  });
+
+  document.querySelectorAll(".workflow-mode-button").forEach((button) => {
+    button.addEventListener("click", () => {
+      workflowMode = button.dataset.mode;
+      document.querySelectorAll(".workflow-mode-button").forEach((item) => item.classList.toggle("active", item === button));
+      renderWorkflows();
+    });
+  });
+
+  document.querySelectorAll("[data-route-category]").forEach((link) => {
+    link.addEventListener("click", () => {
+      const category = link.dataset.routeCategory;
+      const query = category;
+      workflowMode = "full";
+      const input = $("#workflowSearch");
+      if (input) {
+        input.value = query;
+        workflowSearchTerm = query;
+      }
+      document.querySelectorAll(".workflow-mode-button").forEach((item) => item.classList.toggle("active", item.dataset.mode === "full"));
+      renderWorkflows();
+    });
+  });
+
+  document.addEventListener("pointerdown", () => { document.body.dataset.userEngaged = "1"; }, { once: true });
 
   document.addEventListener("click", async (event) => {
     const button = event.target.closest("button[data-copy-target], button[data-copy]");
@@ -964,6 +1051,7 @@ function init() {
   renderHeroStats();
   renderQuickStart();
   renderTaskMap();
+  renderErrorGuide();
   renderTemplates();
   renderTgGuide();
   renderFormula();

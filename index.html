@@ -6,7 +6,7 @@
   <title>藍星智能體工作流與技能導航</title>
   <meta
     name="description"
-    content="給新手小白的一頁式藍星智能體技能與工作流教學站，整理 43 個主技能、18 條核心工作流與可複製指令公式。"
+    content="給新手小白的一頁式藍星智能體技能與工作流教學站，整理主技能、核心工作流與可複製指令公式。"
   >
   <meta name="theme-color" content="#07111f">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -21,7 +21,7 @@
     href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Space+Grotesk:wght@500;700&display=swap"
     rel="stylesheet"
   >
-  <link rel="stylesheet" href="styles.css?v=20260721-line-workflow-1">
+  <link rel="stylesheet" href="styles.css?v=20260721-full-upgrade-1">
 </head>
 <body>
   <div class="page-shell">
@@ -48,12 +48,12 @@
     </header>
 
     <nav class="top-nav" aria-label="頁面導覽">
-      <a href="#quick-start">新手上手</a>
+      <a href="#quick-start">首頁</a>
       <a href="#task-map">任務入口</a>
       <a href="#templates">直接照抄</a>
       <a href="#prompt-formula">公式結構</a>
       <a href="#tg-guide">TG 操作指南</a>
-      <a href="#all-skills">所有技能</a>
+      <a href="#all-skills">搜尋技能</a>
       <a href="#all-workflows">所有工作流</a>
       <a href="#talk-style">對話方式</a>
       <button type="button" class="nav-install-button" id="openInstallApp">下載 App</button>
@@ -72,9 +72,18 @@
         <div class="section-heading">
           <p class="eyebrow">任務入口</p>
           <h2>先判斷你現在是哪一種任務，再往下看對應區塊</h2>
-          <p>排版不順的主因，通常不是資訊不夠，而是第一次進來的人不知道應該先看哪一段。這裡先把常見入口分成 4 類。</p>
+          <p>排版不順的主因，通常不是資訊不夠，而是第一次進來的人不知道應該先看哪一段。這裡先把常見入口分成 6 類。</p>
         </div>
         <div class="task-map-grid" id="taskMapGrid"></div>
+      </section>
+
+      <section id="error-guide" class="content-block">
+        <div class="section-heading">
+          <p class="eyebrow">卡點判斷</p>
+          <h2>遇到問題，先對照是哪一種</h2>
+          <p>先判斷問題類型，再採取對應動作，避免一直重送同一個錯誤指令。</p>
+        </div>
+        <div class="error-grid" id="errorGuideGrid"></div>
       </section>
 
       <section id="templates" class="content-block">
@@ -110,12 +119,17 @@
       <section id="all-skills" class="content-block">
         <div class="section-heading">
           <p class="eyebrow">技能＋公式</p>
-          <h2>43 個主技能全部列出，找到就能直接複製</h2>
+          <h2>技能全部列出，找到就能直接複製</h2>
           <p>
             每個技能都附用途、適合情境與新手指令公式。現在改成先看摘要、需要時再展開公式，頁面節奏會比原本順很多。
           </p>
         </div>
         <div class="skill-toolbar">
+          <div class="mode-switch" role="group" aria-label="技能顯示模式">
+            <span>顯示模式</span>
+            <button type="button" class="mode-button active" data-mode="beginner">新手常用</button>
+            <button type="button" class="mode-button" data-mode="full">完整技能</button>
+          </div>
           <label class="search-field" for="skillSearch">
             <span>搜尋技能</span>
             <input id="skillSearch" type="search" placeholder="輸入 wbs、nbs、做圖、影片、Telegram">
@@ -130,12 +144,17 @@
       <section id="all-workflows" class="content-block">
         <div class="section-heading">
           <p class="eyebrow">工作流＋公式</p>
-          <h2>18 條核心工作流，從需求一路做到交付</h2>
+          <h2>核心工作流，從需求一路做到交付</h2>
           <p>
             技能是能力入口，工作流是完整做事順序。每條工作流都列出觸發方式、執行重點、成品與可直接傳給 TGBOT 的公式；LINE 官方客服也整合在這份清單裡，不另設獨立入口。
           </p>
         </div>
         <div class="skill-toolbar">
+          <div class="mode-switch" role="group" aria-label="工作流顯示模式">
+            <span>顯示模式</span>
+            <button type="button" class="workflow-mode-button active" data-mode="beginner">新手常用</button>
+            <button type="button" class="workflow-mode-button" data-mode="full">完整工作流</button>
+          </div>
           <label class="search-field" for="workflowSearch">
             <span>搜尋工作流</span>
             <input id="workflowSearch" type="search" placeholder="輸入網站、image2、ComfyUI、NBS、影片、Telegram、LINE 客服">
@@ -190,7 +209,7 @@
     </main>
 
     <footer class="site-footer">
-      <p>公開站用途：幫新手理解怎麼跟藍星智能體 / TGBOT 溝通、怎麼選技能與工作流，以及怎麼用公式直接開始任務。圖片任務依明確指令分流至 image2 API 或 ComfyUI。</p>
+      <p>公開站用途：幫新手理解怎麼跟藍星智能體 / TGBOT 溝通、怎麼選技能與工作流，以及怎麼用公式直接開始任務。一般做圖統一走 image2 API；只有明確指定時才走 ComfyUI。</p>
       <p>更新日期：2026-07-21</p>
     </footer>
   </div>
@@ -214,7 +233,7 @@
     </div>
   </div>
 
-  <script src="app.js?v=20260721-line-workflow-1"></script>
+  <script src="app.js?v=20260721-full-upgrade-1"></script>
 </body>
 </html>
 
