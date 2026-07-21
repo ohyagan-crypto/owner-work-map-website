@@ -352,119 +352,6 @@ h1 {
   margin-top: 24px;
 }
 
-.github-start-block {
-  border-color: rgba(110, 246, 204, 0.28);
-  background:
-    linear-gradient(150deg, rgba(8, 24, 35, 0.94), rgba(7, 14, 27, 0.82)),
-    radial-gradient(circle at 92% 8%, rgba(110, 246, 204, 0.12), transparent 28%);
-}
-
-.github-start-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1.3fr) minmax(300px, 0.7fr);
-  gap: 18px;
-  margin-top: 24px;
-  align-items: start;
-}
-
-.github-step-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-}
-
-.github-step-card {
-  display: grid;
-  grid-template-columns: 46px minmax(0, 1fr);
-  gap: 14px;
-  min-height: 100%;
-  padding: 18px;
-  border: 1px solid rgba(111, 229, 255, 0.18);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.035);
-}
-
-.github-step-number {
-  display: grid;
-  place-items: center;
-  width: 42px;
-  height: 42px;
-  border: 1px solid rgba(110, 246, 204, 0.38);
-  border-radius: 8px;
-  background: rgba(110, 246, 204, 0.1);
-  color: var(--mint);
-  font-family: "Space Grotesk", "Noto Sans TC", sans-serif;
-  font-size: 1.05rem;
-  font-weight: 700;
-}
-
-.github-step-card strong {
-  display: block;
-  margin: 2px 0 8px;
-  font-size: 1.02rem;
-}
-
-.github-step-card p,
-.github-start-aside p,
-.github-note-list li {
-  margin: 0;
-  color: var(--muted);
-  line-height: 1.7;
-}
-
-.github-start-aside {
-  display: grid;
-  gap: 16px;
-  padding: 22px;
-  border: 1px solid rgba(255, 209, 125, 0.28);
-  border-radius: 8px;
-  background: rgba(255, 209, 125, 0.055);
-}
-
-.github-start-aside h3 {
-  font-size: 1.35rem;
-  line-height: 1.35;
-}
-
-.github-note-list {
-  display: grid;
-  gap: 10px;
-  margin: 0;
-  padding-left: 20px;
-}
-
-.github-note-list li::marker {
-  color: var(--gold);
-}
-
-.github-link-group {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-}
-
-.github-link-group a {
-  min-width: 0;
-  padding: 11px 12px;
-  border-radius: 8px;
-  text-align: center;
-}
-
-.github-formula {
-  max-width: 100%;
-  margin: 0;
-  padding: 15px;
-  overflow-wrap: anywhere;
-  white-space: pre-wrap;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: rgba(0, 0, 0, 0.22);
-  color: #d7e8ff;
-  font: inherit;
-  font-size: 0.86rem;
-  line-height: 1.65;
-}
-
 .spotlight-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
@@ -525,6 +412,46 @@ h1 {
   border: 1px solid rgba(255, 209, 125, 0.34);
   border-radius: var(--radius-lg);
   background: rgba(255, 209, 125, 0.055);
+}
+
+.tg-github-command {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr) auto;
+  gap: 18px;
+  align-items: center;
+  margin-top: 18px;
+  padding: 22px;
+  border: 1px solid rgba(110, 246, 204, 0.34);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, rgba(110, 246, 204, 0.09), rgba(111, 229, 255, 0.04));
+}
+
+.tg-command-copy strong {
+  display: block;
+  margin-top: 8px;
+  font-size: clamp(1.08rem, 2vw, 1.35rem);
+  line-height: 1.45;
+}
+
+.tg-command-copy p {
+  margin: 10px 0 0;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.tg-github-command pre {
+  min-width: 0;
+  margin: 0;
+  padding: 16px;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: rgba(0, 0, 0, 0.22);
+  color: #d7e8ff;
+  font: inherit;
+  font-size: 0.9rem;
+  line-height: 1.7;
 }
 
 .tg-send-copy {
@@ -1222,8 +1149,7 @@ body.install-modal-open {
 
 @media (max-width: 1080px) {
   .hero,
-  .split-block,
-  .github-start-layout {
+  .split-block {
     grid-template-columns: 1fr;
   }
 
@@ -1278,9 +1204,8 @@ body.install-modal-open {
 
   .top-nav a:nth-child(3),
   .top-nav a:nth-child(4),
-  .top-nav a:nth-child(5),
-  .top-nav a:nth-child(7),
-  .top-nav a:nth-child(9),
+  .top-nav a:nth-child(6),
+  .top-nav a:nth-child(8),
   .top-nav .nav-install-button {
     display: none;
   }
@@ -1312,17 +1237,8 @@ body.install-modal-open {
     grid-template-columns: 1fr;
   }
 
-  .github-step-grid,
-  .github-link-group {
-    grid-template-columns: 1fr;
-  }
-
-  .github-step-card {
-    grid-template-columns: 42px minmax(0, 1fr);
-    padding: 16px;
-  }
-
-  .tg-send-panel {
+  .tg-send-panel,
+  .tg-github-command {
     grid-template-columns: 1fr;
     padding: 20px;
   }

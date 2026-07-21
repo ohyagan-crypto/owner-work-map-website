@@ -26,11 +26,6 @@
   ],
   "shortcuts": [
     {
-      "name": "GitHub 起步教學",
-      "short_name": "GitHub 起步",
-      "url": "./#github-start"
-    },
-    {
       "name": "TG 操作指南",
       "short_name": "TG 指南",
       "url": "./#tg-guide"
@@ -39,6 +34,11 @@
       "name": "所有工作流",
       "short_name": "工作流",
       "url": "./#all-workflows"
+    },
+    {
+      "name": "任務入口",
+      "short_name": "任務入口",
+      "url": "./#task-map"
     }
   ]
 }

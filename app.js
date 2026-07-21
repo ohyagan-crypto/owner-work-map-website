@@ -20,53 +20,13 @@ const quickStartItems = [
   }
 ];
 
-const githubStartSteps = [
-  {
-    step: "1",
-    title: "確認要綁定的 Gmail",
-    summary: "選定之後要長期管理網站的 Google 帳號，先確認 Gmail 拼字正確，避免綁錯帳號。"
-  },
-  {
-    step: "2",
-    title: "授權 TGBOT 操作瀏覽器",
-    summary: "私下提供要綁定的 Gmail，讓 TGBOT 開啟 Google 與 GitHub 登入頁面；密碼只在安全登入欄位使用，不可貼到網站或群組。"
-  },
-  {
-    step: "3",
-    title: "由 TGBOT 開啟登入頁",
-    summary: "TGBOT 操作瀏覽器前往 github.com/login，選擇使用 Google 繼續，並核對畫面顯示的是指定 Gmail。"
-  },
-  {
-    step: "4",
-    title: "完成 Google 綁定",
-    summary: "確認 GitHub 服務名稱與授權內容後繼續。若帳號尚未建立 GitHub，依官方畫面完成必要設定。"
-  },
-  {
-    step: "5",
-    title: "本人完成安全驗證",
-    summary: "遇到驗證碼、兩步驗證、Passkey 或 Google 安全確認時，通知帳號本人完成，不代猜、不繞過。"
-  },
-  {
-    step: "6",
-    title: "確認 GitHub 可正常使用",
-    summary: "登入後確認帳號名稱、信箱與程式庫功能正常，再開始建立網站、部署與公開網址驗收。"
-  }
-];
-
-const githubStartNotes = [
-  "已有 Google 帳號時，直接讓 TGBOT 操作瀏覽器使用指定 Gmail 綁定或登入 GitHub。",
-  "密碼只在安全登入流程中使用，不可公開張貼、寫入網站或傳到群組。",
-  "驗證碼、兩步驗證、Passkey 與安全確認必須由帳號本人完成。",
-  "綁定後要確認 GitHub 帳號、信箱與建立程式庫功能皆正常。"
-];
-
 const taskMapItems = [
   {
     tag: "網站 / 公開部署",
-    title: "第一次做網站，先綁定 GitHub",
-    summary: "先讓 TGBOT 操作瀏覽器，以既有 Google 帳號完成 GitHub 綁定與登入，再進入新站、改版、公開部署與網址驗收。",
-    jump: "#github-start",
-    action: "先看 GitHub 起步"
+    title: "在 TGBOT 貼上指令，請 Codex CLI 綁定",
+    summary: "不必先閱讀獨立教學頁。到 TG 操作指南複製指令，貼到自己的 TGBOT，就能請 Codex CLI 操作瀏覽器完成 Google 與 GitHub 綁定。",
+    jump: "#tg-github-command",
+    action: "複製綁定指令"
   },
   {
     tag: "圖片 / 海報 / 教學圖",
@@ -168,6 +128,11 @@ const tgSendFormula = `本次任務：___。
 附件說明：請讓圖片／影片／檔案與這段文字在同一則訊息顯示。
 限制：不要使用歷史附件或舊任務素材。
 完成標準：驗證完成後，將成品回傳目前這個 Telegram 對話。`;
+
+const githubBindingCommand = `wbs 綁定 Google 與 GitHub。
+請讓 Codex CLI 操作瀏覽器，使用我指定的 Gmail 登入 Google，並完成 GitHub 綁定或登入。
+如果需要密碼，請使用已授權的安全登入方式；遇到驗證碼、兩步驗證、Passkey 或安全確認時，再通知我本人完成。
+完成後請確認 GitHub 已登入，且可以建立程式庫。`;
 
 const tgGuideNotes = [
   "TGBOT 可以一次連續回多段訊息，沒有固定只限 1 段。長回覆會自動拆開送出，避免 Telegram 單則上限截斷。",
@@ -311,7 +276,7 @@ const templates = [
   {
     title: "網站模板",
     description: "最適合要做公開網站的人。",
-    prompt: "wbs 做一個公開網站。\n請讓 TGBOT 操作瀏覽器，使用指定 Gmail 登入 Google 並綁定或登入 GitHub；遇到驗證碼、兩步驗證、Passkey 或安全確認時通知我本人完成。\n主題：___\n成品：公開網址。\n規格：繁體中文、手機版可讀、桌機版完整。\n限制：不要混舊站內容。\n完成標準：本機驗證後公開部署，網址真的打得開。"
+    prompt: "wbs 做一個公開網站。\n請讓 Codex CLI 操作瀏覽器，使用我指定的 Gmail 登入 Google，並完成 GitHub 綁定或登入；遇到驗證碼、兩步驗證、Passkey 或安全確認時，再通知我本人完成。\n主題：___\n成品：公開網址。\n規格：繁體中文、手機版可讀、桌機版完整。\n限制：不要混舊站內容。\n完成標準：本機驗證後公開部署，網址真的打得開。"
   },
   {
     title: "做圖模板",
@@ -379,8 +344,8 @@ const skills = [
 const workflows = [
   {
     name: "WBS 網站建置與公開部署", category: "網站", trigger: "wbs、做網站、更新網站、公開部署",
-    summary: "先讓 TGBOT 操作瀏覽器，以既有 Google 帳號完成 GitHub 綁定與登入，再修改真實網站檔案、驗證手機與桌機，最後確認公開網址是最新版。", output: "公開網址＋可維護的網站原始檔",
-    formula: "wbs 更新／建立 ___ 網站。\n請讓 TGBOT 操作瀏覽器，使用指定 Gmail 登入 Google 並綁定或登入 GitHub；遇到驗證碼、兩步驗證、Passkey 或安全確認時通知我本人完成。\n內容：___。\n規格：繁體中文，手機與桌機都要清楚可用。\n功能：___。\n完成標準：本機驗證、公開部署，並確認公開網址顯示最新版。"
+    summary: "先在 TGBOT 貼上指令，請 Codex CLI 用既有 Google 帳號完成 GitHub 綁定與登入，再修改真實網站檔案、驗證手機與桌機，最後確認公開網址是最新版。", output: "公開網址＋可維護的網站原始檔",
+    formula: "wbs 更新／建立 ___ 網站。\n請讓 Codex CLI 操作瀏覽器，使用我指定的 Gmail 登入 Google，並完成 GitHub 綁定或登入；遇到驗證碼、兩步驗證、Passkey 或安全確認時，再通知我本人完成。\n內容：___。\n規格：繁體中文，手機與桌機都要清楚可用。\n功能：___。\n完成標準：本機驗證、公開部署，並確認公開網址顯示最新版。"
   },
   {
     name: "網站監控系統建置", category: "網站", trigger: "做監控網站、建立狀態儀表板、即時監控系統、SSE 監控",
@@ -558,28 +523,6 @@ function renderQuickStart() {
     .join("");
 }
 
-function renderGithubStart() {
-  const stepGrid = $("#githubStepGrid");
-  const noteList = $("#githubNoteList");
-  if (!stepGrid || !noteList) return;
-
-  stepGrid.innerHTML = githubStartSteps
-    .map(
-      (item) => `
-        <article class="github-step-card">
-          <span class="github-step-number">${escapeHtml(item.step)}</span>
-          <div>
-            <strong>${escapeHtml(item.title)}</strong>
-            <p>${escapeHtml(item.summary)}</p>
-          </div>
-        </article>
-      `
-    )
-    .join("");
-
-  noteList.innerHTML = githubStartNotes.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
-}
-
 function renderErrorGuide() {
   const container = $("#errorGuideGrid");
   if (!container) return;
@@ -630,6 +573,16 @@ function renderTgGuide() {
         <p>指令和素材分開，容易被判成不同任務，也可能混到上一輪附件。</p>
       </div>
     </div>
+  `;
+
+  $("#tg-github-command").innerHTML = `
+    <div class="tg-command-copy">
+      <span class="support-kicker">第一次做網站</span>
+      <strong>在 TGBOT 貼上這段，請 Codex CLI 綁定 Google 與 GitHub</strong>
+      <p>開啟自己的 TGBOT，直接貼上完整指令後送出即可。帳號安全驗證出現時，再由本人完成。</p>
+    </div>
+    <pre id="github-binding-command">${escapeHtml(githubBindingCommand)}</pre>
+    <button type="button" class="copy-button" data-copy-target="github-binding-command" data-copy-label="複製綁定指令">複製綁定指令</button>
   `;
 
   container.innerHTML = tgGuideItems
@@ -1122,7 +1075,6 @@ function bindEvents() {
 
 function init() {
   renderHeroStats();
-  renderGithubStart();
   renderQuickStart();
   renderTaskMap();
   renderErrorGuide();

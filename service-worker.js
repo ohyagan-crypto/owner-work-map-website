@@ -1,4 +1,4 @@
-const CACHE_NAME = "tutorial-site-v6-github-google-guide";
+const CACHE_NAME = "tutorial-site-v7-tg-github-command";
 const APP_SHELL = [
   "./",
   "./index.html",

@@ -21,7 +21,7 @@
     href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Space+Grotesk:wght@500;700&display=swap"
     rel="stylesheet"
   >
-  <link rel="stylesheet" href="styles.css?v=20260721-github-google-guide-2">
+  <link rel="stylesheet" href="styles.css?v=20260721-tg-github-command-1">
 </head>
 <body>
   <div class="page-shell">
@@ -33,7 +33,7 @@
           <strong>可直接使用的指令公式</strong> 全部整理成一頁。按下「複製」後，再貼到 TGBOT 對話即可。
         </p>
         <div class="hero-actions">
-          <a href="#github-start" class="primary-link">先綁定 GitHub</a>
+          <a href="#tg-github-command" class="primary-link">複製綁定指令</a>
           <a href="#task-map" class="secondary-link">再選任務入口</a>
           <a href="#all-skills" class="secondary-link">直接看全部技能</a>
           <a href="#templates" class="secondary-link">直接複製模板</a>
@@ -43,14 +43,13 @@
         <div class="metric-stack" id="heroStats"></div>
         <div class="hero-note">
           <span>先看哪裡</span>
-          <p>第一次做網站先看「GitHub 起步」；其他任務先走「任務入口」和「直接照抄」，需要細找時再看完整技能庫與工作流。</p>
+          <p>第一次做網站先到「TG 操作指南」複製綁定指令；其他任務先走「任務入口」和「直接照抄」，需要細找時再看完整技能庫與工作流。</p>
         </div>
       </div>
     </header>
 
     <nav class="top-nav" aria-label="頁面導覽">
       <a href="#quick-start">首頁</a>
-      <a href="#github-start">GitHub 起步</a>
       <a href="#task-map">任務入口</a>
       <a href="#templates">直接照抄</a>
       <a href="#prompt-formula">公式結構</a>
@@ -62,35 +61,6 @@
     </nav>
 
     <main>
-      <section id="github-start" class="content-block github-start-block">
-        <div class="section-heading">
-          <p class="eyebrow">WBS 第一步</p>
-          <h2>讓 TGBOT 操作瀏覽器，用 Google 綁定 GitHub</h2>
-          <p>
-            大家已有 Google 帳號，不需要先建立新帳號。開始 WBS 網站流程前，先確認要長期管理網站的 Gmail，再由 TGBOT 操作瀏覽器完成 Google 登入、GitHub 綁定與登入驗證。
-          </p>
-        </div>
-        <div class="github-start-layout">
-          <div class="github-step-grid" id="githubStepGrid"></div>
-          <aside class="github-start-aside" aria-label="Google 綁定 GitHub 注意事項">
-            <span class="support-kicker">先確認</span>
-            <h3>TGBOT 代為操作瀏覽器</h3>
-            <p>私下提供要綁定的 Gmail，授權 TGBOT 開啟 Google 與 GitHub 登入頁面並完成綁定。密碼只在安全登入欄位使用，不可貼在公開網頁、群組或一般留言；遇到驗證碼、兩步驗證或安全確認時，由帳號本人完成。</p>
-            <ul class="github-note-list" id="githubNoteList"></ul>
-            <div class="github-link-group">
-              <a class="primary-link" href="https://github.com/login" target="_blank" rel="noopener noreferrer">開啟 GitHub 登入</a>
-              <a class="secondary-link" href="https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github" target="_blank" rel="noopener noreferrer">查看官方說明</a>
-            </div>
-            <pre id="github-wbs-formula" class="github-formula">wbs 做網站。
-請讓 TGBOT 操作瀏覽器，使用指定 Gmail 登入 Google 並綁定或登入 GitHub；遇到驗證碼、兩步驗證、Passkey 或安全確認時通知我本人完成。
-網站主題：___。
-需要功能：___。
-完成標準：手機與桌機驗證後，公開部署並回傳最新版網址。</pre>
-            <button type="button" class="copy-button" data-copy-target="github-wbs-formula">複製 WBS 新手指令</button>
-          </aside>
-        </div>
-      </section>
-
       <section id="quick-start" class="content-block spotlight-block">
         <div class="section-heading">
           <p class="eyebrow">新手上手</p>
@@ -142,6 +112,7 @@
           <p>最穩的做法是：先選好本次素材，在同一則訊息內寫清楚任務，等目前任務拿到成品、網址或明確結果後，再送第二個任務。照下面重點操作，能大幅降低漏讀素材、任務插隊與交付順序錯亂。</p>
         </div>
         <div class="tg-send-panel" id="tgSendPanel"></div>
+        <div class="tg-github-command" id="tg-github-command"></div>
         <div class="tg-guide-grid" id="tgGuideGrid"></div>
         <div class="tg-note-panel" id="tgNotePanel"></div>
         <div class="tg-note-panel" id="tgChunkPanel"></div>
@@ -264,7 +235,7 @@
     </div>
   </div>
 
-  <script src="app.js?v=20260721-github-google-guide-2"></script>
+  <script src="app.js?v=20260721-tg-github-command-1"></script>
 </body>
 </html>
 
