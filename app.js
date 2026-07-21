@@ -86,31 +86,36 @@ const tgGuideItems = [
   },
   {
     step: "3",
+    title: "圖片與文字一起顯示",
+    summary: "選取圖片後，在下方輸入框補上指令或說明，再按紙飛機送出；接收端會在同一則訊息看到圖片與文字，不必另外追問圖片用途。"
+  },
+  {
+    step: "4",
     title: "停滯就回覆「繼續」",
     summary: "如果長時間沒完成或卡住，請長按原本那則任務，選「回覆」，再輸入「繼續」。這樣最容易接回同一件事，不會跳錯任務。"
   },
   {
-    step: "4",
+    step: "5",
     title: "有素材要明確標示",
     summary: "如果這輪真的有素材，直接寫「本次素材」「參考圖」再附圖；沒有標示時，系統就應視為這輪沒有素材。"
   },
   {
-    step: "5",
+    step: "6",
     title: "新任務就重新講完整",
     summary: "如果不是延續上一件事，請直接重講完整需求，不要只丟「這個、上一張、照剛剛」。這樣最不容易混到舊任務。"
   },
   {
-    step: "6",
+    step: "7",
     title: "盡量一個任務跑完，再送第二個",
     summary: "先等目前任務收到成品、網址或明確結果後，再傳下一個任務。這樣能避免兩件事互相插隊、素材混用，或回傳順序整個亂掉。"
   },
   {
-    step: "7",
+    step: "8",
     title: "出錯先等 5～10 分鐘再試",
     summary: "智能體不是萬能，偶爾會遇到平台忙碌、連線不穩或判斷錯誤。先等 5～10 分鐘再操作一次；如果連續無法操作，再直接聯繫客服。"
   },
   {
-    step: "8",
+    step: "9",
     title: "看到成品才算完成",
     summary: "圖片、影片、文件要真的回到目前對話，網站要能打開最新版網址。只看到開始、排隊、處理中或本機路徑，都還不算交付完成。"
   }
@@ -120,6 +125,7 @@ const tgSendFormula = `本次任務：___。
 成品：___。
 規格：___。
 本次素材：已隨這則訊息附上，共 ___ 個，順序為 ___。
+附件說明：請讓圖片／影片／檔案與這段文字在同一則訊息顯示。
 限制：不要使用歷史附件或舊任務素材。
 完成標準：驗證完成後，將成品回傳目前這個 Telegram 對話。`;
 
@@ -541,15 +547,15 @@ function renderTgGuide() {
   $("#tgSendPanel").innerHTML = `
     <div class="tg-send-copy">
       <span class="support-kicker">最重要的發送方式</span>
-      <strong>先選附件，再把任務寫在同一則訊息裡</strong>
-      <p>圖片、影片、PDF、PPT、音訊或其他檔案都適用。多個素材請一次選取，並在文字裡標示數量、順序與用途。</p>
+      <strong>圖片＋文字說明，同一則訊息送出</strong>
+      <p>先選圖片、影片或檔案，再在下方輸入框寫指令或說明，最後一起按紙飛機送出。接收端會看到附件與文字綁在同一則訊息。</p>
       <button class="copy-button tg-send-copy-button" type="button" data-copy="${escapeHtml(tgSendFormula)}">複製附件任務格式</button>
     </div>
     <div class="tg-send-examples" aria-label="Telegram 正確與錯誤發送方式">
       <div class="send-example is-correct">
         <span>正確</span>
-        <strong>附件＋完整指令，一次送出</strong>
-        <p>本次素材 3 張，依順序做成 3 張 9:16 教學圖，先給確認清單。</p>
+        <strong>圖片與文字同時顯示</strong>
+        <p>選取 3 張圖片，輸入「本次素材 3 張，依順序做成 9:16 教學圖，先給確認清單」，再按紙飛機。</p>
       </div>
       <div class="send-example is-wrong">
         <span>容易出錯</span>
