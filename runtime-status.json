@@ -1,12 +1,12 @@
 {
-    "statusKey":  "standby",
-    "statusLabel":  "正常待命",
-    "headline":  "是要讓tgbot操作瀏覽器登入google綁定gub",
-    "currentTaskInstruction":  "是要讓tgbot操作瀏覽器登入google綁定gub",
+    "statusKey":  "running",
+    "statusLabel":  "運作中",
+    "headline":  "這個頁面不用 只要使用者知道如何在tg bot 發送指令讓codex cli 幫他綁定goole和ghun",
+    "currentTaskInstruction":  "這個頁面不用 只要使用者知道如何在tg bot 發送指令讓codex cli 幫他綁定goole和ghun",
     "blocker":  "沒有卡點",
-    "nextAction":  "有新任務時會更新 Telegram 狀態與本頁快照。",
-    "updatedAt":  "2026-07-21T14:27:13+08:00",
-    "checkedAt":  "2026-07-21T14:27:13+08:00",
+    "nextAction":  "完成後更新交付結果、網址、檔案路徑或明確卡點。",
+    "updatedAt":  "2026-07-21T15:27:12+08:00",
+    "checkedAt":  "2026-07-21T15:27:12+08:00",
     "sourceType":  "local-generator",
     "sourceLabel":  "本機即時狀態產生器",
     "refreshSeconds":  1,
@@ -17,14 +17,14 @@
               },
     "heartbeat":  {
                       "name":  "蝦咩",
-                      "ageSeconds":  14,
-                      "activeRequests":  0
+                      "ageSeconds":  4,
+                      "activeRequests":  1
                   },
     "tgbot2":  {
                    "name":  "林孟姿",
                    "statusKey":  "standby",
                    "statusLabel":  "正常待命",
-                   "ageSeconds":  21,
+                   "ageSeconds":  17,
                    "activeRequests":  0,
                    "currentTaskInstruction":  "最近完成：確認",
                    "currentTaskSource":  "tg-openai-bot-2/telegram_request_status.json"
@@ -33,7 +33,7 @@
                    "name":  "嵐熙",
                    "statusKey":  "blocked",
                    "statusLabel":  "卡點",
-                   "ageSeconds":  49,
+                   "ageSeconds":  45,
                    "activeRequests":  0,
                    "currentTaskInstruction":  "把line客服工作流也加進去",
                    "currentTaskSource":  "tg-openai-bot-3/telegram_request_status.json"
@@ -44,15 +44,15 @@
                          "label":  "蝦咩心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 14 秒前，執行中任務 0",
+                         "detail":  "心跳 4 秒前，執行中任務 1",
                          "source":  "codex_bot_heartbeat.json"
                      },
                      {
                          "id":  "telegram-request",
                          "label":  "Telegram 任務佇列",
-                         "statusKey":  "standby",
-                         "statusLabel":  "正常待命",
-                         "detail":  "是要讓tgbot操作瀏覽器登入google綁定gub",
+                         "statusKey":  "running",
+                         "statusLabel":  "運作中",
+                         "detail":  "這個頁面不用 只要使用者知道如何在tg bot 發送指令讓codex cli 幫他綁定goole和ghun",
                          "source":  "telegram_request_status.json"
                      },
                      {
@@ -60,7 +60,7 @@
                          "label":  "林孟姿心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 21 秒前，執行中任務 0",
+                         "detail":  "心跳 17 秒前，執行中任務 0",
                          "source":  "tg-openai-bot-2/codex_bot_heartbeat.json"
                      },
                      {
@@ -76,7 +76,7 @@
                          "label":  "嵐熙心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 49 秒前，執行中任務 0",
+                         "detail":  "心跳 45 秒前，執行中任務 0",
                          "source":  "tg-openai-bot-3/codex_bot_heartbeat.json"
                      },
                      {
@@ -108,7 +108,7 @@
                          "label":  "狀態產生器",
                          "statusKey":  "running",
                          "statusLabel":  "已更新",
-                         "detail":  "產生時間 2026-07-21 14:27:13",
+                         "detail":  "產生時間 2026-07-21 15:27:12",
                          "source":  "tools/update-runtime-status.ps1"
                      },
                      {
