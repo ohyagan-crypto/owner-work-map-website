@@ -1,39 +1,39 @@
 {
     "statusKey":  "standby",
     "statusLabel":  "正常待命",
-    "headline":  "sd mini api呢",
-    "currentTaskInstruction":  "sd mini api呢",
+    "headline":  "image2做圖 幫我把這張照片的人 劉德華一起合照 劉德華親切的手搭在這個人到肩膀上 生成兩個人的合照 照片裡的人五官、長相、特徵需100%保持一致",
+    "currentTaskInstruction":  "image2做圖 幫我把這張照片的人 劉德華一起合照 劉德華親切的手搭在這個人到肩膀上 生成兩個人的合照 照片裡的人五官、長相、特徵需100%保持一致",
     "blocker":  "沒有卡點",
     "nextAction":  "有新任務時會更新 Telegram 狀態與本頁快照。",
-    "updatedAt":  "2026-07-22T15:27:12+08:00",
-    "checkedAt":  "2026-07-22T15:27:12+08:00",
+    "updatedAt":  "2026-07-22T16:27:12+08:00",
+    "checkedAt":  "2026-07-22T16:27:12+08:00",
     "sourceType":  "local-generator",
     "sourceLabel":  "本機即時狀態產生器",
     "refreshSeconds":  1,
     "token":  {
-                  "totalTokens":  557041,
-                  "taskCount":  3,
-                  "source":  "本機 Codex token 紀錄"
+                  "totalTokens":  103875821,
+                  "taskCount":  1,
+                  "source":  "本機 Codex 執行緒紀錄"
               },
     "heartbeat":  {
                       "name":  "蝦咩",
-                      "ageSeconds":  15,
+                      "ageSeconds":  46,
                       "activeRequests":  0
                   },
     "tgbot2":  {
                    "name":  "林孟姿",
                    "statusKey":  "standby",
                    "statusLabel":  "正常待命",
-                   "ageSeconds":  42,
+                   "ageSeconds":  44,
                    "activeRequests":  0,
-                   "currentTaskInstruction":  "林孟姿 TGBOT2 最近任務已完成。",
+                   "currentTaskInstruction":  "最近完成：要選win19還是22",
                    "currentTaskSource":  "tg-openai-bot-2/telegram_request_status.json"
                },
     "tgbot3":  {
                    "name":  "嵐熙",
                    "statusKey":  "standby",
                    "statusLabel":  "正常待命",
-                   "ageSeconds":  31,
+                   "ageSeconds":  27,
                    "activeRequests":  0,
                    "currentTaskInstruction":  "最近完成：自動排程也要工作流一鍵複製",
                    "currentTaskSource":  "tg-openai-bot-3/telegram_request_status.json"
@@ -44,7 +44,7 @@
                          "label":  "蝦咩心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 15 秒前，執行中任務 0",
+                         "detail":  "心跳 46 秒前，執行中任務 0",
                          "source":  "codex_bot_heartbeat.json"
                      },
                      {
@@ -52,7 +52,7 @@
                          "label":  "Telegram 任務佇列",
                          "statusKey":  "standby",
                          "statusLabel":  "正常待命",
-                         "detail":  "sd mini api呢",
+                         "detail":  "image2做圖 幫我把這張照片的人 劉德華一起合照 劉德華親切的手搭在這個人到肩膀上 生成兩個人的合照 照片裡的人五官、長相、特徵需100%保持一致",
                          "source":  "telegram_request_status.json"
                      },
                      {
@@ -60,7 +60,7 @@
                          "label":  "林孟姿心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 42 秒前，執行中任務 0",
+                         "detail":  "心跳 44 秒前，執行中任務 0",
                          "source":  "tg-openai-bot-2/codex_bot_heartbeat.json"
                      },
                      {
@@ -68,7 +68,7 @@
                          "label":  "林孟姿任務佇列",
                          "statusKey":  "standby",
                          "statusLabel":  "正常待命",
-                         "detail":  "林孟姿 TGBOT2 最近任務已完成。",
+                         "detail":  "最近完成：要選win19還是22",
                          "source":  "tg-openai-bot-2/telegram_request_status.json"
                      },
                      {
@@ -76,7 +76,7 @@
                          "label":  "嵐熙心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 31 秒前，執行中任務 0",
+                         "detail":  "心跳 27 秒前，執行中任務 0",
                          "source":  "tg-openai-bot-3/codex_bot_heartbeat.json"
                      },
                      {
@@ -92,8 +92,8 @@
                          "label":  "Codex token 統計",
                          "statusKey":  "running",
                          "statusLabel":  "已讀取",
-                         "detail":  "557041 tokens，任務 3",
-                         "source":  "本機 Codex token 紀錄"
+                         "detail":  "103875821 tokens，任務 1",
+                         "source":  "本機 Codex 執行緒紀錄"
                      },
                      {
                          "id":  "dashboard-control-action",
@@ -108,7 +108,7 @@
                          "label":  "狀態產生器",
                          "statusKey":  "running",
                          "statusLabel":  "已更新",
-                         "detail":  "產生時間 2026-07-22 15:27:12",
+                         "detail":  "產生時間 2026-07-22 16:27:12",
                          "source":  "tools/update-runtime-status.ps1"
                      },
                      {
