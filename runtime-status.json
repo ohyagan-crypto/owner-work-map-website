@@ -1,41 +1,41 @@
 {
     "statusKey":  "standby",
     "statusLabel":  "正常待命",
-    "headline":  "這個只傳給tg4",
-    "currentTaskInstruction":  "這個只傳給tg4",
+    "headline":  "sd mini api呢",
+    "currentTaskInstruction":  "sd mini api呢",
     "blocker":  "沒有卡點",
     "nextAction":  "有新任務時會更新 Telegram 狀態與本頁快照。",
-    "updatedAt":  "2026-07-22T12:27:11+08:00",
-    "checkedAt":  "2026-07-22T12:27:11+08:00",
+    "updatedAt":  "2026-07-22T13:27:13+08:00",
+    "checkedAt":  "2026-07-22T13:27:13+08:00",
     "sourceType":  "local-generator",
     "sourceLabel":  "本機即時狀態產生器",
     "refreshSeconds":  1,
     "token":  {
-                  "totalTokens":  324548,
-                  "taskCount":  1,
+                  "totalTokens":  557041,
+                  "taskCount":  3,
                   "source":  "本機 Codex token 紀錄"
               },
     "heartbeat":  {
                       "name":  "蝦咩",
-                      "ageSeconds":  41,
+                      "ageSeconds":  23,
                       "activeRequests":  0
                   },
     "tgbot2":  {
                    "name":  "林孟姿",
                    "statusKey":  "blocked",
                    "statusLabel":  "卡點",
-                   "ageSeconds":  34,
+                   "ageSeconds":  33,
                    "activeRequests":  0,
                    "currentTaskInstruction":  "給我庫裡嵐熙混合音檔",
                    "currentTaskSource":  "tg-openai-bot-2/telegram_request_status.json"
                },
     "tgbot3":  {
                    "name":  "嵐熙",
-                   "statusKey":  "running",
-                   "statusLabel":  "運作中",
-                   "ageSeconds":  5,
-                   "activeRequests":  1,
-                   "currentTaskInstruction":  "下載區放在最底面",
+                   "statusKey":  "standby",
+                   "statusLabel":  "正常待命",
+                   "ageSeconds":  4,
+                   "activeRequests":  0,
+                   "currentTaskInstruction":  "最近完成：下載區放在最底面",
                    "currentTaskSource":  "tg-openai-bot-3/telegram_request_status.json"
                },
     "monitors":  [
@@ -44,7 +44,7 @@
                          "label":  "蝦咩心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 41 秒前，執行中任務 0",
+                         "detail":  "心跳 23 秒前，執行中任務 0",
                          "source":  "codex_bot_heartbeat.json"
                      },
                      {
@@ -52,7 +52,7 @@
                          "label":  "Telegram 任務佇列",
                          "statusKey":  "standby",
                          "statusLabel":  "正常待命",
-                         "detail":  "這個只傳給tg4",
+                         "detail":  "sd mini api呢",
                          "source":  "telegram_request_status.json"
                      },
                      {
@@ -60,7 +60,7 @@
                          "label":  "林孟姿心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 34 秒前，執行中任務 0",
+                         "detail":  "心跳 33 秒前，執行中任務 0",
                          "source":  "tg-openai-bot-2/codex_bot_heartbeat.json"
                      },
                      {
@@ -76,15 +76,15 @@
                          "label":  "嵐熙心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 5 秒前，執行中任務 1",
+                         "detail":  "心跳 4 秒前，執行中任務 0",
                          "source":  "tg-openai-bot-3/codex_bot_heartbeat.json"
                      },
                      {
                          "id":  "tgbot3-request",
                          "label":  "嵐熙任務佇列",
-                         "statusKey":  "running",
-                         "statusLabel":  "運作中",
-                         "detail":  "下載區放在最底面",
+                         "statusKey":  "standby",
+                         "statusLabel":  "正常待命",
+                         "detail":  "最近完成：下載區放在最底面",
                          "source":  "tg-openai-bot-3/telegram_request_status.json"
                      },
                      {
@@ -92,7 +92,7 @@
                          "label":  "Codex token 統計",
                          "statusKey":  "running",
                          "statusLabel":  "已讀取",
-                         "detail":  "324548 tokens，任務 1",
+                         "detail":  "557041 tokens，任務 3",
                          "source":  "本機 Codex token 紀錄"
                      },
                      {
@@ -108,7 +108,7 @@
                          "label":  "狀態產生器",
                          "statusKey":  "running",
                          "statusLabel":  "已更新",
-                         "detail":  "產生時間 2026-07-22 12:27:11",
+                         "detail":  "產生時間 2026-07-22 13:27:13",
                          "source":  "tools/update-runtime-status.ps1"
                      },
                      {
