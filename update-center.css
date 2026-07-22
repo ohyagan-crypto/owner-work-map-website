@@ -70,6 +70,7 @@
 
 .codex-update-item strong { color: var(--text); }
 .codex-update-item p, .codex-update-item small { margin: 0; color: var(--muted); line-height: 1.6; }
+.codex-update-item .update-tgbot-hint { color: rgba(103, 231, 255, 0.84); }
 
 .codex-update-meta { display: flex; flex-wrap: wrap; gap: 8px 12px; color: var(--gold); font-size: 0.82rem; }
 
@@ -175,6 +176,44 @@
 }
 .update-command-button:disabled { cursor: not-allowed; opacity: 0.45; }
 .update-action-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.update-tgbot-flow {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin: 18px 0;
+}
+.update-tgbot-flow > div {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 9px;
+  align-items: start;
+  min-width: 0;
+  padding: 13px;
+  border: 1px solid rgba(103, 231, 255, 0.2);
+  border-radius: 11px;
+  background: rgba(103, 231, 255, 0.055);
+  color: var(--muted);
+  line-height: 1.6;
+}
+.update-tgbot-flow strong {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--cyan);
+  color: #04111d;
+}
+.update-advanced {
+  margin-top: 14px;
+  padding: 13px 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.14);
+  color: var(--muted);
+}
+.update-advanced summary { color: var(--cyan); font-weight: 800; cursor: pointer; }
+.update-advanced p { margin: 10px 0 0; line-height: 1.7; }
 .update-publish-steps {
   display: grid;
   gap: 7px;
@@ -189,4 +228,5 @@
 .update-publish-steps strong { color: var(--gold); }
 @media (max-width: 720px) {
   .update-action-row > button { width: 100%; }
+  .update-tgbot-flow { grid-template-columns: 1fr; }
 }

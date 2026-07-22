@@ -22,7 +22,7 @@
     rel="stylesheet"
   >
   <link rel="stylesheet" href="styles.css?v=20260722-codex-updates-1">
-  <link rel="stylesheet" href="update-center.css?v=20260722-admin-upload-1">
+  <link rel="stylesheet" href="update-center.css?v=20260722-tgbot-upgrade-1">
 </head>
 <body>
   <div class="page-shell">
@@ -214,7 +214,7 @@
         <div class="section-heading">
           <p class="eyebrow">Codex 更新中心</p>
           <h2>記憶、技能、工作流，統一下載與套用</h2>
-          <p>之後你把更新檔交給我，我會先排除敏感資料、加密打包、更新這裡的清單，再部署到公開站。其他 Codex 輸入密碼後下載，解密驗證通過才會套用。</p>
+          <p>之後你把更新檔交給我，我會先排除敏感資料、加密打包、更新這裡的清單，再部署到公開站。使用者輸入密碼後，可以下載更新包，或直接複製升級指令貼給自己的 TGBOT 自動完成更新。</p>
         </div>
         <div class="update-security-note">
           <strong>安全邊界</strong>
@@ -269,21 +269,29 @@
         </div>
         <article class="update-card update-apply-card">
           <div class="update-card-heading">
-            <span class="update-card-icon">✓</span>
+            <span class="update-card-icon">↗</span>
             <div>
-              <p class="eyebrow">其他 Codex 套用</p>
-              <h3>下載後先乾跑，再正式套用</h3>
+              <p class="eyebrow">傳給 TGBOT</p>
+              <h3>複製升級指令，貼上就能更新</h3>
             </div>
           </div>
-          <p>其他 Codex 可以直接從公開網址下載更新包與<a href="tools/apply-codex-update.mjs" download>套用工具</a>，密碼固定輸入 <code>bsmf</code>；第一次先乾跑驗證，確認沒有敏感或錯誤路徑後再正式套用。</p>
-          <pre id="codexApplyCommand" class="update-command">node tools/apply-codex-update.mjs --url https://ohyagan-crypto.github.io/owner-work-map-website/updates/目前更新檔.bsmf --password bsmf --target-root C:\\Users\\你的使用者名稱\\.codex --dry-run</pre>
-          <button type="button" class="copy-button" data-copy-target="codexApplyCommand" data-copy-label="複製套用指令">複製套用指令</button>
+          <p>在上方輸入 <code>bsmf</code> 解鎖後，點更新包旁的「複製升級指令」。把整段文字貼到你要升級的 TGBOT，它會下載套用工具與更新包，先做安全檢查，再更新自己的記憶、技能與工作流。</p>
+          <div class="update-tgbot-flow" aria-label="TGBOT 升級使用方式">
+            <div><strong>1</strong><span>輸入 <code>bsmf</code> 解鎖更新包。</span></div>
+            <div><strong>2</strong><span>按「複製升級指令」，不用自己修改路徑。</span></div>
+            <div><strong>3</strong><span>回到 Telegram，把複製好的升級指令傳給自己的 TGBOT。</span></div>
+            <div><strong>4</strong><span>TGBOT 會先乾跑檢查，通過後正式套用、重啟並回報驗證結果。</span></div>
+          </div>
+          <details class="update-advanced">
+            <summary>進階：手動使用套用工具</summary>
+            <p>需要自行操作時，可下載<a href="tools/apply-codex-update.mjs" download>套用工具</a>。請先加上 <code>--dry-run</code> 檢查，驗證通過後再移除 <code>--dry-run</code> 正式更新。</p>
+          </details>
           <div class="update-publish-steps">
             <strong>你交給我的更新流程</strong>
             <span>1. 你把記憶、技能、工作流更新檔傳給我。</span>
             <span>2. 我檢查並排除金鑰、Cookie、瀏覽器資料與原始紀錄。</span>
             <span>3. 我把合格的 <code>.bsmf</code> 放進更新清單並公開部署。</span>
-            <span>4. 其他 Codex 在這裡輸入 <code>bsmf</code> 下載，再用乾跑指令套用。</span>
+            <span>4. 使用者輸入 <code>bsmf</code>，複製升級指令貼給自己的 TGBOT 完成更新。</span>
             <span><a href="tools/publish-codex-update.ps1" download>下載管理端上架工具</a>：收到新包後先檢查，再更新公開清單。</span>
           </div>
         </article>
@@ -317,6 +325,6 @@
   </div>
 
   <script src="app.js?v=20260722-scheduled-workflow-1"></script>
-  <script src="update-center.js?v=20260722-admin-upload-1"></script>
+  <script src="update-center.js?v=20260722-tgbot-upgrade-1"></script>
 </body>
 </html>

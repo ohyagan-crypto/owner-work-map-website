@@ -40,8 +40,9 @@
       '</div>',
       '<div class="update-action-row">',
       '<button type="button" class="update-download-button" data-update-index="' + index + '" disabled>輸入密碼後下載</button>',
-      '<button type="button" class="update-command-button" data-update-index="' + index + '" disabled>複製套用指令</button>',
+      '<button type="button" class="update-command-button" data-update-index="' + index + '" disabled>複製升級指令</button>',
       '</div>',
+      '<small class="update-tgbot-hint">推薦：複製升級指令後直接貼給要升級的 TGBOT，它會自動下載、檢查、套用與驗證。</small>',
       '</article>'
     ].join("")).join("");
   }
@@ -91,22 +92,41 @@
     document.body.appendChild(anchor);
     anchor.click();
     anchor.remove();
-    setAccessStatus("下載已開始；請用套用工具先做乾跑驗證。", false);
+    setAccessStatus("下載已開始；也可以按「複製升級指令」貼給 TGBOT 自動完成更新。", false);
   }
 
-  function buildApplyCommand(item) {
+  function buildTgbotInstruction(item) {
     const base = new URL(".", window.location.href).href;
-    const url = new URL(item.file, base).href;
-    return "node tools/apply-codex-update.mjs --url " + url + " --password bsmf --target-root C:\\Users\\你的使用者名稱\\.codex --dry-run";
+    const updateUrl = new URL(item.file, base).href;
+    const toolUrl = new URL("tools/apply-codex-update.mjs", base).href;
+    return [
+      "請替目前這個 TGBOT 安裝 Codex 更新，只能更新本 TGBOT 自己使用的 Codex 根目錄，不可改到其他 TG Bot。",
+      "",
+      "更新名稱：" + (item.title || item.id || "Codex 更新包"),
+      "更新版本：" + (item.version || "未知"),
+      "更新包：" + updateUrl,
+      "套用工具：" + toolUrl,
+      "更新密碼：bsmf",
+      "",
+      "請依序完成：",
+      "1. 將套用工具與更新包下載到本機日期資料夾。",
+      "2. 自動辨識目前這個 TGBOT 對應的 Codex 根目錄。",
+      "3. 先執行 dry-run，檢查更新包完整性、敏感資料與寫入路徑。",
+      "4. 驗證通過後，移除 --dry-run 正式套用更新。",
+      "5. 重啟目前這個 TGBOT 或 Codex，確認記憶、技能、工作流已重新載入。",
+      "6. 回報更新版本、安裝內容、驗證結果與本機備份路徑。",
+      "",
+      "如果無法辨識正確根目錄、乾跑失敗或檔案驗證不通過，請停止正式套用並回報明確卡點。"
+    ].join("\n");
   }
 
   async function copyApplyCommand(item) {
-    const command = buildApplyCommand(item);
+    const command = buildTgbotInstruction(item);
     try {
       await navigator.clipboard.writeText(command);
-      setAccessStatus("套用指令已複製；接收端先乾跑，確認後再移除 --dry-run。", false);
+      setAccessStatus("TGBOT 升級指令已複製；請回到 Telegram，直接貼給要升級的 TGBOT。", false);
     } catch (error) {
-      setAccessStatus("瀏覽器未允許複製，請直接使用頁面上的指令。", true);
+      setAccessStatus("瀏覽器未允許複製，請重新開啟網站後再試一次。", true);
     }
   }
 
@@ -204,7 +224,7 @@
       const commandButton = event.target.closest(".update-command-button");
       if (!button && !commandButton) return;
       if (!state.unlocked) {
-        setAccessStatus("請先輸入更新密碼，才能下載或複製套用指令。", true);
+        setAccessStatus("請先輸入更新密碼，才能下載或複製 TGBOT 升級指令。", true);
         return;
       }
       const target = button || commandButton;

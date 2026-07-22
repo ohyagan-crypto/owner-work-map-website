@@ -1,4 +1,4 @@
-const CACHE_NAME = "tutorial-site-v10-admin-upload-password";
+const CACHE_NAME = "tutorial-site-v11-tgbot-upgrade-command";
 const APP_SHELL = [
   "./",
   "./index.html",
