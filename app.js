@@ -428,6 +428,11 @@ const workflows = [
     formula: "執行 LINE 官方客服工作流。\n目標官方帳號：___。\n客戶最新訊息：___。\n相關截圖／訂單／錯誤內容：___。\n處理要求：先判斷問題並給可直接傳送的繁體中文回覆；需要時檢查訊息轉送與連線狀態。\n限制：不外露密碼、Token、客戶個資或內部紀錄；退款、付款爭議、補償與帳號安全問題先交由主人決定。\n完成標準：回覆內容可直接使用，系統問題則完成實際檢查與修復，或說明明確卡點。"
   },
   {
+    name: "自動排程建立與維護", category: "系統", trigger: "建立排程、自動執行、每天回報、定時檢查、修改排程",
+    summary: "建立、修改或停用自動排程，保留既有監控與恢復機制；完成後實際核對觸發時間、執行內容、回傳對話與最新執行結果。", output: "可正常觸發的排程＋驗證結果與下次執行時間",
+    formula: "建立／修改自動排程。\n排程名稱：___。\n執行任務：___。\n執行頻率：每天／每週／每月／一次性 ___。\n執行時間：___，時區：___。\n輸入來源：___。\n完成後回傳：結果文字／網址／檔案 ___。\n回傳位置：目前原始 Telegram 對話／指定位置 ___。\n失敗處理：先重試 ___ 次，再檢查實際程序、狀態檔與平台結果；保留原有監控、看門狗與自動恢復。\n安全限制：不顯示密碼、Token、Cookie、驗證碼或內部紀錄。\n完成標準：排程已建立或更新、狀態為啟用、觸發時間與時區正確，並完成一次測試或確認最近執行結果與下次執行時間。"
+  },
+  {
     name: "技能與記憶交接", category: "系統", trigger: "打包技能、記憶、工作流、交接 Codex／OC",
     summary: "整理技能、記憶、安裝教學、測試方式與安全排除，製作可一次學會的交接包。", output: "含日期的 ZIP 教學包",
     formula: "打包 ___ 技能／記憶／工作流，交給其他 Codex／OpenClaw 學習。\n範圍：___。\n要包含：安裝教學、觸發詞、完整流程、測試題、安全規則。\n禁止包含：密碼、Token、Cookie、登入資料與原始紀錄。"
@@ -472,7 +477,7 @@ let workflowSearchTerm = "";
 let skillMode = "beginner";
 let workflowMode = "beginner";
 const beginnerSkills = new Set(["wbs", "做圖", "teaching-step-images", "hfsw", "nbs", "pdf", "telegram-bot-manager", "telegram-two-stage-reply", "bb-browser", "playwright"]);
-const beginnerWorkflows = new Set(["WBS 網站建置與公開部署", "網站監控系統建置", "image2 API 做圖", "教學步驟圖", "HFSW 長影片製作", "NBS NotebookLM 摘要", "Telegram Bot 管理與修復", "LINE 官方客服工作流"]);
+const beginnerWorkflows = new Set(["WBS 網站建置與公開部署", "網站監控系統建置", "image2 API 做圖", "教學步驟圖", "HFSW 長影片製作", "NBS NotebookLM 摘要", "Telegram Bot 管理與修復", "LINE 官方客服工作流", "自動排程建立與維護"]);
 
 const $ = (selector) => document.querySelector(selector);
 
