@@ -1,12 +1,12 @@
 {
-    "statusKey":  "completed",
-    "statusLabel":  "已回覆完成",
-    "headline":  "參考圖",
-    "currentTaskInstruction":  "參考圖",
+    "statusKey":  "standby",
+    "statusLabel":  "正常待命",
+    "headline":  "好多了 記好成功方式",
+    "currentTaskInstruction":  "好多了 記好成功方式",
     "blocker":  "沒有卡點",
-    "nextAction":  "可直接查看 Telegram 回覆結果。",
-    "updatedAt":  "2026-07-22T17:27:12+08:00",
-    "checkedAt":  "2026-07-22T17:27:12+08:00",
+    "nextAction":  "有新任務時會更新 Telegram 狀態與本頁快照。",
+    "updatedAt":  "2026-07-22T18:27:11+08:00",
+    "checkedAt":  "2026-07-22T18:27:11+08:00",
     "sourceType":  "local-generator",
     "sourceLabel":  "本機即時狀態產生器",
     "refreshSeconds":  1,
@@ -17,14 +17,14 @@
               },
     "heartbeat":  {
                       "name":  "蝦咩",
-                      "ageSeconds":  22,
+                      "ageSeconds":  35,
                       "activeRequests":  0
                   },
     "tgbot2":  {
                    "name":  "林孟姿",
                    "statusKey":  "standby",
                    "statusLabel":  "正常待命",
-                   "ageSeconds":  40,
+                   "ageSeconds":  34,
                    "activeRequests":  0,
                    "currentTaskInstruction":  "最近完成：要選win19還是22",
                    "currentTaskSource":  "tg-openai-bot-2/telegram_request_status.json"
@@ -33,9 +33,9 @@
                    "name":  "嵐熙",
                    "statusKey":  "standby",
                    "statusLabel":  "正常待命",
-                   "ageSeconds":  24,
+                   "ageSeconds":  0,
                    "activeRequests":  0,
-                   "currentTaskInstruction":  "最近完成：自動排程也要工作流一鍵複製",
+                   "currentTaskInstruction":  "最近完成：下載安裝包再加上這段指令就能更新了嗎 node tools/apply-codex-update.mjs --url https://ohyagan-crypto.github.io/owner-work-map-website/updat",
                    "currentTaskSource":  "tg-openai-bot-3/telegram_request_status.json"
                },
     "monitors":  [
@@ -44,15 +44,15 @@
                          "label":  "蝦咩心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 22 秒前，執行中任務 0",
+                         "detail":  "心跳 35 秒前，執行中任務 0",
                          "source":  "codex_bot_heartbeat.json"
                      },
                      {
                          "id":  "telegram-request",
                          "label":  "Telegram 任務佇列",
-                         "statusKey":  "completed",
-                         "statusLabel":  "已回覆完成",
-                         "detail":  "參考圖",
+                         "statusKey":  "standby",
+                         "statusLabel":  "正常待命",
+                         "detail":  "好多了 記好成功方式",
                          "source":  "telegram_request_status.json"
                      },
                      {
@@ -60,7 +60,7 @@
                          "label":  "林孟姿心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 40 秒前，執行中任務 0",
+                         "detail":  "心跳 34 秒前，執行中任務 0",
                          "source":  "tg-openai-bot-2/codex_bot_heartbeat.json"
                      },
                      {
@@ -76,7 +76,7 @@
                          "label":  "嵐熙心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 24 秒前，執行中任務 0",
+                         "detail":  "心跳 0 秒前，執行中任務 0",
                          "source":  "tg-openai-bot-3/codex_bot_heartbeat.json"
                      },
                      {
@@ -84,7 +84,7 @@
                          "label":  "嵐熙任務佇列",
                          "statusKey":  "standby",
                          "statusLabel":  "正常待命",
-                         "detail":  "最近完成：自動排程也要工作流一鍵複製",
+                         "detail":  "最近完成：下載安裝包再加上這段指令就能更新了嗎 node tools/apply-codex-update.mjs --url https://ohyagan-crypto.github.io/owner-work-map-website/updat",
                          "source":  "tg-openai-bot-3/telegram_request_status.json"
                      },
                      {
@@ -108,7 +108,7 @@
                          "label":  "狀態產生器",
                          "statusKey":  "running",
                          "statusLabel":  "已更新",
-                         "detail":  "產生時間 2026-07-22 17:27:12",
+                         "detail":  "產生時間 2026-07-22 18:27:11",
                          "source":  "tools/update-runtime-status.ps1"
                      },
                      {
