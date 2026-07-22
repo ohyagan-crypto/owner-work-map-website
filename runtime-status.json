@@ -5,35 +5,35 @@
     "currentTaskInstruction":  "4個同步一次",
     "blocker":  "沒有卡點",
     "nextAction":  "有新任務時會更新 Telegram 狀態與本頁快照。",
-    "updatedAt":  "2026-07-22T23:27:13+08:00",
-    "checkedAt":  "2026-07-22T23:27:13+08:00",
+    "updatedAt":  "2026-07-23T00:27:13+08:00",
+    "checkedAt":  "2026-07-23T00:27:13+08:00",
     "sourceType":  "local-generator",
     "sourceLabel":  "本機即時狀態產生器",
     "refreshSeconds":  1,
     "token":  {
-                  "totalTokens":  116331886,
-                  "taskCount":  1,
-                  "source":  "本機 Codex 執行緒紀錄"
+                  "totalTokens":  0,
+                  "taskCount":  0,
+                  "source":  "本機未抓到精確 token 紀錄"
               },
     "heartbeat":  {
                       "name":  "蝦咩",
-                      "ageSeconds":  36,
+                      "ageSeconds":  31,
                       "activeRequests":  0
                   },
     "tgbot2":  {
                    "name":  "林孟姿",
-                   "statusKey":  "standby",
-                   "statusLabel":  "正常待命",
-                   "ageSeconds":  29,
+                   "statusKey":  "blocked",
+                   "statusLabel":  "卡點",
+                   "ageSeconds":  47,
                    "activeRequests":  0,
-                   "currentTaskInstruction":  "最近完成：去看一下tg4的萬用提示詞 全部學起來",
+                   "currentTaskInstruction":  "http://xhslink.com/o/8fICNcXoHNE 分析一下這個視ˉ有什麼可以幫助到我ˉ",
                    "currentTaskSource":  "tg-openai-bot-2/telegram_request_status.json"
                },
     "tgbot3":  {
                    "name":  "嵐熙",
                    "statusKey":  "blocked",
                    "statusLabel":  "卡點",
-                   "ageSeconds":  13,
+                   "ageSeconds":  9,
                    "activeRequests":  0,
                    "currentTaskInstruction":  "我要下載更新包那裡能直接複製更新指令 讓用戶直接傳給tgbot,並輸入複製好的升級指令",
                    "currentTaskSource":  "tg-openai-bot-3/telegram_request_status.json"
@@ -44,7 +44,7 @@
                          "label":  "蝦咩心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 36 秒前，執行中任務 0",
+                         "detail":  "心跳 31 秒前，執行中任務 0",
                          "source":  "codex_bot_heartbeat.json"
                      },
                      {
@@ -60,15 +60,15 @@
                          "label":  "林孟姿心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 29 秒前，執行中任務 0",
+                         "detail":  "心跳 47 秒前，執行中任務 0",
                          "source":  "tg-openai-bot-2/codex_bot_heartbeat.json"
                      },
                      {
                          "id":  "tgbot2-request",
                          "label":  "林孟姿任務佇列",
-                         "statusKey":  "standby",
-                         "statusLabel":  "正常待命",
-                         "detail":  "最近完成：去看一下tg4的萬用提示詞 全部學起來",
+                         "statusKey":  "blocked",
+                         "statusLabel":  "卡點",
+                         "detail":  "http://xhslink.com/o/8fICNcXoHNE 分析一下這個視ˉ有什麼可以幫助到我ˉ",
                          "source":  "tg-openai-bot-2/telegram_request_status.json"
                      },
                      {
@@ -76,7 +76,7 @@
                          "label":  "嵐熙心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 13 秒前，執行中任務 0",
+                         "detail":  "心跳 9 秒前，執行中任務 0",
                          "source":  "tg-openai-bot-3/codex_bot_heartbeat.json"
                      },
                      {
@@ -92,8 +92,8 @@
                          "label":  "Codex token 統計",
                          "statusKey":  "running",
                          "statusLabel":  "已讀取",
-                         "detail":  "116331886 tokens，任務 1",
-                         "source":  "本機 Codex 執行緒紀錄"
+                         "detail":  "0 tokens，任務 0",
+                         "source":  "本機未抓到精確 token 紀錄"
                      },
                      {
                          "id":  "dashboard-control-action",
@@ -108,7 +108,7 @@
                          "label":  "狀態產生器",
                          "statusKey":  "running",
                          "statusLabel":  "已更新",
-                         "detail":  "產生時間 2026-07-22 23:27:13",
+                         "detail":  "產生時間 2026-07-23 00:27:13",
                          "source":  "tools/update-runtime-status.ps1"
                      },
                      {
