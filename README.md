@@ -39,3 +39,19 @@ output/dashboard-control-secret.json
 公開頁輸入 4 位數操作碼後會取得 30 分鐘控制權限。安全重啟會在偵測到執行中任務時排隊，立即重啟才會中斷目前任務；最近操作、原因、結果與新舊程序編號會保留在本機操作紀錄。
 
 預設會在 `http://127.0.0.1:4179/` 提供本機預覽與 `/api/status` 即時狀態 API。
+
+## Codex 更新中心
+
+網站的 `Codex 更新中心` 支援：
+
+- 管理端把新的 `.bsmf` 更新包登錄到 `updates/` 與 `data/codex-updates.json`
+- 其他 Codex 在公開頁輸入 `bsmf` 後下載更新包
+- 使用 `tools/apply-codex-update.mjs` 以 URL 乾跑驗證，再正式套用技能、記憶與工作流
+
+收到新更新檔後，建議使用：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\tools\publish-codex-update.ps1 -InputFile C:\path\codex-update.bsmf -Title "更新標題" -Description "更新說明"
+```
+
+GitHub Pages 不提供瀏覽器直接寫入網站檔案的能力，因此網站上的選取區是「上傳前檢查」；正式公開上架仍由管理端檢查、放入更新清單並部署。

@@ -1,4 +1,4 @@
-(() => {
+﻿(() => {
   const passwordHash = "5057018e01f6368bb3449ff5ff9de36ae08a2a506dbfc41496e1d8282bd21dbf";
   const manifestUrl = "data/codex-updates.json";
   const state = { updates: [], unlocked: false };
@@ -37,7 +37,10 @@
       '<span>' + escapeHtml(item.createdAt || "日期未標示") + '</span>',
       '<span>' + escapeHtml(formatBytes(Number(item.size))) + '</span>',
       '</div>',
+      '<div class="update-action-row">',
       '<button type="button" class="update-download-button" data-update-index="' + index + '" disabled>輸入密碼後下載</button>',
+      '<button type="button" class="update-command-button" data-update-index="' + index + '" disabled>複製套用指令</button>',
+      '</div>',
       '</article>'
     ].join("")).join("");
   }
@@ -54,6 +57,9 @@
       button.disabled = false;
       button.textContent = "下載更新包";
     });
+    document.querySelectorAll(".update-command-button").forEach((button) => {
+      button.disabled = false;
+    });
   }
 
   function downloadUpdate(item) {
@@ -64,6 +70,22 @@
     anchor.click();
     anchor.remove();
     setAccessStatus("下載已開始；請用套用工具先做乾跑驗證。", false);
+  }
+
+  function buildApplyCommand(item) {
+    const base = new URL(".", window.location.href).href;
+    const url = new URL(item.file, base).href;
+    return "node tools/apply-codex-update.mjs --url " + url + " --password bsmf --target-root C:\\Users\\你的使用者名稱\\.codex --dry-run";
+  }
+
+  async function copyApplyCommand(item) {
+    const command = buildApplyCommand(item);
+    try {
+      await navigator.clipboard.writeText(command);
+      setAccessStatus("套用指令已複製；接收端先乾跑，確認後再移除 --dry-run。", false);
+    } catch (error) {
+      setAccessStatus("瀏覽器未允許複製，請直接使用頁面上的指令。", true);
+    }
   }
 
   async function inspectSelectedFile(file) {
@@ -122,9 +144,17 @@
     }
     document.addEventListener("click", (event) => {
       const button = event.target.closest(".update-download-button");
-      if (!button || !state.unlocked) return;
-      const item = state.updates[Number(button.dataset.updateIndex)];
-      if (item) downloadUpdate(item);
+      const commandButton = event.target.closest(".update-command-button");
+      if (!button && !commandButton) return;
+      if (!state.unlocked) {
+        setAccessStatus("請先輸入更新密碼，才能下載或複製套用指令。", true);
+        return;
+      }
+      const target = button || commandButton;
+      const item = state.updates[Number(target.dataset.updateIndex)];
+      if (!item) return;
+      if (button) downloadUpdate(item);
+      else copyApplyCommand(item);
     });
   }
 
