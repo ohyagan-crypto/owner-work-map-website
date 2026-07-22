@@ -5,8 +5,8 @@
     "currentTaskInstruction":  "好多了 記好成功方式",
     "blocker":  "沒有卡點",
     "nextAction":  "有新任務時會更新 Telegram 狀態與本頁快照。",
-    "updatedAt":  "2026-07-22T19:27:13+08:00",
-    "checkedAt":  "2026-07-22T19:27:13+08:00",
+    "updatedAt":  "2026-07-22T20:27:11+08:00",
+    "checkedAt":  "2026-07-22T20:27:11+08:00",
     "sourceType":  "local-generator",
     "sourceLabel":  "本機即時狀態產生器",
     "refreshSeconds":  1,
@@ -17,23 +17,23 @@
               },
     "heartbeat":  {
                       "name":  "蝦咩",
-                      "ageSeconds":  34,
+                      "ageSeconds":  28,
                       "activeRequests":  0
                   },
     "tgbot2":  {
                    "name":  "林孟姿",
-                   "statusKey":  "running",
-                   "statusLabel":  "運作中",
-                   "ageSeconds":  23,
-                   "activeRequests":  1,
-                   "currentTaskInstruction":  "去看一下tg4的萬用提示詞 全部學起來",
+                   "statusKey":  "standby",
+                   "statusLabel":  "正常待命",
+                   "ageSeconds":  16,
+                   "activeRequests":  0,
+                   "currentTaskInstruction":  "最近完成：去看一下tg4的萬用提示詞 全部學起來",
                    "currentTaskSource":  "tg-openai-bot-2/telegram_request_status.json"
                },
     "tgbot3":  {
                    "name":  "嵐熙",
                    "statusKey":  "standby",
                    "statusLabel":  "正常待命",
-                   "ageSeconds":  47,
+                   "ageSeconds":  41,
                    "activeRequests":  0,
                    "currentTaskInstruction":  "最近完成：下載安裝包再加上這段指令就能更新了嗎 node tools/apply-codex-update.mjs --url https://ohyagan-crypto.github.io/owner-work-map-website/updat",
                    "currentTaskSource":  "tg-openai-bot-3/telegram_request_status.json"
@@ -44,7 +44,7 @@
                          "label":  "蝦咩心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 34 秒前，執行中任務 0",
+                         "detail":  "心跳 28 秒前，執行中任務 0",
                          "source":  "codex_bot_heartbeat.json"
                      },
                      {
@@ -60,15 +60,15 @@
                          "label":  "林孟姿心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 23 秒前，執行中任務 1",
+                         "detail":  "心跳 16 秒前，執行中任務 0",
                          "source":  "tg-openai-bot-2/codex_bot_heartbeat.json"
                      },
                      {
                          "id":  "tgbot2-request",
                          "label":  "林孟姿任務佇列",
-                         "statusKey":  "running",
-                         "statusLabel":  "運作中",
-                         "detail":  "去看一下tg4的萬用提示詞 全部學起來",
+                         "statusKey":  "standby",
+                         "statusLabel":  "正常待命",
+                         "detail":  "最近完成：去看一下tg4的萬用提示詞 全部學起來",
                          "source":  "tg-openai-bot-2/telegram_request_status.json"
                      },
                      {
@@ -76,7 +76,7 @@
                          "label":  "嵐熙心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 47 秒前，執行中任務 0",
+                         "detail":  "心跳 41 秒前，執行中任務 0",
                          "source":  "tg-openai-bot-3/codex_bot_heartbeat.json"
                      },
                      {
@@ -108,7 +108,7 @@
                          "label":  "狀態產生器",
                          "statusKey":  "running",
                          "statusLabel":  "已更新",
-                         "detail":  "產生時間 2026-07-22 19:27:13",
+                         "detail":  "產生時間 2026-07-22 20:27:11",
                          "source":  "tools/update-runtime-status.ps1"
                      },
                      {
