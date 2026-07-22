@@ -1,0 +1,18 @@
+{
+  "format": "bsmf-codex-update-v1",
+  "updatedAt": "2026-07-22",
+  "notes": "公開清單只放更新包名稱、版本、大小與雜湊；更新包內容仍以 AES-256-GCM 加密。",
+  "updates": [
+    {
+      "id": "codex-update-20260722.1",
+      "version": "20260722.1",
+      "createdAt": "2026-07-22",
+      "title": "Codex 記憶、技能、工作流更新協定",
+      "description": "示範更新包，包含下載、乾跑驗證、敏感資料排除與套用說明；之後的實際更新沿用同一格式。",
+      "file": "updates/codex-update-protocol-20260722.bsmf",
+      "size": 3706,
+      "sha256": "b797364b02b1a88ae424458841d6a5c1098266974adb197338b5ca04bebd3696",
+      "contents": ["技能更新區", "記憶更新區", "工作流更新區", "其他 Codex 安裝說明"]
+    }
+  ]
+}

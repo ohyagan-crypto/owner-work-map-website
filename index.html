@@ -21,7 +21,8 @@
     href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Space+Grotesk:wght@500;700&display=swap"
     rel="stylesheet"
   >
-  <link rel="stylesheet" href="styles.css?v=20260721-tg-github-command-1">
+  <link rel="stylesheet" href="styles.css?v=20260722-codex-updates-1">
+  <link rel="stylesheet" href="update-center.css?v=20260722-codex-updates-1">
 </head>
 <body>
   <div class="page-shell">
@@ -54,6 +55,7 @@
       <a href="#templates">直接照抄</a>
       <a href="#prompt-formula">公式結構</a>
       <a href="#tg-guide">TG 操作指南</a>
+      <a href="#codex-updates">更新中心</a>
       <a href="#all-skills">搜尋技能</a>
       <a href="#all-workflows">所有工作流</a>
       <a href="#talk-style">對話方式</a>
@@ -116,6 +118,69 @@
         <div class="tg-guide-grid" id="tgGuideGrid"></div>
         <div class="tg-note-panel" id="tgNotePanel"></div>
         <div class="tg-note-panel" id="tgChunkPanel"></div>
+      </section>
+
+      <section id="codex-updates" class="content-block update-center-block">
+        <div class="section-heading">
+          <p class="eyebrow">Codex 更新中心</p>
+          <h2>記憶、技能、工作流，統一下載與套用</h2>
+          <p>之後你把更新檔交給我，我會先排除敏感資料、加密打包、更新這裡的清單，再部署到公開站。其他 Codex 輸入密碼後下載，解密驗證通過才會套用。</p>
+        </div>
+        <div class="update-security-note">
+          <strong>安全邊界</strong>
+          <span>GitHub Pages 是公開靜態站，不能在前端保存真正的上傳權限；更新包本身使用 AES-256-GCM 加密，網站密碼只作下載操作門檻。不要把金鑰、Cookie、瀏覽器資料或原始對話紀錄放進更新檔。</span>
+        </div>
+        <div class="update-center-grid">
+          <article class="update-card update-download-card">
+            <div class="update-card-heading">
+              <span class="update-card-icon">↓</span>
+              <div>
+                <p class="eyebrow">下載更新</p>
+                <h3>可用的 Codex 更新包</h3>
+              </div>
+            </div>
+            <div id="codexUpdateList" class="codex-update-list" aria-live="polite">
+              <p class="update-loading">正在讀取更新清單……</p>
+            </div>
+            <form id="codexUpdateAccessForm" class="update-access-form">
+              <label for="codexUpdatePassword">更新密碼</label>
+              <div class="update-password-row">
+                <input id="codexUpdatePassword" type="password" autocomplete="off" placeholder="輸入更新密碼">
+                <button type="submit" class="primary-button">解鎖下載</button>
+              </div>
+              <p id="codexUpdateAccessStatus" class="update-status" role="status"></p>
+            </form>
+          </article>
+
+          <article class="update-card update-upload-card">
+            <div class="update-card-heading">
+              <span class="update-card-icon">↑</span>
+              <div>
+                <p class="eyebrow">本機匯入檢查</p>
+                <h3>選取更新檔</h3>
+              </div>
+            </div>
+            <p>選取你從 Telegram 或其他地方取得的 <code>.bsmf</code> 檔案；網站只在目前瀏覽器檢查格式，不會把檔案上傳到公開站。</p>
+            <label class="update-file-drop" for="codexUpdateFile">
+              <input id="codexUpdateFile" type="file" accept=".bsmf,application/json">
+              <span>點擊選取或拖曳更新檔到這裡</span>
+              <small>檢查格式、版本、內容清單與檔案大小</small>
+            </label>
+            <div id="codexUpdateFileStatus" class="update-file-status" role="status"></div>
+          </article>
+        </div>
+        <article class="update-card update-apply-card">
+          <div class="update-card-heading">
+            <span class="update-card-icon">✓</span>
+            <div>
+              <p class="eyebrow">其他 Codex 套用</p>
+              <h3>下載後先乾跑，再正式套用</h3>
+            </div>
+          </div>
+            <p>在接收端把網站上的更新包與<a href="tools/apply-codex-update.mjs" download>套用工具</a>下載到本機，使用下面指令；第一次建議加上 <code>--dry-run</code>，確認沒有敏感或錯誤路徑後再移除。</p>
+          <pre id="codexApplyCommand" class="update-command">node tools/apply-codex-update.mjs --file .\\codex-update.bsmf --password bsmf --target-root C:\\Users\\你的使用者名稱\\.codex --dry-run</pre>
+          <button type="button" class="copy-button" data-copy-target="codexApplyCommand" data-copy-label="複製套用指令">複製套用指令</button>
+        </article>
       </section>
 
       <section id="all-skills" class="content-block">
@@ -236,6 +301,7 @@
   </div>
 
   <script src="app.js?v=20260721-tg-github-command-1"></script>
+  <script src="update-center.js?v=20260722-codex-updates-1"></script>
 </body>
 </html>
 

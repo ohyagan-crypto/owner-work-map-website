@@ -1,0 +1,152 @@
+.update-center-block {
+  position: relative;
+  overflow: hidden;
+}
+
+.update-security-note {
+  display: grid;
+  gap: 6px;
+  margin: 0 0 18px;
+  padding: 14px 16px;
+  border: 1px solid rgba(255, 209, 125, 0.28);
+  border-radius: 12px;
+  background: rgba(255, 209, 125, 0.08);
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.update-security-note strong { color: var(--gold); }
+
+.update-center-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.update-card {
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.update-apply-card { margin-top: 16px; }
+
+.update-card-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.update-card-heading h3 { margin: 0; font-size: 1.25rem; }
+.update-card-heading .eyebrow { margin-bottom: 4px; }
+
+.update-card-icon {
+  display: grid;
+  flex: 0 0 42px;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border: 1px solid rgba(103, 231, 255, 0.35);
+  border-radius: 12px;
+  background: rgba(103, 231, 255, 0.1);
+  color: var(--cyan);
+  font-size: 1.35rem;
+  font-weight: 900;
+}
+
+.codex-update-list { display: grid; gap: 10px; margin-bottom: 18px; }
+
+.codex-update-item {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(3, 10, 20, 0.38);
+}
+
+.codex-update-item strong { color: var(--text); }
+.codex-update-item p, .codex-update-item small { margin: 0; color: var(--muted); line-height: 1.6; }
+
+.codex-update-meta { display: flex; flex-wrap: wrap; gap: 8px 12px; color: var(--gold); font-size: 0.82rem; }
+
+.update-download-button, .primary-button {
+  min-height: 42px;
+  padding: 9px 14px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  background: var(--cyan);
+  color: #04111d;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.update-download-button:disabled { cursor: not-allowed; opacity: 0.45; }
+.update-access-form { display: grid; gap: 8px; }
+.update-access-form label { color: var(--muted); font-size: 0.88rem; font-weight: 700; }
+
+.update-password-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
+
+.update-password-row input {
+  min-width: 0;
+  min-height: 42px;
+  padding: 9px 12px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--text);
+  font: inherit;
+}
+
+.update-status, .update-file-status { min-height: 1.4em; margin: 0; color: var(--gold); font-size: 0.88rem; }
+
+.update-file-drop {
+  display: grid;
+  gap: 6px;
+  place-items: center;
+  min-height: 132px;
+  padding: 18px;
+  border: 1px dashed rgba(103, 231, 255, 0.5);
+  border-radius: 12px;
+  background: rgba(103, 231, 255, 0.06);
+  color: var(--text);
+  text-align: center;
+  cursor: pointer;
+}
+
+.update-file-drop.is-dragging, .update-file-drop:hover { background: rgba(103, 231, 255, 0.12); }
+
+.update-file-drop input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.update-file-drop small { color: var(--muted); }
+
+.update-command {
+  overflow-x: auto;
+  margin: 14px 0;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.28);
+  color: var(--cyan);
+  font: 0.88rem/1.65 Consolas, "Cascadia Code", monospace;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.update-loading { margin: 0; color: var(--muted); }
+
+@media (max-width: 720px) {
+  .update-center-grid { grid-template-columns: 1fr; }
+  .update-password-row { grid-template-columns: 1fr; }
+}

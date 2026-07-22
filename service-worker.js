@@ -1,9 +1,12 @@
-const CACHE_NAME = "tutorial-site-v7-tg-github-command";
+const CACHE_NAME = "tutorial-site-v8-codex-updates";
 const APP_SHELL = [
   "./",
   "./index.html",
   "./styles.css",
+  "./update-center.css",
   "./app.js",
+  "./update-center.js",
+  "./data/codex-updates.json",
   "./manifest.webmanifest",
   "./assets/favicon.svg",
   "./assets/app-icon-192.svg",
