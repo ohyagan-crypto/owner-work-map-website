@@ -88,6 +88,7 @@
 .update-download-button:disabled { cursor: not-allowed; opacity: 0.45; }
 .update-access-form { display: grid; gap: 8px; }
 .update-access-form label { color: var(--muted); font-size: 0.88rem; font-weight: 700; }
+.update-upload-access-form { margin: 16px 0; }
 
 .update-password-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
 
@@ -119,6 +120,16 @@
 }
 
 .update-file-drop.is-dragging, .update-file-drop:hover { background: rgba(103, 231, 255, 0.12); }
+
+.update-file-drop.is-locked {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.025);
+  color: var(--muted);
+  cursor: not-allowed;
+  opacity: 0.72;
+}
+
+.update-file-drop.is-locked:hover { background: rgba(255, 255, 255, 0.025); }
 
 .update-file-drop input {
   position: absolute;

@@ -1,4 +1,4 @@
-const CACHE_NAME = "tutorial-site-v9-scheduled-workflow";
+const CACHE_NAME = "tutorial-site-v10-admin-upload-password";
 const APP_SHELL = [
   "./",
   "./index.html",

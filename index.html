@@ -22,7 +22,7 @@
     rel="stylesheet"
   >
   <link rel="stylesheet" href="styles.css?v=20260722-codex-updates-1">
-  <link rel="stylesheet" href="update-center.css?v=20260722-codex-updates-1">
+  <link rel="stylesheet" href="update-center.css?v=20260722-admin-upload-1">
 </head>
 <body>
   <div class="page-shell">
@@ -218,7 +218,7 @@
         </div>
         <div class="update-security-note">
           <strong>安全邊界</strong>
-          <span>GitHub Pages 是公開靜態站，不能在前端保存真正的上傳權限；更新包本身使用 AES-256-GCM 加密，網站密碼只作下載操作門檻。不要把金鑰、Cookie、瀏覽器資料或原始對話紀錄放進更新檔。</span>
+          <span>GitHub Pages 是公開靜態站，管理者密碼只用來解鎖瀏覽器端的選檔檢查；正式上架仍由管理端檢查後部署。更新包本身使用 AES-256-GCM 加密，不要把金鑰、Cookie、瀏覽器資料或原始對話紀錄放進更新檔。</span>
         </div>
         <div class="update-center-grid">
           <article class="update-card update-download-card">
@@ -246,15 +246,23 @@
             <div class="update-card-heading">
               <span class="update-card-icon">↑</span>
               <div>
-                <p class="eyebrow">本機匯入檢查</p>
-                <h3>上傳前檢查更新檔</h3>
+                <p class="eyebrow">管理者上傳檢查</p>
+                <h3>輸入管理者密碼後選取更新檔</h3>
               </div>
             </div>
-            <p>選取你從 Telegram 或其他地方取得的 <code>.bsmf</code> 檔案；這一步會在目前瀏覽器檢查格式，不會把檔案偷偷送到公開站。正式上架由管理端把檔案放入網站更新清單後再部署。</p>
-            <label class="update-file-drop" for="codexUpdateFile">
-              <input id="codexUpdateFile" type="file" accept=".bsmf,application/json">
-              <span>點擊選取或拖曳更新檔到這裡</span>
-              <small>檢查格式、版本、內容清單與檔案大小</small>
+            <p>先通過管理者驗證，才能選取或拖曳 <code>.bsmf</code> 更新檔。檔案只會在目前瀏覽器檢查格式，不會直接寫入公開網站；正式上架仍由管理端檢查後部署。</p>
+            <form id="codexUploadAccessForm" class="update-access-form update-upload-access-form">
+              <label for="codexUploadPassword">管理者密碼</label>
+              <div class="update-password-row">
+                <input id="codexUploadPassword" type="password" inputmode="numeric" autocomplete="off" placeholder="輸入管理者密碼">
+                <button type="submit" class="primary-button">解鎖上傳</button>
+              </div>
+              <p id="codexUploadAccessStatus" class="update-status" role="status">尚未解鎖，無法選取更新檔。</p>
+            </form>
+            <label class="update-file-drop is-locked" for="codexUpdateFile" aria-disabled="true">
+              <input id="codexUpdateFile" type="file" accept=".bsmf,application/json" disabled>
+              <span id="codexUpdateDropTitle">請先輸入管理者密碼</span>
+              <small id="codexUpdateDropHint">解鎖後可檢查格式、版本、內容清單與檔案大小</small>
             </label>
             <div id="codexUpdateFileStatus" class="update-file-status" role="status"></div>
           </article>
@@ -309,6 +317,6 @@
   </div>
 
   <script src="app.js?v=20260722-scheduled-workflow-1"></script>
-  <script src="update-center.js?v=20260722-codex-updates-1"></script>
+  <script src="update-center.js?v=20260722-admin-upload-1"></script>
 </body>
 </html>

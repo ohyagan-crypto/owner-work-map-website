@@ -1,7 +1,8 @@
 ﻿(() => {
   const passwordHash = "5057018e01f6368bb3449ff5ff9de36ae08a2a506dbfc41496e1d8282bd21dbf";
+  const uploadPasswordHash = "0095046d028203016d5d3e574fe1348bb16b65707655dfb158d629bd71b6d59f";
   const manifestUrl = "data/codex-updates.json";
-  const state = { updates: [], unlocked: false };
+  const state = { updates: [], unlocked: false, uploadUnlocked: false };
   const $ = (selector) => document.querySelector(selector);
 
   function escapeHtml(value) {
@@ -52,6 +53,27 @@
     status.style.color = isError ? "#ff9b9b" : "var(--gold)";
   }
 
+  function setUploadAccessStatus(message, isError) {
+    const status = $("#codexUploadAccessStatus");
+    if (!status) return;
+    status.textContent = message;
+    status.style.color = isError ? "#ff9b9b" : "var(--gold)";
+  }
+
+  function setUploadLocked(locked) {
+    const fileInput = $("#codexUpdateFile");
+    const dropZone = $(".update-file-drop");
+    const dropTitle = $("#codexUpdateDropTitle");
+    const dropHint = $("#codexUpdateDropHint");
+    if (fileInput) fileInput.disabled = locked;
+    if (dropZone) {
+      dropZone.classList.toggle("is-locked", locked);
+      dropZone.setAttribute("aria-disabled", String(locked));
+    }
+    if (dropTitle) dropTitle.textContent = locked ? "請先輸入管理者密碼" : "點擊選取或拖曳更新檔到這裡";
+    if (dropHint) dropHint.textContent = locked ? "解鎖後可檢查格式、版本、內容清單與檔案大小" : "檢查格式、版本、內容清單與檔案大小";
+  }
+
   function enableDownloads() {
     document.querySelectorAll(".update-download-button").forEach((button) => {
       button.disabled = false;
@@ -91,6 +113,10 @@
   async function inspectSelectedFile(file) {
     const status = $("#codexUpdateFileStatus");
     if (!status || !file) return;
+    if (!state.uploadUnlocked) {
+      setUploadAccessStatus("請先輸入正確的管理者密碼。", true);
+      return;
+    }
     if (file.size > 80 * 1024 * 1024) {
       status.textContent = "檔案超過 80 MB，請改用分批更新或先壓縮內容。";
       return;
@@ -122,6 +148,8 @@
   function bind() {
     const form = $("#codexUpdateAccessForm");
     const passwordInput = $("#codexUpdatePassword");
+    const uploadForm = $("#codexUploadAccessForm");
+    const uploadPasswordInput = $("#codexUploadPassword");
     const fileInput = $("#codexUpdateFile");
     const dropZone = $(".update-file-drop");
     if (form) form.addEventListener("submit", async (event) => {
@@ -136,11 +164,40 @@
       enableDownloads();
       setAccessStatus("密碼正確；現在可以下載更新包。", false);
     });
+    if (uploadForm) uploadForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const digest = await sha256(uploadPasswordInput.value);
+      if (digest !== uploadPasswordHash) {
+        state.uploadUnlocked = false;
+        setUploadLocked(true);
+        setUploadAccessStatus("管理者密碼不正確，未開放上傳檢查。", true);
+        return;
+      }
+      state.uploadUnlocked = true;
+      setUploadLocked(false);
+      setUploadAccessStatus("管理者驗證成功；現在可以選取或拖曳更新檔。", false);
+    });
     if (fileInput) fileInput.addEventListener("change", () => inspectSelectedFile(fileInput.files[0]));
     if (dropZone) {
-      ["dragenter", "dragover"].forEach((eventName) => dropZone.addEventListener(eventName, (event) => { event.preventDefault(); dropZone.classList.add("is-dragging"); }));
+      dropZone.addEventListener("click", (event) => {
+        if (state.uploadUnlocked) return;
+        event.preventDefault();
+        setUploadAccessStatus("請先輸入正確的管理者密碼。", true);
+        uploadPasswordInput?.focus();
+      });
+      ["dragenter", "dragover"].forEach((eventName) => dropZone.addEventListener(eventName, (event) => {
+        event.preventDefault();
+        if (!state.uploadUnlocked) return;
+        dropZone.classList.add("is-dragging");
+      }));
       ["dragleave", "drop"].forEach((eventName) => dropZone.addEventListener(eventName, (event) => { event.preventDefault(); dropZone.classList.remove("is-dragging"); }));
-      dropZone.addEventListener("drop", (event) => inspectSelectedFile(event.dataTransfer.files[0]));
+      dropZone.addEventListener("drop", (event) => {
+        if (!state.uploadUnlocked) {
+          setUploadAccessStatus("請先輸入正確的管理者密碼。", true);
+          return;
+        }
+        inspectSelectedFile(event.dataTransfer.files[0]);
+      });
     }
     document.addEventListener("click", (event) => {
       const button = event.target.closest(".update-download-button");
@@ -158,5 +215,5 @@
     });
   }
 
-  document.addEventListener("DOMContentLoaded", () => { bind(); loadManifest(); });
+  document.addEventListener("DOMContentLoaded", () => { setUploadLocked(true); bind(); loadManifest(); });
 })();
