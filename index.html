@@ -21,7 +21,7 @@
     href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Space+Grotesk:wght@500;700&display=swap"
     rel="stylesheet"
   >
-  <link rel="stylesheet" href="styles.css?v=20260722-codex-updates-1">
+  <link rel="stylesheet" href="styles.css?v=20260723-layout-cleanup-1">
   <link rel="stylesheet" href="update-center.css?v=20260723-tgbot-upgrade-2">
 </head>
 <body>
@@ -34,17 +34,16 @@
           <strong>可直接使用的指令公式</strong> 全部整理成一頁。按下「複製」後，再貼到 TGBOT 對話即可。
         </p>
         <div class="hero-actions">
-          <a href="#tg-github-command" class="primary-link">複製綁定指令</a>
-          <a href="#task-map" class="secondary-link">再選任務入口</a>
-          <a href="#all-skills" class="secondary-link">直接看全部技能</a>
+          <a href="#task-map" class="primary-link">先選任務入口</a>
           <a href="#templates" class="secondary-link">直接複製模板</a>
+          <a href="#all-workflows" class="secondary-link">再看完整工作流</a>
         </div>
       </div>
       <div class="hero-panel">
         <div class="metric-stack" id="heroStats"></div>
         <div class="hero-note">
           <span>先看哪裡</span>
-          <p>第一次做網站先到「TG 操作指南」複製綁定指令；其他任務先走「任務入口」和「直接照抄」，需要細找時再看完整技能庫與工作流。</p>
+          <p>先走「任務入口」判斷類型，再到「直接照抄」複製模板；只有需要細找時，才往下看技能庫、工作流與更新中心。</p>
         </div>
       </div>
     </header>
@@ -53,12 +52,10 @@
       <a href="#quick-start">首頁</a>
       <a href="#task-map">任務入口</a>
       <a href="#templates">直接照抄</a>
-      <a href="#prompt-formula">公式結構</a>
       <a href="#tg-guide">TG 操作指南</a>
-      <a href="#codex-updates">更新中心</a>
       <a href="#all-skills">搜尋技能</a>
       <a href="#all-workflows">所有工作流</a>
-      <a href="#talk-style">對話方式</a>
+      <a href="#codex-updates">更新中心</a>
       <button type="button" class="nav-install-button" id="openInstallApp">下載 App</button>
     </nav>
 
@@ -80,31 +77,14 @@
         <div class="task-map-grid" id="taskMapGrid"></div>
       </section>
 
-      <section id="error-guide" class="content-block">
-        <div class="section-heading">
-          <p class="eyebrow">卡點判斷</p>
-          <h2>遇到問題，先對照是哪一種</h2>
-          <p>先判斷問題類型，再採取對應動作，避免一直重送同一個錯誤指令。</p>
-        </div>
-        <div class="error-grid" id="errorGuideGrid"></div>
-      </section>
-
       <section id="templates" class="content-block">
         <div class="section-heading">
           <p class="eyebrow">直接照抄</p>
           <h2>四種最常用模板</h2>
           <p>改掉空白欄位就能直接傳給藍星智能體；網站、做圖、影片與一般任務各有一套完整寫法。</p>
         </div>
+        <div class="formula-grid compact-formula-grid" id="templateFormulaGrid"></div>
         <div class="template-grid" id="templateGrid"></div>
-      </section>
-
-      <section id="prompt-formula" class="content-block">
-        <div class="section-heading">
-          <p class="eyebrow">下指令公式</p>
-          <h2>你每次只要說清楚這 5 格</h2>
-          <p>不需要文筆很好，只要把資訊補齊，Codex 就比較不會誤判。</p>
-        </div>
-        <div class="formula-grid" id="formulaGrid"></div>
       </section>
 
       <section id="tg-guide" class="content-block">
@@ -116,6 +96,7 @@
         <div class="tg-send-panel" id="tgSendPanel"></div>
         <div class="tg-github-command" id="tg-github-command"></div>
         <div class="tg-guide-grid" id="tgGuideGrid"></div>
+        <div class="dialogue-grid compact-dialogue-grid" id="tgDialogueGrid"></div>
         <div class="tg-note-panel" id="tgNotePanel"></div>
         <div class="tg-note-panel" id="tgChunkPanel"></div>
       </section>
@@ -169,44 +150,34 @@
         <p class="empty-state" id="workflowEmpty">沒有符合的工作流，換個關鍵字試試看。</p>
       </section>
 
-      <section id="talk-style" class="content-block">
+      <section id="support-notes" class="content-block">
         <div class="section-heading">
-          <p class="eyebrow">對話方式</p>
-          <h2>把你的說話方式，接到 TGBOT 的正確回法</h2>
-          <p>重點不是講得很客氣，而是讓 Bot 一看就知道要做什麼，並且回你真正可交付的結果。</p>
+          <p class="eyebrow">補充判斷</p>
+          <h2>只有需要補查時，再看這一區</h2>
+          <p>前面已經能開始下任務；這裡只保留卡點判斷、完成標準與常見踩雷，避免首頁重複講同一件事。</p>
         </div>
-        <div class="talk-style-grid" id="talkStyleGrid"></div>
-        <div class="dialogue-grid" id="dialogueGrid"></div>
-      </section>
-
-      <section class="content-block split-block">
-        <div class="split-card">
-          <div class="section-heading compact">
-            <p class="eyebrow">完成標準</p>
-            <h2>網站任務怎樣才算真的完成</h2>
-            <p>下面 5 項全部成立，才算交付完成，不是只看到本機畫面就結案。</p>
-          </div>
-          <ul class="checklist" id="completionChecklist">
-            <li><strong>真實檔案：</strong>HTML、CSS、JS 與必要素材已建立，不是空殼、截圖或口頭規劃。</li>
-            <li><strong>內容完整：</strong>標題、文字、按鈕、導覽與教學內容都已放入，沒有只剩區塊名稱。</li>
-            <li><strong>手機與桌機可讀：</strong>文字不裁切、不重疊，按鈕可點，版面不會在小螢幕爆掉。</li>
-            <li><strong>功能可用：</strong>搜尋、複製、導覽、表單或其他必要互動已實際測試。</li>
-            <li><strong>公開網址是最新版：</strong>完成推送後重新開啟公開網址，確認看到本次新增內容。</li>
-          </ul>
-        </div>
-        <div class="split-card">
-          <div class="section-heading compact">
-            <p class="eyebrow">常見踩雷</p>
-            <h2>新手最容易漏掉的 5 件事</h2>
-            <p>每一項都附上正確說法，照著補充就能降低做錯網站的機率。</p>
-          </div>
-          <ul class="warning-list" id="commonMistakes">
-            <li><strong>只說「做網站」：</strong>要再補主題、用途、對象與想要的成品。</li>
-            <li><strong>沒說是否公開：</strong>需要網址時，明確寫「公開部署並回傳網址」。</li>
-            <li><strong>新舊內容混在一起：</strong>新任務寫「不要沿用舊站素材」；續改則貼出目前網址。</li>
-            <li><strong>忘記手機版：</strong>規格直接寫「手機與桌機都要完整可讀」。</li>
-            <li><strong>把進度當完成：</strong>要求最後驗證公開網址，看到最新版內容才算完成。</li>
-          </ul>
+        <div class="support-grid">
+          <article class="support-card">
+            <div class="section-heading compact">
+              <p class="eyebrow">卡點判斷</p>
+              <h3>遇到問題先對照類型</h3>
+            </div>
+            <div class="error-grid" id="errorGuideGrid"></div>
+          </article>
+          <article class="support-card">
+            <div class="section-heading compact">
+              <p class="eyebrow">完成標準</p>
+              <h3>看到這些才算真的完成</h3>
+            </div>
+            <ul class="checklist" id="completionChecklist"></ul>
+          </article>
+          <article class="support-card">
+            <div class="section-heading compact">
+              <p class="eyebrow">常見踩雷</p>
+              <h3>新手最容易漏掉的幾件事</h3>
+            </div>
+            <ul class="warning-list" id="commonMistakes"></ul>
+          </article>
         </div>
       </section>
 
@@ -325,7 +296,7 @@
     </div>
   </div>
 
-  <script src="app.js?v=20260723-tw-stock-workflow-1"></script>
+  <script src="app.js?v=20260723-layout-cleanup-1"></script>
   <script src="update-center.js?v=20260723-tgbot-upgrade-2"></script>
 </body>
 </html>

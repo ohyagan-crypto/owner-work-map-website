@@ -182,21 +182,6 @@ const formulaItems = [
   }
 ];
 
-const talkStyleItems = [
-  {
-    title: "主人怎麼下",
-    summary: "直接講任務、成品、規格、限制。像是「wbs 做成公開網站」、「image2 API 先給確認清單」、「不要混舊素材」。"
-  },
-  {
-    title: "TGBOT 怎麼回",
-    summary: "先講結論，再補原因、做法、必要注意事項。不能只回收到、稍後回報、正在處理。"
-  },
-  {
-    title: "什麼叫正確完成",
-    summary: "不是開始做了，而是檔案、網址、圖片、部署或同一個 Telegram 交付真的成立。"
-  }
-];
-
 const dialogueExamples = [
   {
     label: "做圖任務",
@@ -227,39 +212,6 @@ const dialogueExamples = [
     label: "多段回覆",
     owner: "如果結果很多，可以一次回多段嗎？",
     bot: "可以。長結果會自動拆成多則訊息連續送出；如果是檔案、圖片、網站網址，會直接回真正可交付的成果。"
-  }
-];
-
-const flowItems = [
-  {
-    index: "1",
-    title: "確認現在到底是哪一個網站任務",
-    summary: "WBS 先判斷你是要新網站、改舊站、只部署，還是追問公開網址。"
-  },
-  {
-    index: "2",
-    title: "改真的本機檔案",
-    summary: "不是嘴巴說會做，而是真的去改 HTML、CSS、JS、素材和必要結構。"
-  },
-  {
-    index: "3",
-    title: "本機驗證",
-    summary: "至少要確認檔案存在、頁面能打開、主要內容可讀、手機版不會爆版。"
-  },
-  {
-    index: "4",
-    title: "Git 提交與推送",
-    summary: "只提交這次網站需要的檔案，不把別的髒變更一起塞進去。"
-  },
-  {
-    index: "5",
-    title: "公開部署",
-    summary: "推上 GitHub Pages 後，還要檢查公開網址真的已經更新，不是只看本機。"
-  },
-  {
-    index: "6",
-    title: "最後回你可交付結果",
-    summary: "真正完成時要回公開網址、本機路徑，必要時再補來源 repo。"
   }
 ];
 
@@ -616,6 +568,27 @@ function renderTgGuide() {
     )
     .join("");
 
+  const dialogueGrid = $("#tgDialogueGrid");
+  if (dialogueGrid) {
+    dialogueGrid.innerHTML = dialogueExamples
+      .map(
+        (item) => `
+          <article class="dialogue-card">
+            <span class="tag">${escapeHtml(item.label)}</span>
+            <div class="dialogue-bubble owner-bubble">
+              <strong>你可以這樣說</strong>
+              <p>${escapeHtml(item.owner)}</p>
+            </div>
+            <div class="dialogue-bubble bot-bubble">
+              <strong>TGBOT 應該這樣回</strong>
+              <p>${escapeHtml(item.bot)}</p>
+            </div>
+          </article>
+        `
+      )
+      .join("");
+  }
+
   $("#tgNotePanel").innerHTML = `
     <strong>TGBOT 一次可以回幾段？</strong>
     <ul class="checklist">
@@ -632,7 +605,8 @@ function renderTgGuide() {
 }
 
 function renderFormula() {
-  const container = $("#formulaGrid");
+  const container = $("#templateFormulaGrid");
+  if (!container) return;
   container.innerHTML = formulaItems
     .map(
       (item) => `
@@ -640,62 +614,6 @@ function renderFormula() {
           <em>${escapeHtml(item.step)}</em>
           <strong>${escapeHtml(item.title)}</strong>
           <p>${escapeHtml(item.summary)}</p>
-        </article>
-      `
-    )
-    .join("");
-}
-
-function renderTalkStyle() {
-  const container = $("#talkStyleGrid");
-  container.innerHTML = talkStyleItems
-    .map(
-      (item) => `
-        <article class="spotlight-card">
-          <strong>${escapeHtml(item.title)}</strong>
-          <p>${escapeHtml(item.summary)}</p>
-        </article>
-      `
-    )
-    .join("");
-}
-
-function renderDialogues() {
-  const container = $("#dialogueGrid");
-  container.innerHTML = dialogueExamples
-    .map(
-      (item) => `
-        <article class="dialogue-card">
-          <span class="tag">${escapeHtml(item.label)}</span>
-          <div class="dialogue-bubble owner-bubble">
-            <strong>你可以這樣說</strong>
-            <p>${escapeHtml(item.owner)}</p>
-          </div>
-          <div class="dialogue-bubble bot-bubble">
-            <strong>TGBOT 應該這樣回</strong>
-            <p>${escapeHtml(item.bot)}</p>
-          </div>
-        </article>
-      `
-    )
-    .join("");
-}
-
-function renderFlow() {
-  const container = $("#flowTimeline");
-  if (!container) return;
-  container.innerHTML = flowItems
-    .map(
-      (item) => `
-        <article class="timeline-item">
-          <div class="step-index">
-            <span class="tag">Step</span>
-            <b>${escapeHtml(item.index)}</b>
-          </div>
-          <div>
-            <strong>${escapeHtml(item.title)}</strong>
-            <p>${escapeHtml(item.summary)}</p>
-          </div>
         </article>
       `
     )
@@ -1100,9 +1018,8 @@ function init() {
   renderTemplates();
   renderTgGuide();
   renderFormula();
-  renderTalkStyle();
-  renderDialogues();
-  renderFlow();
+  renderList("#completionChecklist", completionChecklist);
+  renderList("#commonMistakes", commonMistakes);
   renderCategoryFilters();
   renderSkills();
   renderWorkflows();
