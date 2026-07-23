@@ -5,8 +5,8 @@
     "currentTaskInstruction":  "4個同步一次",
     "blocker":  "沒有卡點",
     "nextAction":  "有新任務時會更新 Telegram 狀態與本頁快照。",
-    "updatedAt":  "2026-07-23T09:27:15+08:00",
-    "checkedAt":  "2026-07-23T09:27:15+08:00",
+    "updatedAt":  "2026-07-23T10:27:14+08:00",
+    "checkedAt":  "2026-07-23T10:27:14+08:00",
     "sourceType":  "local-generator",
     "sourceLabel":  "本機即時狀態產生器",
     "refreshSeconds":  1,
@@ -17,25 +17,25 @@
               },
     "heartbeat":  {
                       "name":  "蝦咩",
-                      "ageSeconds":  14,
+                      "ageSeconds":  10,
                       "activeRequests":  0
                   },
     "tgbot2":  {
                    "name":  "林孟姿",
-                   "statusKey":  "blocked",
-                   "statusLabel":  "卡點",
-                   "ageSeconds":  22,
+                   "statusKey":  "standby",
+                   "statusLabel":  "正常待命",
+                   "ageSeconds":  19,
                    "activeRequests":  0,
-                   "currentTaskInstruction":  "http://xhslink.com/o/8fICNcXoHNE 分析一下這個視ˉ有什麼可以幫助到我ˉ",
+                   "currentTaskInstruction":  "最近完成：http://xhslink.com/o/8fICNcXoHNE 分析一下這個視ˉ有什麼可以幫助到我ˉ",
                    "currentTaskSource":  "tg-openai-bot-2/telegram_request_status.json"
                },
     "tgbot3":  {
                    "name":  "嵐熙",
-                   "statusKey":  "blocked",
-                   "statusLabel":  "卡點",
-                   "ageSeconds":  31,
+                   "statusKey":  "standby",
+                   "statusLabel":  "正常待命",
+                   "ageSeconds":  26,
                    "activeRequests":  0,
-                   "currentTaskInstruction":  "我要下載更新包那裡能直接複製更新指令 讓用戶直接傳給tgbot,並輸入複製好的升級指令",
+                   "currentTaskInstruction":  "最近完成：我要下載更新包那裡能直接複製更新指令 讓用戶直接傳給tgbot,並輸入複製好的升級指令",
                    "currentTaskSource":  "tg-openai-bot-3/telegram_request_status.json"
                },
     "monitors":  [
@@ -44,7 +44,7 @@
                          "label":  "蝦咩心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 14 秒前，執行中任務 0",
+                         "detail":  "心跳 10 秒前，執行中任務 0",
                          "source":  "codex_bot_heartbeat.json"
                      },
                      {
@@ -60,15 +60,15 @@
                          "label":  "林孟姿心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 22 秒前，執行中任務 0",
+                         "detail":  "心跳 19 秒前，執行中任務 0",
                          "source":  "tg-openai-bot-2/codex_bot_heartbeat.json"
                      },
                      {
                          "id":  "tgbot2-request",
                          "label":  "林孟姿任務佇列",
-                         "statusKey":  "blocked",
-                         "statusLabel":  "卡點",
-                         "detail":  "http://xhslink.com/o/8fICNcXoHNE 分析一下這個視ˉ有什麼可以幫助到我ˉ",
+                         "statusKey":  "standby",
+                         "statusLabel":  "正常待命",
+                         "detail":  "最近完成：http://xhslink.com/o/8fICNcXoHNE 分析一下這個視ˉ有什麼可以幫助到我ˉ",
                          "source":  "tg-openai-bot-2/telegram_request_status.json"
                      },
                      {
@@ -76,15 +76,15 @@
                          "label":  "嵐熙心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 31 秒前，執行中任務 0",
+                         "detail":  "心跳 26 秒前，執行中任務 0",
                          "source":  "tg-openai-bot-3/codex_bot_heartbeat.json"
                      },
                      {
                          "id":  "tgbot3-request",
                          "label":  "嵐熙任務佇列",
-                         "statusKey":  "blocked",
-                         "statusLabel":  "卡點",
-                         "detail":  "我要下載更新包那裡能直接複製更新指令 讓用戶直接傳給tgbot,並輸入複製好的升級指令",
+                         "statusKey":  "standby",
+                         "statusLabel":  "正常待命",
+                         "detail":  "最近完成：我要下載更新包那裡能直接複製更新指令 讓用戶直接傳給tgbot,並輸入複製好的升級指令",
                          "source":  "tg-openai-bot-3/telegram_request_status.json"
                      },
                      {
@@ -108,7 +108,7 @@
                          "label":  "狀態產生器",
                          "statusKey":  "running",
                          "statusLabel":  "已更新",
-                         "detail":  "產生時間 2026-07-23 09:27:15",
+                         "detail":  "產生時間 2026-07-23 10:27:14",
                          "source":  "tools/update-runtime-status.ps1"
                      },
                      {
