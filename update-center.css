@@ -42,6 +42,11 @@
 
 .update-card-heading h3 { margin: 0; font-size: 1.25rem; }
 .update-card-heading .eyebrow { margin-bottom: 4px; }
+.update-download-note {
+  margin: 0 0 16px;
+  color: var(--muted);
+  line-height: 1.7;
+}
 
 .update-card-icon {
   display: grid;
@@ -157,6 +162,34 @@
 }
 
 .update-loading { margin: 0; color: var(--muted); }
+
+.update-command-preview {
+  border: 1px solid rgba(103, 231, 255, 0.16);
+  border-radius: 10px;
+  background: rgba(103, 231, 255, 0.04);
+}
+
+.update-command-preview summary {
+  padding: 12px 14px;
+  color: rgba(255, 255, 255, 0.82);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.update-command-preview.is-ready summary {
+  color: var(--cyan);
+}
+
+.update-command-preview[open] summary {
+  border-bottom: 1px solid rgba(103, 231, 255, 0.16);
+}
+
+.update-command-preview .update-command {
+  margin: 0;
+  border: 0;
+  border-radius: 0 0 10px 10px;
+  background: rgba(0, 0, 0, 0.22);
+}
 
 @media (max-width: 720px) {
   .update-center-grid { grid-template-columns: 1fr; }

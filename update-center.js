@@ -29,22 +29,37 @@
       list.innerHTML = '<p class="update-loading">目前沒有可下載更新包；之後的技能、記憶與工作流更新會列在這裡。</p>';
       return;
     }
-    list.innerHTML = state.updates.map((item, index) => [
-      '<article class="codex-update-item">',
-      '<strong>' + escapeHtml(item.title || item.id) + '</strong>',
-      '<p>' + escapeHtml(item.description || "Codex 更新包") + '</p>',
-      '<div class="codex-update-meta">',
-      '<span>版本 ' + escapeHtml(item.version || "未知") + '</span>',
-      '<span>' + escapeHtml(item.createdAt || "日期未標示") + '</span>',
-      '<span>' + escapeHtml(formatBytes(Number(item.size))) + '</span>',
-      '</div>',
-      '<div class="update-action-row">',
-      '<button type="button" class="update-download-button" data-update-index="' + index + '" disabled>輸入密碼後下載</button>',
-      '<button type="button" class="update-command-button" data-update-index="' + index + '" disabled>複製升級指令</button>',
-      '</div>',
-      '<small class="update-tgbot-hint">推薦：複製升級指令後直接貼給要升級的 TGBOT，它會自動下載、檢查、套用與驗證。</small>',
-      '</article>'
-    ].join("")).join("");
+    list.innerHTML = state.updates.map((item, index) => {
+      const commandText = state.unlocked
+        ? escapeHtml(buildTgbotInstruction(item))
+        : "輸入 bsmf 解鎖後，這裡會直接顯示可貼給 TGBOT 的完整升級指令。";
+      const commandSummary = state.unlocked
+        ? "查看要貼給 TGBOT 的完整升級指令"
+        : "解鎖後可查看完整升級指令";
+      const downloadLabel = state.unlocked ? "下載更新包" : "輸入密碼後下載";
+      const commandLabel = state.unlocked ? "複製給 TGBOT 的升級指令" : "解鎖後可複製升級指令";
+      const disabled = state.unlocked ? "" : " disabled";
+      return [
+        '<article class="codex-update-item">',
+        '<strong>' + escapeHtml(item.title || item.id) + '</strong>',
+        '<p>' + escapeHtml(item.description || "Codex 更新包") + '</p>',
+        '<div class="codex-update-meta">',
+        '<span>版本 ' + escapeHtml(item.version || "未知") + '</span>',
+        '<span>' + escapeHtml(item.createdAt || "日期未標示") + '</span>',
+        '<span>' + escapeHtml(formatBytes(Number(item.size))) + '</span>',
+        '</div>',
+        '<div class="update-action-row">',
+        '<button type="button" class="update-download-button" data-update-index="' + index + '"' + disabled + '>' + downloadLabel + '</button>',
+        '<button type="button" class="update-command-button" data-update-index="' + index + '"' + disabled + '>' + commandLabel + '</button>',
+        '</div>',
+        '<details class="update-command-preview' + (state.unlocked ? ' is-ready' : '') + '">',
+        '<summary>' + commandSummary + '</summary>',
+        '<pre class="update-command">' + commandText + '</pre>',
+        '</details>',
+        '<small class="update-tgbot-hint">推薦：複製升級指令後直接貼給要升級的 TGBOT，它會自動下載、檢查、套用與驗證。</small>',
+        '</article>'
+      ].join("");
+    }).join("");
   }
 
   function setAccessStatus(message, isError) {
@@ -76,13 +91,7 @@
   }
 
   function enableDownloads() {
-    document.querySelectorAll(".update-download-button").forEach((button) => {
-      button.disabled = false;
-      button.textContent = "下載更新包";
-    });
-    document.querySelectorAll(".update-command-button").forEach((button) => {
-      button.disabled = false;
-    });
+    renderUpdates();
   }
 
   function downloadUpdate(item) {
@@ -177,6 +186,7 @@
       const digest = await sha256(passwordInput.value);
       if (digest !== passwordHash) {
         state.unlocked = false;
+        renderUpdates();
         setAccessStatus("密碼不正確，未開放下載。", true);
         return;
       }
