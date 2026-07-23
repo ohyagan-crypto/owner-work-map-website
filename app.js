@@ -23,52 +23,83 @@ const quickStartItems = [
 const taskMapItems = [
   {
     tag: "網站 / 公開部署",
-    title: "在 TGBOT 貼上指令，請 Codex CLI 綁定",
-    summary: "不必先閱讀獨立教學頁。到 TG 操作指南複製指令，貼到自己的 TGBOT，就能請 Codex CLI 操作瀏覽器完成 Google 與 GitHub 綁定。",
-    jump: "#tg-github-command",
-    action: "複製綁定指令"
+    title: "做網站、改網站、公開部署",
+    summary: "要公開網址就直接走 WBS。第一次做網站時，TGBOT 會操作瀏覽器協助 Google 與 GitHub 綁定；遇到驗證碼再由本人完成。",
+    skill: "wbs / github-pages-deploy",
+    workflow: "WBS 網站建置與公開部署",
+    jump: "#all-workflows?category=網站",
+    action: "查網站工作流",
+    prompt: "wbs 建立／更新 ___ 網站。\n內容：___。\n功能：___。\n規格：繁體中文，手機與桌機都要清楚可用。\n如果需要 GitHub，請讓 Codex CLI 操作瀏覽器完成 Google 與 GitHub 綁定；遇到驗證碼、兩步驗證、Passkey 或安全確認時，再通知本人完成。\n完成標準：本機驗證、公開部署，並確認公開網址顯示最新版。"
   },
   {
     tag: "圖片 / 海報 / 教學圖",
     title: "一般做圖統一走 image2 API",
     summary: "做圖先講張數、比例、風格和本次素材；只有你明確說 ComfyUI，才切換到 ComfyUI。這類任務最怕混到舊圖。",
+    skill: "做圖 / teaching-step-images / ims",
+    workflow: "image2 API 做圖 / 教學步驟圖",
     jump: "#all-workflows?category=圖片",
-    action: "看圖片工作流"
+    action: "查圖片工作流",
+    prompt: "image2 API 做圖。\n內容：___。\n成品：___ 張 PNG。\n規格：___ 比例、繁體中文、___ 風格。\n素材：本輪沒有素材／本次素材如下：___。\n限制：不要使用歷史圖片；只有我明確指定 ComfyUI 才切換工具。\n完成標準：先給精簡確認清單，我確認後再生成、驗證文字與尺寸。"
   },
   {
     tag: "影片 / 剪輯 / 長影片",
     title: "先講成品規格和素材來源",
     summary: "影片任務一定要先補秒數、比例、語言、字幕、BGM 和本次素材，不然最容易整輪做偏。",
+    skill: "hfsw / cmsd / dreamina-cli / ai-auto-short-video-workflow",
+    workflow: "HFSW 長影片製作 / SD 影片生成 / 長影片切短影音",
     jump: "#all-workflows?category=影片",
-    action: "看影片工作流"
+    action: "查影片工作流",
+    prompt: "hfsw／cmsd／sd 製作影片。\n主題：___。\n成品：MP4。\n規格：___ 秒、___ 比例、繁體中文口述與字幕。\n素材：本次素材 ___。\n聲音：語速 ___、BGM ___、音效 ___。\n限制：不要混上一輪角色或舊素材。\n完成標準：畫面、旁白、字幕、音樂全部驗證後回傳影片。"
   },
   {
     tag: "文件 / 摘要 / 語音",
     title: "先講來源與要輸出的格式",
     summary: "PDF、逐字稿、語音、簡報與 NotebookLM 任務，先指定來源、語言和最後要的檔案格式。",
+    skill: "nbs / pdf / speech / transcribe",
+    workflow: "NBS NotebookLM 摘要 / PDF 讀取與輸出 / Speech 配音",
     jump: "#all-workflows?category=文件",
-    action: "看文件工作流"
+    action: "查文件工作流",
+    prompt: "處理這份文件／語音／影片。\n來源：___。\n任務：摘要／逐字稿／簡報／語音摘要／PDF 重排 ___。\n成品：PPTX／MP3／MP4／PDF／TXT ___。\n語言：繁體中文。\n保留重點：___。\n完成標準：檔案下載、可開啟、無亂碼，並回傳成品。"
   },
   {
     tag: "TGBOT / Telegram",
     title: "先確認目前對話與真正卡點",
     summary: "修 bot、回傳檔案或查狀態時，要依目前對話與實際程序判斷，不用舊聊天或其他 Bot 資料。",
+    skill: "telegram-bot-manager / telegram-two-stage-reply",
+    workflow: "Telegram Bot 管理與修復",
     jump: "#all-workflows?category=Telegram",
-    action: "看 TGBOT 工作流"
+    action: "查 TGBOT 工作流",
+    prompt: "檢查並處理目前 TGBOT。\n問題：___。\n目標：修復回覆／重啟服務／補送檔案／查任務狀態 ___。\n限制：只使用目前 Bot 與目前對話，不使用其他 bot、舊 chat 或預設收件人。\n完成標準：實際程序、心跳、回覆或檔案同源回傳驗證完成。"
   },
   {
     tag: "LINE 官方客服",
     title: "客戶回覆與系統檢查一起處理",
     summary: "先看最新客戶問題，再依客服規則回覆；涉及連線或帳號時，同步檢查實際系統狀態。",
+    skill: "owner-reply-style-telegram / shamie-owner-reply-style",
+    workflow: "LINE 官方客服工作流",
     jump: "#all-workflows?category=客服",
-    action: "看 LINE 工作流"
+    action: "查 LINE 工作流",
+    prompt: "執行 LINE 官方客服工作流。\n目標官方帳號：___。\n客戶最新訊息：___。\n相關截圖／訂單／錯誤內容：___。\n處理要求：先判斷問題並給可直接傳送的繁體中文回覆；需要時檢查訊息轉送與連線狀態。\n限制：不外露密碼、Token、客戶個資或內部紀錄；退款、付款爭議、補償與帳號安全問題先交由主人決定。\n完成標準：回覆內容可直接使用，系統問題則完成實際檢查與修復，或說明明確卡點。"
   },
   {
     tag: "台股 / 研究 / 圖卡",
     title: "台股 IMS 研究與圖卡一起做",
     summary: "先做當日文字研究，再補 9:16 台股圖卡；可指定大盤、產業主線或個股，例如 2330、AI 伺服器、CoWoS。",
+    skill: "binance-coin-research / ims",
+    workflow: "台股 IMS 每日研究",
     jump: "#all-workflows?category=台股",
-    action: "看台股工作流"
+    action: "查台股工作流",
+    prompt: "台股ims。\n重點：大盤、美股科技／費半／台積電 ADR、主線產業、籌碼、技術面、風險。\n指定個股／產業：___。\n成品：先貼文字版台股研究報告，再做 1 張 9:16 台股圖卡。\n圖卡：繁體中文、科技感、不可沿用舊素材或舊圖。\n完成標準：文字報告完成＋圖卡生成、下載、驗證後回傳；必須附非投資建議提醒。"
+  },
+  {
+    tag: "系統 / 排程 / 更新包",
+    title: "排程、自動檢查與 Codex 更新",
+    summary: "要定時回報、平台檢查、同步記憶技能工作流，或讓其他 Codex 下載更新包，都放在系統類任務處理。",
+    skill: "telegram-bot-manager / codex-skill-handoff",
+    workflow: "自動排程建立與維護 / 技能與記憶交接",
+    jump: "#all-workflows?category=系統",
+    action: "查系統工作流",
+    prompt: "建立／修改系統工作流。\n任務：自動排程／平台檢查／記憶技能工作流更新／更新包上架 ___。\n執行頻率或觸發方式：___。\n輸出或回報位置：___。\n限制：不包含密碼、Token、Cookie、瀏覽器資料或原始紀錄。\n完成標準：實際驗證排程、公開頁面、更新包或同步結果可用。"
   }
 ];
 
@@ -507,15 +538,26 @@ function renderErrorGuide() {
 }
 
 function renderTaskMap() {
-  const container = $("#taskMapGrid");
+  const container = $("#commandCenterGrid");
+  if (!container) return;
   container.innerHTML = taskMapItems
     .map(
-      (item) => `
-        <article class="route-card">
+      (item, index) => `
+        <article class="route-card command-card">
           <span class="tag">${escapeHtml(item.tag)}</span>
           <strong>${escapeHtml(item.title)}</strong>
           <p>${escapeHtml(item.summary)}</p>
-          <a href="${escapeHtml(item.jump.split("?")[0])}" class="route-link" data-route-category="${escapeHtml(item.jump.split("?")[1]?.replace("category=", "") || "")}">${escapeHtml(item.action)}</a>
+          <div class="command-meta">
+            <span><small>對應技能</small><strong>${escapeHtml(item.skill)}</strong></span>
+            <span><small>對應工作流</small><strong>${escapeHtml(item.workflow)}</strong></span>
+          </div>
+          <div class="command-formula">
+            <pre id="command-center-formula-${index}">${escapeHtml(item.prompt)}</pre>
+            <div class="command-actions">
+              <button type="button" class="copy-button" data-copy-target="command-center-formula-${index}" data-copy-label="複製指令">複製指令</button>
+              <a href="${escapeHtml(item.jump.split("?")[0])}" class="route-link" data-route-category="${escapeHtml(item.jump.split("?")[1]?.replace("category=", "") || "")}">${escapeHtml(item.action)}</a>
+            </div>
+          </div>
         </article>
       `
     )
@@ -627,6 +669,7 @@ function renderList(selector, items) {
 
 function renderTemplates() {
   const container = $("#templateGrid");
+  if (!container) return;
   container.innerHTML = templates
     .map(
       (item, index) => `

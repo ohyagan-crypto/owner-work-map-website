@@ -30,31 +30,29 @@
       <div class="hero-copy">
         <h1>藍星智能體教戰網</h1>
         <p class="hero-text">
-          這個網站把 <strong>所有主技能</strong>、<strong>核心工作流</strong>、<strong>工具分流規則</strong>、
-          <strong>可直接使用的指令公式</strong> 全部整理成一頁。按下「複製」後，再貼到 TGBOT 對話即可。
+          這個網站把 <strong>任務入口</strong>、<strong>直接照抄</strong>、<strong>技能</strong>、<strong>工作流</strong>
+          合併成同一個操作中心。先選任務卡，直接複製完整指令貼到 TGBOT；需要細查時，再往下看完整資料庫。
         </p>
         <div class="hero-actions">
-          <a href="#task-map" class="primary-link">先選任務入口</a>
-          <a href="#templates" class="secondary-link">直接複製模板</a>
-          <a href="#all-workflows" class="secondary-link">再看完整工作流</a>
+          <a href="#command-center" class="primary-link">進入操作中心</a>
+          <a href="#tg-guide" class="secondary-link">看 TG 操作</a>
+          <a href="#all-workflows" class="secondary-link">查完整資料庫</a>
         </div>
       </div>
       <div class="hero-panel">
         <div class="metric-stack" id="heroStats"></div>
         <div class="hero-note">
           <span>先看哪裡</span>
-          <p>先走「任務入口」判斷類型，再到「直接照抄」複製模板；只有需要細找時，才往下看技能庫、工作流與更新中心。</p>
+          <p>前半段只保留一條主路徑：任務卡片直接附技能、工作流與完整指令。後半段才放完整技能庫、工作流與更新中心。</p>
         </div>
       </div>
     </header>
 
     <nav class="top-nav" aria-label="頁面導覽">
       <a href="#quick-start">首頁</a>
-      <a href="#task-map">任務入口</a>
-      <a href="#templates">直接照抄</a>
+      <a href="#command-center">操作中心</a>
       <a href="#tg-guide">TG 操作指南</a>
-      <a href="#all-skills">搜尋技能</a>
-      <a href="#all-workflows">所有工作流</a>
+      <a href="#all-skills">完整資料庫</a>
       <a href="#codex-updates">更新中心</a>
       <button type="button" class="nav-install-button" id="openInstallApp">下載 App</button>
     </nav>
@@ -68,23 +66,13 @@
         <div class="spotlight-grid" id="quickStartGrid"></div>
       </section>
 
-      <section id="task-map" class="content-block">
+      <section id="command-center" class="content-block command-center-block">
         <div class="section-heading">
-          <p class="eyebrow">任務入口</p>
-          <h2>先判斷你現在是哪一種任務，再往下看對應區塊</h2>
-          <p>排版不順的主因，通常不是資訊不夠，而是第一次進來的人不知道應該先看哪一段。這裡先把常見入口分成 6 類。</p>
+          <p class="eyebrow">整合操作中心</p>
+          <h2>任務入口、直接照抄、技能與工作流放在同一張卡</h2>
+          <p>新手不用先理解技能名稱。先選最接近的任務卡，卡片會直接告訴你該走哪個技能、哪條工作流，以及可貼給 TGBOT 的完整指令。</p>
         </div>
-        <div class="task-map-grid" id="taskMapGrid"></div>
-      </section>
-
-      <section id="templates" class="content-block">
-        <div class="section-heading">
-          <p class="eyebrow">直接照抄</p>
-          <h2>四種最常用模板</h2>
-          <p>改掉空白欄位就能直接傳給藍星智能體；網站、做圖、影片與一般任務各有一套完整寫法。</p>
-        </div>
-        <div class="formula-grid compact-formula-grid" id="templateFormulaGrid"></div>
-        <div class="template-grid" id="templateGrid"></div>
+        <div class="command-center-grid" id="commandCenterGrid"></div>
       </section>
 
       <section id="tg-guide" class="content-block">
@@ -103,10 +91,10 @@
 
       <section id="all-skills" class="content-block">
         <div class="section-heading">
-          <p class="eyebrow">技能＋公式</p>
-          <h2>技能全部列出，找到就能直接複製</h2>
+          <p class="eyebrow">完整資料庫</p>
+          <h2>需要細找時，再查完整技能</h2>
           <p>
-            每個技能都附用途、適合情境與新手指令公式。現在改成先看摘要、需要時再展開公式，頁面節奏會比原本順很多。
+            操作中心已經能處理大多數任務；這一區保留給進階查找，想看所有技能名稱、用途與單一技能公式時再使用。
           </p>
         </div>
         <div class="skill-toolbar">
@@ -128,10 +116,10 @@
 
       <section id="all-workflows" class="content-block">
         <div class="section-heading">
-          <p class="eyebrow">工作流＋公式</p>
-          <h2>核心工作流，從需求一路做到交付</h2>
+          <p class="eyebrow">完整工作流</p>
+          <h2>進階查找：從需求一路做到交付</h2>
           <p>
-            技能是能力入口，工作流是完整做事順序。每條工作流都列出觸發方式、執行重點、成品與可直接傳給 TGBOT 的公式；LINE 官方客服也整合在這份清單裡，不另設獨立入口。
+            工作流是完整做事順序。若操作中心的任務卡不夠精準，可以在這裡搜尋更細的流程；LINE 官方客服也整合在同一份清單裡。
           </p>
         </div>
         <div class="skill-toolbar">

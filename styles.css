@@ -352,6 +352,13 @@ h1 {
   margin-top: 24px;
 }
 
+.command-center-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 24px;
+}
+
 .spotlight-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
@@ -531,6 +538,107 @@ h1 {
 .template-card,
 .skill-card {
   padding: 20px;
+}
+
+.command-center-block {
+  position: relative;
+}
+
+.command-center-block::before {
+  content: "";
+  position: absolute;
+  inset: 18px 0 auto;
+  height: 220px;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(255, 209, 125, 0.18), transparent 42%),
+    radial-gradient(circle at 82% 14%, rgba(111, 229, 255, 0.14), transparent 38%);
+  pointer-events: none;
+}
+
+.command-card {
+  position: relative;
+  overflow: hidden;
+  gap: 14px;
+  background:
+    linear-gradient(180deg, rgba(8, 17, 31, 0.96), rgba(6, 13, 25, 0.92)),
+    var(--panel);
+  box-shadow: 0 18px 46px rgba(0, 0, 0, 0.18);
+}
+
+.command-card::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: linear-gradient(180deg, var(--gold), var(--cyan));
+}
+
+.command-meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.command-meta span {
+  display: grid;
+  gap: 6px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.command-meta small {
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+}
+
+.command-meta strong {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.5;
+}
+
+.command-formula {
+  display: grid;
+  gap: 12px;
+}
+
+.command-formula pre {
+  margin: 0;
+  min-height: 208px;
+  padding: 16px;
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+  background: rgba(0, 0, 0, 0.24);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text);
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+
+.command-actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: stretch;
+}
+
+.command-actions .route-link {
+  width: auto;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0 18px;
+  border-color: rgba(255, 209, 125, 0.26);
+  background: rgba(255, 209, 125, 0.08);
+  color: var(--gold);
+}
+
+.command-actions .route-link:hover {
+  border-color: rgba(255, 209, 125, 0.42);
+  background: rgba(255, 209, 125, 0.14);
 }
 
 .spotlight-card strong,
@@ -1216,6 +1324,15 @@ body.install-modal-open {
   .support-grid {
     grid-template-columns: 1fr;
   }
+
+  .command-center-grid,
+  .command-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .command-actions {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 720px) {
@@ -1230,7 +1347,7 @@ body.install-modal-open {
     width: auto;
     margin: 0;
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 6px;
     padding: 8px;
     border-radius: 12px;
@@ -1247,9 +1364,6 @@ body.install-modal-open {
     white-space: nowrap;
   }
 
-  .top-nav a:nth-child(5),
-  .top-nav a:nth-child(6),
-  .top-nav a:nth-child(7),
   .top-nav .nav-install-button {
     display: none;
   }
@@ -1278,6 +1392,10 @@ body.install-modal-open {
   .template-grid,
   .skill-grid,
   .workflow-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .command-center-grid {
     grid-template-columns: 1fr;
   }
 
