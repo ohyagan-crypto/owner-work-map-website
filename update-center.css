@@ -197,18 +197,21 @@
 }
 
 .update-command-button {
+  flex: 1 1 280px;
   min-height: 42px;
   padding: 9px 14px;
-  border: 1px solid rgba(103, 231, 255, 0.3);
+  border: 1px solid rgba(103, 231, 255, 0.55);
   border-radius: 9px;
-  background: rgba(103, 231, 255, 0.08);
-  color: var(--cyan);
+  background: linear-gradient(135deg, rgba(103, 231, 255, 0.2), rgba(103, 231, 255, 0.08));
+  color: #bff7ff;
   font: inherit;
   font-weight: 800;
   cursor: pointer;
 }
 .update-command-button:disabled { cursor: not-allowed; opacity: 0.45; }
-.update-action-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.update-command-button:not(:disabled):hover { transform: translateY(-1px); border-color: var(--cyan); }
+.update-action-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: stretch; }
+.update-action-row .update-download-button { flex: 0 1 150px; }
 .update-tgbot-flow {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));

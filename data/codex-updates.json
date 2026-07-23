@@ -12,7 +12,7 @@
       "description": "完整 ZIP 安裝包，包含 Chrome 優先路由、LINE 官方快速認證碼技能、TGBOT 更新器、命令通道與可攜性驗證工具；會保留接收端既有設定與登入狀態。",
       "file": "updates/TGBOT_UPDATE_CHROME_LINE_20260723_162100.zip",
       "size": 141052,
-      "sha256": "33ae1b8d6233b7bd98d713f1f0422093ad924acc46570e21df62b2ab48e757f",
+      "sha256": "33ae1b8d6233b7bd98d713f1f0422093ad924acc46570e21dfe62b2ab48e757f",
       "contents": ["Chrome 安裝與簽章驗證", "LINE 官方快速認證碼技能", "TGBOT 更新器", "命令通道與可攜性自測"]
     },
     {

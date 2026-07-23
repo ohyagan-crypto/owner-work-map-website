@@ -32,14 +32,14 @@
     list.innerHTML = state.updates.map((item, index) => {
       const commandText = state.unlocked
         ? escapeHtml(buildTgbotInstruction(item))
-        : "輸入 bsmf 解鎖後，這裡會直接顯示可貼給 TGBOT 的完整升級指令。";
+        : "輸入 bsmf 解鎖後，這裡會顯示可直接貼給 Codex／TGBOT 的網站自動安裝指令。";
       const commandSummary = state.unlocked
-        ? "查看要貼給 TGBOT 的完整升級指令"
-        : "解鎖後可查看完整升級指令";
+        ? "查看 Codex 網站自動安裝指令"
+        : "解鎖後可查看自動安裝指令";
       const downloadLabel = state.unlocked ? "下載更新包" : "輸入密碼後下載";
       const commandLabel = state.unlocked
-        ? (item.kind === "tgbot-installer" ? "複製 TGBOT 安裝指令" : "複製給 TGBOT 的升級指令")
-        : "解鎖後可複製升級指令";
+        ? "一鍵複製 Codex 自動安裝指令"
+        : "解鎖後可一鍵複製";
       const disabled = state.unlocked ? "" : " disabled";
       const kindLabel = item.kind === "tgbot-installer" ? "TGBOT 完整安裝包" : "Codex 技能更新";
       return [
@@ -62,8 +62,8 @@
         '</details>',
         '<small class="update-tgbot-hint">' +
           (item.kind === "tgbot-installer"
-            ? "完整安裝包會保留現有設定，並執行 Chrome、TGBOT 工具與 LINE 技能的升級驗證。"
-            : "推薦：複製升級指令後直接貼給要升級的 TGBOT，它會自動下載、檢查、套用與驗證。") +
+            ? "貼給 Codex／TGBOT 後，它會操作網站輸入密碼、下載完整安裝包，並保留現有設定完成驗證。"
+            : "貼給 Codex／TGBOT 後，它會操作網站輸入密碼、下載更新包，先乾跑再正式套用與驗證。") +
           '</small>',
         '</article>'
       ].join("");
@@ -112,56 +112,101 @@
     setAccessStatus("下載已開始；也可以按「複製升級指令」貼給 TGBOT 自動完成更新。", false);
   }
 
+  function absoluteAssetUrl(relativePath) {
+    return new URL(relativePath, new URL(".", window.location.href)).href;
+  }
+
   function buildTgbotInstruction(item) {
     const base = new URL(".", window.location.href).href;
-    const updateUrl = new URL(item.file, base).href;
+    const updateCenterUrl = new URL("#codex-updates", base).href;
+    const fileName = item.file.split("/").pop() || item.id || "更新包";
+    const downloadUrl = absoluteAssetUrl(item.file);
+    const expectedSha256 = item.sha256 || "請以網站清單標示為準";
     if (item.kind === "tgbot-installer") {
       return [
-        "請替目前這個 TGBOT 安裝 Chrome＋LINE 官方完整更新包，只能更新本 TGBOT 自己的安裝目錄，不可改到其他 TG Bot。",
+        "請直接替目前這個 TGBOT 完成更新，不要只說明流程。只能更新本 TGBOT 自己的安裝目錄，不可改到其他 TG Bot。",
         "",
+        "更新網站：" + updateCenterUrl,
+        "網站下載密碼：bsmf",
         "安裝包名稱：" + (item.title || item.id || "TGBOT 完整安裝包"),
         "安裝包版本：" + (item.version || "未知"),
-        "安裝包：" + updateUrl,
+        "下載檔名：" + fileName,
+        "更新包直接網址：" + downloadUrl,
+        "預期 SHA256：" + expectedSha256,
         "",
-        "請依序完成：",
-        "1. 將 ZIP 下載到本機日期資料夾並完整解壓。",
-        "2. 先執行 PORTABILITY_SELF_TEST.cmd，確認包內檔案與環境檢查通過。",
-        "3. 執行 UPDATE_INSTALLED_TGBOT.cmd，保留現有 .env、Token、API、CHAT ID 與瀏覽器登入狀態。",
-        "4. 讓更新器完成 Chrome、LINE 技能、TGBOT 工具與命令通道驗證。",
-        "5. 重啟目前這個 TGBOT，確認新 heartbeat、命令通道與 LINE 技能已載入。",
-        "6. 回報更新版本、驗證結果與本機備份路徑。",
+        "請依序完成，不要只回報開始或下載中：",
+        "1. 使用可操作網頁的瀏覽器開啟更新網站，捲到「Codex 更新中心」。",
+        "2. 在「更新密碼」輸入 bsmf，按「解鎖下載與一鍵指令」；不要輸入管理者上傳密碼。",
+        "3. 找到完全相同的安裝包名稱與版本，按「下載更新包」，等待 ZIP 實際下載完成；若按鈕沒有觸發下載，才使用上方同一個更新包直接網址。",
+        "4. 確認下載檔存在、檔名正確，計算 ZIP SHA256；必須與上方預期值一致，不一致就停止，不得安裝。",
+        "5. 將 ZIP 移到本機日期任務資料夾後完整解壓，先執行 PORTABILITY_SELF_TEST.cmd。",
+        "6. 自測通過後執行 UPDATE_INSTALLED_TGBOT.cmd，保留現有 .env、Token、API、CHAT ID 與瀏覽器登入狀態。",
+        "7. 讓更新器完成 Chrome、LINE 技能、TGBOT 工具與命令通道驗證，再只重啟目前這個 TGBOT。",
+        "8. 確認目前 TGBOT 已恢復運作、新版本已載入，最後回報版本、驗證結果與本機備份路徑。",
         "",
-        "如果缺少既有 TGBOT、需要帳號安全確認，或任何驗證失敗，請停止並回報明確卡點，不要覆蓋設定。"
+        "完成標準：網站解鎖成功、下載檔存在、SHA256 正確、自測通過、安裝成功、目前 TGBOT 重啟後可正常運作。",
+        "如果網站無法開啟、密碼解鎖失敗、找不到指定版本、SHA256 不符、缺少既有 TGBOT，或任何驗證失敗，請停止並用繁體中文回報明確卡點，不要覆蓋設定，也不要改用其他 TG Bot。"
       ].join("\n");
     }
-    const toolUrl = new URL("tools/apply-codex-update.mjs", base).href;
     return [
-      "請替目前這個 TGBOT 安裝 Codex 更新，只能更新本 TGBOT 自己使用的 Codex 根目錄，不可改到其他 TG Bot。",
+      "請直接替目前這個 Codex／TGBOT 完成更新，不要只說明流程。只能更新目前這一套 Codex 根目錄，不可改到其他 TG Bot。",
       "",
+      "更新網站：" + updateCenterUrl,
+      "網站下載密碼：bsmf",
       "更新名稱：" + (item.title || item.id || "Codex 更新包"),
       "更新版本：" + (item.version || "未知"),
-      "更新包：" + updateUrl,
-      "套用工具：" + toolUrl,
-      "更新密碼：bsmf",
+      "下載檔名：" + fileName,
+      "更新包直接網址：" + downloadUrl,
+      "套用工具網址：" + absoluteAssetUrl("tools/apply-codex-update.mjs"),
+      "預期 SHA256：" + expectedSha256,
       "",
-      "請依序完成：",
-      "1. 將套用工具與更新包下載到本機日期資料夾。",
-      "2. 自動辨識目前這個 TGBOT 對應的 Codex 根目錄。",
-      "3. 先執行 dry-run，檢查更新包完整性、敏感資料與寫入路徑。",
-      "4. 驗證通過後，移除 --dry-run 正式套用更新。",
-      "5. 重啟目前這個 TGBOT 或 Codex，確認記憶、技能、工作流已重新載入。",
-      "6. 回報更新版本、安裝內容、驗證結果與本機備份路徑。",
+      "請依序完成，不要只回報開始或下載中：",
+      "1. 使用可操作網頁的瀏覽器開啟更新網站，捲到「Codex 更新中心」。",
+      "2. 在「更新密碼」輸入 bsmf，按「解鎖下載與一鍵指令」；不要輸入管理者上傳密碼。",
+      "3. 找到完全相同的更新名稱與版本，按「下載更新包」，等待 .bsmf 檔實際下載完成；若按鈕沒有觸發下載，才使用上方同一個更新包直接網址。",
+      "4. 展開頁面的「進階：手動使用套用工具」，下載 apply-codex-update.mjs；若頁面無法下載，才使用上方套用工具網址。",
+      "5. 確認兩個下載檔都存在，計算 .bsmf 的 SHA256；必須與上方預期值一致。",
+      "6. 自動辨識目前這個 Codex／TGBOT 自己使用的 Codex 根目錄，不可猜測或套用到其他 TG Bot。",
+      "7. 先用 apply-codex-update.mjs 執行 --dry-run，檢查更新包完整性、安全路徑與可安裝內容。",
+      "8. 乾跑通過後，移除 --dry-run 正式套用；再重啟目前這個 Codex 或 TGBOT。",
+      "9. 確認記憶、技能、工作流索引已重新載入，最後回報版本、安裝內容、驗證結果與本機備份路徑。",
       "",
-      "如果無法辨識正確根目錄、乾跑失敗或檔案驗證不通過，請停止正式套用並回報明確卡點。"
+      "完成標準：網站解鎖成功、下載檔存在、SHA256 正確、乾跑通過、正式套用成功、重啟後新內容可讀取。",
+      "如果網站無法開啟、密碼解鎖失敗、找不到指定版本、SHA256 不符、無法辨識正確根目錄或乾跑失敗，請停止正式套用並用繁體中文回報明確卡點，不要改到其他 TG Bot。"
     ].join("\n");
+  }
+
+  async function copyText(text) {
+    if (navigator.clipboard?.writeText) {
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch (error) {
+        // Fall through to the textarea method for restricted browsers.
+      }
+    }
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    textarea.setAttribute("readonly", "");
+    textarea.style.position = "fixed";
+    textarea.style.opacity = "0";
+    document.body.appendChild(textarea);
+    textarea.select();
+    textarea.setSelectionRange(0, textarea.value.length);
+    let copied = false;
+    try {
+      copied = document.execCommand("copy");
+    } finally {
+      textarea.remove();
+    }
+    return copied;
   }
 
   async function copyApplyCommand(item) {
     const command = buildTgbotInstruction(item);
-    try {
-      await navigator.clipboard.writeText(command);
-      setAccessStatus("TGBOT 升級指令已複製；請回到 Telegram，直接貼給要升級的 TGBOT。", false);
-    } catch (error) {
+    if (await copyText(command)) {
+      setAccessStatus("Codex 網站自動安裝指令已複製；直接貼給要升級的 Codex／TGBOT 即可。", false);
+    } else {
       setAccessStatus("瀏覽器未允許複製，請重新開啟網站後再試一次。", true);
     }
   }
@@ -270,7 +315,7 @@
       const commandButton = event.target.closest(".update-command-button");
       if (!button && !commandButton) return;
       if (!state.unlocked) {
-        setAccessStatus("請先輸入更新密碼，才能下載或複製 TGBOT 升級指令。", true);
+        setAccessStatus("請先輸入更新密碼，才能下載或一鍵複製 Codex 自動安裝指令。", true);
         return;
       }
       const target = button || commandButton;
