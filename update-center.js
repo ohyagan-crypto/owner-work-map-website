@@ -109,7 +109,7 @@
     document.body.appendChild(anchor);
     anchor.click();
     anchor.remove();
-    setAccessStatus("下載已開始；也可以按「複製升級指令」貼給 TGBOT 自動完成更新。", false);
+    setAccessStatus("下載已開始；也可以按「一鍵複製 Codex 自動安裝指令」交給目前的 Codex／TGBOT 完成更新。", false);
   }
 
   function absoluteAssetUrl(relativePath) {
@@ -134,17 +134,19 @@
         "更新包直接網址：" + downloadUrl,
         "預期 SHA256：" + expectedSha256,
         "",
-        "請依序完成，不要只回報開始或下載中：",
+        "這是一個可執行的完整交付指令。請真的操作網站、下載檔案、執行安裝與驗收，不要只回報開始或下載中：",
         "1. 使用可操作網頁的瀏覽器開啟更新網站，捲到「Codex 更新中心」。",
         "2. 在「更新密碼」輸入 bsmf，按「解鎖下載與一鍵指令」；不要輸入管理者上傳密碼。",
         "3. 找到完全相同的安裝包名稱與版本，按「下載更新包」，等待 ZIP 實際下載完成；若按鈕沒有觸發下載，才使用上方同一個更新包直接網址。",
         "4. 確認下載檔存在、檔名正確，計算 ZIP SHA256；必須與上方預期值一致，不一致就停止，不得安裝。",
-        "5. 將 ZIP 移到本機日期任務資料夾後完整解壓，先執行 PORTABILITY_SELF_TEST.cmd。",
-        "6. 自測通過後執行 UPDATE_INSTALLED_TGBOT.cmd，保留現有 .env、Token、API、CHAT ID 與瀏覽器登入狀態。",
-        "7. 讓更新器完成 Chrome、LINE 技能、TGBOT 工具與命令通道驗證，再只重啟目前這個 TGBOT。",
-        "8. 確認目前 TGBOT 已恢復運作、新版本已載入，最後回報版本、驗證結果與本機備份路徑。",
+        "5. 將 ZIP 移到本機日期任務資料夾後完整解壓；先讀取包內 UPDATE_GUIDE_20260723.txt 與 INSTALL_TGBOT_SKILL_TOOLS.ps1，不要跳過說明。",
+        "6. 在解壓目錄執行：powershell -NoProfile -ExecutionPolicy Bypass -File .\\PORTABILITY_SELF_TEST.ps1 -PackageRoot .",
+        "7. 只有自測回傳 PORTABILITY_SELF_TEST_OK 才能繼續；接著執行：powershell -NoProfile -ExecutionPolicy Bypass -File .\\UPDATE_INSTALLED_TGBOT.ps1",
+        "8. 更新器必須保留現有 .env、Token、API、CHAT ID、Codex 設定與瀏覽器登入狀態，並建立既有檔案備份；不要自行改寫其他 TG Bot。",
+        "9. 讓更新器完成 Chrome、LINE 技能、TGBOT 工具、命令通道與新 heartbeat 驗證，再只重啟目前這個 TGBOT。",
+        "10. 確認目前 TGBOT 已恢復運作、新版本已載入，最後回報版本、驗證結果、備份資料夾與更新狀態檔路徑。",
         "",
-        "完成標準：網站解鎖成功、下載檔存在、SHA256 正確、自測通過、安裝成功、目前 TGBOT 重啟後可正常運作。",
+        "完成標準：網站解鎖成功、指定檔案真的下載、SHA256 正確、自測通過、更新器成功建立備份並套用、目前 TGBOT 重啟後產生新 heartbeat 且命令通道可驗證。",
         "如果網站無法開啟、密碼解鎖失敗、找不到指定版本、SHA256 不符、缺少既有 TGBOT，或任何驗證失敗，請停止並用繁體中文回報明確卡點，不要覆蓋設定，也不要改用其他 TG Bot。"
       ].join("\n");
     }
@@ -156,24 +158,25 @@
       "更新名稱：" + (item.title || item.id || "Codex 更新包"),
       "更新版本：" + (item.version || "未知"),
       "下載檔名：" + fileName,
-      "更新包直接網址：" + downloadUrl,
-      "套用工具網址：" + absoluteAssetUrl("tools/apply-codex-update.mjs"),
-      "預期 SHA256：" + expectedSha256,
-      "",
-      "請依序完成，不要只回報開始或下載中：",
-      "1. 使用可操作網頁的瀏覽器開啟更新網站，捲到「Codex 更新中心」。",
-      "2. 在「更新密碼」輸入 bsmf，按「解鎖下載與一鍵指令」；不要輸入管理者上傳密碼。",
-      "3. 找到完全相同的更新名稱與版本，按「下載更新包」，等待 .bsmf 檔實際下載完成；若按鈕沒有觸發下載，才使用上方同一個更新包直接網址。",
-      "4. 展開頁面的「進階：手動使用套用工具」，下載 apply-codex-update.mjs；若頁面無法下載，才使用上方套用工具網址。",
-      "5. 確認兩個下載檔都存在，計算 .bsmf 的 SHA256；必須與上方預期值一致。",
-      "6. 自動辨識目前這個 Codex／TGBOT 自己使用的 Codex 根目錄，不可猜測或套用到其他 TG Bot。",
-      "7. 先用 apply-codex-update.mjs 執行 --dry-run，檢查更新包完整性、安全路徑與可安裝內容。",
-      "8. 乾跑通過後，移除 --dry-run 正式套用；再重啟目前這個 Codex 或 TGBOT。",
-      "9. 確認記憶、技能、工作流索引已重新載入，最後回報版本、安裝內容、驗證結果與本機備份路徑。",
-      "",
-      "完成標準：網站解鎖成功、下載檔存在、SHA256 正確、乾跑通過、正式套用成功、重啟後新內容可讀取。",
-      "如果網站無法開啟、密碼解鎖失敗、找不到指定版本、SHA256 不符、無法辨識正確根目錄或乾跑失敗，請停止正式套用並用繁體中文回報明確卡點，不要改到其他 TG Bot。"
-    ].join("\n");
+        "更新包直接網址：" + downloadUrl,
+        "套用工具網址：" + absoluteAssetUrl("tools/apply-codex-update.mjs"),
+        "預期 SHA256：" + expectedSha256,
+        "",
+        "這是一個可執行的完整交付指令。請真的操作網站、下載、套用與驗收，不要只回報開始或下載中：",
+        "1. 使用可操作網頁的瀏覽器開啟更新網站，捲到「Codex 更新中心」。",
+        "2. 在「更新密碼」輸入 bsmf，按「解鎖下載與一鍵指令」；不要輸入管理者上傳密碼。",
+        "3. 找到完全相同的更新名稱與版本，按「下載更新包」，等待 .bsmf 檔實際下載完成；若按鈕沒有觸發下載，才使用上方同一個更新包直接網址。",
+        "4. 展開頁面的「進階：手動使用套用工具」，下載 apply-codex-update.mjs；若頁面無法下載，才使用上方套用工具網址。",
+        "5. 確認兩個下載檔都存在，計算 .bsmf 的 SHA256；必須與上方預期值一致。",
+        "6. 讀取更新包內的 INSTALL_FOR_OTHER_CODEX.md；確認它只會合併 skills、memories、workflows 與安裝說明，不會帶入密碼、Token、Cookie 或瀏覽器資料。",
+        "7. 自動辨識目前這個 Codex／TGBOT 自己使用的 Codex 根目錄，不可猜測或套用到其他 TG Bot；若無法辨識，必須停止詢問，不可寫入。",
+        "8. 先執行：node apply-codex-update.mjs --url " + downloadUrl + " --password bsmf --target-root <目前這套 Codex 根目錄> --dry-run",
+        "9. 乾跑必須確認格式、AES-256-GCM 完整性、SHA256、允許路徑與寫入目標都通過；通過後移除 --dry-run 正式套用同一條指令。",
+        "10. 正式套用後只重啟目前這個 Codex 或 TGBOT，確認記憶、技能、工作流索引已重新載入，最後回報版本、安裝內容、驗證結果與本機備份路徑。",
+        "",
+        "完成標準：網站解鎖成功、指定檔案真的下載、SHA256 正確、乾跑通過、正式套用成功、目前這套 Codex 重啟後新內容可讀取。",
+        "如果網站無法開啟、密碼解鎖失敗、找不到指定版本、SHA256 不符、無法辨識正確根目錄或乾跑失敗，請停止正式套用並用繁體中文回報明確卡點，不要改到其他 TG Bot。"
+      ].join("\n");
   }
 
   async function copyText(text) {

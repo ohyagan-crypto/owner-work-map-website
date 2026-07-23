@@ -1,7 +1,7 @@
 # TG1 x TG2 x TG3 即時總控台
 
 建立日期：2026-07-02
-本次更新：2026-07-03
+本次更新：2026-07-23
 
 這是一個公開 GitHub Pages 儀表盤，用來集中查看：
 
@@ -45,8 +45,9 @@ output/dashboard-control-secret.json
 網站的 `Codex 更新中心` 支援：
 
 - 管理端把新的 `.bsmf` 更新包登錄到 `updates/` 與 `data/codex-updates.json`
-- 其他 Codex 在公開頁輸入 `bsmf` 後下載更新包
-- 使用 `tools/apply-codex-update.mjs` 以 URL 乾跑驗證，再正式套用技能、記憶與工作流
+- 其他 Codex 在公開頁輸入 `bsmf` 後，可一鍵複製完整升級指令
+- 指令會要求 Codex 操作網站、下載指定版本、驗證 SHA-256，再以 `tools/apply-codex-update.mjs` 乾跑驗證並正式套用技能、記憶與工作流
+- TGBOT 完整 ZIP 會讀取包內說明，先執行 `PORTABILITY_SELF_TEST.ps1`，再執行 `UPDATE_INSTALLED_TGBOT.ps1`，保留既有設定後只重啟目前這一端
 
 收到新更新檔後，建議使用：
 

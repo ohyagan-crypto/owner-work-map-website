@@ -22,7 +22,7 @@
     rel="stylesheet"
   >
   <link rel="stylesheet" href="styles.css?v=20260723-layout-cleanup-1">
-  <link rel="stylesheet" href="update-center.css?v=20260723-codex-web-install-2">
+  <link rel="stylesheet" href="update-center.css?v=20260723-codex-web-install-3">
 </head>
 <body>
   <div class="page-shell">
@@ -173,7 +173,7 @@
         <div class="section-heading">
           <p class="eyebrow">Codex 更新中心</p>
           <h2>輸入密碼，一鍵交給 Codex 自動安裝</h2>
-          <p>之後你把更新檔交給我，我會先排除敏感資料、加密打包、更新這裡的清單，再部署到公開站。使用者只要輸入密碼解鎖，按一下複製指令，再貼給自己的 Codex／TGBOT；它會操作網站、下載、驗證雜湊、安裝並重啟確認。</p>
+          <p>之後你把更新檔交給我，我會先排除敏感資料、加密打包、更新這裡的清單，再部署到公開站。使用者輸入 <code>bsmf</code> 解鎖後，按一下「一鍵複製 Codex 自動安裝指令」，再把指令貼給自己的 Codex／TGBOT；它會真的操作網站、下載指定版本、驗證雜湊、先乾跑、正式安裝、重啟並確認新內容已載入。</p>
         </div>
         <div class="update-security-note">
           <strong>安全邊界</strong>
@@ -188,7 +188,7 @@
                 <h3>可用的 Codex 更新包</h3>
               </div>
             </div>
-            <p class="update-download-note">輸入 <code>bsmf</code> 解鎖後，可直接下載，或按「一鍵複製 Codex 自動安裝指令」，讓 Codex 自己操作網站完成更新。</p>
+            <p class="update-download-note">輸入 <code>bsmf</code> 解鎖後，可直接下載；推薦按「一鍵複製 Codex 自動安裝指令」，讓 Codex 自己操作網站並完成整個更新閉環。</p>
             <div id="codexUpdateList" class="codex-update-list" aria-live="polite">
               <p class="update-loading">正在讀取更新清單……</p>
             </div>
@@ -235,12 +235,12 @@
               <h3>一鍵複製，操作網站並安裝更新</h3>
             </div>
           </div>
-          <p>在上方輸入 <code>bsmf</code> 解鎖後，點更新包旁的「一鍵複製 Codex 自動安裝指令」。把指令貼給 Codex／TGBOT 後，它會開啟這個網站、輸入密碼、下載指定版本、驗證雜湊，再乾跑、安裝、重啟並確認新內容已載入。</p>
+          <p>在上方輸入 <code>bsmf</code> 解鎖後，點更新包旁的「一鍵複製 Codex 自動安裝指令」。把指令貼給 Codex／TGBOT 後，它必須開啟這個網站、輸入密碼、確認指定版本、下載檔案、驗證雜湊，再乾跑、安裝、只重啟目前這一端，最後回報實際驗收結果。</p>
           <div class="update-tgbot-flow" aria-label="Codex 自動安裝使用方式">
             <div><strong>1</strong><span>輸入 <code>bsmf</code> 解鎖更新包。</span></div>
             <div><strong>2</strong><span>按「一鍵複製 Codex 自動安裝指令」。</span></div>
             <div><strong>3</strong><span>把指令貼給自己的 Codex／TGBOT，不用自己下載或改路徑。</span></div>
-            <div><strong>4</strong><span>Codex 會驗證雜湊、先乾跑，再安裝、重啟並回報完成結果。</span></div>
+            <div><strong>4</strong><span>Codex 會驗證檔案、先乾跑，再安裝、只重啟目前這一端並回報完成結果。</span></div>
           </div>
           <details class="update-advanced">
             <summary>進階：手動使用套用工具</summary>
@@ -285,6 +285,6 @@
   </div>
 
   <script src="app.js?v=20260723-layout-cleanup-1"></script>
-  <script src="update-center.js?v=20260723-codex-web-install-2"></script>
+  <script src="update-center.js?v=20260723-codex-web-install-3"></script>
 </body>
 </html>
