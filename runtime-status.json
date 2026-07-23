@@ -5,37 +5,37 @@
     "currentTaskInstruction":  "這是什麼問題",
     "blocker":  "沒有卡點",
     "nextAction":  "有新任務時會更新 Telegram 狀態與本頁快照。",
-    "updatedAt":  "2026-07-23T15:27:13+08:00",
-    "checkedAt":  "2026-07-23T15:27:13+08:00",
+    "updatedAt":  "2026-07-23T16:27:12+08:00",
+    "checkedAt":  "2026-07-23T16:27:12+08:00",
     "sourceType":  "local-generator",
     "sourceLabel":  "本機即時狀態產生器",
     "refreshSeconds":  1,
     "token":  {
-                  "totalTokens":  149622519,
+                  "totalTokens":  156498969,
                   "taskCount":  1,
                   "source":  "本機 Codex 執行緒紀錄"
               },
     "heartbeat":  {
                       "name":  "蝦咩",
-                      "ageSeconds":  17,
+                      "ageSeconds":  13,
                       "activeRequests":  0
                   },
     "tgbot2":  {
                    "name":  "林孟姿",
-                   "statusKey":  "standby",
-                   "statusLabel":  "正常待命",
-                   "ageSeconds":  31,
-                   "activeRequests":  0,
-                   "currentTaskInstruction":  "最近完成：用ohyagan",
+                   "statusKey":  "running",
+                   "statusLabel":  "運作中",
+                   "ageSeconds":  3,
+                   "activeRequests":  1,
+                   "currentTaskInstruction":  "沒有分頁可以點",
                    "currentTaskSource":  "tg-openai-bot-2/telegram_request_status.json"
                },
     "tgbot3":  {
                    "name":  "嵐熙",
-                   "statusKey":  "running",
-                   "statusLabel":  "運作中",
-                   "ageSeconds":  1,
-                   "activeRequests":  1,
-                   "currentTaskInstruction":  "所以技能 所以工作流和任務入口和直接照抄整合在一起",
+                   "statusKey":  "standby",
+                   "statusLabel":  "正常待命",
+                   "ageSeconds":  13,
+                   "activeRequests":  0,
+                   "currentTaskInstruction":  "最近完成：所以技能 所以工作流和任務入口和直接照抄整合在一起",
                    "currentTaskSource":  "tg-openai-bot-3/telegram_request_status.json"
                },
     "monitors":  [
@@ -44,7 +44,7 @@
                          "label":  "蝦咩心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 17 秒前，執行中任務 0",
+                         "detail":  "心跳 13 秒前，執行中任務 0",
                          "source":  "codex_bot_heartbeat.json"
                      },
                      {
@@ -60,15 +60,15 @@
                          "label":  "林孟姿心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 31 秒前，執行中任務 0",
+                         "detail":  "心跳 3 秒前，執行中任務 1",
                          "source":  "tg-openai-bot-2/codex_bot_heartbeat.json"
                      },
                      {
                          "id":  "tgbot2-request",
                          "label":  "林孟姿任務佇列",
-                         "statusKey":  "standby",
-                         "statusLabel":  "正常待命",
-                         "detail":  "最近完成：用ohyagan",
+                         "statusKey":  "running",
+                         "statusLabel":  "運作中",
+                         "detail":  "沒有分頁可以點",
                          "source":  "tg-openai-bot-2/telegram_request_status.json"
                      },
                      {
@@ -76,15 +76,15 @@
                          "label":  "嵐熙心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 1 秒前，執行中任務 1",
+                         "detail":  "心跳 13 秒前，執行中任務 0",
                          "source":  "tg-openai-bot-3/codex_bot_heartbeat.json"
                      },
                      {
                          "id":  "tgbot3-request",
                          "label":  "嵐熙任務佇列",
-                         "statusKey":  "running",
-                         "statusLabel":  "運作中",
-                         "detail":  "所以技能 所以工作流和任務入口和直接照抄整合在一起",
+                         "statusKey":  "standby",
+                         "statusLabel":  "正常待命",
+                         "detail":  "最近完成：所以技能 所以工作流和任務入口和直接照抄整合在一起",
                          "source":  "tg-openai-bot-3/telegram_request_status.json"
                      },
                      {
@@ -92,7 +92,7 @@
                          "label":  "Codex token 統計",
                          "statusKey":  "running",
                          "statusLabel":  "已讀取",
-                         "detail":  "149622519 tokens，任務 1",
+                         "detail":  "156498969 tokens，任務 1",
                          "source":  "本機 Codex 執行緒紀錄"
                      },
                      {
@@ -108,7 +108,7 @@
                          "label":  "狀態產生器",
                          "statusKey":  "running",
                          "statusLabel":  "已更新",
-                         "detail":  "產生時間 2026-07-23 15:27:13",
+                         "detail":  "產生時間 2026-07-23 16:27:12",
                          "source":  "tools/update-runtime-status.ps1"
                      },
                      {
