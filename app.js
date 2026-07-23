@@ -2,7 +2,7 @@ const siteStats = [
   { label: "已安裝條目", value: "64", note: "目前可用的技能入口" },
   { label: "主技能名稱", value: "0", note: "依目前清單自動更新" },
   { label: "核心工作流", value: "0", note: "依目前清單自動更新" },
-  { label: "新手入口", value: "6", note: "先從任務分類開始" }
+  { label: "新手入口", value: "0", note: "先從任務分類開始" }
 ];
 
 const quickStartItems = [
@@ -62,6 +62,13 @@ const taskMapItems = [
     summary: "先看最新客戶問題，再依客服規則回覆；涉及連線或帳號時，同步檢查實際系統狀態。",
     jump: "#all-workflows?category=客服",
     action: "看 LINE 工作流"
+  },
+  {
+    tag: "台股 / 研究 / 圖卡",
+    title: "台股 IMS 研究與圖卡一起做",
+    summary: "先做當日文字研究，再補 9:16 台股圖卡；可指定大盤、產業主線或個股，例如 2330、AI 伺服器、CoWoS。",
+    jump: "#all-workflows?category=台股",
+    action: "看台股工作流"
   }
 ];
 
@@ -441,6 +448,11 @@ const workflows = [
     name: "幣安 Coin 研究", category: "研究", trigger: "幣安 coin、查 coin、合約地址、meme coin",
     summary: "核對鏈與合約地址，研究市場、持倉、風險、流動性與可疑訊號。", output: "繁體中文研究結論與風險判斷",
     formula: "幣安 coin 研究。\n幣種／合約地址：___。\n鏈：___。\n要查：市場表現、持倉、流動性、合約風險、聰明錢。\n完成標準：先給結論，再附依據與風險提醒。"
+  },
+  {
+    name: "台股 IMS 每日研究", category: "研究", trigger: "台股ims、台股 IMS、台股研究、台股圖卡、今天台股怎麼看、幫我看 2330 台積電",
+    summary: "先查台股大盤與美股科技連動，再整理主線產業、觀察股、籌碼與技術面；固定輸出文字研究與 9:16 台股圖卡。", output: "文字研究報告＋9:16 台股圖卡",
+    formula: "台股ims。\n重點：大盤、美股科技／費半／台積電 ADR、主線產業、籌碼、技術面、風險。\n指定個股／產業：___。\n成品：先貼文字版台股研究報告，再做 1 張 9:16 台股圖卡。\n圖卡：繁體中文、科技感、不可沿用舊素材或舊圖。\n完成標準：文字報告完成＋圖卡生成、下載、驗證後回傳；必須附非投資建議提醒。"
   }
 ];
 
@@ -477,7 +489,7 @@ let workflowSearchTerm = "";
 let skillMode = "beginner";
 let workflowMode = "beginner";
 const beginnerSkills = new Set(["wbs", "做圖", "teaching-step-images", "hfsw", "nbs", "pdf", "telegram-bot-manager", "telegram-two-stage-reply", "bb-browser", "playwright"]);
-const beginnerWorkflows = new Set(["WBS 網站建置與公開部署", "網站監控系統建置", "image2 API 做圖", "教學步驟圖", "HFSW 長影片製作", "NBS NotebookLM 摘要", "Telegram Bot 管理與修復", "LINE 官方客服工作流", "自動排程建立與維護"]);
+const beginnerWorkflows = new Set(["WBS 網站建置與公開部署", "網站監控系統建置", "image2 API 做圖", "教學步驟圖", "HFSW 長影片製作", "NBS NotebookLM 摘要", "Telegram Bot 管理與修復", "LINE 官方客服工作流", "自動排程建立與維護", "台股 IMS 每日研究"]);
 
 const $ = (selector) => document.querySelector(selector);
 
@@ -501,6 +513,8 @@ function renderHeroStats() {
   siteStats[1].note = `公開站目前保留 ${skills.length} 個技能入口`;
   siteStats[2].value = String(workflows.length);
   siteStats[2].note = `每條都附可複製的新手指令公式`;
+  siteStats[3].value = String(taskMapItems.length);
+  siteStats[3].note = `目前保留 ${taskMapItems.length} 類直接入口`;
   container.innerHTML = siteStats
     .map(
       (item) => `

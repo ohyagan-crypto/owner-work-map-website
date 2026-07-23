@@ -1,4 +1,4 @@
-const CACHE_NAME = "tutorial-site-v11-tgbot-upgrade-command";
+const CACHE_NAME = "tutorial-site-v12-tw-stock-workflow";
 const APP_SHELL = [
   "./",
   "./index.html",
