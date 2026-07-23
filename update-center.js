@@ -37,13 +37,17 @@
         ? "查看要貼給 TGBOT 的完整升級指令"
         : "解鎖後可查看完整升級指令";
       const downloadLabel = state.unlocked ? "下載更新包" : "輸入密碼後下載";
-      const commandLabel = state.unlocked ? "複製給 TGBOT 的升級指令" : "解鎖後可複製升級指令";
+      const commandLabel = state.unlocked
+        ? (item.kind === "tgbot-installer" ? "複製 TGBOT 安裝指令" : "複製給 TGBOT 的升級指令")
+        : "解鎖後可複製升級指令";
       const disabled = state.unlocked ? "" : " disabled";
+      const kindLabel = item.kind === "tgbot-installer" ? "TGBOT 完整安裝包" : "Codex 技能更新";
       return [
         '<article class="codex-update-item">',
         '<strong>' + escapeHtml(item.title || item.id) + '</strong>',
         '<p>' + escapeHtml(item.description || "Codex 更新包") + '</p>',
         '<div class="codex-update-meta">',
+        '<span>' + kindLabel + '</span>',
         '<span>版本 ' + escapeHtml(item.version || "未知") + '</span>',
         '<span>' + escapeHtml(item.createdAt || "日期未標示") + '</span>',
         '<span>' + escapeHtml(formatBytes(Number(item.size))) + '</span>',
@@ -56,7 +60,11 @@
         '<summary>' + commandSummary + '</summary>',
         '<pre class="update-command">' + commandText + '</pre>',
         '</details>',
-        '<small class="update-tgbot-hint">推薦：複製升級指令後直接貼給要升級的 TGBOT，它會自動下載、檢查、套用與驗證。</small>',
+        '<small class="update-tgbot-hint">' +
+          (item.kind === "tgbot-installer"
+            ? "完整安裝包會保留現有設定，並執行 Chrome、TGBOT 工具與 LINE 技能的升級驗證。"
+            : "推薦：複製升級指令後直接貼給要升級的 TGBOT，它會自動下載、檢查、套用與驗證。") +
+          '</small>',
         '</article>'
       ].join("");
     }).join("");
@@ -107,6 +115,25 @@
   function buildTgbotInstruction(item) {
     const base = new URL(".", window.location.href).href;
     const updateUrl = new URL(item.file, base).href;
+    if (item.kind === "tgbot-installer") {
+      return [
+        "請替目前這個 TGBOT 安裝 Chrome＋LINE 官方完整更新包，只能更新本 TGBOT 自己的安裝目錄，不可改到其他 TG Bot。",
+        "",
+        "安裝包名稱：" + (item.title || item.id || "TGBOT 完整安裝包"),
+        "安裝包版本：" + (item.version || "未知"),
+        "安裝包：" + updateUrl,
+        "",
+        "請依序完成：",
+        "1. 將 ZIP 下載到本機日期資料夾並完整解壓。",
+        "2. 先執行 PORTABILITY_SELF_TEST.cmd，確認包內檔案與環境檢查通過。",
+        "3. 執行 UPDATE_INSTALLED_TGBOT.cmd，保留現有 .env、Token、API、CHAT ID 與瀏覽器登入狀態。",
+        "4. 讓更新器完成 Chrome、LINE 技能、TGBOT 工具與命令通道驗證。",
+        "5. 重啟目前這個 TGBOT，確認新 heartbeat、命令通道與 LINE 技能已載入。",
+        "6. 回報更新版本、驗證結果與本機備份路徑。",
+        "",
+        "如果缺少既有 TGBOT、需要帳號安全確認，或任何驗證失敗，請停止並回報明確卡點，不要覆蓋設定。"
+      ].join("\n");
+    }
     const toolUrl = new URL("tools/apply-codex-update.mjs", base).href;
     return [
       "請替目前這個 TGBOT 安裝 Codex 更新，只能更新本 TGBOT 自己使用的 Codex 根目錄，不可改到其他 TG Bot。",
@@ -151,13 +178,22 @@
       return;
     }
     try {
+      if (file.name.toLowerCase().endsWith(".zip")) {
+        const header = new Uint8Array(await file.slice(0, 4).arrayBuffer());
+        const isZip = header.length === 4 && header[0] === 0x50 && header[1] === 0x4b &&
+          (header[2] === 0x03 || header[2] === 0x05 || header[2] === 0x07);
+        if (!isZip) throw new Error("zip");
+        status.textContent = "已讀取 TGBOT 安裝包：「" + file.name + "」｜ZIP 格式正常｜" + formatBytes(file.size);
+        status.style.color = "var(--cyan)";
+        return;
+      }
       const envelope = JSON.parse(await file.text());
       if (envelope.format !== "bsmf-codex-update-v1" || !envelope.manifest) throw new Error("format");
       const contents = Array.isArray(envelope.manifest.contents) ? envelope.manifest.contents.length : 0;
       status.textContent = "已讀取：「" + (envelope.manifest.title || "Codex 更新包") + "」｜版本 " + (envelope.manifest.version || "未知") + "｜" + contents + " 個檔案｜加密格式正常";
       status.style.color = "var(--cyan)";
     } catch (error) {
-      status.textContent = "檔案無法通過格式檢查，請確認是 .bsmf 更新包。";
+      status.textContent = "檔案無法通過格式檢查，請確認是 .bsmf 更新包或完整 ZIP 安裝包。";
       status.style.color = "#ff9b9b";
     }
   }

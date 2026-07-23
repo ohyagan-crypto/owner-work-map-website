@@ -188,7 +188,7 @@
                 <h3>可用的 Codex 更新包</h3>
               </div>
             </div>
-            <p class="update-download-note">解鎖後，每個更新包都能直接看到「複製給 TGBOT 的升級指令」按鈕，並展開完整指令預覽，不用自己改路徑。</p>
+            <p class="update-download-note">解鎖後可下載 Codex 技能更新，或下載完整 TGBOT 安裝包；每張卡都能展開對應的升級／安裝指令。</p>
             <div id="codexUpdateList" class="codex-update-list" aria-live="polite">
               <p class="update-loading">正在讀取更新清單……</p>
             </div>
@@ -210,7 +210,7 @@
                 <h3>輸入管理者密碼後選取更新檔</h3>
               </div>
             </div>
-            <p>先通過管理者驗證，才能選取或拖曳 <code>.bsmf</code> 更新檔。檔案只會在目前瀏覽器檢查格式，不會直接寫入公開網站；正式上架仍由管理端檢查後部署。</p>
+            <p>先通過管理者驗證，才能選取或拖曳 <code>.bsmf</code> 更新檔或完整 <code>.zip</code> 安裝包。檔案只會在目前瀏覽器檢查格式，不會直接寫入公開網站；正式上架仍由管理端檢查後部署。</p>
             <form id="codexUploadAccessForm" class="update-access-form update-upload-access-form">
               <label for="codexUploadPassword">管理者密碼</label>
               <div class="update-password-row">
@@ -220,7 +220,7 @@
               <p id="codexUploadAccessStatus" class="update-status" role="status">尚未解鎖，無法選取更新檔。</p>
             </form>
             <label class="update-file-drop is-locked" for="codexUpdateFile" aria-disabled="true">
-              <input id="codexUpdateFile" type="file" accept=".bsmf,application/json" disabled>
+              <input id="codexUpdateFile" type="file" accept=".bsmf,.zip,application/json,application/zip" disabled>
               <span id="codexUpdateDropTitle">請先輸入管理者密碼</span>
               <small id="codexUpdateDropHint">解鎖後可檢查格式、版本、內容清單與檔案大小</small>
             </label>
@@ -235,7 +235,7 @@
               <h3>複製升級指令，貼上就能更新</h3>
             </div>
           </div>
-          <p>在上方輸入 <code>bsmf</code> 解鎖後，點更新包旁的「複製升級指令」。把整段文字貼到你要升級的 TGBOT，它會下載套用工具與更新包，先做安全檢查，再更新自己的記憶、技能與工作流。</p>
+          <p>在上方輸入 <code>bsmf</code> 解鎖後，點更新包旁的「複製升級／安裝指令」。Codex 技能包會先乾跑驗證；完整 TGBOT ZIP 則會下載、解壓並執行保留設定的安裝器。</p>
           <div class="update-tgbot-flow" aria-label="TGBOT 升級使用方式">
             <div><strong>1</strong><span>輸入 <code>bsmf</code> 解鎖更新包。</span></div>
             <div><strong>2</strong><span>按「複製升級指令」，不用自己修改路徑。</span></div>

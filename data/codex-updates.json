@@ -1,10 +1,35 @@
 {
   "format": "bsmf-codex-update-v1",
-  "updatedAt": "2026-07-22",
+  "updatedAt": "2026-07-23",
   "notes": "公開清單只放更新包名稱、版本、大小與雜湊；更新包內容仍以 AES-256-GCM 加密。",
   "updates": [
     {
+      "id": "tgbot-update-chrome-line-20260723",
+      "kind": "tgbot-installer",
+      "version": "20260723.162100",
+      "createdAt": "2026-07-23",
+      "title": "TGBOT Chrome＋LINE 官方完整安裝包",
+      "description": "完整 ZIP 安裝包，包含 Chrome 優先路由、LINE 官方快速認證碼技能、TGBOT 更新器、命令通道與可攜性驗證工具；會保留接收端既有設定與登入狀態。",
+      "file": "updates/TGBOT_UPDATE_CHROME_LINE_20260723_162100.zip",
+      "size": 141052,
+      "sha256": "33ae1b8d6233b7bd98d713f1f0422093ad924acc46570e21df62b2ab48e757f",
+      "contents": ["Chrome 安裝與簽章驗證", "LINE 官方快速認證碼技能", "TGBOT 更新器", "命令通道與可攜性自測"]
+    },
+    {
+      "id": "codex-update-20260723.1",
+      "kind": "codex-skill-update",
+      "version": "20260723.1",
+      "createdAt": "2026-07-23",
+      "title": "LINE 官方快速認證碼技能更新",
+      "description": "新增 LINE 官方 QR 登入短效認證碼優先回報技能；完整 Chrome＋TGBOT 工具請下載同日安裝包。",
+      "file": "updates/codex-update_20260723.1.bsmf",
+      "size": 8641,
+      "sha256": "77d0984b77a7a1934d74dc077d2c32a15a6bcffa27779f7ff2d0cad4d5cb857a",
+      "contents": ["INSTALL_FOR_OTHER_CODEX.md", "skills/line-official-fast-code/SKILL.md", "skills/line-official-fast-code/agents/openai.yaml"]
+    },
+    {
       "id": "codex-update-20260722.1",
+      "kind": "codex-skill-update",
       "version": "20260722.1",
       "createdAt": "2026-07-22",
       "title": "Codex 記憶、技能、工作流更新協定",
