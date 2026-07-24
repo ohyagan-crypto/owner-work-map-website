@@ -5,8 +5,8 @@
     "currentTaskInstruction":  "如果是公開ip呢",
     "blocker":  "沒有卡點",
     "nextAction":  "有新任務時會更新 Telegram 狀態與本頁快照。",
-    "updatedAt":  "2026-07-24T13:27:12+08:00",
-    "checkedAt":  "2026-07-24T13:27:12+08:00",
+    "updatedAt":  "2026-07-24T14:27:13+08:00",
+    "checkedAt":  "2026-07-24T14:27:13+08:00",
     "sourceType":  "local-generator",
     "sourceLabel":  "本機即時狀態產生器",
     "refreshSeconds":  1,
@@ -17,14 +17,14 @@
               },
     "heartbeat":  {
                       "name":  "蝦咩",
-                      "ageSeconds":  34,
+                      "ageSeconds":  25,
                       "activeRequests":  0
                   },
     "tgbot2":  {
                    "name":  "林孟姿",
                    "statusKey":  "running",
                    "statusLabel":  "運作中",
-                   "ageSeconds":  10,
+                   "ageSeconds":  8,
                    "activeRequests":  1,
                    "currentTaskInstruction":  "續跑：續跑：wbs流程 命名wbsm 列出wbsm工作流",
                    "currentTaskSource":  "tg-openai-bot-2/telegram_request_status.json"
@@ -33,8 +33,8 @@
                    "name":  "嵐熙",
                    "statusKey":  "running",
                    "statusLabel":  "運作中",
-                   "ageSeconds":  0,
-                   "activeRequests":  2,
+                   "ageSeconds":  24,
+                   "activeRequests":  1,
                    "currentTaskInstruction":  "操作中心整合到完整資料庫",
                    "currentTaskSource":  "tg-openai-bot-3/telegram_request_status.json"
                },
@@ -44,7 +44,7 @@
                          "label":  "蝦咩心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 34 秒前，執行中任務 0",
+                         "detail":  "心跳 25 秒前，執行中任務 0",
                          "source":  "codex_bot_heartbeat.json"
                      },
                      {
@@ -60,7 +60,7 @@
                          "label":  "林孟姿心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 10 秒前，執行中任務 1",
+                         "detail":  "心跳 8 秒前，執行中任務 1",
                          "source":  "tg-openai-bot-2/codex_bot_heartbeat.json"
                      },
                      {
@@ -76,7 +76,7 @@
                          "label":  "嵐熙心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 0 秒前，執行中任務 2",
+                         "detail":  "心跳 24 秒前，執行中任務 1",
                          "source":  "tg-openai-bot-3/codex_bot_heartbeat.json"
                      },
                      {
@@ -108,7 +108,7 @@
                          "label":  "狀態產生器",
                          "statusKey":  "running",
                          "statusLabel":  "已更新",
-                         "detail":  "產生時間 2026-07-24 13:27:12",
+                         "detail":  "產生時間 2026-07-24 14:27:13",
                          "source":  "tools/update-runtime-status.ps1"
                      },
                      {
