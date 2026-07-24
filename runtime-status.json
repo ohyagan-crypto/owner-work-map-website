@@ -5,26 +5,26 @@
     "currentTaskInstruction":  "如果是公開ip呢",
     "blocker":  "沒有卡點",
     "nextAction":  "有新任務時會更新 Telegram 狀態與本頁快照。",
-    "updatedAt":  "2026-07-24T17:27:12+08:00",
-    "checkedAt":  "2026-07-24T17:27:12+08:00",
+    "updatedAt":  "2026-07-24T18:27:13+08:00",
+    "checkedAt":  "2026-07-24T18:27:13+08:00",
     "sourceType":  "local-generator",
     "sourceLabel":  "本機即時狀態產生器",
     "refreshSeconds":  1,
     "token":  {
-                  "totalTokens":  212768095,
-                  "taskCount":  2,
+                  "totalTokens":  219165998,
+                  "taskCount":  5,
                   "source":  "本機 Codex 執行緒紀錄"
               },
     "heartbeat":  {
                       "name":  "蝦咩",
-                      "ageSeconds":  16,
+                      "ageSeconds":  13,
                       "activeRequests":  0
                   },
     "tgbot2":  {
                    "name":  "林孟姿",
                    "statusKey":  "blocked",
                    "statusLabel":  "卡點",
-                   "ageSeconds":  26,
+                   "ageSeconds":  24,
                    "activeRequests":  0,
                    "currentTaskInstruction":  "去掉gtb部署 改成伺服器直接部署",
                    "currentTaskSource":  "tg-openai-bot-2/telegram_request_status.json"
@@ -33,7 +33,7 @@
                    "name":  "嵐熙",
                    "statusKey":  "standby",
                    "statusLabel":  "正常待命",
-                   "ageSeconds":  29,
+                   "ageSeconds":  26,
                    "activeRequests":  0,
                    "currentTaskInstruction":  "最近完成：tg操作整合近新手上手區",
                    "currentTaskSource":  "tg-openai-bot-3/telegram_request_status.json"
@@ -44,7 +44,7 @@
                          "label":  "蝦咩心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 16 秒前，執行中任務 0",
+                         "detail":  "心跳 13 秒前，執行中任務 0",
                          "source":  "codex_bot_heartbeat.json"
                      },
                      {
@@ -60,7 +60,7 @@
                          "label":  "林孟姿心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 26 秒前，執行中任務 0",
+                         "detail":  "心跳 24 秒前，執行中任務 0",
                          "source":  "tg-openai-bot-2/codex_bot_heartbeat.json"
                      },
                      {
@@ -76,7 +76,7 @@
                          "label":  "嵐熙心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 29 秒前，執行中任務 0",
+                         "detail":  "心跳 26 秒前，執行中任務 0",
                          "source":  "tg-openai-bot-3/codex_bot_heartbeat.json"
                      },
                      {
@@ -92,7 +92,7 @@
                          "label":  "Codex token 統計",
                          "statusKey":  "running",
                          "statusLabel":  "已讀取",
-                         "detail":  "212768095 tokens，任務 2",
+                         "detail":  "219165998 tokens，任務 5",
                          "source":  "本機 Codex 執行緒紀錄"
                      },
                      {
@@ -108,7 +108,7 @@
                          "label":  "狀態產生器",
                          "statusKey":  "running",
                          "statusLabel":  "已更新",
-                         "detail":  "產生時間 2026-07-24 17:27:12",
+                         "detail":  "產生時間 2026-07-24 18:27:13",
                          "source":  "tools/update-runtime-status.ps1"
                      },
                      {
