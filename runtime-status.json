@@ -1,40 +1,40 @@
 {
-    "statusKey":  "completed",
-    "statusLabel":  "已回覆完成",
+    "statusKey":  "standby",
+    "statusLabel":  "正常待命",
     "headline":  "如果是公開ip呢",
     "currentTaskInstruction":  "如果是公開ip呢",
     "blocker":  "沒有卡點",
-    "nextAction":  "可直接查看 Telegram 回覆結果。",
-    "updatedAt":  "2026-07-24T10:27:14+08:00",
-    "checkedAt":  "2026-07-24T10:27:14+08:00",
+    "nextAction":  "有新任務時會更新 Telegram 狀態與本頁快照。",
+    "updatedAt":  "2026-07-24T11:27:13+08:00",
+    "checkedAt":  "2026-07-24T11:27:13+08:00",
     "sourceType":  "local-generator",
     "sourceLabel":  "本機即時狀態產生器",
     "refreshSeconds":  1,
     "token":  {
-                  "totalTokens":  190871252,
+                  "totalTokens":  193742231,
                   "taskCount":  2,
                   "source":  "本機 Codex 執行緒紀錄"
               },
     "heartbeat":  {
                       "name":  "蝦咩",
-                      "ageSeconds":  11,
+                      "ageSeconds":  34,
                       "activeRequests":  0
                   },
     "tgbot2":  {
                    "name":  "林孟姿",
-                   "statusKey":  "running",
-                   "statusLabel":  "運作中",
-                   "ageSeconds":  15,
-                   "activeRequests":  2,
+                   "statusKey":  "blocked",
+                   "statusLabel":  "卡點",
+                   "ageSeconds":  10,
+                   "activeRequests":  0,
                    "currentTaskInstruction":  "列出wbsm工作流",
                    "currentTaskSource":  "tg-openai-bot-2/telegram_request_status.json"
                },
     "tgbot3":  {
                    "name":  "嵐熙",
-                   "statusKey":  "running",
-                   "statusLabel":  "運作中",
-                   "ageSeconds":  17,
-                   "activeRequests":  1,
+                   "statusKey":  "blocked",
+                   "statusLabel":  "卡點",
+                   "ageSeconds":  47,
+                   "activeRequests":  0,
                    "currentTaskInstruction":  "把教學網裡面的wbs流程調整 不需要gihub了 綁定gb也都刪除",
                    "currentTaskSource":  "tg-openai-bot-3/telegram_request_status.json"
                },
@@ -44,14 +44,14 @@
                          "label":  "蝦咩心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 11 秒前，執行中任務 0",
+                         "detail":  "心跳 34 秒前，執行中任務 0",
                          "source":  "codex_bot_heartbeat.json"
                      },
                      {
                          "id":  "telegram-request",
                          "label":  "Telegram 任務佇列",
-                         "statusKey":  "completed",
-                         "statusLabel":  "已回覆完成",
+                         "statusKey":  "standby",
+                         "statusLabel":  "正常待命",
                          "detail":  "如果是公開ip呢",
                          "source":  "telegram_request_status.json"
                      },
@@ -60,14 +60,14 @@
                          "label":  "林孟姿心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 15 秒前，執行中任務 2",
+                         "detail":  "心跳 10 秒前，執行中任務 0",
                          "source":  "tg-openai-bot-2/codex_bot_heartbeat.json"
                      },
                      {
                          "id":  "tgbot2-request",
                          "label":  "林孟姿任務佇列",
-                         "statusKey":  "running",
-                         "statusLabel":  "運作中",
+                         "statusKey":  "blocked",
+                         "statusLabel":  "卡點",
                          "detail":  "列出wbsm工作流",
                          "source":  "tg-openai-bot-2/telegram_request_status.json"
                      },
@@ -76,14 +76,14 @@
                          "label":  "嵐熙心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 17 秒前，執行中任務 1",
+                         "detail":  "心跳 47 秒前，執行中任務 0",
                          "source":  "tg-openai-bot-3/codex_bot_heartbeat.json"
                      },
                      {
                          "id":  "tgbot3-request",
                          "label":  "嵐熙任務佇列",
-                         "statusKey":  "running",
-                         "statusLabel":  "運作中",
+                         "statusKey":  "blocked",
+                         "statusLabel":  "卡點",
                          "detail":  "把教學網裡面的wbs流程調整 不需要gihub了 綁定gb也都刪除",
                          "source":  "tg-openai-bot-3/telegram_request_status.json"
                      },
@@ -92,7 +92,7 @@
                          "label":  "Codex token 統計",
                          "statusKey":  "running",
                          "statusLabel":  "已讀取",
-                         "detail":  "190871252 tokens，任務 2",
+                         "detail":  "193742231 tokens，任務 2",
                          "source":  "本機 Codex 執行緒紀錄"
                      },
                      {
@@ -108,7 +108,7 @@
                          "label":  "狀態產生器",
                          "statusKey":  "running",
                          "statusLabel":  "已更新",
-                         "detail":  "產生時間 2026-07-24 10:27:14",
+                         "detail":  "產生時間 2026-07-24 11:27:13",
                          "source":  "tools/update-runtime-status.ps1"
                      },
                      {
