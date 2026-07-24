@@ -21,7 +21,7 @@
     href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Space+Grotesk:wght@500;700&display=swap"
     rel="stylesheet"
   >
-  <link rel="stylesheet" href="styles.css?v=20260723-layout-cleanup-1">
+  <link rel="stylesheet" href="styles.css?v=20260724-database-integration-1">
   <link rel="stylesheet" href="update-center.css?v=20260723-codex-web-install-3">
 </head>
 <body>
@@ -31,26 +31,25 @@
         <h1>藍星智能體教戰網</h1>
         <p class="hero-text">
           這個網站把 <strong>任務入口</strong>、<strong>直接照抄</strong>、<strong>技能</strong>、<strong>工作流</strong>
-          合併成同一個操作中心。先選任務卡，直接複製完整指令貼到 TGBOT；需要細查時，再往下看完整資料庫。
+          收進同一份完整資料庫。先選任務卡，直接複製完整指令貼到 TGBOT；需要細查時，再用搜尋與分類往下找。
         </p>
         <div class="hero-actions">
-          <a href="#command-center" class="primary-link">進入操作中心</a>
+          <a href="#all-skills" class="primary-link">進入完整資料庫</a>
           <a href="#tg-guide" class="secondary-link">看 TG 操作</a>
-          <a href="#all-workflows" class="secondary-link">查完整資料庫</a>
+          <a href="#codex-updates" class="secondary-link">看更新中心</a>
         </div>
       </div>
       <div class="hero-panel">
         <div class="metric-stack" id="heroStats"></div>
         <div class="hero-note">
           <span>先看哪裡</span>
-          <p>前半段只保留一條主路徑：任務卡片直接附技能、工作流與完整指令。後半段才放完整技能庫、工作流與更新中心。</p>
+          <p>完整資料庫依序收好任務卡、技能索引與工作流索引；先從第一層開始，需要細查時再往下搜尋。</p>
         </div>
       </div>
     </header>
 
     <nav class="top-nav" aria-label="頁面導覽">
       <a href="#quick-start">首頁</a>
-      <a href="#command-center">操作中心</a>
       <a href="#tg-guide">TG 操作指南</a>
       <a href="#all-skills">完整資料庫</a>
       <a href="#codex-updates">更新中心</a>
@@ -66,15 +65,6 @@
         <div class="spotlight-grid" id="quickStartGrid"></div>
       </section>
 
-      <section id="command-center" class="content-block command-center-block">
-        <div class="section-heading">
-          <p class="eyebrow">整合操作中心</p>
-          <h2>任務入口、直接照抄、技能與工作流放在同一張卡</h2>
-          <p>新手不用先理解技能名稱。先選最接近的任務卡，卡片會直接告訴你該走哪個技能、哪條工作流，以及可貼給 TGBOT 的完整指令。</p>
-        </div>
-        <div class="command-center-grid" id="commandCenterGrid"></div>
-      </section>
-
       <section id="tg-guide" class="content-block">
         <div class="section-heading">
           <p class="eyebrow">TG 操作指南</p>
@@ -82,7 +72,6 @@
           <p>最穩的做法是：先選好本次素材，在同一則訊息內寫清楚任務，等目前任務拿到成品、網址或明確結果後，再送第二個任務。照下面重點操作，能大幅降低漏讀素材、任務插隊與交付順序錯亂。</p>
         </div>
         <div class="tg-send-panel" id="tgSendPanel"></div>
-        <div class="tg-github-command" id="tg-github-command"></div>
         <div class="tg-guide-grid" id="tgGuideGrid"></div>
         <div class="dialogue-grid compact-dialogue-grid" id="tgDialogueGrid"></div>
         <div class="tg-note-panel" id="tgNotePanel"></div>
@@ -92,10 +81,23 @@
       <section id="all-skills" class="content-block">
         <div class="section-heading">
           <p class="eyebrow">完整資料庫</p>
-          <h2>需要細找時，再查完整技能</h2>
+          <h2>操作中心、技能與工作流集中在同一個資料庫</h2>
           <p>
-            操作中心已經能處理大多數任務；這一區保留給進階查找，想看所有技能名稱、用途與單一技能公式時再使用。
+            先從任務卡直接開始，再用下面的技能搜尋與工作流搜尋細查。所有入口、公式與進階資料都從這裡進入，避免同一份內容分散在不同頁面。
           </p>
+        </div>
+        <div id="command-center" class="database-command-panel command-center-block">
+          <div class="section-heading">
+            <p class="eyebrow">任務入口</p>
+            <h3>先選任務卡，直接複製完整指令</h3>
+            <p>新手不用先理解技能名稱。先選最接近的任務卡，卡片會直接告訴你該走哪個技能、哪條工作流，以及可貼給 TGBOT 的完整指令。</p>
+          </div>
+          <div class="command-center-grid" id="commandCenterGrid"></div>
+        </div>
+        <div class="database-subheading">
+          <p class="eyebrow">技能索引</p>
+          <h3>再用分類與搜尋找到單一技能</h3>
+          <p>需要更細的公式或指定技能時，在這裡搜尋，不必離開完整資料庫。</p>
         </div>
         <div class="skill-toolbar">
           <div class="mode-switch" role="group" aria-label="技能顯示模式">
@@ -112,30 +114,30 @@
         <div class="skill-overview" id="skillOverview"></div>
         <div class="skill-grid" id="skillGrid"></div>
         <p class="empty-state" id="skillEmpty">沒有符合的技能，換個關鍵字試試看。</p>
-      </section>
 
-      <section id="all-workflows" class="content-block">
-        <div class="section-heading">
-          <p class="eyebrow">完整工作流</p>
-          <h2>進階查找：從需求一路做到交付</h2>
-          <p>
-            工作流是完整做事順序。若操作中心的任務卡不夠精準，可以在這裡搜尋更細的流程；LINE 官方客服也整合在同一份清單裡。
-          </p>
-        </div>
-        <div class="skill-toolbar">
-          <div class="mode-switch" role="group" aria-label="工作流顯示模式">
-            <span>顯示模式</span>
-            <button type="button" class="workflow-mode-button active" data-mode="beginner">新手常用</button>
-            <button type="button" class="workflow-mode-button" data-mode="full">完整工作流</button>
+        <div id="all-workflows" class="database-workflow-panel">
+          <div class="database-subheading">
+            <p class="eyebrow">工作流索引</p>
+            <h3>再用完整工作流查找執行順序</h3>
+            <p>
+              工作流是完整做事順序。若任務卡不夠精準，可以在這裡搜尋更細的流程；LINE 官方客服、台股研究與自動排程也都在同一份資料庫裡。
+            </p>
           </div>
-          <label class="search-field" for="workflowSearch">
-            <span>搜尋工作流</span>
-            <input id="workflowSearch" type="search" placeholder="輸入網站、image2、ComfyUI、NBS、台股、影片、Telegram、LINE 客服">
-          </label>
+          <div class="skill-toolbar">
+            <div class="mode-switch" role="group" aria-label="工作流顯示模式">
+              <span>顯示模式</span>
+              <button type="button" class="workflow-mode-button active" data-mode="beginner">新手常用</button>
+              <button type="button" class="workflow-mode-button" data-mode="full">完整工作流</button>
+            </div>
+            <label class="search-field" for="workflowSearch">
+              <span>搜尋工作流</span>
+              <input id="workflowSearch" type="search" placeholder="輸入網站、image2、ComfyUI、NBS、台股、影片、Telegram、LINE 客服">
+            </label>
+          </div>
+          <div class="skill-overview" id="workflowOverview"></div>
+          <div class="workflow-grid" id="workflowGrid"></div>
+          <p class="empty-state" id="workflowEmpty">沒有符合的工作流，換個關鍵字試試看。</p>
         </div>
-        <div class="skill-overview" id="workflowOverview"></div>
-        <div class="workflow-grid" id="workflowGrid"></div>
-        <p class="empty-state" id="workflowEmpty">沒有符合的工作流，換個關鍵字試試看。</p>
       </section>
 
       <section id="support-notes" class="content-block">
@@ -177,7 +179,7 @@
         </div>
         <div class="update-security-note">
           <strong>安全邊界</strong>
-          <span>GitHub Pages 是公開靜態站，管理者密碼只用來解鎖瀏覽器端的選檔檢查；正式上架仍由管理端檢查後部署。更新包本身使用 AES-256-GCM 加密，不要把金鑰、Cookie、瀏覽器資料或原始對話紀錄放進更新檔。</span>
+          <span>這是公開靜態站，管理者密碼只用來解鎖瀏覽器端的選檔檢查；正式上架仍由管理端檢查後部署。更新包本身使用 AES-256-GCM 加密，不要把金鑰、Cookie、瀏覽器資料或原始對話紀錄放進更新檔。</span>
         </div>
         <div class="update-center-grid">
           <article class="update-card update-download-card">
@@ -261,7 +263,7 @@
 
     <footer class="site-footer">
       <p>公開站用途：幫新手理解怎麼跟藍星智能體 / TGBOT 溝通、怎麼選技能與工作流，以及怎麼用公式直接開始任務。一般做圖統一走 image2 API；只有明確指定時才走 ComfyUI。</p>
-      <p>更新日期：2026-07-23｜Codex 網站自動安裝版</p>
+      <p>更新日期：2026-07-24｜Codex 網站自動安裝版</p>
     </footer>
   </div>
 
@@ -284,7 +286,7 @@
     </div>
   </div>
 
-  <script src="app.js?v=20260723-layout-cleanup-1"></script>
+  <script src="app.js?v=20260724-database-integration-2"></script>
   <script src="update-center.js?v=20260723-codex-web-install-3"></script>
 </body>
 </html>

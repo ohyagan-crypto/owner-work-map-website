@@ -540,6 +540,18 @@ h1 {
   margin: 10px 0 0;
 }
 
+.database-workflow-panel {
+  margin-top: 42px;
+  padding-top: 30px;
+  border-top: 1px solid rgba(255, 209, 125, 0.2);
+}
+
+.database-workflow-panel .database-subheading {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
 .command-center-block::before {
   content: "";
   position: absolute;
