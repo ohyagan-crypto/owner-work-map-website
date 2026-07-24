@@ -5,35 +5,35 @@
     "currentTaskInstruction":  "列出image2 url",
     "blocker":  "最近任務異常",
     "nextAction":  "查看最近任務，修復後再回報。",
-    "updatedAt":  "2026-07-24T20:27:15+08:00",
-    "checkedAt":  "2026-07-24T20:27:15+08:00",
+    "updatedAt":  "2026-07-24T21:27:11+08:00",
+    "checkedAt":  "2026-07-24T21:27:11+08:00",
     "sourceType":  "local-generator",
     "sourceLabel":  "本機即時狀態產生器",
     "refreshSeconds":  1,
     "token":  {
-                  "totalTokens":  219165998,
-                  "taskCount":  5,
+                  "totalTokens":  234690631,
+                  "taskCount":  7,
                   "source":  "本機 Codex 執行緒紀錄"
               },
     "heartbeat":  {
                       "name":  "蝦咩",
-                      "ageSeconds":  9,
+                      "ageSeconds":  17,
                       "activeRequests":  0
                   },
     "tgbot2":  {
                    "name":  "林孟姿",
-                   "statusKey":  "standby",
-                   "statusLabel":  "正常待命",
-                   "ageSeconds":  45,
-                   "activeRequests":  0,
-                   "currentTaskInstruction":  "最近完成：去掉gtb部署 改成伺服器直接部署",
+                   "statusKey":  "running",
+                   "statusLabel":  "運作中",
+                   "ageSeconds":  28,
+                   "activeRequests":  1,
+                   "currentTaskInstruction":  "去掉gb部署的命名為wbs 原本有gb部署的維持wbsm",
                    "currentTaskSource":  "tg-openai-bot-2/telegram_request_status.json"
                },
     "tgbot3":  {
                    "name":  "嵐熙",
                    "statusKey":  "standby",
                    "statusLabel":  "正常待命",
-                   "ageSeconds":  21,
+                   "ageSeconds":  14,
                    "activeRequests":  0,
                    "currentTaskInstruction":  "最近完成：tg操作整合近新手上手區",
                    "currentTaskSource":  "tg-openai-bot-3/telegram_request_status.json"
@@ -44,7 +44,7 @@
                          "label":  "蝦咩心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 9 秒前，執行中任務 0",
+                         "detail":  "心跳 17 秒前，執行中任務 0",
                          "source":  "codex_bot_heartbeat.json"
                      },
                      {
@@ -60,15 +60,15 @@
                          "label":  "林孟姿心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 45 秒前，執行中任務 0",
+                         "detail":  "心跳 28 秒前，執行中任務 1",
                          "source":  "tg-openai-bot-2/codex_bot_heartbeat.json"
                      },
                      {
                          "id":  "tgbot2-request",
                          "label":  "林孟姿任務佇列",
-                         "statusKey":  "standby",
-                         "statusLabel":  "正常待命",
-                         "detail":  "最近完成：去掉gtb部署 改成伺服器直接部署",
+                         "statusKey":  "running",
+                         "statusLabel":  "運作中",
+                         "detail":  "去掉gb部署的命名為wbs 原本有gb部署的維持wbsm",
                          "source":  "tg-openai-bot-2/telegram_request_status.json"
                      },
                      {
@@ -76,7 +76,7 @@
                          "label":  "嵐熙心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 21 秒前，執行中任務 0",
+                         "detail":  "心跳 14 秒前，執行中任務 0",
                          "source":  "tg-openai-bot-3/codex_bot_heartbeat.json"
                      },
                      {
@@ -92,7 +92,7 @@
                          "label":  "Codex token 統計",
                          "statusKey":  "running",
                          "statusLabel":  "已讀取",
-                         "detail":  "219165998 tokens，任務 5",
+                         "detail":  "234690631 tokens，任務 7",
                          "source":  "本機 Codex 執行緒紀錄"
                      },
                      {
@@ -108,7 +108,7 @@
                          "label":  "狀態產生器",
                          "statusKey":  "running",
                          "statusLabel":  "已更新",
-                         "detail":  "產生時間 2026-07-24 20:27:15",
+                         "detail":  "產生時間 2026-07-24 21:27:11",
                          "source":  "tools/update-runtime-status.ps1"
                      },
                      {
