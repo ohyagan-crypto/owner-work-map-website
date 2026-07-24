@@ -5,35 +5,35 @@
     "currentTaskInstruction":  "如果是公開ip呢",
     "blocker":  "沒有卡點",
     "nextAction":  "有新任務時會更新 Telegram 狀態與本頁快照。",
-    "updatedAt":  "2026-07-24T11:27:13+08:00",
-    "checkedAt":  "2026-07-24T11:27:13+08:00",
+    "updatedAt":  "2026-07-24T12:27:13+08:00",
+    "checkedAt":  "2026-07-24T12:27:13+08:00",
     "sourceType":  "local-generator",
     "sourceLabel":  "本機即時狀態產生器",
     "refreshSeconds":  1,
     "token":  {
-                  "totalTokens":  193742231,
+                  "totalTokens":  200935410,
                   "taskCount":  2,
                   "source":  "本機 Codex 執行緒紀錄"
               },
     "heartbeat":  {
                       "name":  "蝦咩",
-                      "ageSeconds":  34,
+                      "ageSeconds":  39,
                       "activeRequests":  0
                   },
     "tgbot2":  {
                    "name":  "林孟姿",
                    "statusKey":  "blocked",
                    "statusLabel":  "卡點",
-                   "ageSeconds":  10,
+                   "ageSeconds":  22,
                    "activeRequests":  0,
-                   "currentTaskInstruction":  "列出wbsm工作流",
+                   "currentTaskInstruction":  "續跑：wbs流程 命名wbsm 列出wbsm工作流",
                    "currentTaskSource":  "tg-openai-bot-2/telegram_request_status.json"
                },
     "tgbot3":  {
                    "name":  "嵐熙",
                    "statusKey":  "blocked",
                    "statusLabel":  "卡點",
-                   "ageSeconds":  47,
+                   "ageSeconds":  6,
                    "activeRequests":  0,
                    "currentTaskInstruction":  "把教學網裡面的wbs流程調整 不需要gihub了 綁定gb也都刪除",
                    "currentTaskSource":  "tg-openai-bot-3/telegram_request_status.json"
@@ -44,7 +44,7 @@
                          "label":  "蝦咩心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 34 秒前，執行中任務 0",
+                         "detail":  "心跳 39 秒前，執行中任務 0",
                          "source":  "codex_bot_heartbeat.json"
                      },
                      {
@@ -60,7 +60,7 @@
                          "label":  "林孟姿心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 10 秒前，執行中任務 0",
+                         "detail":  "心跳 22 秒前，執行中任務 0",
                          "source":  "tg-openai-bot-2/codex_bot_heartbeat.json"
                      },
                      {
@@ -68,7 +68,7 @@
                          "label":  "林孟姿任務佇列",
                          "statusKey":  "blocked",
                          "statusLabel":  "卡點",
-                         "detail":  "列出wbsm工作流",
+                         "detail":  "續跑：wbs流程 命名wbsm 列出wbsm工作流",
                          "source":  "tg-openai-bot-2/telegram_request_status.json"
                      },
                      {
@@ -76,7 +76,7 @@
                          "label":  "嵐熙心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 47 秒前，執行中任務 0",
+                         "detail":  "心跳 6 秒前，執行中任務 0",
                          "source":  "tg-openai-bot-3/codex_bot_heartbeat.json"
                      },
                      {
@@ -92,7 +92,7 @@
                          "label":  "Codex token 統計",
                          "statusKey":  "running",
                          "statusLabel":  "已讀取",
-                         "detail":  "193742231 tokens，任務 2",
+                         "detail":  "200935410 tokens，任務 2",
                          "source":  "本機 Codex 執行緒紀錄"
                      },
                      {
@@ -108,7 +108,7 @@
                          "label":  "狀態產生器",
                          "statusKey":  "running",
                          "statusLabel":  "已更新",
-                         "detail":  "產生時間 2026-07-24 11:27:13",
+                         "detail":  "產生時間 2026-07-24 12:27:13",
                          "source":  "tools/update-runtime-status.ps1"
                      },
                      {
