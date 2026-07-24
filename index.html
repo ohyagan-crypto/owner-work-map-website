@@ -21,7 +21,7 @@
     href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Space+Grotesk:wght@500;700&display=swap"
     rel="stylesheet"
   >
-  <link rel="stylesheet" href="styles.css?v=20260724-database-integration-1">
+  <link rel="stylesheet" href="styles.css?v=20260724-beginner-tg-integration-1">
   <link rel="stylesheet" href="update-center.css?v=20260723-codex-web-install-3">
 </head>
 <body>
@@ -34,8 +34,8 @@
           收進同一份完整資料庫。先選任務卡，直接複製完整指令貼到 TGBOT；需要細查時，再用搜尋與分類往下找。
         </p>
         <div class="hero-actions">
-          <a href="#all-skills" class="primary-link">進入完整資料庫</a>
-          <a href="#tg-guide" class="secondary-link">看 TG 操作</a>
+          <a href="#quick-start" class="primary-link">從新手上手開始</a>
+          <a href="#all-skills" class="secondary-link">進入完整資料庫</a>
           <a href="#codex-updates" class="secondary-link">看更新中心</a>
         </div>
       </div>
@@ -49,8 +49,7 @@
     </header>
 
     <nav class="top-nav" aria-label="頁面導覽">
-      <a href="#quick-start">首頁</a>
-      <a href="#tg-guide">TG 操作指南</a>
+      <a href="#quick-start">新手上手</a>
       <a href="#all-skills">完整資料庫</a>
       <a href="#codex-updates">更新中心</a>
       <button type="button" class="nav-install-button" id="openInstallApp">下載 App</button>
@@ -60,22 +59,22 @@
       <section id="quick-start" class="content-block spotlight-block">
         <div class="section-heading">
           <p class="eyebrow">新手上手</p>
-          <h2>先記 3 件事，就不容易把任務講歪</h2>
+          <h2>先記 3 件事，再照 TG 方式把任務送對</h2>
+          <p>先把任務、成品和完成標準講清楚，再用下面的 Telegram 發送方式送出。新手只要從這一區開始，不需要先在不同頁面之間跳來跳去。</p>
         </div>
         <div class="spotlight-grid" id="quickStartGrid"></div>
-      </section>
-
-      <section id="tg-guide" class="content-block">
-        <div class="section-heading">
-          <p class="eyebrow">TG 操作指南</p>
-          <h2>先把一個任務講完整，再把下一個任務送進來</h2>
-          <p>最穩的做法是：先選好本次素材，在同一則訊息內寫清楚任務，等目前任務拿到成品、網址或明確結果後，再送第二個任務。照下面重點操作，能大幅降低漏讀素材、任務插隊與交付順序錯亂。</p>
+        <div id="tg-guide" class="quick-start-tg">
+          <div class="section-heading compact">
+            <p class="eyebrow">TG 操作</p>
+            <h3>一個任務講完整，再送下一個任務</h3>
+            <p>先選好本次素材，在同一則訊息內寫清楚任務；等目前任務收到成品、網址或明確結果後，再送第二個任務，能降低漏讀素材與交付順序錯亂。</p>
+          </div>
+          <div class="tg-send-panel" id="tgSendPanel"></div>
+          <div class="tg-guide-grid" id="tgGuideGrid"></div>
+          <div class="dialogue-grid compact-dialogue-grid" id="tgDialogueGrid"></div>
+          <div class="tg-note-panel" id="tgNotePanel"></div>
+          <div class="tg-note-panel" id="tgChunkPanel"></div>
         </div>
-        <div class="tg-send-panel" id="tgSendPanel"></div>
-        <div class="tg-guide-grid" id="tgGuideGrid"></div>
-        <div class="dialogue-grid compact-dialogue-grid" id="tgDialogueGrid"></div>
-        <div class="tg-note-panel" id="tgNotePanel"></div>
-        <div class="tg-note-panel" id="tgChunkPanel"></div>
       </section>
 
       <section id="all-skills" class="content-block">
@@ -286,7 +285,7 @@
     </div>
   </div>
 
-  <script src="app.js?v=20260724-database-integration-2"></script>
+  <script src="app.js?v=20260724-beginner-tg-integration-1"></script>
   <script src="update-center.js?v=20260723-codex-web-install-3"></script>
 </body>
 </html>

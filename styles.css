@@ -363,6 +363,18 @@ h1 {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.quick-start-tg {
+  margin-top: 30px;
+  padding-top: 30px;
+  border-top: 1px solid var(--line-strong);
+}
+
+.quick-start-tg > .section-heading h3 {
+  margin-top: 8px;
+  font-family: "Space Grotesk", "Noto Sans TC", sans-serif;
+  font-size: clamp(1.45rem, 3vw, 2.1rem);
+}
+
 .formula-grid {
   grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
 }
@@ -1355,7 +1367,7 @@ body.install-modal-open {
     width: auto;
     margin: 0;
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 6px;
     padding: 8px;
     border-radius: 12px;
