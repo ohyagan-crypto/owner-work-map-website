@@ -24,12 +24,12 @@ const taskMapItems = [
   {
     tag: "網站 / 公開部署",
     title: "做網站、改網站、公開部署",
-    summary: "要公開網址就直接走 WBS。第一次做網站時，TGBOT 會操作瀏覽器協助 Google 與 GitHub 綁定；遇到驗證碼再由本人完成。",
-    skill: "wbs / github-pages-deploy",
+    summary: "要公開網址就直接走 WBS。Codex 先修改真實網站檔案，完成手機與桌機驗證，再依指定的伺服器、公開平台或既有部署方式上線。",
+    skill: "wbs",
     workflow: "WBS 網站建置與公開部署",
     jump: "#all-workflows?category=網站",
     action: "查網站工作流",
-    prompt: "wbs 建立／更新 ___ 網站。\n內容：___。\n功能：___。\n規格：繁體中文，手機與桌機都要清楚可用。\n如果需要 GitHub，請讓 Codex CLI 操作瀏覽器完成 Google 與 GitHub 綁定；遇到驗證碼、兩步驗證、Passkey 或安全確認時，再通知本人完成。\n完成標準：本機驗證、公開部署，並確認公開網址顯示最新版。"
+    prompt: "wbs 建立／更新 ___ 網站。\n內容：___。\n功能：___。\n規格：繁體中文，手機與桌機都要清楚可用。\n部署方式：指定公開平台／伺服器／既有網址 ___。\n限制：不綁定額外帳號，不混入舊站內容。\n完成標準：本機驗證、部署完成，並確認公開網址顯示最新版。"
   },
   {
     tag: "圖片 / 海報 / 教學圖",
@@ -167,11 +167,6 @@ const tgSendFormula = `本次任務：___。
 限制：不要使用歷史附件或舊任務素材。
 完成標準：驗證完成後，將成品回傳目前這個 Telegram 對話。`;
 
-const githubBindingCommand = `wbs 綁定 Google 與 GitHub。
-請讓 Codex CLI 操作瀏覽器，使用我指定的 Gmail 登入 Google，並完成 GitHub 綁定或登入。
-如果需要密碼，請使用已授權的安全登入方式；遇到驗證碼、兩步驗證、Passkey 或安全確認時，再通知我本人完成。
-完成後請確認 GitHub 已登入，且可以建立程式庫。`;
-
 const tgGuideNotes = [
   "TGBOT 可以一次連續回多段訊息，沒有固定只限 1 段。長回覆會自動拆開送出，避免 Telegram 單則上限截斷。",
   "目前本機 Bot 會把長文字大約切成每段 3900 字元左右，所以你看到連續多則訊息是正常行為，不代表重複回覆。",
@@ -227,7 +222,7 @@ const dialogueExamples = [
   {
     label: "卡點回覆",
     owner: "好了沒？",
-    bot: "結論：公開站還差最後部署驗證。網站檔案已改完，現在正在確認 GitHub Pages 已更新到最新版。"
+    bot: "結論：公開站還差最後部署驗證。網站檔案已改完，現在正在確認指定公開網址已更新到最新版。"
   },
   {
     label: "錯誤示範",
@@ -266,7 +261,7 @@ const templates = [
   {
     title: "網站模板",
     description: "最適合要做公開網站的人。",
-    prompt: "wbs 做一個公開網站。\n請讓 Codex CLI 操作瀏覽器，使用我指定的 Gmail 登入 Google，並完成 GitHub 綁定或登入；遇到驗證碼、兩步驗證、Passkey 或安全確認時，再通知我本人完成。\n主題：___\n成品：公開網址。\n規格：繁體中文、手機版可讀、桌機版完整。\n限制：不要混舊站內容。\n完成標準：本機驗證後公開部署，網址真的打得開。"
+    prompt: "wbs 做一個公開網站。\n主題：___\n成品：公開網址。\n規格：繁體中文、手機版可讀、桌機版完整。\n部署方式：指定公開平台／伺服器／既有網址 ___。\n限制：不要混舊站內容，不綁定額外帳號。\n完成標準：本機驗證後公開部署，確認網址真的打得開且顯示最新版。"
   },
   {
     title: "做圖模板",
@@ -286,8 +281,7 @@ const templates = [
 ];
 
 const skills = [
-  { name: "wbs", category: "網站部署", summary: "網站建置、驗證、GitHub Pages 公開部署。", useCase: "做網站、改網站、公開部署。" },
-  { name: "github-pages-deploy", category: "網站部署", summary: "專門處理 GitHub Pages 的推送與公開驗證。", useCase: "網站已做好，只差公開部署。" },
+  { name: "wbs", category: "網站部署", summary: "網站建置、驗證、指定平台或伺服器公開部署。", useCase: "做網站、改網站、公開部署。" },
   { name: "monthly-course-site-updater", category: "網站部署", summary: "每月課程報名與活動網站更新。", useCase: "只改日期、場次、報名資訊。" },
   { name: "做圖", category: "圖片生成", summary: "image2 API 單一做圖主入口。", useCase: "做海報、教學圖、商品圖、文案轉圖。" },
   { name: "teaching-step-images", category: "圖片生成", summary: "教學步驟圖、SOP 圖與手機操作圖，統一走 image2 API 風格改版。", useCase: "做 4 張、8 張、逐步說明圖。" },
@@ -334,13 +328,13 @@ const skills = [
 const workflows = [
   {
     name: "WBS 網站建置與公開部署", category: "網站", trigger: "wbs、做網站、更新網站、公開部署",
-    summary: "先在 TGBOT 貼上指令，請 Codex CLI 用既有 Google 帳號完成 GitHub 綁定與登入，再修改真實網站檔案、驗證手機與桌機，最後確認公開網址是最新版。", output: "公開網址＋可維護的網站原始檔",
-    formula: "wbs 更新／建立 ___ 網站。\n請讓 Codex CLI 操作瀏覽器，使用我指定的 Gmail 登入 Google，並完成 GitHub 綁定或登入；遇到驗證碼、兩步驗證、Passkey 或安全確認時，再通知我本人完成。\n內容：___。\n規格：繁體中文，手機與桌機都要清楚可用。\n功能：___。\n完成標準：本機驗證、公開部署，並確認公開網址顯示最新版。"
+    summary: "先在 TGBOT 貼上指令，指定網站內容與部署位置，再修改真實網站檔案、驗證手機與桌機，最後確認公開網址是最新版。", output: "公開網址＋可維護的網站原始檔",
+    formula: "wbs 更新／建立 ___ 網站。\n內容：___。\n規格：繁體中文，手機與桌機都要清楚可用。\n功能：___。\n部署方式：指定公開平台／伺服器／既有網址 ___。\n限制：不綁定額外帳號，不混入舊站內容。\n完成標準：本機驗證、公開部署，並確認公開網址顯示最新版。"
   },
   {
     name: "網站監控系統建置", category: "網站", trigger: "做監控網站、建立狀態儀表板、即時監控系統、SSE 監控",
-    summary: "建立 GitHub Pages 監控前端、本機狀態產生器與即時 API／SSE；即時服務失效時自動改讀公開狀態快照。", output: "公開監控網址＋即時監控服務＋狀態快照與操作驗證",
-    formula: "wbs 建立／更新網站監控系統。\n監控對象：___。\n要顯示的狀態：程序、心跳、目前任務、最後更新時間、錯誤摘要、用量統計 ___。\n架構：GitHub Pages 負責公開前端；本機程式產生 runtime-status.json；即時服務提供 /api/status 與 /api/events（SSE）；即時服務無法連線時自動改讀公開快照。\n控制功能：___（例如檢查、救援、停止、重啟）；敏感操作必須在伺服器端驗證操作碼或授權，不可把密碼、Token、Cookie 或金鑰放進前端。\n更新方式：狀態變更時用 SSE 推送，並保留定時輪詢與快照備援。\n介面要求：繁體中文，手機與桌機都清楚，顯示資料來源、最後更新時間、連線中斷與備援模式。\n完成標準：本機狀態資料可更新、API／SSE 或快照備援可讀、控制功能實測、公開部署完成，並確認公開網址顯示最新版。"
+    summary: "建立公開監控前端、本機狀態產生器與即時 API／SSE；即時服務失效時自動改讀公開狀態快照。", output: "公開監控網址＋即時監控服務＋狀態快照與操作驗證",
+    formula: "wbs 建立／更新網站監控系統。\n監控對象：___。\n要顯示的狀態：程序、心跳、目前任務、最後更新時間、錯誤摘要、用量統計 ___。\n部署方式：指定公開平台／伺服器／既有網址 ___。\n架構：本機程式產生 runtime-status.json；即時服務提供 /api/status 與 /api/events（SSE）；即時服務無法連線時自動改讀公開狀態快照。\n控制功能：___（例如檢查、救援、停止、重啟）；敏感操作必須在伺服器端驗證操作碼或授權，不可把密碼、Token、Cookie 或金鑰放進前端。\n更新方式：狀態變更時用 SSE 推送，並保留定時輪詢與快照備援。\n介面要求：繁體中文，手機與桌機都清楚，顯示資料來源、最後更新時間、連線中斷與備援模式。\n完成標準：本機狀態資料可更新、API／SSE 或快照備援可讀、控制功能實測、公開部署完成，並確認公開網址顯示最新版。"
   },
   {
     name: "image2 API 做圖", category: "圖片", trigger: "image2、image2 API、gpt-image-2",
@@ -586,16 +580,6 @@ function renderTgGuide() {
         <p>指令和素材分開，容易被判成不同任務，也可能混到上一輪附件。</p>
       </div>
     </div>
-  `;
-
-  $("#tg-github-command").innerHTML = `
-    <div class="tg-command-copy">
-      <span class="support-kicker">第一次做網站</span>
-      <strong>在 TGBOT 貼上這段，請 Codex CLI 綁定 Google 與 GitHub</strong>
-      <p>開啟自己的 TGBOT，直接貼上完整指令後送出即可。帳號安全驗證出現時，再由本人完成。</p>
-    </div>
-    <pre id="github-binding-command">${escapeHtml(githubBindingCommand)}</pre>
-    <button type="button" class="copy-button" data-copy-target="github-binding-command" data-copy-label="複製綁定指令">複製綁定指令</button>
   `;
 
   container.innerHTML = tgGuideItems

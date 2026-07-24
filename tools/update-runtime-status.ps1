@@ -800,7 +800,7 @@ $monitors = @(
     },
     [ordered]@{
         id = "pages-snapshot"
-        label = "GitHub Pages 快照"
+         label = "公開網站快照"
         statusKey = "running"
         statusLabel = "可讀取"
         detail = "runtime-status.json 提供公開頁備援狀態"
@@ -858,7 +858,7 @@ $payload = [ordered]@{
     }
     monitors = $monitors
     deliverables = @(
-        "公開總控台：GitHub Pages",
+         "公開總控台：指定公開網址",
         "狀態資料：runtime-status.json",
         "監控項目：TG1、TG2、TG3",
         "林孟姿 TGBOT2：獨立欄位",
