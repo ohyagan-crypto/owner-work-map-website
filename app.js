@@ -467,6 +467,16 @@ let skillMode = "beginner";
 let workflowMode = "beginner";
 const beginnerSkills = new Set(["wbs", "做圖", "teaching-step-images", "hfsw", "nbs", "pdf", "telegram-bot-manager", "telegram-two-stage-reply", "bb-browser", "playwright"]);
 const beginnerWorkflows = new Set(["WBS 網站建置與公開部署", "網站監控系統建置", "image2 API 做圖", "教學步驟圖", "HFSW 長影片製作", "NBS NotebookLM 摘要", "Telegram Bot 管理與修復", "LINE 官方客服工作流", "自動排程建立與維護", "台股 IMS 每日研究"]);
+const hiddenPublicTermPattern = /(^|[^a-z0-9])wbsm([^a-z0-9]|$)/i;
+
+function isPublicEntry(entry) {
+  return !Object.values(entry).some((value) => typeof value === "string" && hiddenPublicTermPattern.test(value));
+}
+
+const publicSkills = skills.filter(isPublicEntry);
+const publicWorkflows = workflows.filter(isPublicEntry);
+const publicTaskMapItems = taskMapItems.filter(isPublicEntry);
+const publicQuickStartItems = quickStartItems.filter(isPublicEntry);
 
 const $ = (selector) => document.querySelector(selector);
 
@@ -486,12 +496,12 @@ function escapeHtml(value) {
 
 function renderHeroStats() {
   const container = $("#heroStats");
-  siteStats[1].value = String(skills.length);
-  siteStats[1].note = `公開站目前保留 ${skills.length} 個技能入口`;
-  siteStats[2].value = String(workflows.length);
+  siteStats[1].value = String(publicSkills.length);
+  siteStats[1].note = `公開站目前保留 ${publicSkills.length} 個技能入口`;
+  siteStats[2].value = String(publicWorkflows.length);
   siteStats[2].note = `每條都附可複製的新手指令公式`;
-  siteStats[3].value = String(taskMapItems.length);
-  siteStats[3].note = `目前保留 ${taskMapItems.length} 類直接入口`;
+  siteStats[3].value = String(publicTaskMapItems.length);
+  siteStats[3].note = `目前保留 ${publicTaskMapItems.length} 類直接入口`;
   container.innerHTML = siteStats
     .map(
       (item) => `
@@ -507,7 +517,7 @@ function renderHeroStats() {
 
 function renderQuickStart() {
   const container = $("#quickStartGrid");
-  container.innerHTML = quickStartItems
+  container.innerHTML = publicQuickStartItems
     .map(
       (item) => `
         <article class="spotlight-card">
@@ -534,7 +544,7 @@ function renderErrorGuide() {
 function renderTaskMap() {
   const container = $("#commandCenterGrid");
   if (!container) return;
-  container.innerHTML = taskMapItems
+  container.innerHTML = publicTaskMapItems
     .map(
       (item, index) => `
         <article class="route-card command-card">
@@ -683,7 +693,7 @@ function renderCategoryFilters() {
 
 function filteredSkills() {
   const normalized = searchTerm.trim().toLowerCase();
-  return skills.filter((skill) => {
+  return publicSkills.filter((skill) => {
     if (skillMode === "beginner" && !beginnerSkills.has(skill.name) && !normalized) return false;
     const matchesCategory = activeCategory === "全部" || skill.category === activeCategory;
     if (!matchesCategory) return false;
@@ -737,7 +747,7 @@ function renderSkills() {
 
 function filteredWorkflows() {
   const normalized = workflowSearchTerm.trim().toLowerCase();
-  const modeFiltered = workflows.filter((workflow) => workflowMode === "full" || beginnerWorkflows.has(workflow.name));
+  const modeFiltered = publicWorkflows.filter((workflow) => workflowMode === "full" || beginnerWorkflows.has(workflow.name));
   if (!normalized) return modeFiltered;
   return modeFiltered.filter((workflow) => {
     const haystack = [workflow.name, workflow.category, workflow.trigger, workflow.summary, workflow.output, workflow.formula]
