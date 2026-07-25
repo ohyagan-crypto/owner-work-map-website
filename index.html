@@ -173,89 +173,80 @@
       <section id="codex-updates" class="content-block update-center-block">
         <div class="section-heading">
           <p class="eyebrow">Codex 更新中心</p>
-          <h2>輸入密碼，一鍵交給 Codex 自動安裝</h2>
-          <p>之後你把更新檔交給我，我會先排除敏感資料、加密打包、更新這裡的清單，再部署到公開站。使用者輸入 <code>bsmf</code> 解鎖後，按一下「一鍵複製 Codex 自動安裝指令」，再把指令貼給自己的 Codex／TGBOT；它會真的操作網站、下載指定版本、驗證雜湊、先乾跑、正式安裝、重啟並確認新內容已載入。</p>
-        </div>
-        <div class="update-security-note">
-          <strong>安全邊界</strong>
-          <span>這是公開靜態站，管理者密碼只用來解鎖瀏覽器端的選檔檢查；正式上架仍由管理端檢查後部署。更新包本身使用 AES-256-GCM 加密，不要把金鑰、Cookie、瀏覽器資料或原始對話紀錄放進更新檔。</span>
+          <h2>索取密碼後，一鍵交給 Codex 自動安裝</h2>
+          <p>之後你把更新檔交給我，我會先排除敏感資料、加密打包、更新這裡的清單，再部署到公開站。使用者先向客服索取更新密碼，解鎖後按「一鍵複製 Codex 自動安裝指令」，再把指令貼給自己的 Codex／TGBOT；它會操作網站、下載指定版本、驗證雜湊、先乾跑、正式安裝、重啟並確認新內容已載入。</p>
         </div>
         <div class="update-center-grid">
-          <article class="update-card update-download-card">
+          <article class="update-card update-hub-card">
             <div class="update-card-heading">
-              <span class="update-card-icon">↓</span>
+              <span class="update-card-icon">⇅</span>
               <div>
-                <p class="eyebrow">下載更新</p>
-                <h3>可用的 Codex 更新包</h3>
+                <p class="eyebrow">下載與上架檢查</p>
+                <h3>可用更新包與管理端檢查整合區</h3>
               </div>
             </div>
-            <p class="update-download-note">輸入 <code>bsmf</code> 解鎖後，可直接下載；推薦按「一鍵複製 Codex 自動安裝指令」，讓 Codex 自己操作網站並完成整個更新閉環。</p>
-            <div id="codexUpdateList" class="codex-update-list" aria-live="polite">
-              <p class="update-loading">正在讀取更新清單……</p>
-            </div>
-            <form id="codexUpdateAccessForm" class="update-access-form">
-              <label for="codexUpdatePassword">更新密碼</label>
-              <div class="update-password-row">
-                <input id="codexUpdatePassword" type="password" autocomplete="off" placeholder="輸入更新密碼">
-                <button type="submit" class="primary-button">解鎖下載與一鍵指令</button>
-              </div>
-              <p id="codexUpdateAccessStatus" class="update-status" role="status"></p>
-            </form>
-          </article>
+            <p class="update-download-note">請先向客服索取更新密碼。解鎖後可直接下載，也可以按「一鍵複製 Codex 自動安裝指令」，讓 Codex 自己操作網站並完成整個更新閉環。</p>
+            <div class="update-hub-layout">
+              <section class="update-subsection">
+                <div class="update-subsection-heading">
+                  <p class="eyebrow">給 Codex／TGBOT</p>
+                  <h4>下載更新包並一鍵複製升級指令</h4>
+                </div>
+                <div id="codexUpdateList" class="codex-update-list" aria-live="polite">
+                  <p class="update-loading">正在讀取更新清單……</p>
+                </div>
+                <form id="codexUpdateAccessForm" class="update-access-form">
+                  <label for="codexUpdatePassword">更新密碼</label>
+                  <div class="update-password-row">
+                    <input id="codexUpdatePassword" type="password" autocomplete="off" placeholder="向客服索取後輸入">
+                    <button type="submit" class="primary-button">解鎖下載與一鍵指令</button>
+                  </div>
+                  <p id="codexUpdateAccessStatus" class="update-status" role="status"></p>
+                </form>
+                <div class="update-tgbot-flow compact" aria-label="Codex 自動安裝使用方式">
+                  <div><strong>1</strong><span>向客服索取更新密碼並解鎖。</span></div>
+                  <div><strong>2</strong><span>按「一鍵複製 Codex 自動安裝指令」。</span></div>
+                  <div><strong>3</strong><span>把指令貼給自己的 Codex／TGBOT。</span></div>
+                  <div><strong>4</strong><span>Codex 下載、驗證、乾跑、安裝並回報結果。</span></div>
+                </div>
+                <details class="update-advanced">
+                  <summary>進階：手動使用套用工具</summary>
+                  <p>需要自行操作時，可下載<a href="tools/apply-codex-update.mjs" download>套用工具</a>。請先加上 <code>--dry-run</code> 檢查，驗證通過後再移除 <code>--dry-run</code> 正式更新。</p>
+                </details>
+              </section>
 
-          <article class="update-card update-upload-card">
-            <div class="update-card-heading">
-              <span class="update-card-icon">↑</span>
-              <div>
-                <p class="eyebrow">管理者上傳檢查</p>
-                <h3>輸入管理者密碼後選取更新檔</h3>
-              </div>
+              <section class="update-subsection update-subsection-manager">
+                <div class="update-subsection-heading">
+                  <p class="eyebrow">給管理端</p>
+                  <h4>先驗證後檢查更新檔，再決定是否上架</h4>
+                </div>
+                <p>先通過管理者驗證，才能選取或拖曳 <code>.bsmf</code> 更新檔或完整 <code>.zip</code> 安裝包。檔案只會在目前瀏覽器檢查格式，不會直接寫入公開網站；正式上架仍由管理端檢查後部署。</p>
+                <form id="codexUploadAccessForm" class="update-access-form update-upload-access-form">
+                  <label for="codexUploadPassword">管理者密碼</label>
+                  <div class="update-password-row">
+                    <input id="codexUploadPassword" type="password" inputmode="numeric" autocomplete="off" placeholder="輸入管理者密碼">
+                    <button type="submit" class="primary-button">解鎖上傳</button>
+                  </div>
+                  <p id="codexUploadAccessStatus" class="update-status" role="status">尚未解鎖，無法選取更新檔。</p>
+                </form>
+                <label class="update-file-drop is-locked" for="codexUpdateFile" aria-disabled="true">
+                  <input id="codexUpdateFile" type="file" accept=".bsmf,.zip,application/json,application/zip" disabled>
+                  <span id="codexUpdateDropTitle">請先輸入管理者密碼</span>
+                  <small id="codexUpdateDropHint">解鎖後可檢查格式、版本、內容清單與檔案大小</small>
+                </label>
+                <div id="codexUpdateFileStatus" class="update-file-status" role="status"></div>
+              </section>
             </div>
-            <p>先通過管理者驗證，才能選取或拖曳 <code>.bsmf</code> 更新檔或完整 <code>.zip</code> 安裝包。檔案只會在目前瀏覽器檢查格式，不會直接寫入公開網站；正式上架仍由管理端檢查後部署。</p>
-            <form id="codexUploadAccessForm" class="update-access-form update-upload-access-form">
-              <label for="codexUploadPassword">管理者密碼</label>
-              <div class="update-password-row">
-                <input id="codexUploadPassword" type="password" inputmode="numeric" autocomplete="off" placeholder="輸入管理者密碼">
-                <button type="submit" class="primary-button">解鎖上傳</button>
-              </div>
-              <p id="codexUploadAccessStatus" class="update-status" role="status">尚未解鎖，無法選取更新檔。</p>
-            </form>
-            <label class="update-file-drop is-locked" for="codexUpdateFile" aria-disabled="true">
-              <input id="codexUpdateFile" type="file" accept=".bsmf,.zip,application/json,application/zip" disabled>
-              <span id="codexUpdateDropTitle">請先輸入管理者密碼</span>
-              <small id="codexUpdateDropHint">解鎖後可檢查格式、版本、內容清單與檔案大小</small>
-            </label>
-            <div id="codexUpdateFileStatus" class="update-file-status" role="status"></div>
           </article>
         </div>
-        <article class="update-card update-apply-card">
-          <div class="update-card-heading">
-            <span class="update-card-icon">↗</span>
-            <div>
-              <p class="eyebrow">交給 Codex 自動完成</p>
-              <h3>一鍵複製，操作網站並安裝更新</h3>
-            </div>
-          </div>
-          <p>在上方輸入 <code>bsmf</code> 解鎖後，點更新包旁的「一鍵複製 Codex 自動安裝指令」。把指令貼給 Codex／TGBOT 後，它必須開啟這個網站、輸入密碼、確認指定版本、下載檔案、驗證雜湊，再乾跑、安裝、只重啟目前這一端，最後回報實際驗收結果。</p>
-          <div class="update-tgbot-flow" aria-label="Codex 自動安裝使用方式">
-            <div><strong>1</strong><span>輸入 <code>bsmf</code> 解鎖更新包。</span></div>
-            <div><strong>2</strong><span>按「一鍵複製 Codex 自動安裝指令」。</span></div>
-            <div><strong>3</strong><span>把指令貼給自己的 Codex／TGBOT，不用自己下載或改路徑。</span></div>
-            <div><strong>4</strong><span>Codex 會驗證檔案、先乾跑，再安裝、只重啟目前這一端並回報完成結果。</span></div>
-          </div>
-          <details class="update-advanced">
-            <summary>進階：手動使用套用工具</summary>
-            <p>需要自行操作時，可下載<a href="tools/apply-codex-update.mjs" download>套用工具</a>。請先加上 <code>--dry-run</code> 檢查，驗證通過後再移除 <code>--dry-run</code> 正式更新。</p>
-          </details>
-          <div class="update-publish-steps">
-            <strong>你交給我的更新流程</strong>
-            <span>1. 你把記憶、技能、工作流更新檔傳給我。</span>
-            <span>2. 我檢查並排除金鑰、Cookie、瀏覽器資料與原始紀錄。</span>
-            <span>3. 我把合格的 <code>.bsmf</code> 放進更新清單並公開部署。</span>
-            <span>4. 使用者輸入 <code>bsmf</code>，一鍵複製指令貼給自己的 Codex／TGBOT，由它操作網站並完成更新。</span>
-            <span><a href="tools/publish-codex-update.ps1" download>下載管理端上架工具</a>：收到新包後先檢查，再更新公開清單。</span>
-          </div>
-        </article>
+        <div class="update-publish-steps">
+          <strong>你交給我的更新流程</strong>
+          <span>1. 你把記憶、技能、工作流更新檔傳給我。</span>
+          <span>2. 我檢查並排除金鑰、Cookie、瀏覽器資料與原始紀錄。</span>
+          <span>3. 我把合格的 <code>.bsmf</code> 放進更新清單並公開部署。</span>
+          <span>4. 使用者向客服索取更新密碼後，一鍵複製指令貼給自己的 Codex／TGBOT，由它操作網站並完成更新。</span>
+          <span><a href="tools/publish-codex-update.ps1" download>下載管理端上架工具</a>：收到新包後先檢查，再更新公開清單。</span>
+        </div>
       </section>
 
     </main>

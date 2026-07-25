@@ -3,23 +3,9 @@
   overflow: hidden;
 }
 
-.update-security-note {
-  display: grid;
-  gap: 6px;
-  margin: 0 0 18px;
-  padding: 14px 16px;
-  border: 1px solid rgba(255, 209, 125, 0.28);
-  border-radius: 12px;
-  background: rgba(255, 209, 125, 0.08);
-  color: var(--muted);
-  line-height: 1.7;
-}
-
-.update-security-note strong { color: var(--gold); }
-
 .update-center-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   gap: 16px;
 }
 
@@ -31,7 +17,38 @@
   background: rgba(255, 255, 255, 0.035);
 }
 
-.update-apply-card { margin-top: 16px; }
+.update-hub-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.95fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.update-subsection {
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid rgba(103, 231, 255, 0.14);
+  border-radius: 14px;
+  background: rgba(3, 10, 20, 0.28);
+}
+
+.update-subsection-heading {
+  margin-bottom: 14px;
+}
+
+.update-subsection-heading h4 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.update-subsection-heading .eyebrow {
+  margin-bottom: 4px;
+}
+
+.update-subsection-manager {
+  background: rgba(255, 209, 125, 0.05);
+  border-color: rgba(255, 209, 125, 0.16);
+}
 
 .update-card-heading {
   display: flex;
@@ -193,6 +210,7 @@
 
 @media (max-width: 720px) {
   .update-center-grid { grid-template-columns: 1fr; }
+  .update-hub-layout { grid-template-columns: 1fr; }
   .update-password-row { grid-template-columns: 1fr; }
 }
 
@@ -217,6 +235,10 @@
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 10px;
   margin: 18px 0;
+}
+
+.update-tgbot-flow.compact {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 .update-tgbot-flow > div {
   display: grid;
