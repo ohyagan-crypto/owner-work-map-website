@@ -1,41 +1,41 @@
 {
-    "statusKey":  "running",
-    "statusLabel":  "運作中",
+    "statusKey":  "completed",
+    "statusLabel":  "已回覆完成",
     "headline":  "主人，Codex CLI 執行程序異常；TGBOT 已完成自動重試與備援模型切換，且問題不是 CHAT ID 配對造成。 請執行 %USERPROFILE%\\tg-openai-bot\\SELF_CHECK.cmd；自檢只保存在本機，不會把",
     "currentTaskInstruction":  "主人，Codex CLI 執行程序異常；TGBOT 已完成自動重試與備援模型切換，且問題不是 CHAT ID 配對造成。 請執行 %USERPROFILE%\\tg-openai-bot\\SELF_CHECK.cmd；自檢只保存在本機，不會把",
     "blocker":  "沒有卡點",
-    "nextAction":  "完成後更新交付結果、網址、檔案路徑或明確卡點。",
-    "updatedAt":  "2026-07-25T10:27:11+08:00",
-    "checkedAt":  "2026-07-25T10:27:11+08:00",
+    "nextAction":  "可直接查看 Telegram 回覆結果。",
+    "updatedAt":  "2026-07-25T11:27:11+08:00",
+    "checkedAt":  "2026-07-25T11:27:11+08:00",
     "sourceType":  "local-generator",
     "sourceLabel":  "本機即時狀態產生器",
     "refreshSeconds":  1,
     "token":  {
-                  "totalTokens":  7865,
-                  "taskCount":  1,
+                  "totalTokens":  1141181,
+                  "taskCount":  3,
                   "source":  "本機 Codex token 紀錄"
               },
     "heartbeat":  {
                       "name":  "蝦咩",
-                      "ageSeconds":  1,
-                      "activeRequests":  1
+                      "ageSeconds":  13,
+                      "activeRequests":  0
                   },
     "tgbot2":  {
                    "name":  "林孟姿",
-                   "statusKey":  "blocked",
-                   "statusLabel":  "卡點",
-                   "ageSeconds":  49,
-                   "activeRequests":  0,
-                   "currentTaskInstruction":  "在嗎",
-                   "currentTaskSource":  "tg-openai-bot-2/telegram_request_status.json"
-               },
-    "tgbot3":  {
-                   "name":  "嵐熙",
                    "statusKey":  "running",
                    "statusLabel":  "運作中",
                    "ageSeconds":  16,
                    "activeRequests":  1,
                    "currentTaskInstruction":  "在嗎",
+                   "currentTaskSource":  "tg-openai-bot-2/telegram_request_status.json"
+               },
+    "tgbot3":  {
+                   "name":  "嵐熙",
+                   "statusKey":  "standby",
+                   "statusLabel":  "正常待命",
+                   "ageSeconds":  18,
+                   "activeRequests":  0,
+                   "currentTaskInstruction":  "最近完成：這是什麼問題",
                    "currentTaskSource":  "tg-openai-bot-3/telegram_request_status.json"
                },
     "monitors":  [
@@ -44,14 +44,14 @@
                          "label":  "蝦咩心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 1 秒前，執行中任務 1",
+                         "detail":  "心跳 13 秒前，執行中任務 0",
                          "source":  "codex_bot_heartbeat.json"
                      },
                      {
                          "id":  "telegram-request",
                          "label":  "Telegram 任務佇列",
-                         "statusKey":  "running",
-                         "statusLabel":  "運作中",
+                         "statusKey":  "completed",
+                         "statusLabel":  "已回覆完成",
                          "detail":  "主人，Codex CLI 執行程序異常；TGBOT 已完成自動重試與備援模型切換，且問題不是 CHAT ID 配對造成。 請執行 %USERPROFILE%\\tg-openai-bot\\SELF_CHECK.cmd；自檢只保存在本機，不會把",
                          "source":  "telegram_request_status.json"
                      },
@@ -60,14 +60,14 @@
                          "label":  "林孟姿心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 49 秒前，執行中任務 0",
+                         "detail":  "心跳 16 秒前，執行中任務 1",
                          "source":  "tg-openai-bot-2/codex_bot_heartbeat.json"
                      },
                      {
                          "id":  "tgbot2-request",
                          "label":  "林孟姿任務佇列",
-                         "statusKey":  "blocked",
-                         "statusLabel":  "卡點",
+                         "statusKey":  "running",
+                         "statusLabel":  "運作中",
                          "detail":  "在嗎",
                          "source":  "tg-openai-bot-2/telegram_request_status.json"
                      },
@@ -76,15 +76,15 @@
                          "label":  "嵐熙心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 16 秒前，執行中任務 1",
+                         "detail":  "心跳 18 秒前，執行中任務 0",
                          "source":  "tg-openai-bot-3/codex_bot_heartbeat.json"
                      },
                      {
                          "id":  "tgbot3-request",
                          "label":  "嵐熙任務佇列",
-                         "statusKey":  "running",
-                         "statusLabel":  "運作中",
-                         "detail":  "在嗎",
+                         "statusKey":  "standby",
+                         "statusLabel":  "正常待命",
+                         "detail":  "最近完成：這是什麼問題",
                          "source":  "tg-openai-bot-3/telegram_request_status.json"
                      },
                      {
@@ -92,7 +92,7 @@
                          "label":  "Codex token 統計",
                          "statusKey":  "running",
                          "statusLabel":  "已讀取",
-                         "detail":  "7865 tokens，任務 1",
+                         "detail":  "1141181 tokens，任務 3",
                          "source":  "本機 Codex token 紀錄"
                      },
                      {
@@ -108,7 +108,7 @@
                          "label":  "狀態產生器",
                          "statusKey":  "running",
                          "statusLabel":  "已更新",
-                         "detail":  "產生時間 2026-07-25 10:27:11",
+                         "detail":  "產生時間 2026-07-25 11:27:11",
                          "source":  "tools/update-runtime-status.ps1"
                      },
                      {
