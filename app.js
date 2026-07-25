@@ -1,10 +1,3 @@
-const siteStats = [
-  { label: "已安裝條目", value: "64", note: "目前可用的技能入口" },
-  { label: "主技能名稱", value: "0", note: "依目前清單自動更新" },
-  { label: "核心工作流", value: "0", note: "依目前清單自動更新" },
-  { label: "新手入口", value: "0", note: "先從任務分類開始" }
-];
-
 const quickStartItems = [
   {
     title: "先講任務",
@@ -24,12 +17,12 @@ const taskMapItems = [
   {
     tag: "網站 / 公開部署",
     title: "做網站、改網站、公開部署",
-    summary: "要公開網址就直接走 WBS。Codex 先修改真實網站檔案，完成手機與桌機驗證，再依指定的伺服器、公開平台或既有部署方式上線。",
+    summary: "要公開網址就直接走 WBS。Codex 先修改真實網站檔案，完成手機與桌機驗證，再備份舊版並直接部署到指定伺服器。",
     skill: "wbs",
     workflow: "WBS 網站建置與公開部署",
     jump: "#all-workflows?category=網站",
     action: "查網站工作流",
-    prompt: "wbs 建立／更新 ___ 網站。\n內容：___。\n功能：___。\n規格：繁體中文，手機與桌機都要清楚可用。\n部署方式：指定公開平台／伺服器／既有網址 ___。\n限制：不綁定額外帳號，不混入舊站內容。\n完成標準：本機驗證、部署完成，並確認公開網址顯示最新版。"
+    prompt: "wbs 建立／更新 ___ 網站。\n內容：___。\n功能：___。\n規格：繁體中文，手機與桌機都要清楚可用。\n伺服器：主機／網域／網站目錄／服務 ___。\n限制：不使用 GitHub 部署，不混入舊站內容。\n完成標準：本機驗證、備份伺服器舊版、直接部署，並確認公開網址顯示最新版。"
   },
   {
     tag: "圖片 / 海報 / 教學圖",
@@ -245,7 +238,7 @@ const completionChecklist = [
   "本機網站檔案已存在，且不是空殼或佔位頁。",
   "主要區塊、按鈕、內容文字在手機和桌機都能閱讀。",
   "需要的互動有基本可用狀態，例如搜尋、複製、導覽或表單提示。",
-  "Git 只提交這次網站任務相關檔案，沒有順手把別的東西一起推上去。",
+  "部署前已備份伺服器現有版本，只更新本次網站需要的檔案。",
   "公開網址已實際驗證可開，內容也確實是最新版。"
 ];
 
@@ -261,7 +254,7 @@ const templates = [
   {
     title: "網站模板",
     description: "最適合要做公開網站的人。",
-    prompt: "wbs 做一個公開網站。\n主題：___\n成品：公開網址。\n規格：繁體中文、手機版可讀、桌機版完整。\n部署方式：指定公開平台／伺服器／既有網址 ___。\n限制：不要混舊站內容，不綁定額外帳號。\n完成標準：本機驗證後公開部署，確認網址真的打得開且顯示最新版。"
+    prompt: "wbs 做一個公開網站。\n主題：___\n成品：公開網址。\n規格：繁體中文、手機版可讀、桌機版完整。\n伺服器：主機／網域／網站目錄／服務 ___。\n限制：不要混舊站內容，不使用 GitHub 部署。\n完成標準：本機驗證、備份伺服器舊版、直接部署，確認網址真的打得開且顯示最新版。"
   },
   {
     title: "做圖模板",
@@ -281,7 +274,7 @@ const templates = [
 ];
 
 const skills = [
-  { name: "wbs", category: "網站部署", summary: "網站建置、驗證、指定平台或伺服器公開部署。", useCase: "做網站、改網站、公開部署。" },
+  { name: "wbs", category: "網站部署", summary: "網站建置、驗證與伺服器直接部署，不使用 GitHub。", useCase: "做網站、改網站、直接部署到伺服器。" },
   { name: "monthly-course-site-updater", category: "網站部署", summary: "每月課程報名與活動網站更新。", useCase: "只改日期、場次、報名資訊。" },
   { name: "做圖", category: "圖片生成", summary: "image2 API 單一做圖主入口。", useCase: "做海報、教學圖、商品圖、文案轉圖。" },
   { name: "teaching-step-images", category: "圖片生成", summary: "教學步驟圖、SOP 圖與手機操作圖，統一走 image2 API 風格改版。", useCase: "做 4 張、8 張、逐步說明圖。" },
@@ -328,13 +321,13 @@ const skills = [
 const workflows = [
   {
     name: "WBS 網站建置與公開部署", category: "網站", trigger: "wbs、做網站、更新網站、公開部署",
-    summary: "先在 TGBOT 貼上指令，指定網站內容與部署位置，再修改真實網站檔案、驗證手機與桌機，最後確認公開網址是最新版。", output: "公開網址＋可維護的網站原始檔",
-    formula: "wbs 更新／建立 ___ 網站。\n內容：___。\n規格：繁體中文，手機與桌機都要清楚可用。\n功能：___。\n部署方式：指定公開平台／伺服器／既有網址 ___。\n限制：不綁定額外帳號，不混入舊站內容。\n完成標準：本機驗證、公開部署，並確認公開網址顯示最新版。"
+    summary: "先在 TGBOT 貼上指令，指定網站內容與伺服器位置，再修改真實網站檔案、驗證手機與桌機、備份舊版並直接部署。", output: "公開網址＋伺服器部署結果＋可維護的網站原始檔",
+    formula: "wbs 更新／建立 ___ 網站。\n內容：___。\n規格：繁體中文，手機與桌機都要清楚可用。\n功能：___。\n伺服器：主機／網域／網站目錄／服務 ___。\n限制：不使用 GitHub 部署，不混入舊站內容。\n完成標準：本機驗證、備份伺服器舊版、直接部署，並確認公開網址顯示最新版。"
   },
   {
     name: "網站監控系統建置", category: "網站", trigger: "做監控網站、建立狀態儀表板、即時監控系統、SSE 監控",
     summary: "建立公開監控前端、本機狀態產生器與即時 API／SSE；即時服務失效時自動改讀公開狀態快照。", output: "公開監控網址＋即時監控服務＋狀態快照與操作驗證",
-    formula: "wbs 建立／更新網站監控系統。\n監控對象：___。\n要顯示的狀態：程序、心跳、目前任務、最後更新時間、錯誤摘要、用量統計 ___。\n部署方式：指定公開平台／伺服器／既有網址 ___。\n架構：本機程式產生 runtime-status.json；即時服務提供 /api/status 與 /api/events（SSE）；即時服務無法連線時自動改讀公開狀態快照。\n控制功能：___（例如檢查、救援、停止、重啟）；敏感操作必須在伺服器端驗證操作碼或授權，不可把密碼、Token、Cookie 或金鑰放進前端。\n更新方式：狀態變更時用 SSE 推送，並保留定時輪詢與快照備援。\n介面要求：繁體中文，手機與桌機都清楚，顯示資料來源、最後更新時間、連線中斷與備援模式。\n完成標準：本機狀態資料可更新、API／SSE 或快照備援可讀、控制功能實測、公開部署完成，並確認公開網址顯示最新版。"
+    formula: "wbs 建立／更新網站監控系統。\n監控對象：___。\n要顯示的狀態：程序、心跳、目前任務、最後更新時間、錯誤摘要、用量統計 ___。\n伺服器：主機／網域／網站目錄／服務 ___。\n架構：本機程式產生 runtime-status.json；即時服務提供 /api/status 與 /api/events（SSE）；即時服務無法連線時自動改讀公開狀態快照。\n控制功能：___（例如檢查、救援、停止、重啟）；敏感操作必須在伺服器端驗證操作碼或授權，不可把密碼、Token、Cookie 或金鑰放進前端。\n更新方式：狀態變更時用 SSE 推送，並保留定時輪詢與快照備援。\n介面要求：繁體中文，手機與桌機都清楚，顯示資料來源、最後更新時間、連線中斷與備援模式。\n完成標準：本機狀態資料可更新、API／SSE 或快照備援可讀、控制功能實測、備份舊版後直接部署到伺服器，並確認公開網址顯示最新版。"
   },
   {
     name: "image2 API 做圖", category: "圖片", trigger: "image2、image2 API、gpt-image-2",
@@ -434,7 +427,7 @@ const workflows = [
 ];
 
 const skillFormulaByCategory = {
-  "網站部署": (skill) => `${skill.name}\n任務：建立或更新 ___ 網站。\n內容：___。\n規格：手機與桌面都要清楚可用。\n完成標準：公開部署，並確認公開網址能正常開啟。`,
+  "網站部署": (skill) => `${skill.name}\n任務：建立或更新 ___ 網站。\n內容：___。\n規格：手機與桌面都要清楚可用。\n伺服器：主機／網域／網站目錄／服務 ___。\n限制：不使用 GitHub 部署。\n完成標準：本機驗證、備份伺服器舊版、直接部署，並確認公開網址能正常開啟。`,
   "圖片生成": (skill) => `${skill.name}\n任務：製作 ___。\n成品：___ 張圖片。\n規格：繁體中文、___ 比例、___ 風格。\n素材：本次素材 ___。\n先給我確認清單，確認後再開始生成。`,
   "影片工作流": (skill) => `${skill.name}\n任務：製作 ___ 影片。\n成品：MP4。\n規格：___ 秒、___ 比例、繁體中文。\n素材：本次素材 ___。\n完成標準：畫面、聲音、字幕驗證完成後回傳。`,
   "摘要 / 文件": (skill) => `${skill.name}\n任務：把 ___ 整理成 ___。\n成品：___。\n語言：繁體中文。\n保留重點：___。\n完成標準：檔案可開啟、內容可讀並完成回傳。`,
@@ -465,8 +458,9 @@ let searchTerm = "";
 let workflowSearchTerm = "";
 let skillMode = "beginner";
 let workflowMode = "beginner";
-const beginnerSkills = new Set(["wbs", "做圖", "teaching-step-images", "hfsw", "nbs", "pdf", "telegram-bot-manager", "telegram-two-stage-reply", "bb-browser", "playwright"]);
-const beginnerWorkflows = new Set(["WBS 網站建置與公開部署", "網站監控系統建置", "image2 API 做圖", "教學步驟圖", "HFSW 長影片製作", "NBS NotebookLM 摘要", "Telegram Bot 管理與修復", "LINE 官方客服工作流", "自動排程建立與維護", "台股 IMS 每日研究"]);
+let showAllTasks = false;
+const beginnerSkills = new Set(["wbs", "做圖", "teaching-step-images", "hfsw", "nbs", "telegram-bot-manager"]);
+const beginnerWorkflows = new Set(["WBS 網站建置與公開部署", "image2 API 做圖", "HFSW 長影片製作", "NBS NotebookLM 摘要"]);
 const hiddenPublicTermPattern = /(^|[^a-z0-9])wbsm([^a-z0-9]|$)/i;
 
 function isPublicEntry(entry) {
@@ -494,25 +488,16 @@ function escapeHtml(value) {
     .replace(/'/g, "&#39;");
 }
 
-function renderHeroStats() {
-  const container = $("#heroStats");
-  siteStats[1].value = String(publicSkills.length);
-  siteStats[1].note = `公開站目前保留 ${publicSkills.length} 個技能入口`;
-  siteStats[2].value = String(publicWorkflows.length);
-  siteStats[2].note = `每條都附可複製的新手指令公式`;
-  siteStats[3].value = String(publicTaskMapItems.length);
-  siteStats[3].note = `目前保留 ${publicTaskMapItems.length} 類直接入口`;
-  container.innerHTML = siteStats
-    .map(
-      (item) => `
-        <article class="metric-card">
-          <small>${escapeHtml(item.label)}</small>
-          <strong>${escapeHtml(item.value)}</strong>
-          <p>${escapeHtml(item.note)}</p>
-        </article>
-      `
-    )
-    .join("");
+function renderHeroTasks() {
+  const container = $("#heroTaskGrid");
+  if (!container) return;
+  const labels = ["做網站", "做圖", "做影片", "文件摘要", "修 TGBOT", "LINE 客服"];
+  container.innerHTML = publicTaskMapItems.slice(0, 6).map((item, index) => `
+    <a href="#command-center" data-task-index="${index}">
+      <span>${escapeHtml(labels[index] || item.tag)}</span>
+      <small>${escapeHtml(item.tag.split("/")[0].trim())}</small>
+    </a>
+  `).join("");
 }
 
 function renderQuickStart() {
@@ -544,7 +529,8 @@ function renderErrorGuide() {
 function renderTaskMap() {
   const container = $("#commandCenterGrid");
   if (!container) return;
-  container.innerHTML = publicTaskMapItems
+  const visibleItems = showAllTasks ? publicTaskMapItems : publicTaskMapItems.slice(0, 6);
+  container.innerHTML = visibleItems
     .map(
       (item, index) => `
         <article class="route-card command-card">
@@ -566,6 +552,12 @@ function renderTaskMap() {
       `
     )
     .join("");
+  const toggle = $("#toggleAllTasks");
+  if (toggle) {
+    toggle.hidden = publicTaskMapItems.length <= 6;
+    toggle.setAttribute("aria-expanded", String(showAllTasks));
+    toggle.textContent = showAllTasks ? "收合常用任務" : `顯示全部任務（${publicTaskMapItems.length}）`;
+  }
 }
 
 function renderTgGuide() {
@@ -937,17 +929,6 @@ function bindInstallApp() {
     openButton.hidden = true;
   });
 
-  // 延後到使用者看過首屏或主動互動後，避免開站立即打斷閱讀。
-  const openAfterEngagement = () => {
-    if (window.scrollY > 260 || document.body.dataset.userEngaged === "1") {
-      window.removeEventListener("scroll", openAfterEngagement);
-      openInstallDialog();
-    }
-  };
-  window.addEventListener("scroll", openAfterEngagement, { passive: true });
-  window.setTimeout(() => {
-    if (document.body.dataset.userEngaged === "1") openInstallDialog();
-  }, 12000);
 }
 
 function registerServiceWorker() {
@@ -959,6 +940,11 @@ function registerServiceWorker() {
 
 function bindEvents() {
   const backToTop = $("#backToTop");
+
+  $("#toggleAllTasks")?.addEventListener("click", () => {
+    showAllTasks = !showAllTasks;
+    renderTaskMap();
+  });
 
   $("#skillSearch").addEventListener("input", (event) => {
     searchTerm = event.target.value;
@@ -1025,6 +1011,7 @@ function bindEvents() {
       await navigator.clipboard.writeText(text);
       button.textContent = "已複製";
       showCopyStatus("公式已複製");
+      window.setTimeout(() => openInstallDialog(), 1000);
       window.setTimeout(() => {
         button.textContent = defaultLabel;
       }, 3000);
@@ -1045,10 +1032,26 @@ function bindEvents() {
 
   window.addEventListener("scroll", toggleBackToTop, { passive: true });
   toggleBackToTop();
+
+  const navLinks = [...document.querySelectorAll(".top-nav a[href^='#']")];
+  const observedSections = navLinks.map((link) => document.querySelector(link.getAttribute("href"))).filter(Boolean);
+  if ("IntersectionObserver" in window && observedSections.length) {
+    const observer = new IntersectionObserver((entries) => {
+      const current = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (!current) return;
+      navLinks.forEach((link) => {
+        const active = link.getAttribute("href") === `#${current.target.id}`;
+        link.classList.toggle("is-current", active);
+        if (active) link.setAttribute("aria-current", "location");
+        else link.removeAttribute("aria-current");
+      });
+    }, { rootMargin: "-18% 0px -60%", threshold: [0.05, 0.35] });
+    observedSections.forEach((section) => observer.observe(section));
+  }
 }
 
 function init() {
-  renderHeroStats();
+  renderHeroTasks();
   renderQuickStart();
   renderTaskMap();
   renderErrorGuide();

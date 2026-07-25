@@ -21,8 +21,8 @@
     href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Space+Grotesk:wght@500;700&display=swap"
     rel="stylesheet"
   >
-  <link rel="stylesheet" href="styles.css?v=20260724-beginner-tg-integration-1">
-  <link rel="stylesheet" href="update-center.css?v=20260723-codex-web-install-3">
+  <link rel="stylesheet" href="styles.css?v=20260725-layout-upgrade-1">
+  <link rel="stylesheet" href="update-center.css?v=20260725-layout-upgrade-1">
 </head>
 <body>
   <div class="page-shell">
@@ -40,10 +40,10 @@
         </div>
       </div>
       <div class="hero-panel">
-        <div class="metric-stack" id="heroStats"></div>
-        <div class="hero-note">
-          <span>先看哪裡</span>
-          <p>完整資料庫依序收好任務卡、技能索引與工作流索引；先從第一層開始，需要細查時再往下搜尋。</p>
+        <div class="hero-task-launcher">
+          <span class="support-kicker">常用任務</span>
+          <strong>直接選一件事開始</strong>
+          <div class="hero-task-grid" id="heroTaskGrid"></div>
         </div>
       </div>
     </header>
@@ -63,18 +63,27 @@
           <p>先把任務、成品和完成標準講清楚，再用下面的 Telegram 發送方式送出。新手只要從這一區開始，不需要先在不同頁面之間跳來跳去。</p>
         </div>
         <div class="spotlight-grid" id="quickStartGrid"></div>
-        <div id="tg-guide" class="quick-start-tg">
-          <div class="section-heading compact">
-            <p class="eyebrow">TG 操作</p>
-            <h3>一個任務講完整，再送下一個任務</h3>
-            <p>先選好本次素材，在同一則訊息內寫清楚任務；等目前任務收到成品、網址或明確結果後，再送第二個任務，能降低漏讀素材與交付順序錯亂。</p>
+        <details id="tg-guide" class="quick-start-tg deep-guide">
+          <summary>
+            <span>
+              <small>完整教學</small>
+              Telegram 素材、指令與多段任務怎麼傳
+            </span>
+            <strong>展開</strong>
+          </summary>
+          <div class="deep-guide-content">
+            <div class="section-heading compact">
+              <p class="eyebrow">TG 操作</p>
+              <h3>一個任務講完整，再送下一個任務</h3>
+              <p>先選好本次素材，在同一則訊息內寫清楚任務；等目前任務收到成品、網址或明確結果後，再送第二個任務，能降低漏讀素材與交付順序錯亂。</p>
+            </div>
+            <div class="tg-send-panel" id="tgSendPanel"></div>
+            <div class="tg-guide-grid" id="tgGuideGrid"></div>
+            <div class="dialogue-grid compact-dialogue-grid" id="tgDialogueGrid"></div>
+            <div class="tg-note-panel" id="tgNotePanel"></div>
+            <div class="tg-note-panel" id="tgChunkPanel"></div>
           </div>
-          <div class="tg-send-panel" id="tgSendPanel"></div>
-          <div class="tg-guide-grid" id="tgGuideGrid"></div>
-          <div class="dialogue-grid compact-dialogue-grid" id="tgDialogueGrid"></div>
-          <div class="tg-note-panel" id="tgNotePanel"></div>
-          <div class="tg-note-panel" id="tgChunkPanel"></div>
-        </div>
+        </details>
       </section>
 
       <section id="all-skills" class="content-block">
@@ -92,6 +101,7 @@
             <p>新手不用先理解技能名稱。先選最接近的任務卡，卡片會直接告訴你該走哪個技能、哪條工作流，以及可貼給 TGBOT 的完整指令。</p>
           </div>
           <div class="command-center-grid" id="commandCenterGrid"></div>
+          <button type="button" class="section-expand-button" id="toggleAllTasks" aria-expanded="false">顯示全部任務</button>
         </div>
         <div class="database-subheading">
           <p class="eyebrow">技能索引</p>
@@ -139,35 +149,39 @@
         </div>
       </section>
 
-      <section id="support-notes" class="content-block">
-        <div class="section-heading">
-          <p class="eyebrow">補充判斷</p>
-          <h2>只有需要補查時，再看這一區</h2>
-          <p>前面已經能開始下任務；這裡只保留卡點判斷、完成標準與常見踩雷，避免首頁重複講同一件事。</p>
-        </div>
-        <div class="support-grid">
-          <article class="support-card">
-            <div class="section-heading compact">
-              <p class="eyebrow">卡點判斷</p>
-              <h3>遇到問題先對照類型</h3>
-            </div>
-            <div class="error-grid" id="errorGuideGrid"></div>
-          </article>
-          <article class="support-card">
-            <div class="section-heading compact">
-              <p class="eyebrow">完成標準</p>
-              <h3>看到這些才算真的完成</h3>
-            </div>
-            <ul class="checklist" id="completionChecklist"></ul>
-          </article>
-          <article class="support-card">
-            <div class="section-heading compact">
-              <p class="eyebrow">常見踩雷</p>
-              <h3>新手最容易漏掉的幾件事</h3>
-            </div>
-            <ul class="warning-list" id="commonMistakes"></ul>
-          </article>
-        </div>
+      <section id="support-notes" class="content-block support-notes-block">
+        <details class="support-details">
+          <summary>
+            <span>
+              <small>補充判斷</small>
+              卡點、完成標準與常見踩雷
+            </span>
+            <strong>需要時展開</strong>
+          </summary>
+          <div class="support-grid">
+            <article class="support-card">
+              <div class="section-heading compact">
+                <p class="eyebrow">卡點判斷</p>
+                <h3>遇到問題先對照類型</h3>
+              </div>
+              <div class="error-grid" id="errorGuideGrid"></div>
+            </article>
+            <article class="support-card">
+              <div class="section-heading compact">
+                <p class="eyebrow">完成標準</p>
+                <h3>看到這些才算真的完成</h3>
+              </div>
+              <ul class="checklist" id="completionChecklist"></ul>
+            </article>
+            <article class="support-card">
+              <div class="section-heading compact">
+                <p class="eyebrow">常見踩雷</p>
+                <h3>新手最容易漏掉的幾件事</h3>
+              </div>
+              <ul class="warning-list" id="commonMistakes"></ul>
+            </article>
+          </div>
+        </details>
       </section>
 
       <section id="codex-updates" class="content-block update-center-block">
@@ -215,27 +229,33 @@
                 </details>
               </section>
 
-              <section class="update-subsection update-subsection-manager">
-                <div class="update-subsection-heading">
-                  <p class="eyebrow">給管理端</p>
-                  <h4>先驗證後檢查更新檔，再決定是否上架</h4>
-                </div>
-                <p>先通過管理者驗證，才能選取或拖曳 <code>.bsmf</code> 更新檔或完整 <code>.zip</code> 安裝包。檔案只會在目前瀏覽器檢查格式，不會直接寫入公開網站；正式上架仍由管理端檢查後部署。</p>
-                <form id="codexUploadAccessForm" class="update-access-form update-upload-access-form">
-                  <label for="codexUploadPassword">管理者密碼</label>
-                  <div class="update-password-row">
-                    <input id="codexUploadPassword" type="password" inputmode="numeric" autocomplete="off" placeholder="輸入管理者密碼">
-                    <button type="submit" class="primary-button">解鎖上傳</button>
+              <details class="update-manager-details">
+                <summary>
+                  <span>管理者入口</span>
+                  <small>驗證、檢查與上架工具</small>
+                </summary>
+                <section class="update-subsection update-subsection-manager">
+                  <div class="update-subsection-heading">
+                    <p class="eyebrow">給管理端</p>
+                    <h4>先驗證後檢查更新檔，再決定是否上架</h4>
                   </div>
-                  <p id="codexUploadAccessStatus" class="update-status" role="status">尚未解鎖，無法選取更新檔。</p>
-                </form>
-                <label class="update-file-drop is-locked" for="codexUpdateFile" aria-disabled="true">
-                  <input id="codexUpdateFile" type="file" accept=".bsmf,.zip,application/json,application/zip" disabled>
-                  <span id="codexUpdateDropTitle">請先輸入管理者密碼</span>
-                  <small id="codexUpdateDropHint">解鎖後可檢查格式、版本、內容清單與檔案大小</small>
-                </label>
-                <div id="codexUpdateFileStatus" class="update-file-status" role="status"></div>
-              </section>
+                  <p>先通過管理者驗證，才能選取或拖曳 <code>.bsmf</code> 更新檔或完整 <code>.zip</code> 安裝包。檔案只會在目前瀏覽器檢查格式，不會直接寫入公開網站；正式上架仍由管理端檢查後部署。</p>
+                  <form id="codexUploadAccessForm" class="update-access-form update-upload-access-form">
+                    <label for="codexUploadPassword">管理者密碼</label>
+                    <div class="update-password-row">
+                      <input id="codexUploadPassword" type="password" inputmode="numeric" autocomplete="off" placeholder="輸入管理者密碼">
+                      <button type="submit" class="primary-button">解鎖上傳</button>
+                    </div>
+                    <p id="codexUploadAccessStatus" class="update-status" role="status">尚未解鎖，無法選取更新檔。</p>
+                  </form>
+                  <label class="update-file-drop is-locked" for="codexUpdateFile" aria-disabled="true">
+                    <input id="codexUpdateFile" type="file" accept=".bsmf,.zip,application/json,application/zip" disabled>
+                    <span id="codexUpdateDropTitle">請先輸入管理者密碼</span>
+                    <small id="codexUpdateDropHint">解鎖後可檢查格式、版本、內容清單與檔案大小</small>
+                  </label>
+                  <div id="codexUpdateFileStatus" class="update-file-status" role="status"></div>
+                </section>
+              </details>
             </div>
           </article>
         </div>
@@ -253,7 +273,7 @@
 
     <footer class="site-footer">
       <p>公開站用途：幫新手理解怎麼跟藍星智能體 / TGBOT 溝通、怎麼選技能與工作流，以及怎麼用公式直接開始任務。一般做圖統一走 image2 API；只有明確指定時才走 ComfyUI。</p>
-      <p>更新日期：2026-07-24｜Codex 網站自動安裝版</p>
+      <p>更新日期：2026-07-25｜精簡導覽升級版</p>
     </footer>
   </div>
 
@@ -276,7 +296,7 @@
     </div>
   </div>
 
-  <script src="app.js?v=20260724-beginner-tg-integration-1"></script>
-  <script src="update-center.js?v=20260723-codex-web-install-3"></script>
+  <script src="app.js?v=20260725-layout-upgrade-1"></script>
+  <script src="update-center.js?v=20260725-layout-upgrade-1"></script>
 </body>
 </html>

@@ -13,13 +13,13 @@
   min-width: 0;
   padding: 20px;
   border: 1px solid var(--line);
-  border-radius: 16px;
+  border-radius: 8px;
   background: rgba(255, 255, 255, 0.035);
 }
 
 .update-hub-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.95fr);
+  grid-template-columns: 1fr;
   gap: 16px;
   align-items: start;
 }
@@ -28,7 +28,7 @@
   min-width: 0;
   padding: 16px;
   border: 1px solid rgba(103, 231, 255, 0.14);
-  border-radius: 14px;
+  border-radius: 8px;
   background: rgba(3, 10, 20, 0.28);
 }
 
@@ -46,8 +46,43 @@
 }
 
 .update-subsection-manager {
-  background: rgba(255, 209, 125, 0.05);
-  border-color: rgba(255, 209, 125, 0.16);
+  border: 0;
+  border-top: 1px solid rgba(255, 209, 125, 0.16);
+  border-radius: 0;
+  background: transparent;
+}
+
+.update-manager-details {
+  border: 1px solid rgba(255, 209, 125, 0.18);
+  border-radius: 8px;
+  background: rgba(255, 209, 125, 0.035);
+}
+
+.update-manager-details > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 15px 16px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.update-manager-details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.update-manager-details > summary span {
+  color: var(--gold);
+  font-weight: 800;
+}
+
+.update-manager-details > summary small {
+  color: var(--muted);
+}
+
+.update-manager-details[open] > summary {
+  border-bottom: 1px solid rgba(255, 209, 125, 0.16);
 }
 
 .update-card-heading {
@@ -72,7 +107,7 @@
   height: 42px;
   place-items: center;
   border: 1px solid rgba(103, 231, 255, 0.35);
-  border-radius: 12px;
+  border-radius: 8px;
   background: rgba(103, 231, 255, 0.1);
   color: var(--cyan);
   font-size: 1.35rem;
@@ -86,7 +121,7 @@
   gap: 8px;
   padding: 14px;
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: 8px;
   background: rgba(3, 10, 20, 0.38);
 }
 

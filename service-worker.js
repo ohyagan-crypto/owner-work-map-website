@@ -1,4 +1,4 @@
-const CACHE_NAME = "tutorial-site-v13-codex-web-install";
+const CACHE_NAME = "tutorial-site-v14-layout-upgrade";
 const APP_SHELL = [
   "./",
   "./index.html",
