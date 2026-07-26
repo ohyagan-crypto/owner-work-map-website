@@ -1,4 +1,4 @@
-const CACHE_NAME = "tutorial-site-v18-unified-database";
+const CACHE_NAME = "tutorial-site-v19-beginner-monitor";
 const APP_SHELL = [
   "./",
   "./index.html",

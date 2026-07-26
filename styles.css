@@ -417,6 +417,28 @@ h1 {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.beginner-task-panel {
+  margin-top: 26px;
+  scroll-margin-top: 104px;
+}
+
+.beginner-feature-card {
+  max-width: none;
+  border-color: rgba(255, 209, 125, 0.28);
+  background:
+    radial-gradient(circle at 88% 10%, rgba(111, 229, 255, 0.12), transparent 34%),
+    linear-gradient(180deg, rgba(11, 24, 42, 0.98), rgba(6, 13, 25, 0.94));
+}
+
+.beginner-feature-card .command-formula pre {
+  min-height: 0;
+  max-height: 360px;
+}
+
+.beginner-task-panel + .spotlight-grid {
+  margin-top: 18px;
+}
+
 .quick-start-tg {
   margin-top: 30px;
   scroll-margin-top: 100px;

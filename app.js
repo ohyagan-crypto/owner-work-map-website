@@ -470,6 +470,8 @@ const publicSkills = skills.filter(isPublicEntry);
 const publicWorkflows = workflows.filter(isPublicEntry);
 const publicTaskMapItems = taskMapItems.filter(isPublicEntry);
 const publicQuickStartItems = quickStartItems.filter(isPublicEntry);
+const beginnerMonitorTask = publicTaskMapItems.find((item) => item.tag.includes("新手第一站"));
+const databaseTaskMapItems = publicTaskMapItems.filter((item) => item !== beginnerMonitorTask);
 
 const $ = (selector) => document.querySelector(selector);
 
@@ -492,7 +494,7 @@ function renderHeroTasks() {
   if (!container) return;
   const labels = ["監測平台", "做網站", "做圖", "做影片", "文件摘要", "修 TGBOT"];
   container.innerHTML = publicTaskMapItems.slice(0, 6).map((item, index) => `
-    <a href="#command-center" data-task-index="${index}">
+    <a href="${index === 0 ? "#beginner-monitor-task" : "#command-center"}" data-task-index="${index}">
       <span>${escapeHtml(labels[index] || item.tag)}</span>
       <small>${escapeHtml(item.tag.split("/")[0].trim())}</small>
     </a>
@@ -511,6 +513,27 @@ function renderQuickStart() {
       `
     )
     .join("");
+
+  const beginnerContainer = $("#beginner-monitor-task");
+  if (!beginnerContainer || !beginnerMonitorTask) return;
+  beginnerContainer.innerHTML = `
+    <article class="route-card command-card beginner-feature-card">
+      <span class="tag">任務入口 · ${escapeHtml(beginnerMonitorTask.tag)}</span>
+      <strong>${escapeHtml(beginnerMonitorTask.title)}</strong>
+      <p>${escapeHtml(beginnerMonitorTask.summary)}</p>
+      <div class="command-meta">
+        <span><small>對應技能</small><strong>${escapeHtml(beginnerMonitorTask.skill)}</strong></span>
+        <span><small>對應工作流</small><strong>${escapeHtml(beginnerMonitorTask.workflow)}</strong></span>
+      </div>
+      <div class="command-formula">
+        <pre id="beginner-monitor-formula">${escapeHtml(beginnerMonitorTask.prompt)}</pre>
+        <div class="command-actions">
+          <button type="button" class="copy-button" data-copy-target="beginner-monitor-formula" data-copy-label="複製新手指令">複製新手指令</button>
+          <a href="${escapeHtml(beginnerMonitorTask.jump.split("?")[0])}" class="route-link" data-route-category="${escapeHtml(beginnerMonitorTask.jump.split("?")[1]?.replace("category=", "") || "")}">${escapeHtml(beginnerMonitorTask.action)}</a>
+        </div>
+      </div>
+    </article>
+  `;
 }
 
 function renderErrorGuide() {
@@ -669,7 +692,7 @@ function taskMatchesCategory(item) {
 
 function filteredTasks() {
   const normalized = searchTerm.trim().toLowerCase();
-  return publicTaskMapItems.filter((item) => {
+  return databaseTaskMapItems.filter((item) => {
     if (!taskMatchesCategory(item)) return false;
     if (!normalized) return true;
     const haystack = [item.tag, item.title, item.summary, item.skill, item.workflow, item.prompt].join(" ").toLowerCase();
