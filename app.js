@@ -460,11 +460,6 @@ const categoryOrder = [
 
 let activeCategory = "全部";
 let searchTerm = "";
-let workflowSearchTerm = "";
-let skillMode = "beginner";
-let workflowMode = "beginner";
-const beginnerSkills = new Set(["wbs", "做圖", "teaching-step-images", "hfsw", "nbs", "telegram-bot-manager"]);
-const beginnerWorkflows = new Set(["監測平台網站復刻與 TGBOT 綁定", "image2 API 做圖", "HFSW 長影片製作", "NBS NotebookLM 摘要"]);
 const hiddenPublicTermPattern = /(^|[^a-z0-9])wbsm([^a-z0-9]|$)/i;
 
 function isPublicEntry(entry) {
@@ -656,7 +651,6 @@ function renderCategoryFilters() {
 function filteredSkills() {
   const normalized = searchTerm.trim().toLowerCase();
   return publicSkills.filter((skill) => {
-    if (skillMode === "beginner" && !beginnerSkills.has(skill.name) && !normalized) return false;
     const matchesCategory = activeCategory === "全部" || skill.category === activeCategory;
     if (!matchesCategory) return false;
     if (!normalized) return true;
@@ -675,10 +669,7 @@ function taskMatchesCategory(item) {
 
 function filteredTasks() {
   const normalized = searchTerm.trim().toLowerCase();
-  const candidates = skillMode === "beginner" && !normalized
-    ? publicTaskMapItems.slice(0, 6)
-    : publicTaskMapItems;
-  return candidates.filter((item) => {
+  return publicTaskMapItems.filter((item) => {
     if (!taskMatchesCategory(item)) return false;
     if (!normalized) return true;
     const haystack = [item.tag, item.title, item.summary, item.skill, item.workflow, item.prompt].join(" ").toLowerCase();
@@ -689,12 +680,12 @@ function filteredTasks() {
 function renderUnifiedCenter() {
   const visibleTasks = filteredTasks();
   const visibleSkills = filteredSkills();
+  const visibleWorkflows = filteredWorkflows();
   const grid = $("#unifiedCenterGrid");
   const empty = $("#unifiedEmpty");
 
   $("#unifiedOverview").innerHTML = `
-    <span class="tag">目前視圖</span>
-    <p>顯示 <strong>${visibleTasks.length}</strong> 個任務入口與 <strong>${visibleSkills.length}</strong> 個技能；目前是 <strong>${skillMode === "beginner" ? "新手常用" : "完整資料庫"}</strong>；分類範圍 <strong>${escapeHtml(activeCategory)}</strong>。</p>
+    目前顯示 <strong>${visibleTasks.length}</strong> 個任務、<strong>${visibleSkills.length}</strong> 個技能、<strong>${visibleWorkflows.length}</strong> 條工作流 · ${escapeHtml(activeCategory)}
   `;
 
   const taskCards = visibleTasks
@@ -750,10 +741,20 @@ function renderUnifiedCenter() {
 }
 
 function filteredWorkflows() {
-  const normalized = workflowSearchTerm.trim().toLowerCase();
-  const modeFiltered = publicWorkflows.filter((workflow) => workflowMode === "full" || beginnerWorkflows.has(workflow.name));
-  if (!normalized) return modeFiltered;
-  return modeFiltered.filter((workflow) => {
+  const normalized = searchTerm.trim().toLowerCase();
+  const categoryMap = {
+    "網站部署": ["網站"],
+    "圖片生成": ["圖片"],
+    "影片工作流": ["影片"],
+    "摘要 / 文件": ["文件"],
+    "Telegram / Bot": ["Telegram", "客服"],
+    "系統 / 自動化": ["系統"],
+    "研究 / 分析": ["研究", "台股"]
+  };
+  return publicWorkflows.filter((workflow) => {
+    const allowedCategories = categoryMap[activeCategory];
+    if (activeCategory !== "全部" && !allowedCategories?.includes(workflow.category)) return false;
+    if (!normalized) return true;
     const haystack = [workflow.name, workflow.category, workflow.trigger, workflow.summary, workflow.output, workflow.formula]
       .join(" ")
       .toLowerCase();
@@ -766,10 +767,7 @@ function renderWorkflows() {
   const grid = $("#workflowGrid");
   const empty = $("#workflowEmpty");
 
-  $("#workflowOverview").innerHTML = `
-    <span class="tag">目前視圖</span>
-    <p>顯示 <strong>${visibleWorkflows.length}</strong> 條工作流；目前是 <strong>${workflowMode === "beginner" ? "新手常用" : "完整工作流"}</strong>。</p>
-  `;
+  $("#workflowOverview").innerHTML = `<strong>${visibleWorkflows.length}</strong> 條工作流`;
 
   grid.innerHTML = visibleWorkflows
     .map(
@@ -956,6 +954,7 @@ function bindEvents() {
   $("#skillSearch").addEventListener("input", (event) => {
     searchTerm = event.target.value;
     renderUnifiedCenter();
+    renderWorkflows();
   });
 
   $("#categoryFilters").addEventListener("click", (event) => {
@@ -964,47 +963,24 @@ function bindEvents() {
     activeCategory = button.getAttribute("data-category");
     renderCategoryFilters();
     renderUnifiedCenter();
-  });
-
-  $("#workflowSearch").addEventListener("input", (event) => {
-    workflowSearchTerm = event.target.value;
     renderWorkflows();
-  });
-
-  document.querySelectorAll(".mode-button").forEach((button) => {
-    button.addEventListener("click", () => {
-      skillMode = button.dataset.mode;
-      document.querySelectorAll(".mode-button").forEach((item) => item.classList.toggle("active", item === button));
-      renderUnifiedCenter();
-    });
-  });
-
-  document.querySelectorAll(".workflow-mode-button").forEach((button) => {
-    button.addEventListener("click", () => {
-      workflowMode = button.dataset.mode;
-      document.querySelectorAll(".workflow-mode-button").forEach((item) => item.classList.toggle("active", item === button));
-      renderWorkflows();
-    });
-  });
-
-  document.querySelectorAll("[data-route-category]").forEach((link) => {
-    link.addEventListener("click", () => {
-      const category = link.dataset.routeCategory;
-      const query = category;
-      workflowMode = "full";
-      const input = $("#workflowSearch");
-      if (input) {
-        input.value = query;
-        workflowSearchTerm = query;
-      }
-      document.querySelectorAll(".workflow-mode-button").forEach((item) => item.classList.toggle("active", item.dataset.mode === "full"));
-      renderWorkflows();
-    });
   });
 
   document.addEventListener("pointerdown", () => { document.body.dataset.userEngaged = "1"; }, { once: true });
 
   document.addEventListener("click", async (event) => {
+    const routeLink = event.target.closest("[data-route-category]");
+    if (routeLink) {
+      const query = routeLink.dataset.routeCategory || "";
+      const input = $("#skillSearch");
+      activeCategory = "全部";
+      searchTerm = query;
+      if (input) input.value = query;
+      renderCategoryFilters();
+      renderUnifiedCenter();
+      renderWorkflows();
+    }
+
     const button = event.target.closest("button[data-copy-target], button[data-copy]");
     if (!button) return;
     const target = button.getAttribute("data-copy-target")

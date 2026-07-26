@@ -8,10 +8,10 @@
 
 ## 其他 Codex 套用
 
-先下載 tools/apply-codex-update.mjs 與 bsmf 更新包，再用密碼 bsmf 乾跑：
+先下載 tools/apply-codex-update.mjs 與 `.bsmf` 更新包，再用客服提供的更新密碼乾跑：
 
 ~~~powershell
-node tools/apply-codex-update.mjs --file .\\codex-update.bsmf --password bsmf --target-root C:\\Users\\你的使用者名稱\\.codex --dry-run
+node tools/apply-codex-update.mjs --file .\\codex-update.bsmf --password <客服提供的更新密碼> --target-root C:\\Users\\你的使用者名稱\\.codex --dry-run
 ~~~
 
 乾跑通過後移除 --dry-run 正式套用，最後重新啟動 Codex 或目前的 Telegram Bot。
@@ -26,6 +26,6 @@ GitHub Pages 本身是靜態網站，瀏覽器上的「上傳前檢查」不會�
 powershell -ExecutionPolicy Bypass -File .\tools\publish-codex-update.ps1 -InputFile C:\path\codex-update.bsmf -Title "本次技能與記憶更新" -Description "更新技能、記憶與工作流"
 ~~~
 
-工具會檢查格式、重新計算大小與 SHA-256，將檔案放到 `updates/` 並更新 `data/codex-updates.json`。完成後提交並部署網站，其他 Codex 就能在更新中心輸入 `bsmf` 取得下載權限。
+工具會檢查格式、重新計算大小與 SHA-256，將檔案放到 `updates/` 並更新 `data/codex-updates.json`。完成後提交並部署網站，其他 Codex 就能在更新中心輸入客服提供的更新密碼取得下載權限。
 
 真正的保護依賴 `.bsmf` 內部的 AES-256-GCM 加密；網站上的密碼欄只是避免一般訪客誤觸下載，不能當成伺服器端登入權限。

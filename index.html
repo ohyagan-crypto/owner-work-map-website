@@ -21,8 +21,8 @@
     href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Space+Grotesk:wght@500;700&display=swap"
     rel="stylesheet"
   >
-  <link rel="stylesheet" href="styles.css?v=20260726-monitor-tgbot-1">
-  <link rel="stylesheet" href="update-center.css?v=20260726-monitor-tgbot-1">
+  <link rel="stylesheet" href="styles.css?v=20260726-unified-database-1">
+  <link rel="stylesheet" href="update-center.css?v=20260726-unified-database-1">
 </head>
 <body>
   <div class="page-shell">
@@ -89,54 +89,38 @@
       <section id="all-skills" class="content-block">
         <div class="section-heading">
           <p class="eyebrow">完整資料庫</p>
-          <h2>任務入口與技能索引合成單一操作中心</h2>
+          <h2>任務、技能與工作流共用一套搜尋</h2>
           <p>
-            不再分成兩套重複功能。用同一個搜尋框、分類與顯示模式，就能同時找到可直接開始的任務，以及需要指定使用的技能；再往下查看完整工作流。
+            新手內容留在上一區；這裡直接提供完整資料。輸入一次關鍵字，就會同步篩選任務入口、技能索引與工作流，不再出現兩套「精選／完整」切換。
           </p>
         </div>
         <div id="command-center" class="database-command-panel command-center-block">
           <div class="section-heading">
-            <p class="eyebrow">任務與技能中心</p>
-            <h3>搜尋一次，任務入口與對應技能一起出現</h3>
-            <p>不知道技能名稱時就選任務；已知道要用哪個技能時就直接搜尋。兩種入口共用同一套分類與結果，不再上下重複顯示。</p>
+            <p class="eyebrow">任務與技能</p>
+            <h3>搜尋想做的事，直接找到任務與對應技能</h3>
+            <p>不知道技能名稱時就搜尋想完成的成果；已知道技能名稱時也能直接輸入。下方工作流會套用同一個關鍵字與分類。</p>
           </div>
           <div class="skill-toolbar">
-            <div class="mode-switch" role="group" aria-label="任務與技能顯示模式">
-              <span>顯示內容</span>
-              <button type="button" class="mode-button active" data-mode="beginner">新手常用</button>
-              <button type="button" class="mode-button" data-mode="full">完整資料庫</button>
-            </div>
             <label class="search-field" for="skillSearch">
-              <span>搜尋任務或技能</span>
-              <input id="skillSearch" type="search" placeholder="輸入監測平台、TGBOT 綁定、wbs、nbs、做圖、影片">
+              <span>搜尋任務、技能或工作流</span>
+              <input id="skillSearch" type="search" placeholder="輸入監測平台、TGBOT 綁定、wbs、nbs、做圖、台股、LINE 客服">
             </label>
             <div class="filter-row" id="categoryFilters" aria-label="任務與技能分類篩選"></div>
           </div>
-          <div class="skill-overview" id="unifiedOverview"></div>
+          <p class="database-result-summary" id="unifiedOverview" aria-live="polite"></p>
           <div class="command-center-grid unified-center-grid" id="unifiedCenterGrid"></div>
           <p class="empty-state" id="unifiedEmpty">沒有符合的任務或技能，換個關鍵字試試看。</p>
         </div>
 
         <div id="all-workflows" class="database-workflow-panel">
           <div class="database-subheading">
-            <p class="eyebrow">工作流索引</p>
-            <h3>再用完整工作流查找執行順序</h3>
+            <p class="eyebrow">完整工作流</p>
+            <h3>同一個搜尋結果，接著查看完整執行順序</h3>
             <p>
-              工作流是完整做事順序。若任務卡不夠精準，可以在這裡搜尋更細的流程；LINE 官方客服、台股研究與自動排程也都在同一份資料庫裡。
+              不需要再次輸入或切換模式。上方的關鍵字與分類會同步套用到這裡；LINE 官方客服、台股研究與自動排程也都在同一份資料庫裡。
             </p>
+            <p class="database-result-summary" id="workflowOverview" aria-live="polite"></p>
           </div>
-          <div class="skill-toolbar">
-            <div class="mode-switch" role="group" aria-label="工作流顯示模式">
-              <span>顯示模式</span>
-              <button type="button" class="workflow-mode-button active" data-mode="beginner">新手常用</button>
-              <button type="button" class="workflow-mode-button" data-mode="full">完整工作流</button>
-            </div>
-            <label class="search-field" for="workflowSearch">
-              <span>搜尋工作流</span>
-              <input id="workflowSearch" type="search" placeholder="輸入監測平台、TGBOT 綁定、網站、image2、NBS、台股、LINE 客服">
-            </label>
-          </div>
-          <div class="skill-overview" id="workflowOverview"></div>
           <div class="workflow-grid" id="workflowGrid"></div>
           <p class="empty-state" id="workflowEmpty">沒有符合的工作流，換個關鍵字試試看。</p>
         </div>
@@ -266,7 +250,7 @@
 
     <footer class="site-footer">
       <p>公開站用途：幫新手理解怎麼跟藍星智能體 / TGBOT 溝通、怎麼選技能與工作流，以及怎麼用公式直接開始任務。一般做圖統一走 image2 API；只有明確指定時才走 ComfyUI。</p>
-      <p>更新日期：2026-07-25｜精簡導覽升級版</p>
+      <p>更新日期：2026-07-26｜單一資料庫搜尋版</p>
     </footer>
   </div>
 
@@ -289,7 +273,7 @@
     </div>
   </div>
 
-  <script src="app.js?v=20260726-monitor-tgbot-1"></script>
-  <script src="update-center.js?v=20260726-monitor-tgbot-1"></script>
+  <script src="app.js?v=20260726-unified-database-1"></script>
+  <script src="update-center.js?v=20260726-unified-database-1"></script>
 </body>
 </html>
