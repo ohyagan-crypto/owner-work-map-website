@@ -1,4 +1,4 @@
-const CACHE_NAME = "tutorial-site-v14-layout-upgrade";
+const CACHE_NAME = "tutorial-site-v15-unified-center";
 const APP_SHELL = [
   "./",
   "./index.html",

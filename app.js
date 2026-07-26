@@ -463,7 +463,6 @@ let searchTerm = "";
 let workflowSearchTerm = "";
 let skillMode = "beginner";
 let workflowMode = "beginner";
-let showAllTasks = false;
 const beginnerSkills = new Set(["wbs", "做圖", "teaching-step-images", "hfsw", "nbs", "telegram-bot-manager"]);
 const beginnerWorkflows = new Set(["監測平台網站復刻", "image2 API 做圖", "HFSW 長影片製作", "NBS NotebookLM 摘要"]);
 const hiddenPublicTermPattern = /(^|[^a-z0-9])wbsm([^a-z0-9]|$)/i;
@@ -529,40 +528,6 @@ function renderErrorGuide() {
       <p>${escapeHtml(item.action)}</p>
     </article>
   `).join("");
-}
-
-function renderTaskMap() {
-  const container = $("#commandCenterGrid");
-  if (!container) return;
-  const visibleItems = showAllTasks ? publicTaskMapItems : publicTaskMapItems.slice(0, 6);
-  container.innerHTML = visibleItems
-    .map(
-      (item, index) => `
-        <article class="route-card command-card">
-          <span class="tag">${escapeHtml(item.tag)}</span>
-          <strong>${escapeHtml(item.title)}</strong>
-          <p>${escapeHtml(item.summary)}</p>
-          <div class="command-meta">
-            <span><small>對應技能</small><strong>${escapeHtml(item.skill)}</strong></span>
-            <span><small>對應工作流</small><strong>${escapeHtml(item.workflow)}</strong></span>
-          </div>
-          <div class="command-formula">
-            <pre id="command-center-formula-${index}">${escapeHtml(item.prompt)}</pre>
-            <div class="command-actions">
-              <button type="button" class="copy-button" data-copy-target="command-center-formula-${index}" data-copy-label="複製指令">複製指令</button>
-              <a href="${escapeHtml(item.jump.split("?")[0])}" class="route-link" data-route-category="${escapeHtml(item.jump.split("?")[1]?.replace("category=", "") || "")}">${escapeHtml(item.action)}</a>
-            </div>
-          </div>
-        </article>
-      `
-    )
-    .join("");
-  const toggle = $("#toggleAllTasks");
-  if (toggle) {
-    toggle.hidden = publicTaskMapItems.length <= 6;
-    toggle.setAttribute("aria-expanded", String(showAllTasks));
-    toggle.textContent = showAllTasks ? "收合常用任務" : `顯示全部任務（${publicTaskMapItems.length}）`;
-  }
 }
 
 function renderTgGuide() {
@@ -700,25 +665,66 @@ function filteredSkills() {
   });
 }
 
-function renderSkillOverview(visibleSkills) {
-  const categoryCount = activeCategory === "全部" ? categoryOrder.length - 1 : 1;
-  $("#skillOverview").innerHTML = `
-    <span class="tag">目前視圖</span>
-    <p>顯示 <strong>${visibleSkills.length}</strong> 個技能；目前是 <strong>${skillMode === "beginner" ? "新手常用" : "完整技能"}</strong>；分類範圍 <strong>${escapeHtml(activeCategory)}</strong>。</p>
-  `;
+function taskMatchesCategory(item) {
+  if (activeCategory === "全部") return true;
+  const taskSkills = item.skill.split("/").map((name) => name.trim().toLowerCase());
+  return publicSkills.some((skill) => (
+    skill.category === activeCategory && taskSkills.includes(skill.name.toLowerCase())
+  ));
 }
 
-function renderSkills() {
-  const visibleSkills = filteredSkills();
-  renderSkillOverview(visibleSkills);
-  const grid = $("#skillGrid");
-  const empty = $("#skillEmpty");
+function filteredTasks() {
+  const normalized = searchTerm.trim().toLowerCase();
+  const candidates = skillMode === "beginner" && !normalized
+    ? publicTaskMapItems.slice(0, 6)
+    : publicTaskMapItems;
+  return candidates.filter((item) => {
+    if (!taskMatchesCategory(item)) return false;
+    if (!normalized) return true;
+    const haystack = [item.tag, item.title, item.summary, item.skill, item.workflow, item.prompt].join(" ").toLowerCase();
+    return haystack.includes(normalized);
+  });
+}
 
-  grid.innerHTML = visibleSkills
+function renderUnifiedCenter() {
+  const visibleTasks = filteredTasks();
+  const visibleSkills = filteredSkills();
+  const grid = $("#unifiedCenterGrid");
+  const empty = $("#unifiedEmpty");
+
+  $("#unifiedOverview").innerHTML = `
+    <span class="tag">目前視圖</span>
+    <p>顯示 <strong>${visibleTasks.length}</strong> 個任務入口與 <strong>${visibleSkills.length}</strong> 個技能；目前是 <strong>${skillMode === "beginner" ? "新手常用" : "完整資料庫"}</strong>；分類範圍 <strong>${escapeHtml(activeCategory)}</strong>。</p>
+  `;
+
+  const taskCards = visibleTasks
+    .map(
+      (item, index) => `
+        <article class="route-card command-card unified-result-card">
+          <span class="tag">任務入口 · ${escapeHtml(item.tag)}</span>
+          <strong>${escapeHtml(item.title)}</strong>
+          <p>${escapeHtml(item.summary)}</p>
+          <div class="command-meta">
+            <span><small>對應技能</small><strong>${escapeHtml(item.skill)}</strong></span>
+            <span><small>對應工作流</small><strong>${escapeHtml(item.workflow)}</strong></span>
+          </div>
+          <div class="command-formula">
+            <pre id="command-center-formula-${index}">${escapeHtml(item.prompt)}</pre>
+            <div class="command-actions">
+              <button type="button" class="copy-button" data-copy-target="command-center-formula-${index}" data-copy-label="複製指令">複製指令</button>
+              <a href="${escapeHtml(item.jump.split("?")[0])}" class="route-link" data-route-category="${escapeHtml(item.jump.split("?")[1]?.replace("category=", "") || "")}">${escapeHtml(item.action)}</a>
+            </div>
+          </div>
+        </article>
+      `
+    )
+    .join("");
+
+  const skillCards = visibleSkills
     .map(
       (skill, index) => `
-        <article class="skill-card">
-          <span class="tag">${escapeHtml(skill.category)}</span>
+        <article class="skill-card unified-result-card">
+          <span class="tag">技能 · ${escapeHtml(skill.category)}</span>
           <h3>${escapeHtml(skill.name)}</h3>
           <p>${escapeHtml(skill.summary)}</p>
           <div class="meta-row">
@@ -739,7 +745,8 @@ function renderSkills() {
     )
     .join("");
 
-  empty.classList.toggle("is-visible", visibleSkills.length === 0);
+  grid.innerHTML = taskCards + skillCards;
+  empty.classList.toggle("is-visible", visibleTasks.length === 0 && visibleSkills.length === 0);
 }
 
 function filteredWorkflows() {
@@ -946,14 +953,9 @@ function registerServiceWorker() {
 function bindEvents() {
   const backToTop = $("#backToTop");
 
-  $("#toggleAllTasks")?.addEventListener("click", () => {
-    showAllTasks = !showAllTasks;
-    renderTaskMap();
-  });
-
   $("#skillSearch").addEventListener("input", (event) => {
     searchTerm = event.target.value;
-    renderSkills();
+    renderUnifiedCenter();
   });
 
   $("#categoryFilters").addEventListener("click", (event) => {
@@ -961,7 +963,7 @@ function bindEvents() {
     if (!button) return;
     activeCategory = button.getAttribute("data-category");
     renderCategoryFilters();
-    renderSkills();
+    renderUnifiedCenter();
   });
 
   $("#workflowSearch").addEventListener("input", (event) => {
@@ -973,7 +975,7 @@ function bindEvents() {
     button.addEventListener("click", () => {
       skillMode = button.dataset.mode;
       document.querySelectorAll(".mode-button").forEach((item) => item.classList.toggle("active", item === button));
-      renderSkills();
+      renderUnifiedCenter();
     });
   });
 
@@ -1058,7 +1060,6 @@ function bindEvents() {
 function init() {
   renderHeroTasks();
   renderQuickStart();
-  renderTaskMap();
   renderErrorGuide();
   renderTemplates();
   renderTgGuide();
@@ -1066,7 +1067,7 @@ function init() {
   renderList("#completionChecklist", completionChecklist);
   renderList("#commonMistakes", commonMistakes);
   renderCategoryFilters();
-  renderSkills();
+  renderUnifiedCenter();
   renderWorkflows();
   bindEvents();
   bindInstallApp();

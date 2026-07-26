@@ -21,8 +21,8 @@
     href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Space+Grotesk:wght@500;700&display=swap"
     rel="stylesheet"
   >
-  <link rel="stylesheet" href="styles.css?v=20260725-layout-upgrade-1">
-  <link rel="stylesheet" href="update-center.css?v=20260725-layout-upgrade-1">
+  <link rel="stylesheet" href="styles.css?v=20260726-unified-center-1">
+  <link rel="stylesheet" href="update-center.css?v=20260726-unified-center-1">
 </head>
 <body>
   <div class="page-shell">
@@ -30,8 +30,8 @@
       <div class="hero-copy">
         <h1>藍星智能體教戰網</h1>
         <p class="hero-text">
-          這個網站把 <strong>任務入口</strong>、<strong>技能索引</strong>、<strong>直接照抄</strong>、<strong>工作流</strong>
-          收進同一個操作中心。新手第一站先做<strong>監測平台網站復刻</strong>；先選任務卡，直接複製完整指令貼到 TGBOT，需要細查時再往下搜尋。
+          這個網站把 <strong>任務入口與技能索引</strong>、<strong>直接照抄</strong>、<strong>工作流</strong>
+          合成單一操作中心，再接上<strong>直接照抄</strong>與<strong>工作流</strong>。新手第一站先做<strong>監測平台網站復刻</strong>；搜尋一件想做的事，就能直接選任務或技能並複製完整指令。
         </p>
         <div class="hero-actions">
           <a href="#quick-start" class="primary-link">從新手上手開始</a>
@@ -89,39 +89,32 @@
       <section id="all-skills" class="content-block">
         <div class="section-heading">
           <p class="eyebrow">完整資料庫</p>
-          <h2>任務入口、技能索引與工作流集中在同一個資料庫</h2>
+          <h2>任務入口與技能索引合成單一操作中心</h2>
           <p>
-            先從任務卡直接開始，下面同區就能接著用技能搜尋細查；再往下看完整工作流。所有入口、公式與進階資料都從這裡進入，避免同一份內容分散在不同頁面。
+            不再分成兩套重複功能。用同一個搜尋框、分類與顯示模式，就能同時找到可直接開始的任務，以及需要指定使用的技能；再往下查看完整工作流。
           </p>
         </div>
         <div id="command-center" class="database-command-panel command-center-block">
           <div class="section-heading">
-            <p class="eyebrow">整合操作中心</p>
-            <h3>先選任務卡，下面立刻接技能搜尋</h3>
-            <p>新手不用先理解技能名稱。先選最接近的任務卡，卡片會直接告訴你該走哪個技能、哪條工作流，以及可貼給 TGBOT 的完整指令；需要更細查法時，不用離開這一區，直接往下搜技能。</p>
-          </div>
-          <div class="command-center-grid" id="commandCenterGrid"></div>
-          <button type="button" class="section-expand-button" id="toggleAllTasks" aria-expanded="false">顯示全部任務</button>
-          <div class="database-subheading">
-            <p class="eyebrow">技能索引</p>
-            <h3>再用分類與搜尋找到單一技能</h3>
-            <p>需要更細的公式或指定技能時，直接在這裡搜尋，不用跳去別區；新手第一個網站任務，先做監測平台復刻就好。</p>
+            <p class="eyebrow">任務與技能中心</p>
+            <h3>搜尋一次，任務入口與對應技能一起出現</h3>
+            <p>不知道技能名稱時就選任務；已知道要用哪個技能時就直接搜尋。兩種入口共用同一套分類與結果，不再上下重複顯示。</p>
           </div>
           <div class="skill-toolbar">
-            <div class="mode-switch" role="group" aria-label="技能顯示模式">
-              <span>顯示模式</span>
+            <div class="mode-switch" role="group" aria-label="任務與技能顯示模式">
+              <span>顯示內容</span>
               <button type="button" class="mode-button active" data-mode="beginner">新手常用</button>
-              <button type="button" class="mode-button" data-mode="full">完整技能</button>
+              <button type="button" class="mode-button" data-mode="full">完整資料庫</button>
             </div>
             <label class="search-field" for="skillSearch">
-              <span>搜尋技能</span>
-              <input id="skillSearch" type="search" placeholder="輸入 wbs、監測平台、nbs、做圖、影片、Telegram">
+              <span>搜尋任務或技能</span>
+              <input id="skillSearch" type="search" placeholder="輸入監測平台、wbs、nbs、做圖、影片、Telegram">
             </label>
-            <div class="filter-row" id="categoryFilters" aria-label="技能分類篩選"></div>
+            <div class="filter-row" id="categoryFilters" aria-label="任務與技能分類篩選"></div>
           </div>
-          <div class="skill-overview" id="skillOverview"></div>
-          <div class="skill-grid" id="skillGrid"></div>
-          <p class="empty-state" id="skillEmpty">沒有符合的技能，換個關鍵字試試看。</p>
+          <div class="skill-overview" id="unifiedOverview"></div>
+          <div class="command-center-grid unified-center-grid" id="unifiedCenterGrid"></div>
+          <p class="empty-state" id="unifiedEmpty">沒有符合的任務或技能，換個關鍵字試試看。</p>
         </div>
 
         <div id="all-workflows" class="database-workflow-panel">
@@ -296,7 +289,7 @@
     </div>
   </div>
 
-  <script src="app.js?v=20260725-layout-upgrade-1"></script>
-  <script src="update-center.js?v=20260725-layout-upgrade-1"></script>
+  <script src="app.js?v=20260726-unified-center-1"></script>
+  <script src="update-center.js?v=20260726-unified-center-1"></script>
 </body>
 </html>
