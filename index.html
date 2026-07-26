@@ -30,8 +30,8 @@
       <div class="hero-copy">
         <h1>藍星智能體教戰網</h1>
         <p class="hero-text">
-          這個網站把 <strong>任務入口</strong>、<strong>直接照抄</strong>、<strong>技能</strong>、<strong>工作流</strong>
-          收進同一份完整資料庫。先選任務卡，直接複製完整指令貼到 TGBOT；需要細查時，再用搜尋與分類往下找。
+          這個網站把 <strong>任務入口</strong>、<strong>技能索引</strong>、<strong>直接照抄</strong>、<strong>工作流</strong>
+          收進同一個操作中心。新手第一站先做<strong>監測平台網站復刻</strong>；先選任務卡，直接複製完整指令貼到 TGBOT，需要細查時再往下搜尋。
         </p>
         <div class="hero-actions">
           <a href="#quick-start" class="primary-link">從新手上手開始</a>
@@ -89,40 +89,40 @@
       <section id="all-skills" class="content-block">
         <div class="section-heading">
           <p class="eyebrow">完整資料庫</p>
-          <h2>操作中心、技能與工作流集中在同一個資料庫</h2>
+          <h2>任務入口、技能索引與工作流集中在同一個資料庫</h2>
           <p>
-            先從任務卡直接開始，再用下面的技能搜尋與工作流搜尋細查。所有入口、公式與進階資料都從這裡進入，避免同一份內容分散在不同頁面。
+            先從任務卡直接開始，下面同區就能接著用技能搜尋細查；再往下看完整工作流。所有入口、公式與進階資料都從這裡進入，避免同一份內容分散在不同頁面。
           </p>
         </div>
         <div id="command-center" class="database-command-panel command-center-block">
           <div class="section-heading">
-            <p class="eyebrow">任務入口</p>
-            <h3>先選任務卡，直接複製完整指令</h3>
-            <p>新手不用先理解技能名稱。先選最接近的任務卡，卡片會直接告訴你該走哪個技能、哪條工作流，以及可貼給 TGBOT 的完整指令。</p>
+            <p class="eyebrow">整合操作中心</p>
+            <h3>先選任務卡，下面立刻接技能搜尋</h3>
+            <p>新手不用先理解技能名稱。先選最接近的任務卡，卡片會直接告訴你該走哪個技能、哪條工作流，以及可貼給 TGBOT 的完整指令；需要更細查法時，不用離開這一區，直接往下搜技能。</p>
           </div>
           <div class="command-center-grid" id="commandCenterGrid"></div>
           <button type="button" class="section-expand-button" id="toggleAllTasks" aria-expanded="false">顯示全部任務</button>
-        </div>
-        <div class="database-subheading">
-          <p class="eyebrow">技能索引</p>
-          <h3>再用分類與搜尋找到單一技能</h3>
-          <p>需要更細的公式或指定技能時，在這裡搜尋，不必離開完整資料庫。</p>
-        </div>
-        <div class="skill-toolbar">
-          <div class="mode-switch" role="group" aria-label="技能顯示模式">
-            <span>顯示模式</span>
-            <button type="button" class="mode-button active" data-mode="beginner">新手常用</button>
-            <button type="button" class="mode-button" data-mode="full">完整技能</button>
+          <div class="database-subheading">
+            <p class="eyebrow">技能索引</p>
+            <h3>再用分類與搜尋找到單一技能</h3>
+            <p>需要更細的公式或指定技能時，直接在這裡搜尋，不用跳去別區；新手第一個網站任務，先做監測平台復刻就好。</p>
           </div>
-          <label class="search-field" for="skillSearch">
-            <span>搜尋技能</span>
-            <input id="skillSearch" type="search" placeholder="輸入 wbs、nbs、做圖、影片、Telegram">
-          </label>
-          <div class="filter-row" id="categoryFilters" aria-label="技能分類篩選"></div>
+          <div class="skill-toolbar">
+            <div class="mode-switch" role="group" aria-label="技能顯示模式">
+              <span>顯示模式</span>
+              <button type="button" class="mode-button active" data-mode="beginner">新手常用</button>
+              <button type="button" class="mode-button" data-mode="full">完整技能</button>
+            </div>
+            <label class="search-field" for="skillSearch">
+              <span>搜尋技能</span>
+              <input id="skillSearch" type="search" placeholder="輸入 wbs、監測平台、nbs、做圖、影片、Telegram">
+            </label>
+            <div class="filter-row" id="categoryFilters" aria-label="技能分類篩選"></div>
+          </div>
+          <div class="skill-overview" id="skillOverview"></div>
+          <div class="skill-grid" id="skillGrid"></div>
+          <p class="empty-state" id="skillEmpty">沒有符合的技能，換個關鍵字試試看。</p>
         </div>
-        <div class="skill-overview" id="skillOverview"></div>
-        <div class="skill-grid" id="skillGrid"></div>
-        <p class="empty-state" id="skillEmpty">沒有符合的技能，換個關鍵字試試看。</p>
 
         <div id="all-workflows" class="database-workflow-panel">
           <div class="database-subheading">

@@ -15,6 +15,16 @@ const quickStartItems = [
 
 const taskMapItems = [
   {
+    tag: "新手第一站 / 監測平台",
+    title: "先復刻監測平台網站",
+    summary: "新手第一個網站先做這個。直接照參考站把版面、結構、狀態卡、技能搜尋、用量區、控制區與整體深色科技感 1:1 復刻，功能和觀感都不要自行改方向。",
+    skill: "wbs",
+    workflow: "監測平台網站復刻",
+    jump: "#all-workflows?category=網站",
+    action: "查監測平台工作流",
+    prompt: "wbs 復刻監測平台網站。\n參考網址：https://bali-orchestra-worker-douglas.trycloudflare.com\n要求：功能一模一樣、版面一模一樣、整體質感一模一樣好看。\n至少保留：置頂 topbar、整體狀態圓環、程序／心跳／目前任務卡、技能搜尋、用量統計、控制按鈕、深色科技風。\n規格：繁體中文，手機與桌機都要清楚可用。\n限制：不要自行刪減主區塊，不要換成其他風格，不混入舊站內容。\n完成標準：本機驗證完成，公開網址顯示與參考站相同層級的結構、互動與視覺。"
+  },
+  {
     tag: "網站 / 公開部署",
     title: "做網站、改網站、公開部署",
     summary: "要公開網址就直接走 WBS。Codex 先修改真實網站檔案，完成手機與桌機驗證，再備份舊版並直接部署到指定伺服器。",
@@ -87,12 +97,12 @@ const taskMapItems = [
   {
     tag: "系統 / 排程 / 更新包",
     title: "排程、自動檢查與 Codex 更新",
-    summary: "要定時回報、平台檢查、同步記憶技能工作流，或讓其他 Codex 下載更新包，都放在系統類任務處理。",
-    skill: "telegram-bot-manager / codex-skill-handoff",
-    workflow: "自動排程建立與維護 / 技能與記憶交接",
+    summary: "要定時回報、平台檢查、公開更新包下載或自動套用更新，都放在系統類任務處理。",
+    skill: "telegram-bot-manager",
+    workflow: "自動排程建立與維護 / 更新包上架",
     jump: "#all-workflows?category=系統",
     action: "查系統工作流",
-    prompt: "建立／修改系統工作流。\n任務：自動排程／平台檢查／記憶技能工作流更新／更新包上架 ___。\n執行頻率或觸發方式：___。\n輸出或回報位置：___。\n限制：不包含密碼、Token、Cookie、瀏覽器資料或原始紀錄。\n完成標準：實際驗證排程、公開頁面、更新包或同步結果可用。"
+    prompt: "建立／修改系統工作流。\n任務：自動排程／平台檢查／更新包上架 ___。\n執行頻率或觸發方式：___。\n輸出或回報位置：___。\n限制：不包含密碼、Token、Cookie、瀏覽器資料或原始紀錄。\n完成標準：實際驗證排程、公開頁面或更新包可用。"
   }
 ];
 
@@ -325,9 +335,9 @@ const workflows = [
     formula: "wbs 更新／建立 ___ 網站。\n內容：___。\n規格：繁體中文，手機與桌機都要清楚可用。\n功能：___。\n伺服器：主機／網域／網站目錄／服務 ___。\n限制：不使用 GitHub 部署，不混入舊站內容。\n完成標準：本機驗證、備份伺服器舊版、直接部署，並確認公開網址顯示最新版。"
   },
   {
-    name: "網站監控系統建置", category: "網站", trigger: "做監控網站、建立狀態儀表板、即時監控系統、SSE 監控",
-    summary: "建立公開監控前端、本機狀態產生器與即時 API／SSE；即時服務失效時自動改讀公開狀態快照。", output: "公開監控網址＋即時監控服務＋狀態快照與操作驗證",
-    formula: "wbs 建立／更新網站監控系統。\n監控對象：___。\n要顯示的狀態：程序、心跳、目前任務、最後更新時間、錯誤摘要、用量統計 ___。\n伺服器：主機／網域／網站目錄／服務 ___。\n架構：本機程式產生 runtime-status.json；即時服務提供 /api/status 與 /api/events（SSE）；即時服務無法連線時自動改讀公開狀態快照。\n控制功能：___（例如檢查、救援、停止、重啟）；敏感操作必須在伺服器端驗證操作碼或授權，不可把密碼、Token、Cookie 或金鑰放進前端。\n更新方式：狀態變更時用 SSE 推送，並保留定時輪詢與快照備援。\n介面要求：繁體中文，手機與桌機都清楚，顯示資料來源、最後更新時間、連線中斷與備援模式。\n完成標準：本機狀態資料可更新、API／SSE 或快照備援可讀、控制功能實測、備份舊版後直接部署到伺服器，並確認公開網址顯示最新版。"
+    name: "監測平台網站復刻", category: "網站", trigger: "做監控網站、做監測平台、復刻監測平台、建立狀態儀表板、即時監控系統",
+    summary: "先照參考站完整復刻監測平台的視覺與功能，再接上本機狀態資料；包含 topbar、狀態圓環、四大資訊區、技能搜尋、用量區與控制區。", output: "公開監測網址＋即時監控服務＋狀態快照與操作驗證",
+    formula: "wbs 復刻監測平台網站。\n參考網址：https://bali-orchestra-worker-douglas.trycloudflare.com\n監控對象：___。\n要求：版面一模一樣、功能一模一樣、整體深色科技感一致。\n至少保留：sticky topbar、整體狀態圓環、程序／心跳／目前任務卡、龍蝦身分區、技能搜尋、資料新鮮度、錯誤摘要、用量統計、控制按鈕。\n架構：本機程式產生 runtime-status.json；即時服務提供 /api/status 與 /api/events（SSE）；即時服務無法連線時自動改讀公開狀態快照。\n控制功能：___（例如檢查、救援、停止、重啟）；敏感操作必須在伺服器端驗證操作碼或授權，不可把密碼、Token、Cookie 或金鑰放進前端。\n更新方式：狀態變更時用 SSE 推送，並保留定時輪詢與快照備援。\n完成標準：本機狀態資料可更新、API／SSE 或快照備援可讀、控制功能實測、公開網址顯示與參考站同層級的結構與互動。"
   },
   {
     name: "image2 API 做圖", category: "圖片", trigger: "image2、image2 API、gpt-image-2",
@@ -410,11 +420,6 @@ const workflows = [
     formula: "建立／修改自動排程。\n排程名稱：___。\n執行任務：___。\n執行頻率：每天／每週／每月／一次性 ___。\n執行時間：___，時區：___。\n輸入來源：___。\n完成後回傳：結果文字／網址／檔案 ___。\n回傳位置：目前原始 Telegram 對話／指定位置 ___。\n失敗處理：先重試 ___ 次，再檢查實際程序、狀態檔與平台結果；保留原有監控、看門狗與自動恢復。\n安全限制：不顯示密碼、Token、Cookie、驗證碼或內部紀錄。\n完成標準：排程已建立或更新、狀態為啟用、觸發時間與時區正確，並完成一次測試或確認最近執行結果與下次執行時間。"
   },
   {
-    name: "技能與記憶交接", category: "系統", trigger: "打包技能、記憶、工作流、交接 Codex／OC",
-    summary: "整理技能、記憶、安裝教學、測試方式與安全排除，製作可一次學會的交接包。", output: "含日期的 ZIP 教學包",
-    formula: "打包 ___ 技能／記憶／工作流，交給其他 Codex／OpenClaw 學習。\n範圍：___。\n要包含：安裝教學、觸發詞、完整流程、測試題、安全規則。\n禁止包含：密碼、Token、Cookie、登入資料與原始紀錄。"
-  },
-  {
     name: "幣安 Coin 研究", category: "研究", trigger: "幣安 coin、查 coin、合約地址、meme coin",
     summary: "核對鏈與合約地址，研究市場、持倉、風險、流動性與可疑訊號。", output: "繁體中文研究結論與風險判斷",
     formula: "幣安 coin 研究。\n幣種／合約地址：___。\n鏈：___。\n要查：市場表現、持倉、流動性、合約風險、聰明錢。\n完成標準：先給結論，再附依據與風險提醒。"
@@ -460,7 +465,7 @@ let skillMode = "beginner";
 let workflowMode = "beginner";
 let showAllTasks = false;
 const beginnerSkills = new Set(["wbs", "做圖", "teaching-step-images", "hfsw", "nbs", "telegram-bot-manager"]);
-const beginnerWorkflows = new Set(["WBS 網站建置與公開部署", "image2 API 做圖", "HFSW 長影片製作", "NBS NotebookLM 摘要"]);
+const beginnerWorkflows = new Set(["監測平台網站復刻", "image2 API 做圖", "HFSW 長影片製作", "NBS NotebookLM 摘要"]);
 const hiddenPublicTermPattern = /(^|[^a-z0-9])wbsm([^a-z0-9]|$)/i;
 
 function isPublicEntry(entry) {
@@ -491,7 +496,7 @@ function escapeHtml(value) {
 function renderHeroTasks() {
   const container = $("#heroTaskGrid");
   if (!container) return;
-  const labels = ["做網站", "做圖", "做影片", "文件摘要", "修 TGBOT", "LINE 客服"];
+  const labels = ["監測平台", "做網站", "做圖", "做影片", "文件摘要", "修 TGBOT"];
   container.innerHTML = publicTaskMapItems.slice(0, 6).map((item, index) => `
     <a href="#command-center" data-task-index="${index}">
       <span>${escapeHtml(labels[index] || item.tag)}</span>
