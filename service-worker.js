@@ -1,4 +1,4 @@
-const CACHE_NAME = "tutorial-site-v15-unified-center";
+const CACHE_NAME = "tutorial-site-v16-monitor-tgbot";
 const APP_SHELL = [
   "./",
   "./index.html",

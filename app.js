@@ -16,13 +16,13 @@ const quickStartItems = [
 const taskMapItems = [
   {
     tag: "新手第一站 / 監測平台",
-    title: "先復刻監測平台網站",
-    summary: "新手第一個網站先做這個。直接照參考站把版面、結構、狀態卡、技能搜尋、用量區、控制區與整體深色科技感 1:1 復刻，功能和觀感都不要自行改方向。",
-    skill: "wbs",
-    workflow: "監測平台網站復刻",
+    title: "先建立並綁定自己的 TGBOT 監測平台",
+    summary: "新手第一個網站先做這個。照參考站完整復刻版面與功能，再自動辨識目前正在執行任務的 TGBOT，綁定它自己的程序、心跳、任務、技能、記憶與用量資料。",
+    skill: "wbs / telegram-bot-manager",
+    workflow: "監測平台網站復刻與 TGBOT 綁定",
     jump: "#all-workflows?category=網站",
     action: "查監測平台工作流",
-    prompt: "wbs 復刻監測平台網站。\n參考網址：https://bali-orchestra-worker-douglas.trycloudflare.com\n要求：功能一模一樣、版面一模一樣、整體質感一模一樣好看。\n至少保留：置頂 topbar、整體狀態圓環、程序／心跳／目前任務卡、技能搜尋、用量統計、控制按鈕、深色科技風。\n規格：繁體中文，手機與桌機都要清楚可用。\n限制：不要自行刪減主區塊，不要換成其他風格，不混入舊站內容。\n完成標準：本機驗證完成，公開網址顯示與參考站相同層級的結構、互動與視覺。"
+    prompt: "wbs 復刻監測平台網站並綁定目前這個 TGBOT。\n參考網址：https://bali-orchestra-worker-douglas.trycloudflare.com\n第一步：先辨識目前正在執行任務的 TGBOT 身分、程式資料夾、程序、心跳、任務狀態、技能、記憶與用量資料來源；只能綁定目前這一個 Bot，不可使用其他 Bot 的 Token、資料夾、舊 chat 或預設設定。\n要求：功能一模一樣、版面一模一樣、整體質感一模一樣好看。\n至少保留：置頂 topbar、整體狀態圓環、程序／心跳／目前任務卡、TGBOT 身分區、技能與記憶搜尋、用量統計、控制按鈕、深色科技風。\n綁定功能：監測頁要顯示目前 TGBOT 的名稱與即時狀態；檢查、救援、停止、重啟等操作只作用於目前這個 TGBOT。\n規格：繁體中文，手機與桌機都要清楚可用。\n限制：不要自行刪減主區塊，不要換成其他風格，不混入舊站內容；密碼、Token、Cookie、金鑰與聊天編號不可放進前端。\n完成標準：本機資料更新正常、監測頁正確顯示目前 TGBOT、控制功能實測只影響目前 Bot，並從目前 TGBOT 發送測試指令確認網站狀態同步；最後完成公開部署與桌機／手機驗證。"
   },
   {
     tag: "網站 / 公開部署",
@@ -335,9 +335,9 @@ const workflows = [
     formula: "wbs 更新／建立 ___ 網站。\n內容：___。\n規格：繁體中文，手機與桌機都要清楚可用。\n功能：___。\n伺服器：主機／網域／網站目錄／服務 ___。\n限制：不使用 GitHub 部署，不混入舊站內容。\n完成標準：本機驗證、備份伺服器舊版、直接部署，並確認公開網址顯示最新版。"
   },
   {
-    name: "監測平台網站復刻", category: "網站", trigger: "做監控網站、做監測平台、復刻監測平台、建立狀態儀表板、即時監控系統",
-    summary: "先照參考站完整復刻監測平台的視覺與功能，再接上本機狀態資料；包含 topbar、狀態圓環、四大資訊區、技能搜尋、用量區與控制區。", output: "公開監測網址＋即時監控服務＋狀態快照與操作驗證",
-    formula: "wbs 復刻監測平台網站。\n參考網址：https://bali-orchestra-worker-douglas.trycloudflare.com\n監控對象：___。\n要求：版面一模一樣、功能一模一樣、整體深色科技感一致。\n至少保留：sticky topbar、整體狀態圓環、程序／心跳／目前任務卡、龍蝦身分區、技能搜尋、資料新鮮度、錯誤摘要、用量統計、控制按鈕。\n架構：本機程式產生 runtime-status.json；即時服務提供 /api/status 與 /api/events（SSE）；即時服務無法連線時自動改讀公開狀態快照。\n控制功能：___（例如檢查、救援、停止、重啟）；敏感操作必須在伺服器端驗證操作碼或授權，不可把密碼、Token、Cookie 或金鑰放進前端。\n更新方式：狀態變更時用 SSE 推送，並保留定時輪詢與快照備援。\n完成標準：本機狀態資料可更新、API／SSE 或快照備援可讀、控制功能實測、公開網址顯示與參考站同層級的結構與互動。"
+    name: "監測平台網站復刻與 TGBOT 綁定", category: "網站", trigger: "做監控網站、做監測平台、做檢測平台、復刻監測平台、綁定本身 TGBOT、建立狀態儀表板、即時監控系統",
+    summary: "先照參考站完整復刻監測平台，再辨識並綁定目前執行任務的 TGBOT；即時顯示它自己的程序、心跳、任務、技能、記憶與用量，控制操作也只能作用於目前 Bot。", output: "公開監測網址＋目前 TGBOT 綁定結果＋即時監控服務＋狀態快照與操作驗證",
+    formula: "wbs 復刻監測平台網站並綁定目前這個 TGBOT。\n參考網址：https://bali-orchestra-worker-douglas.trycloudflare.com\n綁定原則：先自動辨識目前正在執行任務的 TGBOT 身分、程式資料夾與狀態來源；只綁定目前 Bot，不可切換到其他 Bot、其他 Token、其他資料夾、舊 chat 或預設收件人。\n監測資料：程序 PID、心跳、目前任務、最近完成、卡點摘要、技能數、記憶數、輸入／輸出／快取用量、資料更新時間。\n要求：版面一模一樣、功能一模一樣、整體深色科技感一致。\n至少保留：sticky topbar、整體狀態圓環、程序／心跳／目前任務卡、TGBOT 身分區、技能與記憶搜尋、資料新鮮度、錯誤摘要、用量統計、控制按鈕。\n架構：本機程式產生 runtime-status.json；即時服務提供 /api/status 與 /api/events（SSE）；即時服務無法連線時自動改讀公開狀態快照。\n控制功能：檢查、救援、停止、重啟；每個操作必須先核對目前 TGBOT 身分，只能控制目前 Bot。敏感操作在伺服器端驗證授權，不可把密碼、Token、Cookie、金鑰或聊天編號放進前端。\n更新方式：狀態變更時用 SSE 推送，並保留定時輪詢與快照備援。\n驗證方式：從目前 TGBOT 發送一則測試指令，確認任務狀態同步到監測頁；再測試一項安全控制功能，確認其他 Bot 完全不受影響。\n完成標準：本機狀態資料可更新、目前 TGBOT 綁定正確、API／SSE 或快照備援可讀、控制功能實測、桌機與手機正常，並完成公開部署。"
   },
   {
     name: "image2 API 做圖", category: "圖片", trigger: "image2、image2 API、gpt-image-2",
@@ -464,7 +464,7 @@ let workflowSearchTerm = "";
 let skillMode = "beginner";
 let workflowMode = "beginner";
 const beginnerSkills = new Set(["wbs", "做圖", "teaching-step-images", "hfsw", "nbs", "telegram-bot-manager"]);
-const beginnerWorkflows = new Set(["監測平台網站復刻", "image2 API 做圖", "HFSW 長影片製作", "NBS NotebookLM 摘要"]);
+const beginnerWorkflows = new Set(["監測平台網站復刻與 TGBOT 綁定", "image2 API 做圖", "HFSW 長影片製作", "NBS NotebookLM 摘要"]);
 const hiddenPublicTermPattern = /(^|[^a-z0-9])wbsm([^a-z0-9]|$)/i;
 
 function isPublicEntry(entry) {
