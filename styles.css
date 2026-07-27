@@ -776,6 +776,17 @@ h1 {
   line-height: 1.5;
 }
 
+.command-meta a {
+  color: var(--cyan);
+  overflow-wrap: anywhere;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.command-meta a:hover {
+  color: #ffffff;
+}
+
 .command-formula {
   display: grid;
   gap: 12px;

@@ -1,7 +1,7 @@
 # TG1 x TG2 x TG3 即時總控台
 
 建立日期：2026-07-02
-本次更新：2026-07-23
+本次更新：2026-07-27
 
 這是一個公開 GitHub Pages 儀表盤，用來集中查看：
 
@@ -48,6 +48,8 @@ output/dashboard-control-secret.json
 - 其他 Codex 在公開頁輸入客服提供的更新密碼後，可一鍵複製完整升級指令
 - 指令會要求 Codex 操作網站、下載指定版本、驗證 SHA-256，再以 `tools/apply-codex-update.mjs` 乾跑驗證並正式套用技能、記憶與工作流
 - TGBOT 完整 ZIP 會讀取包內說明，先執行 `PORTABILITY_SELF_TEST.ps1`，再執行 `UPDATE_INSTALLED_TGBOT.ps1`，保留既有設定後只重啟目前這一端
+- 「新手上手」指令會把固定上船教學網址交給目前 TGBOT，並要求建立每 7 天更新檢查；啟動時只有距上次成功檢查滿 7 天才補查
+- 有相容新版時才核對大小與 SHA-256、乾跑、備份、套用並只重啟目前 Bot；無新版不下載、不安裝、不重啟
 
 收到新更新檔後，建議使用：
 

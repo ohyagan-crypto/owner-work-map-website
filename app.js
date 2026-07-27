@@ -15,14 +15,16 @@ const quickStartItems = [
 
 const taskMapItems = [
   {
-    tag: "新手第一站 / 監測平台",
-    title: "先建立並綁定自己的 TGBOT 監測平台",
-    summary: "新手第一個網站先做這個。照參考站完整復刻版面與功能，再自動辨識目前正在執行任務的 TGBOT，綁定它自己的程序、心跳、任務、技能、記憶與用量資料。",
+    tag: "新手第一站 / 上船與監測",
+    title: "把上船教學交給 TGBOT，完成監測與每週自動更新",
+    summary: "先把固定上船教學網址交給目前這個 TGBOT，再建立專屬監測平台與每 7 天更新檢查。只有發現相容新版並通過完整驗證時才安裝與重啟。",
     skill: "wbs / telegram-bot-manager",
-    workflow: "監測平台網站復刻與 TGBOT 綁定",
+    workflow: "上船教學 / 監測平台 / 每週自動更新",
+    onboardingUrl: "https://ohyagan-crypto.github.io/owner-work-map-website/#all-skills",
+    updateSchedule: "每 7 天檢查一次",
     jump: "#all-workflows?category=網站",
     action: "查監測平台工作流",
-    prompt: "wbs 復刻監測平台網站並綁定目前這個 TGBOT。\n參考網址：https://bali-orchestra-worker-douglas.trycloudflare.com\n第一步：先辨識目前正在執行任務的 TGBOT 身分、程式資料夾、程序、心跳、任務狀態、技能、記憶與用量資料來源；只能綁定目前這一個 Bot，不可使用其他 Bot 的 Token、資料夾、舊 chat 或預設設定。\n要求：功能一模一樣、版面一模一樣、整體質感一模一樣好看。\n至少保留：置頂 topbar、整體狀態圓環、程序／心跳／目前任務卡、TGBOT 身分區、技能與記憶搜尋、用量統計、控制按鈕、深色科技風。\n綁定功能：監測頁要顯示目前 TGBOT 的名稱與即時狀態；檢查、救援、停止、重啟等操作只作用於目前這個 TGBOT。\n規格：繁體中文，手機與桌機都要清楚可用。\n限制：不要自行刪減主區塊，不要換成其他風格，不混入舊站內容；密碼、Token、Cookie、金鑰與聊天編號不可放進前端。\n完成標準：本機資料更新正常、監測頁正確顯示目前 TGBOT、控制功能實測只影響目前 Bot，並從目前 TGBOT 發送測試指令確認網站狀態同步；最後完成公開部署與桌機／手機驗證。"
+    prompt: "請直接替目前這個 TGBOT 完成上船、監測綁定與每週自動更新設定，不要只說明流程。\n上船教學網址：https://ohyagan-crypto.github.io/owner-work-map-website/#all-skills\n更新清單：https://ohyagan-crypto.github.io/owner-work-map-website/data/codex-updates.json\n監測平台參考網址：https://bali-orchestra-worker-douglas.trycloudflare.com\n\n第一步：先辨識目前正在執行任務的 TGBOT 身分、Codex 根目錄、Bot 程式資料夾、程序、心跳、任務狀態、技能、記憶與用量資料來源；只能綁定目前這一個 Bot，不可使用其他 Bot 的 Token、資料夾、舊 chat 或預設設定。\n\n監測平台：照參考站完整復刻版面與功能，至少保留置頂 topbar、整體狀態圓環、程序／心跳／目前任務卡、TGBOT 身分區、技能與記憶搜尋、用量統計、控制按鈕與深色科技風。檢查、救援、停止、重啟等操作只能作用於目前這個 TGBOT。\n\n每週自動更新：\n1. 把上船教學網址與更新清單記錄為目前 TGBOT 的固定教學及更新來源。\n2. 建立名稱含目前 Bot 身分的獨立排程，每 7 天檢查一次；TGBOT 啟動時也要讀取上次成功檢查時間，只有已滿 7 天才補查，避免每次重啟重複執行。\n3. 只選擇比本機已安裝版本新的相容 codex-skill-update；沒有新版時只更新狀態檔與下次檢查時間，不下載、不安裝、不重啟。\n4. 有新版時，先下載並核對清單中的檔名、大小與 SHA-256，再執行乾跑驗證；乾跑通過後先備份將被覆蓋的檔案，才正式套用。\n5. 更新密碼只能從目前 Windows 使用者的加密 DPAPI 儲存區讀取；若尚未保存，第一次設定時向主人詢問一次後加密保存。禁止把明文密碼、Token、Cookie、金鑰或聊天編號寫入網站、腳本、命令列、狀態檔或回覆。\n6. 保留目前 Bot 的模型、供應商、推理強度、service tier、.env、登入狀態、既有排程與自動恢復；更新後只能重啟目前這個 TGBOT。\n7. 重啟後核對程序、心跳、新版本與命令通道；成功或失敗都回報目前原始 Telegram 對話，失敗時保留備份並停止覆蓋。\n\n規格：繁體中文，手機與桌機都要清楚可用。不要自行刪減主區塊、不要換成其他風格，也不要混入舊站內容。\n完成標準：監測平台資料與控制功能驗證正常；每週排程已啟用且綁定目前 Bot；立即執行一次安全檢查，確認上次／下次檢查時間、狀態檔、版本判斷及無新版不重啟；最後完成公開部署與桌機／手機驗證。"
   },
   {
     tag: "網站 / 公開部署",
@@ -492,7 +494,7 @@ function escapeHtml(value) {
 function renderHeroTasks() {
   const container = $("#heroTaskGrid");
   if (!container) return;
-  const labels = ["監測平台", "做網站", "做圖", "做影片", "文件摘要", "修 TGBOT"];
+  const labels = ["上船教學", "做網站", "做圖", "做影片", "文件摘要", "修 TGBOT"];
   container.innerHTML = publicTaskMapItems.slice(0, 6).map((item, index) => `
     <a href="${index === 0 ? "#beginner-monitor-task" : "#command-center"}" data-task-index="${index}">
       <span>${escapeHtml(labels[index] || item.tag)}</span>
@@ -524,6 +526,8 @@ function renderQuickStart() {
       <div class="command-meta">
         <span><small>對應技能</small><strong>${escapeHtml(beginnerMonitorTask.skill)}</strong></span>
         <span><small>對應工作流</small><strong>${escapeHtml(beginnerMonitorTask.workflow)}</strong></span>
+        <span><small>上船教學網址</small><strong><a href="${escapeHtml(beginnerMonitorTask.onboardingUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(beginnerMonitorTask.onboardingUrl)}</a></strong></span>
+        <span><small>自動更新</small><strong>${escapeHtml(beginnerMonitorTask.updateSchedule)}</strong></span>
       </div>
       <div class="command-formula">
         <pre id="beginner-monitor-formula">${escapeHtml(beginnerMonitorTask.prompt)}</pre>
