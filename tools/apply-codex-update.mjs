@@ -14,13 +14,14 @@ for (let index = 2; index < process.argv.length; index += 1) {
 
 const file = args.get("file");
 const url = args.get("url");
-const password = args.get("password") || "";
+const password = args.get("password") || process.env.BSMF_UPDATE_PASSWORD || "";
 const targetRoot = path.resolve(args.get("target-root") || process.cwd());
 const dryRun = args.has("dry-run");
 
 if ((!file && !url) || !password) {
-  console.error("用法：node apply-codex-update.mjs --file <.bsmf> --password <密碼> --target-root <Codex根目錄> [--dry-run]");
-  console.error("或：node apply-codex-update.mjs --url <更新包網址> --password <密碼> --target-root <Codex根目錄>");
+  console.error("用法：先設定 BSMF_UPDATE_PASSWORD，再執行 node apply-codex-update.mjs --file <.bsmf> --target-root <Codex根目錄> [--dry-run]");
+  console.error("或：node apply-codex-update.mjs --url <更新包網址> --target-root <Codex根目錄>");
+  console.error("仍相容 --password <密碼>，但建議使用環境變數，避免密碼留在命令列紀錄。");
   process.exit(2);
 }
 

@@ -1,8 +1,26 @@
 {
   "format": "bsmf-codex-update-v1",
-  "updatedAt": "2026-07-23",
+  "updatedAt": "2026-07-27",
   "notes": "公開清單只放更新包名稱、版本、大小與雜湊；更新包內容仍以 AES-256-GCM 加密。",
   "updates": [
+    {
+      "id": "codex-update-20260727.1",
+      "kind": "codex-skill-update",
+      "version": "20260727.1",
+      "createdAt": "2026-07-27",
+      "title": "FAST 預設與自動上船教學更新",
+      "description": "升級包與安裝包預設使用最高可用服務層級，保留既有模型、供應商與推理設定，並附日期化 FAST 工具及自動上船教學入口。",
+      "file": "updates/codex-update_20260727.1.bsmf",
+      "size": 20666,
+      "sha256": "4f210a5355fcbb2775c2e91c7781feda9eb1462cef0b6b4a35c0b14fc7022afc",
+      "contents": [
+        "INSTALL_FOR_OTHER_CODEX.md",
+        "memories\\package-fast-default-20260727.md",
+        "skills\\codex-skill-handoff\\SKILL.md",
+        "skills\\codex-skill-handoff\\scripts\\make_skill_handoff.ps1",
+        "workflows\\package-fast-default-20260727.md"
+      ]
+    },
     {
       "id": "tgbot-update-chrome-line-20260723",
       "kind": "tgbot-installer",
@@ -13,7 +31,12 @@
       "file": "updates/TGBOT_UPDATE_CHROME_LINE_20260723_162100.zip",
       "size": 141052,
       "sha256": "33ae1b8d6233b7bd98d713f1f0422093ad924acc46570e21dfe62b2ab48e757f",
-      "contents": ["Chrome 安裝與簽章驗證", "LINE 官方快速認證碼技能", "TGBOT 更新器", "命令通道與可攜性自測"]
+      "contents": [
+        "Chrome 安裝與簽章驗證",
+        "LINE 官方快速認證碼技能",
+        "TGBOT 更新器",
+        "命令通道與可攜性自測"
+      ]
     },
     {
       "id": "codex-update-20260723.1",
@@ -25,7 +48,11 @@
       "file": "updates/codex-update_20260723.1.bsmf",
       "size": 8641,
       "sha256": "77d0984b77a7a1934d74dc077d2c32a15a6bcffa27779f7ff2d0cad4d5cb857a",
-      "contents": ["INSTALL_FOR_OTHER_CODEX.md", "skills/line-official-fast-code/SKILL.md", "skills/line-official-fast-code/agents/openai.yaml"]
+      "contents": [
+        "INSTALL_FOR_OTHER_CODEX.md",
+        "skills/line-official-fast-code/SKILL.md",
+        "skills/line-official-fast-code/agents/openai.yaml"
+      ]
     },
     {
       "id": "codex-update-20260722.1",
@@ -37,7 +64,12 @@
       "file": "updates/codex-update-protocol-20260722.bsmf",
       "size": 3706,
       "sha256": "b797364b02b1a88ae424458841d6a5c1098266974adb197338b5ca04bebd3696",
-      "contents": ["技能更新區", "記憶更新區", "工作流更新區", "其他 Codex 安裝說明"]
+      "contents": [
+        "技能更新區",
+        "記憶更新區",
+        "工作流更新區",
+        "其他 Codex 安裝說明"
+      ]
     }
   ]
 }

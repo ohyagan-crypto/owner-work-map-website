@@ -16,11 +16,12 @@ const inputRoot = path.resolve(args.get("input") || "");
 const outputFile = path.resolve(args.get("output") || "");
 const title = args.get("title") || "Codex 更新包";
 const description = args.get("description") || "記憶、技能與工作流更新包";
-const password = args.get("password") || "";
+const password = args.get("password") || process.env.BSMF_UPDATE_PASSWORD || "";
 const version = args.get("version") || new Date().toISOString().slice(0, 10).replaceAll("-", "");
 
 if (!inputRoot || !outputFile || !password || !fs.existsSync(inputRoot)) {
-  console.error("用法：node create-codex-update-package.mjs --input <資料夾> --output <.bsmf> --password <密碼> [--title <標題>] [--description <說明>] [--version <版本>]");
+  console.error("用法：先設定 BSMF_UPDATE_PASSWORD，再執行 node create-codex-update-package.mjs --input <資料夾> --output <.bsmf> [--title <標題>] [--description <說明>] [--version <版本>]");
+  console.error("仍相容 --password <密碼>，但建議使用環境變數，避免密碼留在命令列紀錄。");
   process.exit(2);
 }
 

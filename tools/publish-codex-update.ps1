@@ -3,10 +3,13 @@
   [Parameter(Mandatory=$true)][string]$Title,
   [string]$Description = "記憶、技能與工作流更新包",
   [string]$Version = (Get-Date -Format "yyyyMMdd.HHmm"),
-  [string]$SiteRoot = (Split-Path -Parent (Split-Path -Parent $PSCommandPath))
+  [string]$SiteRoot = ""
 )
 
 $ErrorActionPreference = "Stop"
+if ([string]::IsNullOrWhiteSpace($SiteRoot)) {
+  $SiteRoot = Split-Path -Parent $PSScriptRoot
+}
 $updatesDir = Join-Path $SiteRoot "updates"
 $manifestPath = Join-Path $SiteRoot "data\codex-updates.json"
 if (-not (Test-Path -LiteralPath $InputFile -PathType Leaf)) { throw "找不到更新檔：$InputFile" }
@@ -36,6 +39,7 @@ if (Test-Path -LiteralPath $manifestPath) {
 $items = @($manifest.updates | Where-Object { $_.file -ne "updates/$fileName" })
 $item = [pscustomobject]@{
   id = "codex-update-$safeVersion"
+  kind = "codex-skill-update"
   version = $Version
   createdAt = (Get-Date -Format "yyyy-MM-dd")
   title = $Title
