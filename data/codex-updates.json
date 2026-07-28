@@ -1,8 +1,34 @@
 {
   "format": "bsmf-codex-update-v1",
-  "updatedAt": "2026-07-27",
-  "notes": "公開清單只放更新包名稱、版本、大小與雜湊；更新包內容仍以 AES-256-GCM 加密。",
+  "updatedAt": "2026-07-28",
+  "notes": "公開清單只放更新包名稱、版本、大小與雜湊；.bsmf 使用 AES-256-GCM，加註 TGBOT 的 ZIP 教學／安裝包則以 SHA-256 驗證完整性。",
   "updates": [
+    {
+      "id": "tgbot-menu-update-20260728.1",
+      "kind": "tgbot-menu-update",
+      "version": "20260728.1",
+      "createdAt": "2026-07-28",
+      "title": "TGBOT 藍星蝦咩功能選單同步更新",
+      "description": "同步 LBOT 同款客戶功能選單、蝦咩工作室第二層、選單常駐與收合、IMAGE2 入口、實際 Token 統計、FAST 預設及 UTF-8 Telegram 原生指令修復。",
+      "file": "updates/TGBOT_MENU_UPDATE_HANDOFF_20260728_152421.zip",
+      "size": 37882,
+      "sha256": "b3c2572e3ea4bbd1e9c5ad5006e384a656ff1d6d797a9417ab13a6eb7afd5af1",
+      "contents": [
+        "INSTALL_FOR_OTHER_CODEX.md",
+        "MEMORY_AND_BEHAVIOR_SUMMARY.md",
+        "FORWARD_TO_RECEIVER_TGBOT.txt",
+        "SET_FAST_SERVICE_TIER_20260728.ps1",
+        "UPDATE_TGBOT_MENU_20260728.ps1",
+        "skills/tgbot-lbot-menu-parity/SKILL.md",
+        "skills/tgbot-lbot-menu-parity/assets/telegram_studio_menu_20260728.py",
+        "skills/tgbot-lbot-menu-parity/references/MENU_SPEC_20260728.md",
+        "skills/tgbot-lbot-menu-parity/references/INTEGRATION_GUIDE_20260728.md",
+        "skills/tgbot-lbot-menu-parity/scripts/verify_tgbot_menu_20260728.py",
+        "workflows/TGBOT_MENU_UPDATE_20260728.md",
+        "PACKAGE_MANIFEST.md",
+        "CHECKSUMS_SHA256_20260728.txt"
+      ]
+    },
     {
       "id": "codex-update-20260727.1",
       "kind": "codex-skill-update",

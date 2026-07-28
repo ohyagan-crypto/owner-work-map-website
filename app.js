@@ -308,6 +308,7 @@ const skills = [
   { name: "telegram-bot-manager", category: "Telegram / Bot", summary: "Telegram Bot 管理與檔案回傳。", useCase: "回文件、排故障、管媒體傳送。" },
   { name: "telegram-two-stage-reply", category: "Telegram / Bot", summary: "Telegram 回覆與交付規則。", useCase: "維護回覆節奏與完成標準。" },
   { name: "tg123-daily-self-upgrade", category: "Telegram / Bot", summary: "TG1 / TG2 / TG3 每日自我升級。", useCase: "同步三端規則與學習內容。" },
+  { name: "tgbot-lbot-menu-parity", category: "Telegram / Bot", summary: "同步藍星蝦咩客戶功能選單、常駐／收合、工作室第二層、IMAGE2 入口、實際 Token 統計與中文原生指令。", useCase: "把其他 Codex、COI 或 TGBOT 升級成 LBOT 同款功能選單。" },
   { name: "new-customer-bot-base", category: "Telegram / Bot", summary: "新客戶 Telegram Bot 基底。", useCase: "複製一套新 bot 環境。" },
   { name: "mininew-bridge-handoff", category: "Telegram / Bot", summary: "MiniNew Telegram Codex bridge 交接與複製。", useCase: "把 bridge、記憶與環境交給另一端。" },
   { name: "owner-reply-style-telegram", category: "Telegram / Bot", summary: "主人導向 Telegram 回覆風格。", useCase: "調整語氣、完整回答方式。" },
@@ -410,6 +411,11 @@ const workflows = [
     name: "Telegram Bot 管理與修復", category: "Telegram", trigger: "檢查 TGBOT、修 bot、重啟 bot、回傳檔案",
     summary: "檢查實際程序、心跳、連線與任務狀態，修復後驗證同源回覆與檔案交付。", output: "可運作的 Bot 或明確修復結果",
     formula: "檢查並修復目前 TGBOT。\n問題：___。\n影響範圍：___。\n保留：既有排程與自動恢復。\n完成標準：實際連線、程序、心跳與回覆測試通過。"
+  },
+  {
+    name: "TGBOT 藍星蝦咩功能選單同步", category: "Telegram", trigger: "TGBOT功能選單、LBOT同款選單、功能選單常駐、選單收合、左側指令問號",
+    summary: "把目前 Codex、COI 或 TGBOT 升級為 LBOT 同款客戶選單，保留既有模型與設定，並驗證第二層任務、IMAGE2 入口、真實 Token 統計及 UTF-8 中文指令。", output: "可運作的常駐功能選單＋安裝版本＋真實 Telegram 驗證結果",
+    formula: "安裝並學會 tgbot-lbot-menu-parity 功能選單更新。\n目前 Bot：___。\nBot 根目錄：___。\n要求：主選單順序與藍星蝦咩一致；功能選單常駐且可收合；製作圖片顯示純文字／上傳參考圖；蝦咩工作室第二層可執行；Token 統計只讀目前 Bot 實際資料；左側原生指令使用繁體中文。\n保留：模型、供應商、推理強度、.env、Token、登入狀態、排程與其他 Bot。\n速度：service_tier 固定 fast，不能產生重複設定。\n完成標準：離線驗證與 py_compile 通過，只重啟目前 Bot，再從真實 Telegram 測試 /menu、/studio、/status、製作圖片、Token 統計、收合與重新開啟。"
   },
   {
     name: "LINE 官方客服工作流", category: "客服", trigger: "lo、LINE 客服、LINE 官方、接手 LINE 官方帳號",

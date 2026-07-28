@@ -1,4 +1,4 @@
-const CACHE_NAME = "tutorial-site-v19-beginner-monitor";
+const CACHE_NAME = "tutorial-site-v20-tgbot-menu-update";
 const APP_SHELL = [
   "./",
   "./index.html",
