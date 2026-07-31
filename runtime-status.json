@@ -1,41 +1,41 @@
 {
-    "statusKey":  "standby",
-    "statusLabel":  "正常待命",
-    "headline":  "主人，Codex CLI 執行程序異常；TGBOT 已完成自動重試與備援模型切換，且問題不是 CHAT ID 配對造成。 請執行 %USERPROFILE%\\tg-openai-bot\\SELF_CHECK.cmd；自檢只保存在本機，不會把",
-    "currentTaskInstruction":  "主人，Codex CLI 執行程序異常；TGBOT 已完成自動重試與備援模型切換，且問題不是 CHAT ID 配對造成。 請執行 %USERPROFILE%\\tg-openai-bot\\SELF_CHECK.cmd；自檢只保存在本機，不會把",
-    "blocker":  "沒有卡點",
-    "nextAction":  "有新任務時會更新 Telegram 狀態與本頁快照。",
-    "updatedAt":  "2026-07-26T13:27:11+08:00",
-    "checkedAt":  "2026-07-26T13:27:11+08:00",
+    "statusKey":  "blocked",
+    "statusLabel":  "卡點",
+    "headline":  "請讀取我傳的照片，辨識照片中的內容並回答。",
+    "currentTaskInstruction":  "請讀取我傳的照片，辨識照片中的內容並回答。",
+    "blocker":  "最近任務異常",
+    "nextAction":  "查看最近任務，修復後再回報。",
+    "updatedAt":  "2026-07-31T21:27:14+08:00",
+    "checkedAt":  "2026-07-31T21:27:14+08:00",
     "sourceType":  "local-generator",
     "sourceLabel":  "本機即時狀態產生器",
     "refreshSeconds":  1,
     "token":  {
-                  "totalTokens":  197464387,
-                  "taskCount":  1,
-                  "source":  "本機 Codex 執行緒紀錄"
+                  "totalTokens":  0,
+                  "taskCount":  0,
+                  "source":  "本機未抓到精確 token 紀錄"
               },
     "heartbeat":  {
                       "name":  "蝦咩",
-                      "ageSeconds":  32,
+                      "ageSeconds":  12,
                       "activeRequests":  0
                   },
     "tgbot2":  {
                    "name":  "林孟姿",
-                   "statusKey":  "standby",
-                   "statusLabel":  "正常待命",
-                   "ageSeconds":  42,
+                   "statusKey":  "blocked",
+                   "statusLabel":  "卡點",
+                   "ageSeconds":  11,
                    "activeRequests":  0,
-                   "currentTaskInstruction":  "最近完成：大肚是不是有玩水的地方",
+                   "currentTaskInstruction":  "續跑：續跑：續跑：做出來的效果好差 去看看人家comfy都怎麼操作的ˉ 學習更多工作流和技能ˉcomfy能用的",
                    "currentTaskSource":  "tg-openai-bot-2/telegram_request_status.json"
                },
     "tgbot3":  {
                    "name":  "嵐熙",
-                   "statusKey":  "standby",
-                   "statusLabel":  "正常待命",
-                   "ageSeconds":  9,
+                   "statusKey":  "blocked",
+                   "statusLabel":  "卡點",
+                   "ageSeconds":  15,
                    "activeRequests":  0,
-                   "currentTaskInstruction":  "最近完成：檢測平台工作流要加入 綁定本身tgbot",
+                   "currentTaskInstruction":  "在嗎",
                    "currentTaskSource":  "tg-openai-bot-3/telegram_request_status.json"
                },
     "monitors":  [
@@ -44,15 +44,15 @@
                          "label":  "蝦咩心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 32 秒前，執行中任務 0",
+                         "detail":  "心跳 12 秒前，執行中任務 0",
                          "source":  "codex_bot_heartbeat.json"
                      },
                      {
                          "id":  "telegram-request",
                          "label":  "Telegram 任務佇列",
-                         "statusKey":  "standby",
-                         "statusLabel":  "正常待命",
-                         "detail":  "主人，Codex CLI 執行程序異常；TGBOT 已完成自動重試與備援模型切換，且問題不是 CHAT ID 配對造成。 請執行 %USERPROFILE%\\tg-openai-bot\\SELF_CHECK.cmd；自檢只保存在本機，不會把",
+                         "statusKey":  "blocked",
+                         "statusLabel":  "卡點",
+                         "detail":  "請讀取我傳的照片，辨識照片中的內容並回答。",
                          "source":  "telegram_request_status.json"
                      },
                      {
@@ -60,15 +60,15 @@
                          "label":  "林孟姿心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 42 秒前，執行中任務 0",
+                         "detail":  "心跳 11 秒前，執行中任務 0",
                          "source":  "tg-openai-bot-2/codex_bot_heartbeat.json"
                      },
                      {
                          "id":  "tgbot2-request",
                          "label":  "林孟姿任務佇列",
-                         "statusKey":  "standby",
-                         "statusLabel":  "正常待命",
-                         "detail":  "最近完成：大肚是不是有玩水的地方",
+                         "statusKey":  "blocked",
+                         "statusLabel":  "卡點",
+                         "detail":  "續跑：續跑：續跑：做出來的效果好差 去看看人家comfy都怎麼操作的ˉ 學習更多工作流和技能ˉcomfy能用的",
                          "source":  "tg-openai-bot-2/telegram_request_status.json"
                      },
                      {
@@ -76,15 +76,15 @@
                          "label":  "嵐熙心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 9 秒前，執行中任務 0",
+                         "detail":  "心跳 15 秒前，執行中任務 0",
                          "source":  "tg-openai-bot-3/codex_bot_heartbeat.json"
                      },
                      {
                          "id":  "tgbot3-request",
                          "label":  "嵐熙任務佇列",
-                         "statusKey":  "standby",
-                         "statusLabel":  "正常待命",
-                         "detail":  "最近完成：檢測平台工作流要加入 綁定本身tgbot",
+                         "statusKey":  "blocked",
+                         "statusLabel":  "卡點",
+                         "detail":  "在嗎",
                          "source":  "tg-openai-bot-3/telegram_request_status.json"
                      },
                      {
@@ -92,8 +92,8 @@
                          "label":  "Codex token 統計",
                          "statusKey":  "running",
                          "statusLabel":  "已讀取",
-                         "detail":  "197464387 tokens，任務 1",
-                         "source":  "本機 Codex 執行緒紀錄"
+                         "detail":  "0 tokens，任務 0",
+                         "source":  "本機未抓到精確 token 紀錄"
                      },
                      {
                          "id":  "dashboard-control-action",
@@ -108,7 +108,7 @@
                          "label":  "狀態產生器",
                          "statusKey":  "running",
                          "statusLabel":  "已更新",
-                         "detail":  "產生時間 2026-07-26 13:27:11",
+                         "detail":  "產生時間 2026-07-31 21:27:14",
                          "source":  "tools/update-runtime-status.ps1"
                      },
                      {
