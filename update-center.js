@@ -30,17 +30,18 @@
       return;
     }
     list.innerHTML = state.updates.map((item, index) => {
-      const commandText = state.unlocked
+      const itemUnlocked = state.unlocked || item.publicAccess === true;
+      const commandText = itemUnlocked
         ? escapeHtml(buildTgbotInstruction(item))
         : "向客服索取更新密碼並解鎖後，這裡會顯示可直接貼給 Codex／TGBOT 的網站自動安裝指令。";
-      const commandSummary = state.unlocked
+      const commandSummary = itemUnlocked
         ? "查看 Codex 網站自動安裝指令"
         : "解鎖後可查看自動安裝指令";
-      const downloadLabel = state.unlocked ? "下載更新包" : "輸入密碼後下載";
-      const commandLabel = state.unlocked
+      const downloadLabel = itemUnlocked ? "下載更新包" : "輸入密碼後下載";
+      const commandLabel = itemUnlocked
         ? "一鍵複製 Codex 自動安裝指令"
         : "解鎖後可一鍵複製";
-      const disabled = state.unlocked ? "" : " disabled";
+      const disabled = itemUnlocked ? "" : " disabled";
       const kindLabel = item.kind === "tgbot-installer"
         ? "TGBOT 完整安裝包"
         : item.kind === "tgbot-comprehensive-update"
@@ -57,12 +58,13 @@
         '<span>版本 ' + escapeHtml(item.version || "未知") + '</span>',
         '<span>' + escapeHtml(item.createdAt || "日期未標示") + '</span>',
         '<span>' + escapeHtml(formatBytes(Number(item.size))) + '</span>',
+        item.publicAccess === true ? '<span>公開免登入</span>' : '',
         '</div>',
         '<div class="update-action-row">',
         '<button type="button" class="update-download-button" data-update-index="' + index + '"' + disabled + '>' + downloadLabel + '</button>',
         '<button type="button" class="update-command-button" data-update-index="' + index + '"' + disabled + '>' + commandLabel + '</button>',
         '</div>',
-        '<details class="update-command-preview' + (state.unlocked ? ' is-ready' : '') + '">',
+        '<details class="update-command-preview' + (itemUnlocked ? ' is-ready' : '') + '">',
         '<summary>' + commandSummary + '</summary>',
         '<pre class="update-command">' + commandText + '</pre>',
         '</details>',
@@ -158,6 +160,30 @@
         "",
         "完成標準：ZIP 與 SHA256 正確、指南已讀、正確路徑完成備份與套用、測試及語法檢查通過、目前 Bot 重啟成功、選單與互跳功能由真實 Telegram 驗證。"
       ].join("\\n");
+    }
+    if (item.instructionProfile === "menu-update-20260803") {
+      return [
+        "請替目前這個 Codex／COI／TGBOT 學習並套用「TGBOT 功能選單更新包 20260803」。請實際完成，不要只下載或說明；只能處理目前這一端，不可改到其他 Bot。",
+        "",
+        "教學頁：" + updateCenterUrl,
+        "更新名稱：" + (item.title || item.id),
+        "更新版本：" + (item.version || "20260803"),
+        "更新包直接網址：" + downloadUrl,
+        "預期 SHA256：" + expectedSha256,
+        "",
+        "請依序完成並驗證：",
+        "1. 下載 ZIP，確認檔名與大小後計算 SHA256；必須和上方預期值一致，不一致立即停止。",
+        "2. 解壓到日期化任務資料夾，先完整讀取 INSTALL_FOR_OTHER_CODEX_20260803.md。",
+        "3. 確認目前 Bot 已接好 telegram_studio_menu 的匯入、持久鍵盤、訊息路由、命令同步、提醒掃描五個掛鉤；若缺少就停止並回報需要改用全新安裝包。",
+        "4. 在解壓目錄執行：powershell -ExecutionPolicy Bypass -File .\\APPLY_MENU_UPDATE_20260803.ps1 -BotDirectory \"<目前 Bot 根目錄>\"；主程式不是 codex_bot.py 時加上 -BotScript \"<主程式檔名>\"。",
+        "5. 更新器必須先備份、通過 Python 編譯與 7 項測試才可覆蓋；失敗時確認原檔已自動復原。",
+        "6. 保留 model、provider、reasoning、Token、聊天授權、.env、登入狀態、既有排程與 watchdog；只能把 Codex CLI 正規化為唯一一列頂層 service_tier = \"fast\"。",
+        "7. 只重啟目前這個 TGBOT，驗證 getMe 成功、只有一個 Bot Python PID、heartbeat 新鮮且沒有近期啟動錯誤。",
+        "8. 實測功能選單 18 個入口、生活服務、統一待辦、記帳、學習卡、蝦教室互跳與普通簡報路由；「製作簡報」不得誤進 NBS，只有明確 NBS／NotebookLM 才走 NBS。",
+        "9. 用繁體中文回報更新目標、備份位置、編譯與 7 項測試、service_tier 驗證、模型設定未變、重啟健康狀態與入口實測摘要。",
+        "",
+        "安全規則：不可顯示或上傳 Token、cookie、密碼、chat_id、.env、瀏覽器憑證、raw log 或內部 debug；不可留下半套修改，也不可拿其他 Bot 的狀態當成完成。"
+      ].join("\n");
     }
     if (item.kind === "tgbot-menu-update") {
       return [
@@ -381,13 +407,13 @@
       const button = event.target.closest(".update-download-button");
       const commandButton = event.target.closest(".update-command-button");
       if (!button && !commandButton) return;
-      if (!state.unlocked) {
-        setAccessStatus("請先輸入更新密碼，才能下載或一鍵複製 Codex 自動安裝指令。", true);
-        return;
-      }
       const target = button || commandButton;
       const item = state.updates[Number(target.dataset.updateIndex)];
       if (!item) return;
+      if (!state.unlocked && item.publicAccess !== true) {
+        setAccessStatus("請先輸入更新密碼，才能下載或一鍵複製 Codex 自動安裝指令。", true);
+        return;
+      }
       if (button) downloadUpdate(item);
       else copyApplyCommand(item);
     });
