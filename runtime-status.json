@@ -5,35 +5,35 @@
     "currentTaskInstruction":  "stop",
     "blocker":  "最近任務異常",
     "nextAction":  "查看最近任務，修復後再回報。",
-    "updatedAt":  "2026-08-03T14:27:13+08:00",
-    "checkedAt":  "2026-08-03T14:27:13+08:00",
+    "updatedAt":  "2026-08-03T15:27:13+08:00",
+    "checkedAt":  "2026-08-03T15:27:13+08:00",
     "sourceType":  "local-generator",
     "sourceLabel":  "本機即時狀態產生器",
     "refreshSeconds":  1,
     "token":  {
-                  "totalTokens":  13634841,
+                  "totalTokens":  23491382,
                   "taskCount":  1,
                   "source":  "本機 Codex 執行緒紀錄"
               },
     "heartbeat":  {
                       "name":  "蝦咩",
-                      "ageSeconds":  43,
+                      "ageSeconds":  40,
                       "activeRequests":  0
                   },
     "tgbot2":  {
                    "name":  "林孟姿",
                    "statusKey":  "blocked",
                    "statusLabel":  "卡點",
-                   "ageSeconds":  46,
+                   "ageSeconds":  38,
                    "activeRequests":  0,
-                   "currentTaskInstruction":  "https://ohyagan-crypto.github.io/notebooklm-prompt-site/ 研究這個網站並把提示詞風格加入五合一簡報",
+                   "currentTaskInstruction":  "繼續好了才停下",
                    "currentTaskSource":  "tg-openai-bot-2/telegram_request_status.json"
                },
     "tgbot3":  {
                    "name":  "嵐熙",
                    "statusKey":  "blocked",
                    "statusLabel":  "卡點",
-                   "ageSeconds":  44,
+                   "ageSeconds":  7,
                    "activeRequests":  0,
                    "currentTaskInstruction":  "在嗎",
                    "currentTaskSource":  "tg-openai-bot-3/telegram_request_status.json"
@@ -44,7 +44,7 @@
                          "label":  "蝦咩心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 43 秒前，執行中任務 0",
+                         "detail":  "心跳 40 秒前，執行中任務 0",
                          "source":  "codex_bot_heartbeat.json"
                      },
                      {
@@ -60,7 +60,7 @@
                          "label":  "林孟姿心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 46 秒前，執行中任務 0",
+                         "detail":  "心跳 38 秒前，執行中任務 0",
                          "source":  "tg-openai-bot-2/codex_bot_heartbeat.json"
                      },
                      {
@@ -68,7 +68,7 @@
                          "label":  "林孟姿任務佇列",
                          "statusKey":  "blocked",
                          "statusLabel":  "卡點",
-                         "detail":  "https://ohyagan-crypto.github.io/notebooklm-prompt-site/ 研究這個網站並把提示詞風格加入五合一簡報",
+                         "detail":  "繼續好了才停下",
                          "source":  "tg-openai-bot-2/telegram_request_status.json"
                      },
                      {
@@ -76,7 +76,7 @@
                          "label":  "嵐熙心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 44 秒前，執行中任務 0",
+                         "detail":  "心跳 7 秒前，執行中任務 0",
                          "source":  "tg-openai-bot-3/codex_bot_heartbeat.json"
                      },
                      {
@@ -92,7 +92,7 @@
                          "label":  "Codex token 統計",
                          "statusKey":  "running",
                          "statusLabel":  "已讀取",
-                         "detail":  "13634841 tokens，任務 1",
+                         "detail":  "23491382 tokens，任務 1",
                          "source":  "本機 Codex 執行緒紀錄"
                      },
                      {
@@ -108,7 +108,7 @@
                          "label":  "狀態產生器",
                          "statusKey":  "running",
                          "statusLabel":  "已更新",
-                         "detail":  "產生時間 2026-08-03 14:27:13",
+                         "detail":  "產生時間 2026-08-03 15:27:13",
                          "source":  "tools/update-runtime-status.ps1"
                      },
                      {
