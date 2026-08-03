@@ -1515,6 +1515,54 @@ function scheduleStatusRefresh() {
   tick();
 }
 
+async function copyCodexUpdatePrompt() {
+  const prompt = $("#codexUpdatePrompt");
+  const button = $("#copyCodexUpdatePrompt");
+  const status = $("#codexCopyStatus");
+  if (!prompt || !button || !status) return;
+
+  const text = prompt.textContent.trim();
+  let copied = false;
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+      copied = true;
+    }
+  } catch {
+    copied = false;
+  }
+
+  if (!copied) {
+    const selection = window.getSelection();
+    const range = document.createRange();
+    range.selectNodeContents(prompt);
+    selection.removeAllRanges();
+    selection.addRange(range);
+    try {
+      copied = document.execCommand("copy");
+    } catch {
+      copied = false;
+    }
+    selection.removeAllRanges();
+  }
+
+  if (copied) {
+    button.textContent = "已複製";
+    button.dataset.state = "success";
+    status.textContent = "完整更新指令已複製，可貼到其他 Codex。";
+    status.dataset.tone = "success";
+    window.setTimeout(() => {
+      button.textContent = "一鍵複製給 Codex";
+      delete button.dataset.state;
+    }, 2600);
+    return;
+  }
+
+  status.textContent = "瀏覽器未允許自動複製，請選取上方指令後複製。";
+  status.dataset.tone = "error";
+  prompt.focus();
+}
+
 function bindInteractions() {
   bindAgentViewSwitch();
 
@@ -1547,6 +1595,11 @@ function bindInteractions() {
       skillSearchTerm = event.target.value;
       renderSkills();
     });
+  }
+
+  const copyCodexButton = $("#copyCodexUpdatePrompt");
+  if (copyCodexButton) {
+    copyCodexButton.addEventListener("click", copyCodexUpdatePrompt);
   }
 }
 
