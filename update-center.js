@@ -43,6 +43,8 @@
       const disabled = state.unlocked ? "" : " disabled";
       const kindLabel = item.kind === "tgbot-installer"
         ? "TGBOT 完整安裝包"
+        : item.kind === "tgbot-comprehensive-update"
+          ? "TGBOT 綜合更新包"
         : item.kind === "tgbot-menu-update"
           ? "TGBOT 功能選單更新"
           : "Codex 技能更新";
@@ -67,6 +69,8 @@
         '<small class="update-tgbot-hint">' +
           (item.kind === "tgbot-installer"
             ? "貼給 Codex／TGBOT 後，它會操作網站輸入客服提供的密碼、下載完整安裝包，並保留現有設定完成驗證。"
+            : item.kind === "tgbot-comprehensive-update"
+              ? "貼給 Codex／TGBOT 後，它會依目前是否已有五個掛鉤，自動選擇 update/ 增量更新或 install/ 全新安裝，完成測試、備份與驗證。"
             : item.kind === "tgbot-menu-update"
               ? "貼給 Codex／COI／TGBOT 後，它會下載教學更新包、先讀技能與整合指南，再安裝、重啟目前 Bot 並驗證真實選單。"
               : "貼給 Codex／TGBOT 後，它會操作網站輸入客服提供的密碼、下載更新包，先乾跑再正式套用與驗證。") +
@@ -128,6 +132,33 @@
     const fileName = item.file.split("/").pop() || item.id || "更新包";
     const downloadUrl = absoluteAssetUrl(item.file);
     const expectedSha256 = item.sha256 || "請以網站清單標示為準";
+    if (item.kind === "tgbot-comprehensive-update") {
+      return [
+        "請直接替目前這個 TGBOT 完成今天的綜合更新，不要只下載、解壓或說明流程。只能處理目前這一端，不可改到其他 Bot。",
+        "",
+        "更新網站：" + updateCenterUrl,
+        "網站下載密碼：請向客服索取後再輸入，不要要求公開頁面顯示密碼。",
+        "更新名稱：" + (item.title || item.id || "TGBOT 今日綜合更新包"),
+        "更新版本：" + (item.version || "2026.08.03"),
+        "下載檔名：" + fileName,
+        "綜合包直接網址：" + downloadUrl,
+        "預期 SHA256：" + expectedSha256,
+        "新手教學入口：https://ohyagan-crypto.github.io/owner-work-map-website/#all-skills",
+        "",
+        "請依序完成並驗證：",
+        "1. 開啟更新網站並解鎖，找到完全相同的名稱與版本，等待 ZIP 真正下載完成；按鈕失效時才使用上方同一個直接網址。",
+        "2. 確認檔案存在、檔名正確，計算 ZIP SHA256，必須與預期值一致；不一致立即停止。",
+        "3. 解壓到日期化任務資料夾，先讀根目錄 COMPREHENSIVE_UPDATE_GUIDE_20260803.md、PACKAGE_MANIFEST_20260803.md、VERSION_20260803.json。",
+        "4. 只辨識目前 Bot 的根目錄、主程式、Token 來源、PID、heartbeat 與重啟方式；不可猜測或使用其他 Bot。",
+        "5. 檢查主程式是否已有 telegram_studio_menu 的五個掛鉤：有才使用 update/APPLY_MENU_UPDATE_20260803.ps1；沒有才使用 install/INSTALL_MENU_20260803.ps1。不可兩條路徑都套用。",
+        "6. 依對應資料夾先執行備份、語法編譯、單元測試與驗證；任何失敗都停止，不得重啟或覆蓋設定。",
+        "7. 保留目前 Bot 的 model、provider、reasoning、service tier、.env、Token、登入狀態、排程與對話資料；禁止輸出或打包秘密，也不可更換模型。",
+        "8. 驗證功能選單、生活服務／蝦教室底部互跳、18 個入口、FAST 設定與回復工具；再只重啟目前 Bot，確認 getMe、單一 PID、heartbeat 與真實 Telegram 測試恢復。",
+        "9. 以繁體中文回報實際 Bot、採用 update 或 install 路徑、版本、備份、每項驗證與重啟狀態；若缺少真實資料來源，回報具體卡點。",
+        "",
+        "完成標準：ZIP 與 SHA256 正確、指南已讀、正確路徑完成備份與套用、測試及語法檢查通過、目前 Bot 重啟成功、選單與互跳功能由真實 Telegram 驗證。"
+      ].join("\\n");
+    }
     if (item.kind === "tgbot-menu-update") {
       return [
         "請直接替目前這個 Codex／COI／TGBOT 安裝並學會藍星蝦咩功能選單更新，不要只下載、解壓或說明流程。只能處理目前這一端，不可改到其他 Bot。",

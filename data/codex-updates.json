@@ -1,100 +1,25 @@
 {
   "format": "bsmf-codex-update-v1",
-  "updatedAt": "2026-07-28",
-  "notes": "公開清單只放更新包名稱、版本、大小與雜湊；.bsmf 使用 AES-256-GCM，加註 TGBOT 的 ZIP 教學／安裝包則以 SHA-256 驗證完整性。",
+  "updatedAt": "2026-08-03",
+  "notes": "公開清單只保留今天最新的綜合更新包；ZIP 以 SHA-256 驗證完整性，內含既有掛鉤的增量更新與無掛鉤時的全新安裝。",
   "updates": [
     {
-      "id": "tgbot-menu-update-20260728.1",
-      "kind": "tgbot-menu-update",
-      "version": "20260728.1",
-      "createdAt": "2026-07-28",
-      "title": "TGBOT 藍星蝦咩功能選單同步更新",
-      "description": "同步 LBOT 同款客戶功能選單、蝦咩工作室第二層、選單常駐與收合、IMAGE2 入口、實際 Token 統計、FAST 預設及 UTF-8 Telegram 原生指令修復。",
-      "file": "updates/TGBOT_MENU_UPDATE_HANDOFF_20260728_152421.zip",
-      "size": 37882,
-      "sha256": "b3c2572e3ea4bbd1e9c5ad5006e384a656ff1d6d797a9417ab13a6eb7afd5af1",
+      "id": "tgbot-comprehensive-update-20260803",
+      "kind": "tgbot-comprehensive-update",
+      "version": "2026.08.03",
+      "createdAt": "2026-08-03",
+      "title": "TGBOT 今日綜合更新包",
+      "description": "單一最新包，依目前 Bot 是否已有五個選單掛鉤，自動選擇增量更新或全新安裝；包含功能選單、生活服務／蝦教室互跳、FAST 預設、測試、備份與回復工具。",
+      "file": "updates/TGBOT_綜合更新包_20260803.zip",
+      "size": 83108,
+      "sha256": "8ea7364e64c3ae6b1a55f926a0d9ebdcab94699d22399828cb45071e16746f46",
       "contents": [
-        "INSTALL_FOR_OTHER_CODEX.md",
-        "MEMORY_AND_BEHAVIOR_SUMMARY.md",
-        "FORWARD_TO_RECEIVER_TGBOT.txt",
-        "SET_FAST_SERVICE_TIER_20260728.ps1",
-        "UPDATE_TGBOT_MENU_20260728.ps1",
-        "skills/tgbot-lbot-menu-parity/SKILL.md",
-        "skills/tgbot-lbot-menu-parity/assets/telegram_studio_menu_20260728.py",
-        "skills/tgbot-lbot-menu-parity/references/MENU_SPEC_20260728.md",
-        "skills/tgbot-lbot-menu-parity/references/INTEGRATION_GUIDE_20260728.md",
-        "skills/tgbot-lbot-menu-parity/scripts/verify_tgbot_menu_20260728.py",
-        "workflows/TGBOT_MENU_UPDATE_20260728.md",
-        "PACKAGE_MANIFEST.md",
-        "CHECKSUMS_SHA256_20260728.txt"
-      ]
-    },
-    {
-      "id": "codex-update-20260727.1",
-      "kind": "codex-skill-update",
-      "version": "20260727.1",
-      "createdAt": "2026-07-27",
-      "title": "FAST 預設與自動上船教學更新",
-      "description": "升級包與安裝包預設使用最高可用服務層級，保留既有模型、供應商與推理設定，並附日期化 FAST 工具及自動上船教學入口。",
-      "file": "updates/codex-update_20260727.1.bsmf",
-      "size": 20666,
-      "sha256": "4f210a5355fcbb2775c2e91c7781feda9eb1462cef0b6b4a35c0b14fc7022afc",
-      "contents": [
-        "INSTALL_FOR_OTHER_CODEX.md",
-        "memories\\package-fast-default-20260727.md",
-        "skills\\codex-skill-handoff\\SKILL.md",
-        "skills\\codex-skill-handoff\\scripts\\make_skill_handoff.ps1",
-        "workflows\\package-fast-default-20260727.md"
-      ]
-    },
-    {
-      "id": "tgbot-update-chrome-line-20260723",
-      "kind": "tgbot-installer",
-      "version": "20260723.162100",
-      "createdAt": "2026-07-23",
-      "title": "TGBOT Chrome＋LINE 官方完整安裝包",
-      "description": "完整 ZIP 安裝包，包含 Chrome 優先路由、LINE 官方快速認證碼技能、TGBOT 更新器、命令通道與可攜性驗證工具；會保留接收端既有設定與登入狀態。",
-      "file": "updates/TGBOT_UPDATE_CHROME_LINE_20260723_162100.zip",
-      "size": 141052,
-      "sha256": "33ae1b8d6233b7bd98d713f1f0422093ad924acc46570e21dfe62b2ab48e757f",
-      "contents": [
-        "Chrome 安裝與簽章驗證",
-        "LINE 官方快速認證碼技能",
-        "TGBOT 更新器",
-        "命令通道與可攜性自測"
-      ]
-    },
-    {
-      "id": "codex-update-20260723.1",
-      "kind": "codex-skill-update",
-      "version": "20260723.1",
-      "createdAt": "2026-07-23",
-      "title": "LINE 官方快速認證碼技能更新",
-      "description": "新增 LINE 官方 QR 登入短效認證碼優先回報技能；完整 Chrome＋TGBOT 工具請下載同日安裝包。",
-      "file": "updates/codex-update_20260723.1.bsmf",
-      "size": 8641,
-      "sha256": "77d0984b77a7a1934d74dc077d2c32a15a6bcffa27779f7ff2d0cad4d5cb857a",
-      "contents": [
-        "INSTALL_FOR_OTHER_CODEX.md",
-        "skills/line-official-fast-code/SKILL.md",
-        "skills/line-official-fast-code/agents/openai.yaml"
-      ]
-    },
-    {
-      "id": "codex-update-20260722.1",
-      "kind": "codex-skill-update",
-      "version": "20260722.1",
-      "createdAt": "2026-07-22",
-      "title": "Codex 記憶、技能、工作流更新協定",
-      "description": "示範更新包，包含下載、乾跑驗證、敏感資料排除與套用說明；之後的實際更新沿用同一格式。",
-      "file": "updates/codex-update-protocol-20260722.bsmf",
-      "size": 3706,
-      "sha256": "b797364b02b1a88ae424458841d6a5c1098266974adb197338b5ca04bebd3696",
-      "contents": [
-        "技能更新區",
-        "記憶更新區",
-        "工作流更新區",
-        "其他 Codex 安裝說明"
+        "COMPREHENSIVE_UPDATE_GUIDE_20260803.md",
+        "PACKAGE_MANIFEST_20260803.md",
+        "VERSION_20260803.json",
+        "SHA256SUMS_20260803.txt",
+        "update/（已有五個掛鉤的增量更新與回復工具）",
+        "install/（沒有掛鉤時的全新安裝與回復工具）"
       ]
     }
   ]
