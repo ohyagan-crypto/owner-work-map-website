@@ -1,74 +1,74 @@
 {
-    "statusKey":  "running",
-    "statusLabel":  "運作中",
-    "headline":  "儀表盤網站更新 1.蝦咩嵐熙 切換欄位放到最上面 2.點擊卡點有反應單無法聯通到tgbot 讓他幫你解卡救援，所以功能徹底檢查 3.@codexmaster6726_bot這個是嵐熙 以後記好，嵐熙在儀表盤網站上沒有同步我給的任務內容",
-    "currentTaskInstruction":  "儀表盤網站更新 1.蝦咩嵐熙 切換欄位放到最上面 2.點擊卡點有反應單無法聯通到tgbot 讓他幫你解卡救援，所以功能徹底檢查 3.@codexmaster6726_bot這個是嵐熙 以後記好，嵐熙在儀表盤網站上沒有同步我給的任務內容",
-    "lanxiTaskInstruction":  "儀表盤網站更新 1.蝦咩嵐熙 切換欄位放到最上面 2.點擊卡點有反應單無法聯通到tgbot 讓他幫你解卡救援，所以功能徹底檢查 3.@codexmaster6726_bot這個是嵐熙 以後記好，嵐熙在儀表盤網站上沒有同步我給的任務內容",
-    "blocker":  "沒有卡點",
-    "nextAction":  "完成後更新交付結果、網址、檔案路徑或明確卡點。",
-    "updatedAt":  "2026-07-04T22:07:12+08:00",
-    "checkedAt":  "2026-07-04T22:07:12+08:00",
+    "statusKey":  "disconnected",
+    "statusLabel":  "疑似斷線",
+    "headline":  "網站最新更新檔已同步，儀表板正在使用目前工作狀態。",
+    "currentTaskInstruction":  "網站最新更新檔已同步，儀表板正在使用目前工作狀態。",
+    "lanxiTaskInstruction":  "網站最新更新檔已同步，儀表板正在使用目前工作狀態。",
+    "blocker":  "心跳過舊",
+    "nextAction":  "完成公開頁更新後，重新載入即可查看最新狀態。",
+    "updatedAt":  "2026-08-03T17:37:09+08:00",
+    "checkedAt":  "2026-08-03T17:37:09+08:00",
     "sourceType":  "local-generator",
     "sourceLabel":  "本機即時狀態產生器",
     "refreshSeconds":  1,
     "token":  {
-                  "totalTokens":  165738973,
-                  "taskCount":  42,
-                  "source":  "本機 Codex 執行緒紀錄"
+                  "totalTokens":  0,
+                  "taskCount":  0,
+                  "source":  "本機未抓到精確 token 紀錄"
               },
     "heartbeat":  {
                       "name":  "蝦咩",
-                      "ageSeconds":  10,
-                      "activeRequests":  1
+                      "ageSeconds":  999999,
+                      "activeRequests":  null
                   },
     "openclaw":  {
                      "name":  "嵐熙",
                      "botUsername":  "@codexmaster6726_bot",
                      "statusKey":  "running",
                      "statusLabel":  "正常",
-                     "processCount":  6,
-                     "watchdogState":  "Running",
-                     "currentTaskInstruction":  "儀表盤網站更新 1.蝦咩嵐熙 切換欄位放到最上面 2.點擊卡點有反應單無法聯通到tgbot 讓他幫你解卡救援，所以功能徹底檢查 3.@codexmaster6726_bot這個是嵐熙 以後記好，嵐熙在儀表盤網站上沒有同步我給的任務內容",
-                     "currentTaskSource":  "telegram_conversation_history.json + OpenClaw / @codexmaster6726_bot 狀態"
+                     "processCount":  2,
+                     "watchdogState":  "未取得",
+                     "currentTaskInstruction":  "網站最新更新檔已同步，儀表板正在使用目前工作狀態。",
+                     "currentTaskSource":  "手動指定目前任務 + OpenClaw / @codexmaster6726_bot 狀態"
                  },
     "monitors":  [
                      {
                          "id":  "telegram-heartbeat",
                          "label":  "蝦咩心跳",
-                         "statusKey":  "running",
-                         "statusLabel":  "正常",
-                         "detail":  "心跳 10 秒前，執行中任務 1",
+                         "statusKey":  "watch",
+                         "statusLabel":  "待確認",
+                         "detail":  "心跳 999999 秒前，執行中任務 未取得",
                          "source":  "codex_bot_heartbeat.json"
                      },
                      {
                          "id":  "telegram-request",
                          "label":  "Telegram 任務佇列",
-                         "statusKey":  "running",
-                         "statusLabel":  "運作中",
-                         "detail":  "儀表盤網站更新 1.蝦咩嵐熙 切換欄位放到最上面 2.點擊卡點有反應單無法聯通到tgbot 讓他幫你解卡救援，所以功能徹底檢查 3.@codexmaster6726_bot這個是嵐熙 以後記好，嵐熙在儀表盤網站上沒有同步我給的任務內容",
+                         "statusKey":  "disconnected",
+                         "statusLabel":  "疑似斷線",
+                         "detail":  "網站最新更新檔已同步，儀表板正在使用目前工作狀態。",
                          "source":  "telegram_request_status.json"
                      },
                      {
                          "id":  "openclaw-task",
                          "label":  "嵐熙任務",
-                         "statusKey":  "running",
+                         "statusKey":  "disconnected",
                          "statusLabel":  "同步目前指令",
-                         "detail":  "儀表盤網站更新 1.蝦咩嵐熙 切換欄位放到最上面 2.點擊卡點有反應單無法聯通到tgbot 讓他幫你解卡救援，所以功能徹底檢查 3.@codexmaster6726_bot這個是嵐熙 以後記好，嵐熙在儀表盤網站上沒有同步我給的任務內容",
-                         "source":  "telegram_conversation_history.json + OpenClaw / @codexmaster6726_bot 狀態"
+                         "detail":  "網站最新更新檔已同步，儀表板正在使用目前工作狀態。",
+                         "source":  "手動指定目前任務 + OpenClaw / @codexmaster6726_bot 狀態"
                      },
                      {
                          "id":  "openclaw-process",
                          "label":  "嵐熙進程",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "偵測到 6 個相關進程",
+                         "detail":  "偵測到 2 個相關進程",
                          "source":  "Win32_Process"
                      },
                      {
                          "id":  "openclaw-watchdog",
                          "label":  "嵐熙看門排程",
-                         "statusKey":  "running",
-                         "statusLabel":  "Running",
+                         "statusKey":  "watch",
+                         "statusLabel":  "未取得",
                          "detail":  "OpenClaw Watchdog 排程目前狀態",
                          "source":  "Scheduled Task"
                      },
@@ -77,15 +77,15 @@
                          "label":  "Codex token 統計",
                          "statusKey":  "running",
                          "statusLabel":  "已讀取",
-                         "detail":  "165738973 tokens，任務 42",
-                         "source":  "本機 Codex 執行緒紀錄"
+                         "detail":  "0 tokens，任務 0",
+                         "source":  "本機未抓到精確 token 紀錄"
                      },
                      {
                          "id":  "runtime-generator",
                          "label":  "狀態產生器",
                          "statusKey":  "running",
                          "statusLabel":  "已更新",
-                         "detail":  "產生時間 2026-07-04 22:07:12",
+                         "detail":  "產生時間 2026-08-03 17:37:09",
                          "source":  "tools/update-runtime-status.ps1"
                      },
                      {
