@@ -1,8 +1,34 @@
 {
   "format": "bsmf-codex-update-v1",
-  "updatedAt": "2026-07-28",
+  "updatedAt": "2026-08-03",
   "notes": "公開清單只放更新包名稱、版本、大小與雜湊；.bsmf 使用 AES-256-GCM，加註 TGBOT 的 ZIP 教學／安裝包則以 SHA-256 驗證完整性。",
   "updates": [
+    {
+      "id": "tgbot-menu-update-20260803",
+      "kind": "tgbot-menu-update",
+      "instructionProfile": "menu-update-20260803",
+      "publicAccess": true,
+      "version": "20260803",
+      "createdAt": "2026-08-03",
+      "title": "TGBOT 功能選單 2026-08-03 更新包",
+      "description": "更新 18 個主入口、生活服務、統一待辦、記帳、學習卡、蝦教室互跳與普通簡報路由；保留原模型、provider、reasoning、Token、聊天授權與 watchdog。",
+      "file": "downloads/TGBOT_menu_update_20260803.zip",
+      "size": 37910,
+      "sha256": "9b0bcdcb7ac7c27ea788502e0daa50d3f22e402b006cef584de4313f5365a777",
+      "contents": [
+        "INSTALL_FOR_OTHER_CODEX_20260803.md",
+        "FORWARD_TO_RECEIVER_TGBOT_20260803.txt",
+        "MEMORY_AND_BEHAVIOR_SUMMARY_20260803.md",
+        "PACKAGE_MANIFEST_20260803.md",
+        "APPLY_MENU_UPDATE_20260803.ps1",
+        "ROLLBACK_MENU_UPDATE_20260803.ps1",
+        "enable_fast_service_tier_20260803.ps1",
+        "telegram_studio_menu.py",
+        "telegram_studio_menu_test.py",
+        "VERSION_20260803.json",
+        "SHA256SUMS_20260803.txt"
+      ]
+    },
     {
       "id": "tgbot-menu-update-20260728.1",
       "kind": "tgbot-menu-update",
