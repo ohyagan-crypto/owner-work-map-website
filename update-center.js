@@ -46,9 +46,11 @@
         ? "TGBOT 完整安裝包"
         : item.kind === "tgbot-comprehensive-update"
           ? "TGBOT 綜合更新包"
-        : item.kind === "tgbot-menu-update"
-          ? "TGBOT 功能選單更新"
-          : "Codex 技能更新";
+        : item.kind === "tgbot-cumulative-update"
+          ? "TGBOT 累積式升級包"
+          : item.kind === "tgbot-menu-update"
+            ? "TGBOT 功能選單更新"
+            : "Codex 技能更新";
       return [
         '<article class="codex-update-item">',
         '<strong>' + escapeHtml(item.title || item.id) + '</strong>',
@@ -73,7 +75,9 @@
             ? "貼給 Codex／TGBOT 後，它會操作網站輸入客服提供的密碼、下載完整安裝包，並保留現有設定完成驗證。"
             : item.kind === "tgbot-comprehensive-update"
               ? "貼給 Codex／TGBOT 後，它會依目前是否已有五個掛鉤，自動選擇 update/ 增量更新或 install/ 全新安裝，完成測試、備份與驗證。"
-            : item.kind === "tgbot-menu-update"
+            : item.kind === "tgbot-cumulative-update"
+              ? "貼給 Codex／TGBOT 後，它會下載累積式升級包、先備份再套用所有歷次功能，並驗證目前 Bot 的健康狀態。"
+              : item.kind === "tgbot-menu-update"
               ? "貼給 Codex／COI／TGBOT 後，它會下載教學更新包、先讀技能與整合指南，再安裝、重啟目前 Bot 並驗證真實選單。"
               : "貼給 Codex／TGBOT 後，它會操作網站輸入客服提供的密碼、下載更新包，先乾跑再正式套用與驗證。") +
           '</small>',
@@ -159,6 +163,48 @@
         "9. 以繁體中文回報實際 Bot、採用 update 或 install 路徑、版本、備份、每項驗證與重啟狀態；若缺少真實資料來源，回報具體卡點。",
         "",
         "完成標準：ZIP 與 SHA256 正確、指南已讀、正確路徑完成備份與套用、測試及語法檢查通過、目前 Bot 重啟成功、選單與互跳功能由真實 Telegram 驗證。"
+      ].join("\\n");
+    }
+    if (item.instructionProfile === "cumulative-installer-20260805") {
+      return [
+        "請替目前這台電腦安裝 TGBOT 累積式完整安裝包 2026.08.05。請實際完成，不要只下載或說明；只能處理這台電腦目前這一套 TGBOT，不可改到其他 Bot。",
+        "",
+        "教學頁：" + updateCenterUrl,
+        "安裝包名稱：" + (item.title || item.id),
+        "安裝包版本：" + (item.version || "2026.08.05"),
+        "安裝包直接網址：" + downloadUrl,
+        "預期 SHA256：" + expectedSha256,
+        "",
+        "請依序完成並驗證：",
+        "1. 從教學網站下載「" + fileName + "」，確認檔名、ZIP 格式與大小正確，再計算 SHA256；不一致立即停止。",
+        "2. 解壓到日期化資料夾，先完整讀取 README_CUMULATIVE_20260805.md 與 PACKAGE_MANIFEST_CUMULATIVE_20260805.md。",
+        "3. 新電腦執行：powershell -NoProfile -ExecutionPolicy Bypass -File .\\INSTALL_CUMULATIVE_TGBOT.ps1；也可雙擊 INSTALL_CUMULATIVE_TGBOT.cmd。",
+        "4. 安裝器會累積合併 2026.07.20、07.23、07.25、07.27-29、07.28、08.03 的功能，包含 77 個技能、838 個記憶、18 個功能入口、多通道、IMAGE2、LINE、Chrome 與 failover。",
+        "5. 只輸入自己的 Token 與 API 資料；包內不含 Token、API key、CHAT ID、cookie、session、瀏覽器登入資料或聊天紀錄。",
+        "6. 完成後確認基礎 TGBOT、Codex 技能／記憶、18 個功能選單、Telegram getMe、heartbeat、LINE health 與多通道／IMAGE2 路由均可驗證；不要把其他 Bot 的狀態當成完成。",
+        "",
+        "若下載、SHA256、解壓或任一驗證失敗，請停止並回報明確卡點，不要覆蓋任何既有設定。"
+      ].join("\\n");
+    }
+    if (item.instructionProfile === "cumulative-update-20260805") {
+      return [
+        "請替目前這個既有 TGBOT 套用累積式升級包 2026.08.05。請實際完成，不要只下載或說明；只能處理目前這一套 Bot，不可改到其他 Bot。",
+        "",
+        "教學頁：" + updateCenterUrl,
+        "升級包名稱：" + (item.title || item.id),
+        "升級包版本：" + (item.version || "2026.08.05"),
+        "升級包直接網址：" + downloadUrl,
+        "預期 SHA256：" + expectedSha256,
+        "",
+        "請依序完成並驗證：",
+        "1. 從教學網站下載「" + fileName + "」，確認檔名、ZIP 格式與大小正確，再計算 SHA256；不一致立即停止。",
+        "2. 解壓到日期化資料夾，先完整讀取 README_CUMULATIVE_20260805.md 與 PACKAGE_MANIFEST_CUMULATIVE_20260805.md。",
+        "3. 自動辨識目前這個 Bot 的安裝根目錄與主程式；若無法辨識就停止，不可猜測或套用到其他 Bot。",
+        "4. 執行：powershell -NoProfile -ExecutionPolicy Bypass -File .\\UPDATE_CUMULATIVE_TGBOT.ps1 -TargetRoots \"<目前 Bot 根目錄>\"；需要時可先加 -SkipRestart 做靜態驗證。",
+        "5. 升級器必須先建立日期化備份，再累積合併 2026.07.20、07.23、07.25、07.27-29、07.28、08.03 的功能；保留現有 .env、Token、CHAT ID、模型、provider、reasoning、瀏覽器登入狀態、排程與對話資料。",
+        "6. 完成後只重啟目前這個 Bot，確認只有一個程序、Telegram getMe、heartbeat、LINE health、18 個功能入口、多通道與 IMAGE2 路由正常；不要把其他 Bot 的狀態當成完成。",
+        "",
+        "若下載、SHA256、備份、套用或任一驗證失敗，請停止正式重啟並回報明確卡點。"
       ].join("\\n");
     }
     if (item.instructionProfile === "menu-update-20260803") {

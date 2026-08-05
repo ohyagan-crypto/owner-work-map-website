@@ -1,15 +1,55 @@
 {
   "format": "bsmf-codex-update-v1",
-  "updatedAt": "2026-08-03",
-  "notes": "公開清單只保留今天最新的綜合更新包；ZIP 以 SHA-256 驗證完整性，內含既有掛鉤的增量更新與無掛鉤時的全新安裝。",
+  "updatedAt": "2026-08-05",
+  "notes": "公開清單保留最新累積式 TGBOT 安裝／升級包與既有綜合包；累積式 ZIP 以 SHA-256 驗證完整性，並保留歷次升級內容。",
   "updates": [
+    {
+      "id": "tgbot-cumulative-installer-20260805",
+      "kind": "tgbot-installer",
+      "instructionProfile": "cumulative-installer-20260805",
+      "publicAccess": true,
+      "version": "2026.08.05",
+      "createdAt": "2026-08-05",
+      "title": "TGBOT 累積式完整安裝包 2026-08-05",
+      "description": "全新電腦一次安裝累積至 2026-08-05 的完整功能：77 個技能、838 個記憶、18 個功能入口、多通道、IMAGE2、LINE、Chrome 與 failover。",
+      "file": "downloads/TGBOT_CUMULATIVE_INSTALL_20260805.zip",
+      "size": 15773376,
+      "sha256": "c880bf575322e267eecf85c592ade77ae40e8625b891859b0bff6355e3c8603f",
+      "contents": [
+        "INSTALL_CUMULATIVE_TGBOT.cmd",
+        "INSTALL_CUMULATIVE_TGBOT.ps1",
+        "README_CUMULATIVE_20260805.md",
+        "PACKAGE_MANIFEST_CUMULATIVE_20260805.md",
+        "2026.07.20-2026.08.03 累積基礎、功能、選單與 Codex API2 快照"
+      ]
+    },
+    {
+      "id": "tgbot-cumulative-update-20260805",
+      "kind": "tgbot-cumulative-update",
+      "instructionProfile": "cumulative-update-20260805",
+      "publicAccess": true,
+      "version": "2026.08.05",
+      "createdAt": "2026-08-05",
+      "title": "TGBOT 累積式升級包 2026-08-05",
+      "description": "給既有 TGBOT 的累積式升級：一次合併 7/20、7/23、7/25、7/27-29、7/28、8/03 全部升級內容，保留既有設定並先備份。",
+      "file": "downloads/TGBOT_CUMULATIVE_UPDATE_20260805.zip",
+      "size": 14862479,
+      "sha256": "216d7f6477bb21eb028c61beede6a1cbc5b0fc902dbbd0021370b3112a97718d",
+      "contents": [
+        "UPDATE_CUMULATIVE_TGBOT.cmd",
+        "UPDATE_CUMULATIVE_TGBOT.ps1",
+        "README_CUMULATIVE_20260805.md",
+        "PACKAGE_MANIFEST_CUMULATIVE_20260805.md",
+        "2026.07.20-2026.08.03 累積功能、選單與 Codex API2 快照"
+      ]
+    },
     {
       "id": "tgbot-comprehensive-update-20260803",
       "kind": "tgbot-comprehensive-update",
       "version": "2026.08.03",
       "createdAt": "2026-08-03",
       "title": "TGBOT 今日綜合更新包",
-      "description": "單一最新包，依目前 Bot 是否已有五個選單掛鉤，自動選擇增量更新或全新安裝；包含功能選單、生活服務／蝦教室互跳、FAST 預設、測試、備份與回復工具。",
+      "description": "單一綜合包，依目前 Bot 是否已有五個選單掛鉤，自動選擇增量更新或全新安裝；包含功能選單、生活服務／蝦教室互跳、FAST 預設、測試、備份與回復工具。",
       "file": "updates/TGBOT_綜合更新包_20260803.zip",
       "size": 83108,
       "sha256": "8ea7364e64c3ae6b1a55f926a0d9ebdcab94699d22399828cb45071e16746f46",
@@ -18,7 +58,7 @@
         "PACKAGE_MANIFEST_20260803.md",
         "VERSION_20260803.json",
         "SHA256SUMS_20260803.txt",
-        "update/（已有五個掛鉤的增量更新與回復工具）",
+        "update/（已有五個選單掛鉤的增量更新與回復工具）",
         "install/（沒有掛鉤時的全新安裝與回復工具）"
       ]
     }
