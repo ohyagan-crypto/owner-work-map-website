@@ -5,26 +5,26 @@
     "currentTaskInstruction":  "stop",
     "blocker":  "最近任務異常",
     "nextAction":  "查看最近任務，修復後再回報。",
-    "updatedAt":  "2026-08-05T15:27:12+08:00",
-    "checkedAt":  "2026-08-05T15:27:12+08:00",
+    "updatedAt":  "2026-08-05T16:27:14+08:00",
+    "checkedAt":  "2026-08-05T16:27:14+08:00",
     "sourceType":  "local-generator",
     "sourceLabel":  "本機即時狀態產生器",
     "refreshSeconds":  1,
     "token":  {
-                  "totalTokens":  240713866,
+                  "totalTokens":  248206392,
                   "taskCount":  1,
                   "source":  "本機 Codex 執行緒紀錄"
               },
     "heartbeat":  {
                       "name":  "蝦咩",
-                      "ageSeconds":  8,
+                      "ageSeconds":  6,
                       "activeRequests":  0
                   },
     "tgbot2":  {
                    "name":  "林孟姿",
                    "statusKey":  "blocked",
                    "statusLabel":  "卡點",
-                   "ageSeconds":  50,
+                   "ageSeconds":  49,
                    "activeRequests":  0,
                    "currentTaskInstruction":  "繼續好了才停下",
                    "currentTaskSource":  "tg-openai-bot-2/telegram_request_status.json"
@@ -44,7 +44,7 @@
                          "label":  "蝦咩心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 8 秒前，執行中任務 0",
+                         "detail":  "心跳 6 秒前，執行中任務 0",
                          "source":  "codex_bot_heartbeat.json"
                      },
                      {
@@ -60,7 +60,7 @@
                          "label":  "林孟姿心跳",
                          "statusKey":  "running",
                          "statusLabel":  "正常",
-                         "detail":  "心跳 50 秒前，執行中任務 0",
+                         "detail":  "心跳 49 秒前，執行中任務 0",
                          "source":  "tg-openai-bot-2/codex_bot_heartbeat.json"
                      },
                      {
@@ -92,7 +92,7 @@
                          "label":  "Codex token 統計",
                          "statusKey":  "running",
                          "statusLabel":  "已讀取",
-                         "detail":  "240713866 tokens，任務 1",
+                         "detail":  "248206392 tokens，任務 1",
                          "source":  "本機 Codex 執行緒紀錄"
                      },
                      {
@@ -108,7 +108,7 @@
                          "label":  "狀態產生器",
                          "statusKey":  "running",
                          "statusLabel":  "已更新",
-                         "detail":  "產生時間 2026-08-05 15:27:12",
+                         "detail":  "產生時間 2026-08-05 16:27:14",
                          "source":  "tools/update-runtime-status.ps1"
                      },
                      {
